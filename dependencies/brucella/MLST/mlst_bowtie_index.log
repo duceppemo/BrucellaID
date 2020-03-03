@@ -1,0 +1,1317 @@
+bowtie2-build /home/bioinfo/analyses/brucella_OLF1/fastq/SRR538741/mlst/baitedtargets.fa /home/bioinfo/analyses/brucella_OLF1/fastq/SRR538741/mlst/baitedtargets.fa
+------------------------------------------------------------Building a SMALL index
+
+------------------------------------------------------------Settings:
+  Output files: "/home/bioinfo/analyses/brucella_OLF1/fastq/SRR538741/mlst/baitedtargets.fa.*.bt2"
+  Line rate: 6 (line is 64 bytes)
+  Lines per side: 1 (side is 64 bytes)
+  Offset rate: 4 (one in 16)
+  FTable chars: 10
+  Strings: unpacked
+  Max bucket size: default
+  Max bucket size, sqrt multiplier: default
+  Max bucket size, len divisor: 4
+  Difference-cover sample period: 1024
+  Endianness: little
+  Actual local endianness: little
+  Sanity checking: disabled
+  Assertions: disabled
+  Random seed: 0
+  Sizeofs: void*:8, int:4, long:8, size_t:8
+Input files DNA, FASTA:
+  /home/bioinfo/analyses/brucella_OLF1/fastq/SRR538741/mlst/baitedtargets.fa
+Reading reference sizes
+  Time reading reference sizes: 00:00:00
+Calculating joined length
+Writing header
+Reserving space for joined string
+Joining reference sequences
+  Time to join reference sequences: 00:00:00
+bmax according to bmaxDivN setting: 8550
+Using parameters --bmax 6413 --dcv 1024
+  Doing ahead-of-time memory usage test
+  Passed!  Constructing with these parameters: --bmax 6413 --dcv 1024
+Constructing suffix-array element generator
+Building DifferenceCoverSample
+  Building sPrime
+  Building sPrimeOrder
+  V-Sorting samples
+  V-Sorting samples time: 00:00:00
+  Allocating rank array
+  Ranking v-sort output
+  Ranking v-sort output time: 00:00:00
+  Invoking Larsson-Sadakane on ranks
+  Invoking Larsson-Sadakane on ranks time: 00:00:00
+  Sanity-checking and returning
+Building samples
+Reserving space for 12 sample suffixes
+Generating random suffixes
+QSorting 12 sample offsets, eliminating duplicates
+QSorting sample offsets, eliminating duplicates time: 00:00:00
+Multikey QSorting 12 samples
+  (Using difference cover)
+  Multikey QSorting samples time: 00:00:00
+Calculating bucket sizes
+Splitting and merging
+  Splitting and merging time: 00:00:00
+Avg bucket size: 34202 (target: 6412)
+Converting suffix-array elements to index image
+Allocating ftab, absorbFtab
+Entering Ebwt loop
+Getting block 1 of 1
+  No samples; assembling all-inclusive block
+  Sorting block of length 34202 for bucket 1
+  (Using difference cover)
+  Sorting block time: 00:00:00
+Returning block of 34203 for bucket 1
+Exited Ebwt loop
+fchr[A]: 0
+fchr[C]: 6918
+fchr[G]: 16896
+fchr[T]: 27120
+fchr[$]: 34202
+Exiting Ebwt::buildToDisk()
+Returning from initFromVector
+Wrote 4207519 bytes to primary EBWT file: /home/bioinfo/analyses/brucella_OLF1/fastq/SRR538741/mlst/baitedtargets.fa.1.bt2
+Wrote 8556 bytes to secondary EBWT file: /home/bioinfo/analyses/brucella_OLF1/fastq/SRR538741/mlst/baitedtargets.fa.2.bt2
+Re-opening _in1 and _in2 as input streams
+Returning from Ebwt constructor
+Headers:
+    len: 34202
+    bwtLen: 34203
+    sz: 8551
+    bwtSz: 8551
+    lineRate: 6
+    offRate: 4
+    offMask: 0xfffffff0
+    ftabChars: 10
+    eftabLen: 20
+    eftabSz: 80
+    ftabLen: 1048577
+    ftabSz: 4194308
+    offsLen: 2138
+    offsSz: 8552
+    lineSz: 64
+    sideSz: 64
+    sideBwtSz: 48
+    sideBwtLen: 192
+    numSides: 179
+    numLines: 179
+    ebwtTotLen: 11456
+    ebwtTotSz: 11456
+    color: 0
+    reverse: 0
+Total time for call to driver() for forward index: 00:00:00
+Reading reference sizes
+  Time reading reference sizes: 00:00:00
+Calculating joined length
+Writing header
+Reserving space for joined string
+Joining reference sequences
+  Time to join reference sequences: 00:00:00
+  Time to reverse reference sequence: 00:00:00
+bmax according to bmaxDivN setting: 8550
+Using parameters --bmax 6413 --dcv 1024
+  Doing ahead-of-time memory usage test
+  Passed!  Constructing with these parameters: --bmax 6413 --dcv 1024
+Constructing suffix-array element generator
+Building DifferenceCoverSample
+  Building sPrime
+  Building sPrimeOrder
+  V-Sorting samples
+  V-Sorting samples time: 00:00:00
+  Allocating rank array
+  Ranking v-sort output
+  Ranking v-sort output time: 00:00:00
+  Invoking Larsson-Sadakane on ranks
+  Invoking Larsson-Sadakane on ranks time: 00:00:00
+  Sanity-checking and returning
+Building samples
+Reserving space for 12 sample suffixes
+Generating random suffixes
+QSorting 12 sample offsets, eliminating duplicates
+QSorting sample offsets, eliminating duplicates time: 00:00:00
+Multikey QSorting 12 samples
+  (Using difference cover)
+  Multikey QSorting samples time: 00:00:00
+Calculating bucket sizes
+Splitting and merging
+  Splitting and merging time: 00:00:00
+Avg bucket size: 34202 (target: 6412)
+Converting suffix-array elements to index image
+Allocating ftab, absorbFtab
+Entering Ebwt loop
+Getting block 1 of 1
+  No samples; assembling all-inclusive block
+  Sorting block of length 34202 for bucket 1
+  (Using difference cover)
+  Sorting block time: 00:00:00
+Returning block of 34203 for bucket 1
+Exited Ebwt loop
+fchr[A]: 0
+fchr[C]: 6918
+fchr[G]: 16896
+fchr[T]: 27120
+fchr[$]: 34202
+Exiting Ebwt::buildToDisk()
+Returning from initFromVector
+Wrote 4207519 bytes to primary EBWT file: /home/bioinfo/analyses/brucella_OLF1/fastq/SRR538741/mlst/baitedtargets.fa.rev.1.bt2
+Wrote 8556 bytes to secondary EBWT file: /home/bioinfo/analyses/brucella_OLF1/fastq/SRR538741/mlst/baitedtargets.fa.rev.2.bt2
+Re-opening _in1 and _in2 as input streams
+Returning from Ebwt constructor
+Headers:
+    len: 34202
+    bwtLen: 34203
+    sz: 8551
+    bwtSz: 8551
+    lineRate: 6
+    offRate: 4
+    offMask: 0xfffffff0
+    ftabChars: 10
+    eftabLen: 20
+    eftabSz: 80
+    ftabLen: 1048577
+    ftabSz: 4194308
+    offsLen: 2138
+    offsSz: 8552
+    lineSz: 64
+    sideSz: 64
+    sideBwtSz: 48
+    sideBwtLen: 192
+    numSides: 179
+    numLines: 179
+    ebwtTotLen: 11456
+    ebwtTotSz: 11456
+    color: 0
+    reverse: 1
+Total time for backward call to driver() for mirror index: 00:00:00
+
+------------------------------------------------------------bowtie2-build /home/bioinfo/analyses/brucella_OLF1/fastq/SRR538744/mlst/baitedtargets.fa /home/bioinfo/analyses/brucella_OLF1/fastq/SRR538744/mlst/baitedtargets.fa
+------------------------------------------------------------Building a SMALL index
+
+------------------------------------------------------------Settings:
+  Output files: "/home/bioinfo/analyses/brucella_OLF1/fastq/SRR538744/mlst/baitedtargets.fa.*.bt2"
+  Line rate: 6 (line is 64 bytes)
+  Lines per side: 1 (side is 64 bytes)
+  Offset rate: 4 (one in 16)
+  FTable chars: 10
+  Strings: unpacked
+  Max bucket size: default
+  Max bucket size, sqrt multiplier: default
+  Max bucket size, len divisor: 4
+  Difference-cover sample period: 1024
+  Endianness: little
+  Actual local endianness: little
+  Sanity checking: disabled
+  Assertions: disabled
+  Random seed: 0
+  Sizeofs: void*:8, int:4, long:8, size_t:8
+Input files DNA, FASTA:
+  /home/bioinfo/analyses/brucella_OLF1/fastq/SRR538744/mlst/baitedtargets.fa
+Reading reference sizes
+  Time reading reference sizes: 00:00:00
+Calculating joined length
+Writing header
+Reserving space for joined string
+Joining reference sequences
+  Time to join reference sequences: 00:00:00
+bmax according to bmaxDivN setting: 9765
+Using parameters --bmax 7324 --dcv 1024
+  Doing ahead-of-time memory usage test
+  Passed!  Constructing with these parameters: --bmax 7324 --dcv 1024
+Constructing suffix-array element generator
+Building DifferenceCoverSample
+  Building sPrime
+  Building sPrimeOrder
+  V-Sorting samples
+  V-Sorting samples time: 00:00:00
+  Allocating rank array
+  Ranking v-sort output
+  Ranking v-sort output time: 00:00:00
+  Invoking Larsson-Sadakane on ranks
+  Invoking Larsson-Sadakane on ranks time: 00:00:00
+  Sanity-checking and returning
+Building samples
+Reserving space for 12 sample suffixes
+Generating random suffixes
+QSorting 12 sample offsets, eliminating duplicates
+QSorting sample offsets, eliminating duplicates time: 00:00:00
+Multikey QSorting 12 samples
+  (Using difference cover)
+  Multikey QSorting samples time: 00:00:00
+Calculating bucket sizes
+Splitting and merging
+  Splitting and merging time: 00:00:00
+Avg bucket size: 39062 (target: 7323)
+Converting suffix-array elements to index image
+Allocating ftab, absorbFtab
+Entering Ebwt loop
+Getting block 1 of 1
+  No samples; assembling all-inclusive block
+  Sorting block of length 39062 for bucket 1
+  (Using difference cover)
+  Sorting block time: 00:00:00
+Returning block of 39063 for bucket 1
+Exited Ebwt loop
+fchr[A]: 0
+fchr[C]: 7767
+fchr[G]: 18804
+fchr[T]: 30886
+fchr[$]: 39062
+Exiting Ebwt::buildToDisk()
+Returning from initFromVector
+Wrote 4209458 bytes to primary EBWT file: /home/bioinfo/analyses/brucella_OLF1/fastq/SRR538744/mlst/baitedtargets.fa.1.bt2
+Wrote 9772 bytes to secondary EBWT file: /home/bioinfo/analyses/brucella_OLF1/fastq/SRR538744/mlst/baitedtargets.fa.2.bt2
+Re-opening _in1 and _in2 as input streams
+Returning from Ebwt constructor
+Headers:
+    len: 39062
+    bwtLen: 39063
+    sz: 9766
+    bwtSz: 9766
+    lineRate: 6
+    offRate: 4
+    offMask: 0xfffffff0
+    ftabChars: 10
+    eftabLen: 20
+    eftabSz: 80
+    ftabLen: 1048577
+    ftabSz: 4194308
+    offsLen: 2442
+    offsSz: 9768
+    lineSz: 64
+    sideSz: 64
+    sideBwtSz: 48
+    sideBwtLen: 192
+    numSides: 204
+    numLines: 204
+    ebwtTotLen: 13056
+    ebwtTotSz: 13056
+    color: 0
+    reverse: 0
+Total time for call to driver() for forward index: 00:00:00
+Reading reference sizes
+  Time reading reference sizes: 00:00:00
+Calculating joined length
+Writing header
+Reserving space for joined string
+Joining reference sequences
+  Time to join reference sequences: 00:00:00
+  Time to reverse reference sequence: 00:00:00
+bmax according to bmaxDivN setting: 9765
+Using parameters --bmax 7324 --dcv 1024
+  Doing ahead-of-time memory usage test
+  Passed!  Constructing with these parameters: --bmax 7324 --dcv 1024
+Constructing suffix-array element generator
+Building DifferenceCoverSample
+  Building sPrime
+  Building sPrimeOrder
+  V-Sorting samples
+  V-Sorting samples time: 00:00:00
+  Allocating rank array
+  Ranking v-sort output
+  Ranking v-sort output time: 00:00:00
+  Invoking Larsson-Sadakane on ranks
+  Invoking Larsson-Sadakane on ranks time: 00:00:00
+  Sanity-checking and returning
+Building samples
+Reserving space for 12 sample suffixes
+Generating random suffixes
+QSorting 12 sample offsets, eliminating duplicates
+QSorting sample offsets, eliminating duplicates time: 00:00:00
+Multikey QSorting 12 samples
+  (Using difference cover)
+  Multikey QSorting samples time: 00:00:00
+Calculating bucket sizes
+Splitting and merging
+  Splitting and merging time: 00:00:00
+Avg bucket size: 39062 (target: 7323)
+Converting suffix-array elements to index image
+Allocating ftab, absorbFtab
+Entering Ebwt loop
+Getting block 1 of 1
+  No samples; assembling all-inclusive block
+  Sorting block of length 39062 for bucket 1
+  (Using difference cover)
+  Sorting block time: 00:00:00
+Returning block of 39063 for bucket 1
+Exited Ebwt loop
+fchr[A]: 0
+fchr[C]: 7767
+fchr[G]: 18804
+fchr[T]: 30886
+fchr[$]: 39062
+Exiting Ebwt::buildToDisk()
+Returning from initFromVector
+Wrote 4209458 bytes to primary EBWT file: /home/bioinfo/analyses/brucella_OLF1/fastq/SRR538744/mlst/baitedtargets.fa.rev.1.bt2
+Wrote 9772 bytes to secondary EBWT file: /home/bioinfo/analyses/brucella_OLF1/fastq/SRR538744/mlst/baitedtargets.fa.rev.2.bt2
+Re-opening _in1 and _in2 as input streams
+Returning from Ebwt constructor
+Headers:
+    len: 39062
+    bwtLen: 39063
+    sz: 9766
+    bwtSz: 9766
+    lineRate: 6
+    offRate: 4
+    offMask: 0xfffffff0
+    ftabChars: 10
+    eftabLen: 20
+    eftabSz: 80
+    ftabLen: 1048577
+    ftabSz: 4194308
+    offsLen: 2442
+    offsSz: 9768
+    lineSz: 64
+    sideSz: 64
+    sideBwtSz: 48
+    sideBwtLen: 192
+    numSides: 204
+    numLines: 204
+    ebwtTotLen: 13056
+    ebwtTotSz: 13056
+    color: 0
+    reverse: 1
+Total time for backward call to driver() for mirror index: 00:00:00
+
+------------------------------------------------------------bowtie2-build /home/bioinfo/analyses/brucella_OLF1/fastq/SRR538751/mlst/baitedtargets.fa /home/bioinfo/analyses/brucella_OLF1/fastq/SRR538751/mlst/baitedtargets.fa
+------------------------------------------------------------Building a SMALL index
+
+------------------------------------------------------------Settings:
+  Output files: "/home/bioinfo/analyses/brucella_OLF1/fastq/SRR538751/mlst/baitedtargets.fa.*.bt2"
+  Line rate: 6 (line is 64 bytes)
+  Lines per side: 1 (side is 64 bytes)
+  Offset rate: 4 (one in 16)
+  FTable chars: 10
+  Strings: unpacked
+  Max bucket size: default
+  Max bucket size, sqrt multiplier: default
+  Max bucket size, len divisor: 4
+  Difference-cover sample period: 1024
+  Endianness: little
+  Actual local endianness: little
+  Sanity checking: disabled
+  Assertions: disabled
+  Random seed: 0
+  Sizeofs: void*:8, int:4, long:8, size_t:8
+Input files DNA, FASTA:
+  /home/bioinfo/analyses/brucella_OLF1/fastq/SRR538751/mlst/baitedtargets.fa
+Reading reference sizes
+  Time reading reference sizes: 00:00:00
+Calculating joined length
+Writing header
+Reserving space for joined string
+Joining reference sequences
+  Time to join reference sequences: 00:00:00
+bmax according to bmaxDivN setting: 10865
+Using parameters --bmax 8149 --dcv 1024
+  Doing ahead-of-time memory usage test
+  Passed!  Constructing with these parameters: --bmax 8149 --dcv 1024
+Constructing suffix-array element generator
+Building DifferenceCoverSample
+  Building sPrime
+  Building sPrimeOrder
+  V-Sorting samples
+  V-Sorting samples time: 00:00:00
+  Allocating rank array
+  Ranking v-sort output
+  Ranking v-sort output time: 00:00:00
+  Invoking Larsson-Sadakane on ranks
+  Invoking Larsson-Sadakane on ranks time: 00:00:00
+  Sanity-checking and returning
+Building samples
+Reserving space for 12 sample suffixes
+Generating random suffixes
+QSorting 12 sample offsets, eliminating duplicates
+QSorting sample offsets, eliminating duplicates time: 00:00:00
+Multikey QSorting 12 samples
+  (Using difference cover)
+  Multikey QSorting samples time: 00:00:00
+Calculating bucket sizes
+Splitting and merging
+  Splitting and merging time: 00:00:00
+Avg bucket size: 43462 (target: 8148)
+Converting suffix-array elements to index image
+Allocating ftab, absorbFtab
+Entering Ebwt loop
+Getting block 1 of 1
+  No samples; assembling all-inclusive block
+  Sorting block of length 43462 for bucket 1
+  (Using difference cover)
+  Sorting block time: 00:00:00
+Returning block of 43463 for bucket 1
+Exited Ebwt loop
+fchr[A]: 0
+fchr[C]: 8671
+fchr[G]: 21190
+fchr[T]: 34251
+fchr[$]: 43462
+Exiting Ebwt::buildToDisk()
+Returning from initFromVector
+Wrote 4211098 bytes to primary EBWT file: /home/bioinfo/analyses/brucella_OLF1/fastq/SRR538751/mlst/baitedtargets.fa.1.bt2
+Wrote 10872 bytes to secondary EBWT file: /home/bioinfo/analyses/brucella_OLF1/fastq/SRR538751/mlst/baitedtargets.fa.2.bt2
+Re-opening _in1 and _in2 as input streams
+Returning from Ebwt constructor
+Headers:
+    len: 43462
+    bwtLen: 43463
+    sz: 10866
+    bwtSz: 10866
+    lineRate: 6
+    offRate: 4
+    offMask: 0xfffffff0
+    ftabChars: 10
+    eftabLen: 20
+    eftabSz: 80
+    ftabLen: 1048577
+    ftabSz: 4194308
+    offsLen: 2717
+    offsSz: 10868
+    lineSz: 64
+    sideSz: 64
+    sideBwtSz: 48
+    sideBwtLen: 192
+    numSides: 227
+    numLines: 227
+    ebwtTotLen: 14528
+    ebwtTotSz: 14528
+    color: 0
+    reverse: 0
+Total time for call to driver() for forward index: 00:00:01
+Reading reference sizes
+  Time reading reference sizes: 00:00:00
+Calculating joined length
+Writing header
+Reserving space for joined string
+Joining reference sequences
+  Time to join reference sequences: 00:00:00
+  Time to reverse reference sequence: 00:00:00
+bmax according to bmaxDivN setting: 10865
+Using parameters --bmax 8149 --dcv 1024
+  Doing ahead-of-time memory usage test
+  Passed!  Constructing with these parameters: --bmax 8149 --dcv 1024
+Constructing suffix-array element generator
+Building DifferenceCoverSample
+  Building sPrime
+  Building sPrimeOrder
+  V-Sorting samples
+  V-Sorting samples time: 00:00:00
+  Allocating rank array
+  Ranking v-sort output
+  Ranking v-sort output time: 00:00:00
+  Invoking Larsson-Sadakane on ranks
+  Invoking Larsson-Sadakane on ranks time: 00:00:00
+  Sanity-checking and returning
+Building samples
+Reserving space for 12 sample suffixes
+Generating random suffixes
+QSorting 12 sample offsets, eliminating duplicates
+QSorting sample offsets, eliminating duplicates time: 00:00:00
+Multikey QSorting 12 samples
+  (Using difference cover)
+  Multikey QSorting samples time: 00:00:00
+Calculating bucket sizes
+Splitting and merging
+  Splitting and merging time: 00:00:00
+Avg bucket size: 43462 (target: 8148)
+Converting suffix-array elements to index image
+Allocating ftab, absorbFtab
+Entering Ebwt loop
+Getting block 1 of 1
+  No samples; assembling all-inclusive block
+  Sorting block of length 43462 for bucket 1
+  (Using difference cover)
+  Sorting block time: 00:00:00
+Returning block of 43463 for bucket 1
+Exited Ebwt loop
+fchr[A]: 0
+fchr[C]: 8671
+fchr[G]: 21190
+fchr[T]: 34251
+fchr[$]: 43462
+Exiting Ebwt::buildToDisk()
+Returning from initFromVector
+Wrote 4211098 bytes to primary EBWT file: /home/bioinfo/analyses/brucella_OLF1/fastq/SRR538751/mlst/baitedtargets.fa.rev.1.bt2
+Wrote 10872 bytes to secondary EBWT file: /home/bioinfo/analyses/brucella_OLF1/fastq/SRR538751/mlst/baitedtargets.fa.rev.2.bt2
+Re-opening _in1 and _in2 as input streams
+Returning from Ebwt constructor
+Headers:
+    len: 43462
+    bwtLen: 43463
+    sz: 10866
+    bwtSz: 10866
+    lineRate: 6
+    offRate: 4
+    offMask: 0xfffffff0
+    ftabChars: 10
+    eftabLen: 20
+    eftabSz: 80
+    ftabLen: 1048577
+    ftabSz: 4194308
+    offsLen: 2717
+    offsSz: 10868
+    lineSz: 64
+    sideSz: 64
+    sideBwtSz: 48
+    sideBwtLen: 192
+    numSides: 227
+    numLines: 227
+    ebwtTotLen: 14528
+    ebwtTotSz: 14528
+    color: 0
+    reverse: 1
+Total time for backward call to driver() for mirror index: 00:00:00
+
+------------------------------------------------------------bowtie2-build /home/bioinfo/analyses/brucella_OLF1/fastq/SRR538755/mlst/baitedtargets.fa /home/bioinfo/analyses/brucella_OLF1/fastq/SRR538755/mlst/baitedtargets.fa
+------------------------------------------------------------Building a SMALL index
+
+------------------------------------------------------------Settings:
+  Output files: "/home/bioinfo/analyses/brucella_OLF1/fastq/SRR538755/mlst/baitedtargets.fa.*.bt2"
+  Line rate: 6 (line is 64 bytes)
+  Lines per side: 1 (side is 64 bytes)
+  Offset rate: 4 (one in 16)
+  FTable chars: 10
+  Strings: unpacked
+  Max bucket size: default
+  Max bucket size, sqrt multiplier: default
+  Max bucket size, len divisor: 4
+  Difference-cover sample period: 1024
+  Endianness: little
+  Actual local endianness: little
+  Sanity checking: disabled
+  Assertions: disabled
+  Random seed: 0
+  Sizeofs: void*:8, int:4, long:8, size_t:8
+Input files DNA, FASTA:
+  /home/bioinfo/analyses/brucella_OLF1/fastq/SRR538755/mlst/baitedtargets.fa
+Reading reference sizes
+  Time reading reference sizes: 00:00:00
+Calculating joined length
+Writing header
+Reserving space for joined string
+Joining reference sequences
+  Time to join reference sequences: 00:00:00
+bmax according to bmaxDivN setting: 12870
+Using parameters --bmax 9653 --dcv 1024
+  Doing ahead-of-time memory usage test
+  Passed!  Constructing with these parameters: --bmax 9653 --dcv 1024
+Constructing suffix-array element generator
+Building DifferenceCoverSample
+  Building sPrime
+  Building sPrimeOrder
+  V-Sorting samples
+  V-Sorting samples time: 00:00:00
+  Allocating rank array
+  Ranking v-sort output
+  Ranking v-sort output time: 00:00:00
+  Invoking Larsson-Sadakane on ranks
+  Invoking Larsson-Sadakane on ranks time: 00:00:00
+  Sanity-checking and returning
+Building samples
+Reserving space for 12 sample suffixes
+Generating random suffixes
+QSorting 12 sample offsets, eliminating duplicates
+QSorting sample offsets, eliminating duplicates time: 00:00:00
+Multikey QSorting 12 samples
+  (Using difference cover)
+  Multikey QSorting samples time: 00:00:00
+Calculating bucket sizes
+Splitting and merging
+  Splitting and merging time: 00:00:00
+Avg bucket size: 51483 (target: 9652)
+Converting suffix-array elements to index image
+Allocating ftab, absorbFtab
+Entering Ebwt loop
+Getting block 1 of 1
+  No samples; assembling all-inclusive block
+  Sorting block of length 51483 for bucket 1
+  (Using difference cover)
+  Sorting block time: 00:00:00
+Returning block of 51484 for bucket 1
+Exited Ebwt loop
+fchr[A]: 0
+fchr[C]: 10160
+fchr[G]: 25033
+fchr[T]: 40755
+fchr[$]: 51483
+Exiting Ebwt::buildToDisk()
+Returning from initFromVector
+Wrote 4214196 bytes to primary EBWT file: /home/bioinfo/analyses/brucella_OLF1/fastq/SRR538755/mlst/baitedtargets.fa.1.bt2
+Wrote 12876 bytes to secondary EBWT file: /home/bioinfo/analyses/brucella_OLF1/fastq/SRR538755/mlst/baitedtargets.fa.2.bt2
+Re-opening _in1 and _in2 as input streams
+Returning from Ebwt constructor
+Headers:
+    len: 51483
+    bwtLen: 51484
+    sz: 12871
+    bwtSz: 12871
+    lineRate: 6
+    offRate: 4
+    offMask: 0xfffffff0
+    ftabChars: 10
+    eftabLen: 20
+    eftabSz: 80
+    ftabLen: 1048577
+    ftabSz: 4194308
+    offsLen: 3218
+    offsSz: 12872
+    lineSz: 64
+    sideSz: 64
+    sideBwtSz: 48
+    sideBwtLen: 192
+    numSides: 269
+    numLines: 269
+    ebwtTotLen: 17216
+    ebwtTotSz: 17216
+    color: 0
+    reverse: 0
+Total time for call to driver() for forward index: 00:00:00
+Reading reference sizes
+  Time reading reference sizes: 00:00:00
+Calculating joined length
+Writing header
+Reserving space for joined string
+Joining reference sequences
+  Time to join reference sequences: 00:00:00
+  Time to reverse reference sequence: 00:00:00
+bmax according to bmaxDivN setting: 12870
+Using parameters --bmax 9653 --dcv 1024
+  Doing ahead-of-time memory usage test
+  Passed!  Constructing with these parameters: --bmax 9653 --dcv 1024
+Constructing suffix-array element generator
+Building DifferenceCoverSample
+  Building sPrime
+  Building sPrimeOrder
+  V-Sorting samples
+  V-Sorting samples time: 00:00:00
+  Allocating rank array
+  Ranking v-sort output
+  Ranking v-sort output time: 00:00:00
+  Invoking Larsson-Sadakane on ranks
+  Invoking Larsson-Sadakane on ranks time: 00:00:00
+  Sanity-checking and returning
+Building samples
+Reserving space for 12 sample suffixes
+Generating random suffixes
+QSorting 12 sample offsets, eliminating duplicates
+QSorting sample offsets, eliminating duplicates time: 00:00:00
+Multikey QSorting 12 samples
+  (Using difference cover)
+  Multikey QSorting samples time: 00:00:00
+Calculating bucket sizes
+Splitting and merging
+  Splitting and merging time: 00:00:00
+Avg bucket size: 51483 (target: 9652)
+Converting suffix-array elements to index image
+Allocating ftab, absorbFtab
+Entering Ebwt loop
+Getting block 1 of 1
+  No samples; assembling all-inclusive block
+  Sorting block of length 51483 for bucket 1
+  (Using difference cover)
+  Sorting block time: 00:00:00
+Returning block of 51484 for bucket 1
+Exited Ebwt loop
+fchr[A]: 0
+fchr[C]: 10160
+fchr[G]: 25033
+fchr[T]: 40755
+fchr[$]: 51483
+Exiting Ebwt::buildToDisk()
+Returning from initFromVector
+Wrote 4214196 bytes to primary EBWT file: /home/bioinfo/analyses/brucella_OLF1/fastq/SRR538755/mlst/baitedtargets.fa.rev.1.bt2
+Wrote 12876 bytes to secondary EBWT file: /home/bioinfo/analyses/brucella_OLF1/fastq/SRR538755/mlst/baitedtargets.fa.rev.2.bt2
+Re-opening _in1 and _in2 as input streams
+Returning from Ebwt constructor
+Headers:
+    len: 51483
+    bwtLen: 51484
+    sz: 12871
+    bwtSz: 12871
+    lineRate: 6
+    offRate: 4
+    offMask: 0xfffffff0
+    ftabChars: 10
+    eftabLen: 20
+    eftabSz: 80
+    ftabLen: 1048577
+    ftabSz: 4194308
+    offsLen: 3218
+    offsSz: 12872
+    lineSz: 64
+    sideSz: 64
+    sideBwtSz: 48
+    sideBwtLen: 192
+    numSides: 269
+    numLines: 269
+    ebwtTotLen: 17216
+    ebwtTotSz: 17216
+    color: 0
+    reverse: 1
+Total time for backward call to driver() for mirror index: 00:00:00
+
+------------------------------------------------------------bowtie2-build /home/bioinfo/analyses/brucella_OLF1/fastq/SRR538765/mlst/baitedtargets.fa /home/bioinfo/analyses/brucella_OLF1/fastq/SRR538765/mlst/baitedtargets.fa
+------------------------------------------------------------Building a SMALL index
+
+------------------------------------------------------------Settings:
+  Output files: "/home/bioinfo/analyses/brucella_OLF1/fastq/SRR538765/mlst/baitedtargets.fa.*.bt2"
+  Line rate: 6 (line is 64 bytes)
+  Lines per side: 1 (side is 64 bytes)
+  Offset rate: 4 (one in 16)
+  FTable chars: 10
+  Strings: unpacked
+  Max bucket size: default
+  Max bucket size, sqrt multiplier: default
+  Max bucket size, len divisor: 4
+  Difference-cover sample period: 1024
+  Endianness: little
+  Actual local endianness: little
+  Sanity checking: disabled
+  Assertions: disabled
+  Random seed: 0
+  Sizeofs: void*:8, int:4, long:8, size_t:8
+Input files DNA, FASTA:
+  /home/bioinfo/analyses/brucella_OLF1/fastq/SRR538765/mlst/baitedtargets.fa
+Reading reference sizes
+  Time reading reference sizes: 00:00:00
+Calculating joined length
+Writing header
+Reserving space for joined string
+Joining reference sequences
+  Time to join reference sequences: 00:00:00
+bmax according to bmaxDivN setting: 15254
+Using parameters --bmax 11441 --dcv 1024
+  Doing ahead-of-time memory usage test
+  Passed!  Constructing with these parameters: --bmax 11441 --dcv 1024
+Constructing suffix-array element generator
+Building DifferenceCoverSample
+  Building sPrime
+  Building sPrimeOrder
+  V-Sorting samples
+  V-Sorting samples time: 00:00:00
+  Allocating rank array
+  Ranking v-sort output
+  Ranking v-sort output time: 00:00:00
+  Invoking Larsson-Sadakane on ranks
+  Invoking Larsson-Sadakane on ranks time: 00:00:00
+  Sanity-checking and returning
+Building samples
+Reserving space for 12 sample suffixes
+Generating random suffixes
+QSorting 12 sample offsets, eliminating duplicates
+QSorting sample offsets, eliminating duplicates time: 00:00:00
+Multikey QSorting 12 samples
+  (Using difference cover)
+  Multikey QSorting samples time: 00:00:00
+Calculating bucket sizes
+Splitting and merging
+  Splitting and merging time: 00:00:00
+Avg bucket size: 61017 (target: 11440)
+Converting suffix-array elements to index image
+Allocating ftab, absorbFtab
+Entering Ebwt loop
+Getting block 1 of 1
+  No samples; assembling all-inclusive block
+  Sorting block of length 61017 for bucket 1
+  (Using difference cover)
+  Sorting block time: 00:00:00
+Returning block of 61018 for bucket 1
+Exited Ebwt loop
+fchr[A]: 0
+fchr[C]: 12106
+fchr[G]: 29737
+fchr[T]: 48263
+fchr[$]: 61017
+Exiting Ebwt::buildToDisk()
+Returning from initFromVector
+Wrote 4217813 bytes to primary EBWT file: /home/bioinfo/analyses/brucella_OLF1/fastq/SRR538765/mlst/baitedtargets.fa.1.bt2
+Wrote 15260 bytes to secondary EBWT file: /home/bioinfo/analyses/brucella_OLF1/fastq/SRR538765/mlst/baitedtargets.fa.2.bt2
+Re-opening _in1 and _in2 as input streams
+Returning from Ebwt constructor
+Headers:
+    len: 61017
+    bwtLen: 61018
+    sz: 15255
+    bwtSz: 15255
+    lineRate: 6
+    offRate: 4
+    offMask: 0xfffffff0
+    ftabChars: 10
+    eftabLen: 20
+    eftabSz: 80
+    ftabLen: 1048577
+    ftabSz: 4194308
+    offsLen: 3814
+    offsSz: 15256
+    lineSz: 64
+    sideSz: 64
+    sideBwtSz: 48
+    sideBwtLen: 192
+    numSides: 318
+    numLines: 318
+    ebwtTotLen: 20352
+    ebwtTotSz: 20352
+    color: 0
+    reverse: 0
+Total time for call to driver() for forward index: 00:00:00
+Reading reference sizes
+  Time reading reference sizes: 00:00:00
+Calculating joined length
+Writing header
+Reserving space for joined string
+Joining reference sequences
+  Time to join reference sequences: 00:00:00
+  Time to reverse reference sequence: 00:00:00
+bmax according to bmaxDivN setting: 15254
+Using parameters --bmax 11441 --dcv 1024
+  Doing ahead-of-time memory usage test
+  Passed!  Constructing with these parameters: --bmax 11441 --dcv 1024
+Constructing suffix-array element generator
+Building DifferenceCoverSample
+  Building sPrime
+  Building sPrimeOrder
+  V-Sorting samples
+  V-Sorting samples time: 00:00:00
+  Allocating rank array
+  Ranking v-sort output
+  Ranking v-sort output time: 00:00:00
+  Invoking Larsson-Sadakane on ranks
+  Invoking Larsson-Sadakane on ranks time: 00:00:00
+  Sanity-checking and returning
+Building samples
+Reserving space for 12 sample suffixes
+Generating random suffixes
+QSorting 12 sample offsets, eliminating duplicates
+QSorting sample offsets, eliminating duplicates time: 00:00:00
+Multikey QSorting 12 samples
+  (Using difference cover)
+  Multikey QSorting samples time: 00:00:00
+Calculating bucket sizes
+Splitting and merging
+  Splitting and merging time: 00:00:00
+Avg bucket size: 61017 (target: 11440)
+Converting suffix-array elements to index image
+Allocating ftab, absorbFtab
+Entering Ebwt loop
+Getting block 1 of 1
+  No samples; assembling all-inclusive block
+  Sorting block of length 61017 for bucket 1
+  (Using difference cover)
+  Sorting block time: 00:00:00
+Returning block of 61018 for bucket 1
+Exited Ebwt loop
+fchr[A]: 0
+fchr[C]: 12106
+fchr[G]: 29737
+fchr[T]: 48263
+fchr[$]: 61017
+Exiting Ebwt::buildToDisk()
+Returning from initFromVector
+Wrote 4217813 bytes to primary EBWT file: /home/bioinfo/analyses/brucella_OLF1/fastq/SRR538765/mlst/baitedtargets.fa.rev.1.bt2
+Wrote 15260 bytes to secondary EBWT file: /home/bioinfo/analyses/brucella_OLF1/fastq/SRR538765/mlst/baitedtargets.fa.rev.2.bt2
+Re-opening _in1 and _in2 as input streams
+Returning from Ebwt constructor
+Headers:
+    len: 61017
+    bwtLen: 61018
+    sz: 15255
+    bwtSz: 15255
+    lineRate: 6
+    offRate: 4
+    offMask: 0xfffffff0
+    ftabChars: 10
+    eftabLen: 20
+    eftabSz: 80
+    ftabLen: 1048577
+    ftabSz: 4194308
+    offsLen: 3814
+    offsSz: 15256
+    lineSz: 64
+    sideSz: 64
+    sideBwtSz: 48
+    sideBwtLen: 192
+    numSides: 318
+    numLines: 318
+    ebwtTotLen: 20352
+    ebwtTotSz: 20352
+    color: 0
+    reverse: 1
+Total time for backward call to driver() for mirror index: 00:00:00
+
+------------------------------------------------------------bowtie2-build /home/bioinfo/analyses/brucella_OLF1/fastq/B-suis-bio1/mlst/baitedtargets.fa /home/bioinfo/analyses/brucella_OLF1/fastq/B-suis-bio1/mlst/baitedtargets.fa
+------------------------------------------------------------Building a SMALL index
+
+------------------------------------------------------------Settings:
+  Output files: "/home/bioinfo/analyses/brucella_OLF1/fastq/B-suis-bio1/mlst/baitedtargets.fa.*.bt2"
+  Line rate: 6 (line is 64 bytes)
+  Lines per side: 1 (side is 64 bytes)
+  Offset rate: 4 (one in 16)
+  FTable chars: 10
+  Strings: unpacked
+  Max bucket size: default
+  Max bucket size, sqrt multiplier: default
+  Max bucket size, len divisor: 4
+  Difference-cover sample period: 1024
+  Endianness: little
+  Actual local endianness: little
+  Sanity checking: disabled
+  Assertions: disabled
+  Random seed: 0
+  Sizeofs: void*:8, int:4, long:8, size_t:8
+Input files DNA, FASTA:
+  /home/bioinfo/analyses/brucella_OLF1/fastq/B-suis-bio1/mlst/baitedtargets.fa
+Reading reference sizes
+  Time reading reference sizes: 00:00:00
+Calculating joined length
+Writing header
+Reserving space for joined string
+Joining reference sequences
+  Time to join reference sequences: 00:00:00
+bmax according to bmaxDivN setting: 1680
+Using parameters --bmax 1260 --dcv 1024
+  Doing ahead-of-time memory usage test
+  Passed!  Constructing with these parameters: --bmax 1260 --dcv 1024
+Constructing suffix-array element generator
+Building DifferenceCoverSample
+  Building sPrime
+  Building sPrimeOrder
+  V-Sorting samples
+  V-Sorting samples time: 00:00:00
+  Allocating rank array
+  Ranking v-sort output
+  Ranking v-sort output time: 00:00:00
+  Invoking Larsson-Sadakane on ranks
+  Invoking Larsson-Sadakane on ranks time: 00:00:00
+  Sanity-checking and returning
+Building samples
+Reserving space for 12 sample suffixes
+Generating random suffixes
+QSorting 12 sample offsets, eliminating duplicates
+QSorting sample offsets, eliminating duplicates time: 00:00:00
+Multikey QSorting 12 samples
+  (Using difference cover)
+  Multikey QSorting samples time: 00:00:00
+Calculating bucket sizes
+Splitting and merging
+  Splitting and merging time: 00:00:00
+Avg bucket size: 6720 (target: 1259)
+Converting suffix-array elements to index image
+Allocating ftab, absorbFtab
+Entering Ebwt loop
+Getting block 1 of 1
+  No samples; assembling all-inclusive block
+  Sorting block of length 6720 for bucket 1
+  (Using difference cover)
+  Sorting block time: 00:00:00
+Returning block of 6721 for bucket 1
+Exited Ebwt loop
+fchr[A]: 0
+fchr[C]: 1381
+fchr[G]: 3343
+fchr[T]: 5352
+fchr[$]: 6720
+Exiting Ebwt::buildToDisk()
+Returning from initFromVector
+Wrote 4197082 bytes to primary EBWT file: /home/bioinfo/analyses/brucella_OLF1/fastq/B-suis-bio1/mlst/baitedtargets.fa.1.bt2
+Wrote 1688 bytes to secondary EBWT file: /home/bioinfo/analyses/brucella_OLF1/fastq/B-suis-bio1/mlst/baitedtargets.fa.2.bt2
+Re-opening _in1 and _in2 as input streams
+Returning from Ebwt constructor
+Headers:
+    len: 6720
+    bwtLen: 6721
+    sz: 1680
+    bwtSz: 1681
+    lineRate: 6
+    offRate: 4
+    offMask: 0xfffffff0
+    ftabChars: 10
+    eftabLen: 20
+    eftabSz: 80
+    ftabLen: 1048577
+    ftabSz: 4194308
+    offsLen: 421
+    offsSz: 1684
+    lineSz: 64
+    sideSz: 64
+    sideBwtSz: 48
+    sideBwtLen: 192
+    numSides: 36
+    numLines: 36
+    ebwtTotLen: 2304
+    ebwtTotSz: 2304
+    color: 0
+    reverse: 0
+Total time for call to driver() for forward index: 00:00:00
+Reading reference sizes
+  Time reading reference sizes: 00:00:00
+Calculating joined length
+Writing header
+Reserving space for joined string
+Joining reference sequences
+  Time to join reference sequences: 00:00:00
+  Time to reverse reference sequence: 00:00:00
+bmax according to bmaxDivN setting: 1680
+Using parameters --bmax 1260 --dcv 1024
+  Doing ahead-of-time memory usage test
+  Passed!  Constructing with these parameters: --bmax 1260 --dcv 1024
+Constructing suffix-array element generator
+Building DifferenceCoverSample
+  Building sPrime
+  Building sPrimeOrder
+  V-Sorting samples
+  V-Sorting samples time: 00:00:00
+  Allocating rank array
+  Ranking v-sort output
+  Ranking v-sort output time: 00:00:00
+  Invoking Larsson-Sadakane on ranks
+  Invoking Larsson-Sadakane on ranks time: 00:00:00
+  Sanity-checking and returning
+Building samples
+Reserving space for 12 sample suffixes
+Generating random suffixes
+QSorting 12 sample offsets, eliminating duplicates
+QSorting sample offsets, eliminating duplicates time: 00:00:00
+Multikey QSorting 12 samples
+  (Using difference cover)
+  Multikey QSorting samples time: 00:00:00
+Calculating bucket sizes
+Splitting and merging
+  Splitting and merging time: 00:00:00
+Avg bucket size: 6720 (target: 1259)
+Converting suffix-array elements to index image
+Allocating ftab, absorbFtab
+Entering Ebwt loop
+Getting block 1 of 1
+  No samples; assembling all-inclusive block
+  Sorting block of length 6720 for bucket 1
+  (Using difference cover)
+  Sorting block time: 00:00:00
+Returning block of 6721 for bucket 1
+Exited Ebwt loop
+fchr[A]: 0
+fchr[C]: 1381
+fchr[G]: 3343
+fchr[T]: 5352
+fchr[$]: 6720
+Exiting Ebwt::buildToDisk()
+Returning from initFromVector
+Wrote 4197082 bytes to primary EBWT file: /home/bioinfo/analyses/brucella_OLF1/fastq/B-suis-bio1/mlst/baitedtargets.fa.rev.1.bt2
+Wrote 1688 bytes to secondary EBWT file: /home/bioinfo/analyses/brucella_OLF1/fastq/B-suis-bio1/mlst/baitedtargets.fa.rev.2.bt2
+Re-opening _in1 and _in2 as input streams
+Returning from Ebwt constructor
+Headers:
+    len: 6720
+    bwtLen: 6721
+    sz: 1680
+    bwtSz: 1681
+    lineRate: 6
+    offRate: 4
+    offMask: 0xfffffff0
+    ftabChars: 10
+    eftabLen: 20
+    eftabSz: 80
+    ftabLen: 1048577
+    ftabSz: 4194308
+    offsLen: 421
+    offsSz: 1684
+    lineSz: 64
+    sideSz: 64
+    sideBwtSz: 48
+    sideBwtLen: 192
+    numSides: 36
+    numLines: 36
+    ebwtTotLen: 2304
+    ebwtTotSz: 2304
+    color: 0
+    reverse: 1
+Total time for backward call to driver() for mirror index: 00:00:00
+
+------------------------------------------------------------bowtie2-build /home/bioinfo/analyses/brucella_OLF1/fastq/B-suis-bio4/mlst/baitedtargets.fa /home/bioinfo/analyses/brucella_OLF1/fastq/B-suis-bio4/mlst/baitedtargets.fa
+------------------------------------------------------------Building a SMALL index
+
+------------------------------------------------------------Settings:
+  Output files: "/home/bioinfo/analyses/brucella_OLF1/fastq/B-suis-bio4/mlst/baitedtargets.fa.*.bt2"
+  Line rate: 6 (line is 64 bytes)
+  Lines per side: 1 (side is 64 bytes)
+  Offset rate: 4 (one in 16)
+  FTable chars: 10
+  Strings: unpacked
+  Max bucket size: default
+  Max bucket size, sqrt multiplier: default
+  Max bucket size, len divisor: 4
+  Difference-cover sample period: 1024
+  Endianness: little
+  Actual local endianness: little
+  Sanity checking: disabled
+  Assertions: disabled
+  Random seed: 0
+  Sizeofs: void*:8, int:4, long:8, size_t:8
+Input files DNA, FASTA:
+  /home/bioinfo/analyses/brucella_OLF1/fastq/B-suis-bio4/mlst/baitedtargets.fa
+Reading reference sizes
+  Time reading reference sizes: 00:00:00
+Calculating joined length
+Writing header
+Reserving space for joined string
+Joining reference sequences
+  Time to join reference sequences: 00:00:00
+bmax according to bmaxDivN setting: 1220
+Using parameters --bmax 915 --dcv 1024
+  Doing ahead-of-time memory usage test
+  Passed!  Constructing with these parameters: --bmax 915 --dcv 1024
+Constructing suffix-array element generator
+Building DifferenceCoverSample
+  Building sPrime
+  Building sPrimeOrder
+  V-Sorting samples
+  V-Sorting samples time: 00:00:00
+  Allocating rank array
+  Ranking v-sort output
+  Ranking v-sort output time: 00:00:00
+  Invoking Larsson-Sadakane on ranks
+  Invoking Larsson-Sadakane on ranks time: 00:00:00
+  Sanity-checking and returning
+Building samples
+Reserving space for 12 sample suffixes
+Generating random suffixes
+QSorting 12 sample offsets, eliminating duplicates
+QSorting sample offsets, eliminating duplicates time: 00:00:00
+Multikey QSorting 12 samples
+  (Using difference cover)
+  Multikey QSorting samples time: 00:00:00
+Calculating bucket sizes
+Splitting and merging
+  Splitting and merging time: 00:00:00
+Avg bucket size: 4882 (target: 914)
+Converting suffix-array elements to index image
+Allocating ftab, absorbFtab
+Entering Ebwt loop
+Getting block 1 of 1
+  No samples; assembling all-inclusive block
+  Sorting block of length 4882 for bucket 1
+  (Using difference cover)
+  Sorting block time: 00:00:00
+Returning block of 4883 for bucket 1
+Exited Ebwt loop
+fchr[A]: 0
+fchr[C]: 983
+fchr[G]: 2395
+fchr[T]: 3883
+fchr[$]: 4882
+Exiting Ebwt::buildToDisk()
+Returning from initFromVector
+Wrote 4196345 bytes to primary EBWT file: /home/bioinfo/analyses/brucella_OLF1/fastq/B-suis-bio4/mlst/baitedtargets.fa.1.bt2
+Wrote 1228 bytes to secondary EBWT file: /home/bioinfo/analyses/brucella_OLF1/fastq/B-suis-bio4/mlst/baitedtargets.fa.2.bt2
+Re-opening _in1 and _in2 as input streams
+Returning from Ebwt constructor
+Headers:
+    len: 4882
+    bwtLen: 4883
+    sz: 1221
+    bwtSz: 1221
+    lineRate: 6
+    offRate: 4
+    offMask: 0xfffffff0
+    ftabChars: 10
+    eftabLen: 20
+    eftabSz: 80
+    ftabLen: 1048577
+    ftabSz: 4194308
+    offsLen: 306
+    offsSz: 1224
+    lineSz: 64
+    sideSz: 64
+    sideBwtSz: 48
+    sideBwtLen: 192
+    numSides: 26
+    numLines: 26
+    ebwtTotLen: 1664
+    ebwtTotSz: 1664
+    color: 0
+    reverse: 0
+Total time for call to driver() for forward index: 00:00:00
+Reading reference sizes
+  Time reading reference sizes: 00:00:00
+Calculating joined length
+Writing header
+Reserving space for joined string
+Joining reference sequences
+  Time to join reference sequences: 00:00:00
+  Time to reverse reference sequence: 00:00:00
+bmax according to bmaxDivN setting: 1220
+Using parameters --bmax 915 --dcv 1024
+  Doing ahead-of-time memory usage test
+  Passed!  Constructing with these parameters: --bmax 915 --dcv 1024
+Constructing suffix-array element generator
+Building DifferenceCoverSample
+  Building sPrime
+  Building sPrimeOrder
+  V-Sorting samples
+  V-Sorting samples time: 00:00:00
+  Allocating rank array
+  Ranking v-sort output
+  Ranking v-sort output time: 00:00:00
+  Invoking Larsson-Sadakane on ranks
+  Invoking Larsson-Sadakane on ranks time: 00:00:00
+  Sanity-checking and returning
+Building samples
+Reserving space for 12 sample suffixes
+Generating random suffixes
+QSorting 12 sample offsets, eliminating duplicates
+QSorting sample offsets, eliminating duplicates time: 00:00:00
+Multikey QSorting 12 samples
+  (Using difference cover)
+  Multikey QSorting samples time: 00:00:00
+Calculating bucket sizes
+Splitting and merging
+  Splitting and merging time: 00:00:00
+Avg bucket size: 4882 (target: 914)
+Converting suffix-array elements to index image
+Allocating ftab, absorbFtab
+Entering Ebwt loop
+Getting block 1 of 1
+  No samples; assembling all-inclusive block
+  Sorting block of length 4882 for bucket 1
+  (Using difference cover)
+  Sorting block time: 00:00:00
+Returning block of 4883 for bucket 1
+Exited Ebwt loop
+fchr[A]: 0
+fchr[C]: 983
+fchr[G]: 2395
+fchr[T]: 3883
+fchr[$]: 4882
+Exiting Ebwt::buildToDisk()
+Returning from initFromVector
+Wrote 4196345 bytes to primary EBWT file: /home/bioinfo/analyses/brucella_OLF1/fastq/B-suis-bio4/mlst/baitedtargets.fa.rev.1.bt2
+Wrote 1228 bytes to secondary EBWT file: /home/bioinfo/analyses/brucella_OLF1/fastq/B-suis-bio4/mlst/baitedtargets.fa.rev.2.bt2
+Re-opening _in1 and _in2 as input streams
+Returning from Ebwt constructor
+Headers:
+    len: 4882
+    bwtLen: 4883
+    sz: 1221
+    bwtSz: 1221
+    lineRate: 6
+    offRate: 4
+    offMask: 0xfffffff0
+    ftabChars: 10
+    eftabLen: 20
+    eftabSz: 80
+    ftabLen: 1048577
+    ftabSz: 4194308
+    offsLen: 306
+    offsSz: 1224
+    lineSz: 64
+    sideSz: 64
+    sideBwtSz: 48
+    sideBwtLen: 192
+    numSides: 26
+    numLines: 26
+    ebwtTotLen: 1664
+    ebwtTotSz: 1664
+    color: 0
+    reverse: 1
+Total time for backward call to driver() for mirror index: 00:00:00
+
+------------------------------------------------------------
