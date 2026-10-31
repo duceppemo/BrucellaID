@@ -37,7 +37,7 @@ def test_parse_allele(name, expected):
 def test_the_profile_table_of_the_package():
     loci, profiles = load_profiles()
     assert loci == ('gap', 'aroA', 'glk', 'dnaK', 'gyrB', 'trpE', 'cobQ', 'int_hyp', 'omp25')
-    assert len(profiles) == 81
+    assert len(profiles) == 122
     assert profiles[('2', '1', '1', '2', '1', '3', '1', '1', '1')] == '1'
     assert load_profiles() == (loci, profiles)  # Read once
 
@@ -45,6 +45,7 @@ def test_the_profile_table_of_the_package():
 def test_every_allele_of_the_profile_table_is_in_the_allele_file():
     loci, profiles = load_profiles()
     available = set(read_fasta(alleles_fasta()))
+    assert len(available) == 309
     used = {'{}_{}'.format(locus, allele) for profile in profiles for locus, allele in zip(loci, profile, strict=True)}
     assert used <= available
     assert all(parse_allele(name) and parse_allele(name)[0] in loci for name in available)
