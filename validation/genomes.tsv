@@ -1,0 +1,24 @@
+# The genomes the validation runs on. Reads are simulated from each one and given to BrucellaID.
+# accessions: NCBI nucleotide accessions, chromosome 1 first, separated by ";".
+# reference, species, biovar: what the identification must return. "-" means "not checked": a genome that is
+# not in the sketch is only expected to give the right species, and a genome that is not Brucella is expected
+# not to be identified at all (species ND).
+# The sequence type is not listed: check_results.py reads it off the genome itself, by looking for an exact
+# match of every MLST allele, and compares that with what BrucellaID called from the reads.
+sample	accessions	reference	species	biovar	note
+abortus_9-941	NC_006932.1;NC_006933.1	NC_006932-NC_006933.fasta	Brucella abortus	1	in the sketch
+abortus_BER	NZ_CP007682.1;NZ_CP007683.1	NZ_CP007682-NZ_CP007683.fasta	Brucella abortus	3	in the sketch
+melitensis_16M	NC_003317.1;NC_003318.1	NC_003317-NC_003318.fasta	Brucella melitensis	1	in the sketch
+melitensis_ATCC23457	NC_012441.1;NC_012442.1	NC_012441-NC_012442.fasta	Brucella melitensis	2	in the sketch
+melitensis_Ether	NZ_CP007760.1;NZ_CP007761.1	NZ_CP007760-NZ_CP007761.fasta	Brucella melitensis	3	in the sketch
+melitensis_BwIM_SOM_36b	NZ_CP018508.1;NZ_CP018509.1	NZ_CP018508-NZ_CP018509.fasta	Brucella melitensis	1	in the sketch
+suis_1330	NC_017251.1;NC_017250.1	NC_017251-NC_017250.fasta	Brucella suis	1	in the sketch
+suis_ATCC23445	NC_010169.1;NC_010167.1	NC_010169-NC_010167.fasta	Brucella suis	2	in the sketch
+suis_686	NZ_CP007719.1;NZ_CP007718.1	NZ_CP007719-NZ_CP007718.fasta	Brucella suis	3	in the sketch
+canis_ATCC23365	NC_010103.1;NC_010104.1	NC_010103-NC_010104.fasta	Brucella canis	-	in the sketch
+ovis_ATCC25840	NC_009505.1;NC_009504.1	NC_009505-NC_009504.fasta	Brucella ovis	-	in the sketch
+ceti_TE10759-12	NC_022905.1;NC_022906.1	NC_022905-NC_022906.fasta	Brucella ceti	-	in the sketch
+microti_CCM4915	NC_013119.1;NC_013118.1	NC_013119_NC_013118.fasta	Brucella microti	-	in the sketch
+abortus_2308	AM040264.1;AM040265.1	-	Brucella abortus	-	not in the sketch
+anthropi_ATCC49188	NC_009667.1;NC_009668.1	-	-	-	not Brucella: the nearest neighbour of the genus, formerly Ochrobactrum anthropi
+coli_MG1655	NC_000913.3	-	-	-	not Brucella: a negative control

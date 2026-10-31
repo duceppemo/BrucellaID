@@ -47,6 +47,10 @@ configure.
 * **Nothing to configure**: only the Python standard library, plus MASH and BBTools.
 * **Tested**: 194 tests, 100% coverage, end to end on a synthetic genome and on reads tiled over the real
   MLST alleles.
+* **Validated** on 16 genomes with a known answer: every species, biovar and closest reference right, and
+  all 14 sequence types the one the genome carries — read off the assembly by exact match, which shares no
+  code with the read-based caller. The nearest neighbouring species shares 4 of 1000 hashes and comes back
+  as not identified ([Validation](https://github.com/duceppemo/BrucellaID/wiki/Validation)).
 
 ## Installation
 ```
