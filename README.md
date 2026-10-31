@@ -7,11 +7,13 @@
 
 <p align="center">
   <a href="https://github.com/duceppemo/BrucellaID/actions/workflows/tests.yml"><img src="https://github.com/duceppemo/BrucellaID/actions/workflows/tests.yml/badge.svg" alt="Tests"></a>
-  <a href="https://codecov.io/gh/duceppemo/BrucellaID"><img src="https://codecov.io/gh/duceppemo/BrucellaID/graph/badge.svg" alt="Coverage"></a>
+  <!-- The branch is in the badge URL because Codecov still has "master" as this repository's default
+       branch, and master is gone: without it the badge reads "unknown". -->
+  <a href="https://app.codecov.io/gh/duceppemo/BrucellaID/tree/main"><img src="https://codecov.io/gh/duceppemo/BrucellaID/branch/main/graph/badge.svg" alt="Coverage"></a>
   <a href="https://github.com/duceppemo/BrucellaID/releases/latest"><img src="https://img.shields.io/github/v/release/duceppemo/BrucellaID?cacheSeconds=3600" alt="Release"></a>
   <a href="https://pypi.org/project/brucellaid/"><img src="https://img.shields.io/pypi/v/brucellaid?cacheSeconds=3600" alt="PyPI"></a>
   <img src="https://img.shields.io/badge/python-3.10%E2%80%933.14-blue" alt="Python 3.10–3.14">
-  <a href="LICENSE"><img src="https://img.shields.io/github/license/duceppemo/BrucellaID" alt="License"></a>
+  <a href="https://github.com/duceppemo/BrucellaID/blob/main/LICENSE"><img src="https://img.shields.io/github/license/duceppemo/BrucellaID" alt="License"></a>
   <a href="https://github.com/duceppemo/BrucellaID/wiki"><img src="https://img.shields.io/badge/docs-wiki-informational" alt="Documentation"></a>
   <a href="https://doi.org/10.5281/zenodo.23845956"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.23845956.svg" alt="DOI"></a>
 </p>
@@ -112,7 +114,7 @@ This DOI always points to the latest version; each release also has its own DOI,
 > https://doi.org/10.12688/wellcomeopenres.14826.1
 
 GitHub's **"Cite this repository"** button gives the citation in APA and BibTeX formats, from
-[`CITATION.cff`](CITATION.cff).
+[`CITATION.cff`](https://github.com/duceppemo/BrucellaID/blob/main/CITATION.cff).
 
 ## Related
 * [brucetyper](https://github.com/duceppemo/brucetyper) — *in silico* Bruce-ladder, Suis-ladder, AMOS and
@@ -124,10 +126,10 @@ GitHub's **"Cite this repository"** button gives the citation in APA and BibTeX 
   *M. tuberculosis* complex.
 
 ## Contributing
-Bug reports, questions and pull requests are welcome: see [CONTRIBUTING.md](CONTRIBUTING.md).
+Bug reports, questions and pull requests are welcome: see [CONTRIBUTING.md](https://github.com/duceppemo/BrucellaID/blob/main/CONTRIBUTING.md).
 
 ## Author
 Marc-Olivier Duceppe, Canadian Food Inspection Agency (CFIA): marc-olivier.duceppe@inspection.gc.ca
 
 ## License
-[MIT](LICENSE)
+[MIT](https://github.com/duceppemo/BrucellaID/blob/main/LICENSE)
