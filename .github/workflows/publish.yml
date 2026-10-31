@@ -8,6 +8,9 @@ on:
 
 jobs:
   build:
+    # v0.1 is the clone-and-run version, tagged for reference: there is no package at that tag, so there is
+    # nothing to publish from it.
+    if: github.event.release.tag_name != 'v0.1'
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
