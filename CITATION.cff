@@ -1,0 +1,81 @@
+cff-version: 1.2.0
+message: "If you use BrucellaID, please cite it as below, together with MASH, BBTools and the MLST scheme (see the wiki)."
+type: software
+title: "BrucellaID: Brucella species identification and MLST from sequencing reads"
+authors:
+  - family-names: Duceppe
+    given-names: Marc-Olivier
+version: 1.0.0
+date-released: 2026-10-31
+license: MIT
+repository-code: "https://github.com/duceppemo/BrucellaID"
+url: "https://github.com/duceppemo/BrucellaID"
+keywords:
+  - bioinformatics
+  - brucella
+  - species identification
+  - MLST
+  - MASH
+  - wgs
+references:
+  - type: article
+    title: "Characterisation of the genetic diversity of Brucella by multilocus sequencing"
+    authors:
+      - family-names: Whatmore
+        given-names: Adrian M.
+      - family-names: Perrett
+        given-names: Lorraine L.
+      - family-names: MacMillan
+        given-names: Alastair P.
+    journal: "BMC Microbiology"
+    volume: 7
+    year: 2007
+    doi: "10.1186/1471-2180-7-34"
+  - type: article
+    title: "Mash: fast genome and metagenome distance estimation using MinHash"
+    authors:
+      - family-names: Ondov
+        given-names: Brian D.
+      - family-names: Treangen
+        given-names: Todd J.
+      - family-names: Melsted
+        given-names: Páll
+      - family-names: Mallonee
+        given-names: Adam B.
+      - family-names: Bergman
+        given-names: Nicholas H.
+      - family-names: Koren
+        given-names: Sergey
+      - family-names: Phillippy
+        given-names: Adam M.
+    journal: "Genome Biology"
+    volume: 17
+    year: 2016
+    doi: "10.1186/s13059-016-0997-x"
+  - type: article
+    title: "Open-access bacterial population genomics: BIGSdb software, the PubMLST.org website and their applications"
+    authors:
+      - family-names: Jolley
+        given-names: Keith A.
+      - family-names: Bray
+        given-names: James E.
+      - family-names: Maiden
+        given-names: Martin C. J.
+    journal: "Wellcome Open Research"
+    volume: 3
+    year: 2018
+    doi: "10.12688/wellcomeopenres.14826.1"
+    notes: "The MLST alleles and profiles shipped with BrucellaID come from PubMLST."
+  - type: software
+    title: "BBTools"
+    authors:
+      - family-names: Bushnell
+        given-names: Brian
+    url: "https://sourceforge.net/projects/bbmap/"
+  - type: software
+    title: "vSNP"
+    notes: "The 16 Brucella reference genomes of the MASH sketch come from vSNP's reference set."
+    authors:
+      - family-names: Stuber
+        given-names: Tod
+    url: "https://github.com/USDA-VS/vsnp"
