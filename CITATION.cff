@@ -7,6 +7,11 @@ authors:
     given-names: Marc-Olivier
 version: 1.0.0
 date-released: 2026-10-31
+doi: 10.5281/zenodo.23845956
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.23845956
+    description: "Concept DOI: all versions, resolves to the latest"
 license: MIT
 repository-code: "https://github.com/duceppemo/BrucellaID"
 url: "https://github.com/duceppemo/BrucellaID"

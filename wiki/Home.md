@@ -31,8 +31,12 @@ sample  Brucella abortus   1       NC_006932-NC_006933.fasta  0.000024      999/
 * [Changelog](Changelog)
 
 ## Citing
-BrucellaID, and the tools and data it rests on: MASH, BBTools, the
-[MLST scheme](https://doi.org/10.1186/1471-2180-7-34) and
+> Duceppe M-O. BrucellaID: *Brucella* species identification and MLST from sequencing reads.
+> Zenodo. https://doi.org/10.5281/zenodo.23845956
+
+That DOI resolves to the latest version. Cite it together with the tools and data BrucellaID rests on: MASH,
+BBTools, the [MLST scheme](https://doi.org/10.1186/1471-2180-7-34) and
 [PubMLST](https://doi.org/10.12688/wellcomeopenres.14826.1). The full list, ready to paste, is in the
 [README](https://github.com/duceppemo/BrucellaID#citing), and GitHub's "Cite this repository" button gives
-it in APA and BibTeX.
+it in APA and BibTeX, from
+[CITATION.cff](https://github.com/duceppemo/BrucellaID/blob/main/CITATION.cff).

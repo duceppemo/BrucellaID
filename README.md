@@ -13,6 +13,7 @@
   <img src="https://img.shields.io/badge/python-3.10%E2%80%933.14-blue" alt="Python 3.10–3.14">
   <a href="LICENSE"><img src="https://img.shields.io/github/license/duceppemo/BrucellaID" alt="License"></a>
   <a href="https://github.com/duceppemo/BrucellaID/wiki"><img src="https://img.shields.io/badge/docs-wiki-informational" alt="Documentation"></a>
+  <a href="https://doi.org/10.5281/zenodo.23845956"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.23845956.svg" alt="DOI"></a>
 </p>
 
 Identify the *Brucella* species of a fastq sample by its [MASH](https://github.com/marbl/mash) distance to 16
@@ -93,7 +94,10 @@ The **[wiki](https://github.com/duceppemo/BrucellaID/wiki)** covers
 If you use BrucellaID, please cite it together with the tools and the data it rests on:
 
 > Duceppe M-O. BrucellaID: *Brucella* species identification and MLST from sequencing reads.
-> https://github.com/duceppemo/BrucellaID
+> Zenodo. https://doi.org/10.5281/zenodo.23845956
+
+This DOI always points to the latest version; each release also has its own DOI, listed on
+[Zenodo](https://doi.org/10.5281/zenodo.23845956).
 
 > Ondov BD, Treangen TJ, Melsted P, et al. Mash: fast genome and metagenome distance estimation using
 > MinHash. *Genome Biology* 2016;17:132. https://doi.org/10.1186/s13059-016-0997-x

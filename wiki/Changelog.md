@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+* The Zenodo DOI of the archived releases is recorded in `CITATION.cff`, in the README badge and in the
+  citation on this wiki: [10.5281/zenodo.23845956](https://doi.org/10.5281/zenodo.23845956) resolves to
+  the latest version.
+
 ## 1.0.0 (2026-10-31)
 BrucellaID becomes an installable, tested package. It answers the same two questions as the first version —
 which *Brucella* species a read set is, and which sequence type — and it answers the first one exactly as
