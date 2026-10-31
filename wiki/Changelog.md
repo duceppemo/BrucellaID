@@ -1,6 +1,10 @@
 # Changelog
 
 ## Unreleased
+* `brucellaid/data/mlst_st_species.tsv`: the species of each ST of the scheme, counted over the 3426
+  isolates of the PubMLST *Brucella* isolate database, with the share of them that agree. Built by
+  `scripts/make_st_species.py`. It ships with the package but nothing reads it yet; it is the table an
+  identification needs to tell *B. canis* from *B. suis*, which no MASH sketch can.
 * The wiki front page carries the logo, in the light and the dark variant, as the README does.
 * The Zenodo DOI of the archived releases is recorded in `CITATION.cff`, in the README badge and in the
   citation on this wiki: [10.5281/zenodo.23845956](https://doi.org/10.5281/zenodo.23845956) resolves to
