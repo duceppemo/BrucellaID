@@ -1,0 +1,2 @@
+recursive-include brucellaid/data *
+recursive-include tests *.py

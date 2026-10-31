@@ -1,0 +1,22 @@
+# The 16 Brucella reference genomes of the MASH sketch (references.msh), as vSNP assembled it.
+# reference: the sketch ID, which is the file name the sketch was built from.
+# code: the vSNP species code, written to the "species" column of the legacy xlsx report.
+# accessions: the NCBI nucleotide accessions of the reference, chromosome 1 first. Empty for the two
+# references vSNP distributes under its own name rather than as an accession.
+reference	code	species	biovar	strain	accessions
+Bceti1Cudo.fasta	ceti1	Brucella ceti		Cudo
+B-REF-BS4-40.fasta	suis4	Brucella suis	4	40
+GCF_900446125.fasta	neotomae	Brucella neotomae		NCTC 10084	GCF_900446125.1
+NC_003317-NC_003318.fasta	mel1	Brucella melitensis	1	16M	NC_003317.1;NC_003318.1
+NC_006932-NC_006933.fasta	ab1	Brucella abortus	1	9-941	NC_006932.1;NC_006933.1
+NC_009505-NC_009504.fasta	ovis	Brucella ovis		ATCC 25840	NC_009505.1;NC_009504.1
+NC_010103-NC_010104.fasta	canis	Brucella canis		ATCC 23365	NC_010103.1;NC_010104.1
+NC_010169-NC_010167.fasta	suis2	Brucella suis	2	ATCC 23445	NC_010169.1;NC_010167.1
+NC_012441-NC_012442.fasta	mel2	Brucella melitensis	2	ATCC 23457	NC_012441.1;NC_012442.1
+NC_013119_NC_013118.fasta	microti	Brucella microti		CCM 4915	NC_013119.1;NC_013118.1
+NC_017251-NC_017250.fasta	suis1	Brucella suis	1	1330	NC_017251.1;NC_017250.1
+NC_022905-NC_022906.fasta	ceti2	Brucella ceti		TE10759-12	NC_022905.1;NC_022906.1
+NZ_CP007682-NZ_CP007683.fasta	ab3	Brucella abortus	3	BER	NZ_CP007682.1;NZ_CP007683.1
+NZ_CP007719-NZ_CP007718.fasta	suis3	Brucella suis	3	686	NZ_CP007719.1;NZ_CP007718.1
+NZ_CP007760-NZ_CP007761.fasta	mel3	Brucella melitensis	3	Ether	NZ_CP007760.1;NZ_CP007761.1
+NZ_CP018508-NZ_CP018509.fasta	mel1b	Brucella melitensis	1	BwIM_SOM_36b	NZ_CP018508.1;NZ_CP018509.1

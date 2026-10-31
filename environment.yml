@@ -1,0 +1,18 @@
+name: brucellaid
+channels:
+  - conda-forge
+  - bioconda
+  - nodefaults
+dependencies:
+  - python>=3.10
+  - mash>=2.3
+  # The bioconda builds of mash 2.3 are linked against libgsl.so.25, but their recipe asks for
+  # "gsl >=2.7,<2.8.0a0", which gsl 2.7.1 satisfies while providing libgsl.so.27 instead. Without this pin,
+  # mash fails to start with "error while loading shared libraries: libgsl.so.25".
+  - gsl=2.7.0
+  - bbmap>=38.0
+  - xlsxwriter  # Only for the legacy xlsx report (--xlsx)
+  - pytest
+  - pytest-cov
+  - openpyxl  # Reads the xlsx report back in the tests
+  - pip

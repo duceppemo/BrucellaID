@@ -1,0 +1,79 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "brucellaid"
+dynamic = ["version"]
+description = "Identify the Brucella species of a read set with MASH, and type it with MLST"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{name = "Marc-Olivier Duceppe", email = "marc-olivier.duceppe@inspection.gc.ca"}]
+requires-python = ">=3.10"
+keywords = ["bioinformatics", "brucella", "species identification", "MLST", "MASH", "BBTools", "Seal", "fastq", "wgs"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Science/Research",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+]
+# MASH and Seal (from BBTools) must also be installed: neither is available from PyPI. BrucellaID itself needs
+# nothing but the Python standard library; xlsxwriter is only needed for the legacy xlsx report (--xlsx).
+dependencies = []
+
+[project.optional-dependencies]
+xlsx = ["xlsxwriter>=3"]
+test = ["pytest>=7", "pytest-cov>=5", "xlsxwriter>=3"]
+
+[project.urls]
+Homepage = "https://github.com/duceppemo/BrucellaID"
+Documentation = "https://github.com/duceppemo/BrucellaID/wiki"
+Changelog = "https://github.com/duceppemo/BrucellaID/wiki/Changelog"
+Issues = "https://github.com/duceppemo/BrucellaID/issues"
+
+[project.scripts]
+brucellaid = "brucellaid.cli:main"
+
+[tool.setuptools]
+packages = ["brucellaid"]
+
+[tool.setuptools.package-data]
+brucellaid = ["data/*"]
+
+[tool.setuptools.dynamic]
+version = {attr = "brucellaid.__init__.__version__"}
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.coverage.run]
+source = ["brucellaid"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+
+[tool.ruff.format]
+# The code is hand-wrapped and quoted with '', and "ruff format" is not part of the workflow (CONTRIBUTING.md
+# asks for "ruff check" only). This at least keeps an editor that formats on save from requoting every line.
+quote-style = "single"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "SIM"]
+ignore = ["UP031", "UP032"]  # str.format() is used throughout
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["E501"]
