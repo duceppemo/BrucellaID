@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+* The wiki front page carries the logo, in the light and the dark variant, as the README does.
 * The Zenodo DOI of the archived releases is recorded in `CITATION.cff`, in the README badge and in the
   citation on this wiki: [10.5281/zenodo.23845956](https://doi.org/10.5281/zenodo.23845956) resolves to
   the latest version.
