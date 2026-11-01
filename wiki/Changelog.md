@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.1.0 (2026-10-31)
 **The biovar column is gone.** It never was a biovar call — it held the biovar of the closest
 reference genome — and it was read as one. Three things rule out a real biovar from this data, and
 none of them is a matter of trying harder:
