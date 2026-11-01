@@ -53,6 +53,21 @@ python3 scripts/make_mlst_data.py
 Check the per-locus margins in `brucellaid_mlst.tsv` first: a call whose runner-up is one or two reads
 behind is the kind of call a novel allele produces.
 
+## `SpeciesSource` says `MASH (conflict)`
+The sequence type belongs to a species that was not among the ones the MASH distance left within reach, and
+the two statements cannot both be right. The species reported is the MASH one, because it rests on a
+thousand min-hashes rather than nine loci, but the sample is worth a look:
+
+* **A mixture.** Two species in one tube give one species' hashes and another's alleles. Check the shared
+  hashes in `brucellaid.tsv` and the per-locus margins in `brucellaid_mlst.tsv`: a mixture usually shows up
+  as both.
+* **A mislabelled isolate in the ST table.** The species of each ST comes from the submitters' labels in the
+  PubMLST isolate database. `brucellaid/data/mlst_st_species.tsv` gives the counts, so an ST resting on a
+  handful of isolates can be read for what it is; `--min-st-isolates` raises the bar.
+* **A genuinely new combination**, for an ST seen so far in one species only.
+
+`--no-st-species` reports the MASH species without consulting the ST at all.
+
 ## The biovar is not the one the laboratory reported
 Read `Biovar` as the biovar of the closest reference genome, not as a biovar call. The *Brucella* biovar
 references differ by very little, and the note on the sample says when another was nearly as close. Use

@@ -71,6 +71,10 @@ def test_sample_result_of_a_sample_whose_reference_is_not_in_the_table():
     assert result.closest_reference == 'unknown.fasta'
 
 
+def _raise(error):
+    raise error
+
+
 def fake_tools(monkeypatch, hits=None, mlst=None, error=None):
     """Replace MASH and Seal by what they would have returned."""
     def fake_identify(files, sketch, min_hashes=150, threads=1):
@@ -118,6 +122,16 @@ def test_analyse_sample_keeps_the_error_of_a_sample(monkeypatch, caplog):
     assert result.error == 'MASH failed'
     assert result.identification is None
     assert 's: MASH failed' in caplog.text
+
+
+def test_analyse_sample_keeps_the_species_when_the_typing_fails(monkeypatch):
+    """MASH had already answered: a Seal failure costs the sample its ST, not its species."""
+    fake_tools(monkeypatch)
+    monkeypatch.setattr(pipeline, 'run_mlst', lambda files, **options: _raise(BrucellaIDError('Seal failed')))
+    result = analyse_sample(Sample('s', ['s_R1.fastq.gz']), references=REFERENCES)
+    assert result.error == 'Seal failed'
+    assert (result.species, result.biovar, result.code) == ('Brucella abortus', '1', 'ab1')
+    assert result.mlst is None
 
 
 def test_analyse_sample_reads_the_reference_table_of_the_package(monkeypatch):

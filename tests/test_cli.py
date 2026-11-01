@@ -1,5 +1,7 @@
 """The command line: the arguments it accepts, and what it does with a failure."""
 
+import json
+
 import pytest
 
 from brucellaid import __version__, cli
@@ -37,6 +39,10 @@ def test_version_and_help(capsys):
     (['-r1', 'a.fastq', '-o', 'out', '-t', '0'], 'must be >= 1'),
     (['-r1', 'a.fastq', '-o', 'out', '-t', 'two'], 'not an integer'),
     (['-r1', 'a.fastq', '-o', 'out', '--memory', '2k'], 'not a Java memory size'),
+    (['-r1', 'a.fastq', '-o', 'out', '--min-st-purity', '1.5'], 'must be a fraction between 0 and 1'),
+    (['-r1', 'a.fastq', '-o', 'out', '--min-st-purity', '0'], 'must be a fraction between 0 and 1'),
+    (['-r1', 'a.fastq', '-o', 'out', '--min-st-isolates', '0'], 'must be >= 1'),
+    (['-r1', 'a.fastq', '-o', 'out', '--st-species', 'st.tsv', '--no-st-species'], 'pick one'),
 ])
 def test_rejected_arguments(argv, message, capsys):
     with pytest.raises(SystemExit) as exit_info:
@@ -95,6 +101,17 @@ def test_main_writes_the_reports_and_prints_the_table(tmp_path, monkeypatch, cap
     assert '\ta\t' in out.out.replace('\n', '\t')
     assert (tmp_path / 'out' / 'brucellaid.tsv').exists()
     assert 'Done in' in out.err
+
+
+def test_main_without_the_st_species_table(tmp_path, monkeypatch, capsys):
+    """--no-st-species: the table is never read, and the species is the MASH one alone."""
+    fake_run(monkeypatch)
+    reads = write_fastq(tmp_path / 'a_R1.fastq.gz', [('r', 'ACGT')])
+    cli.main(['-r1', str(reads), '-o', str(tmp_path / 'out'), '--no-st-species'])
+    out = capsys.readouterr()
+    assert 'sequence type(s) with a species' not in out.err
+    report = json.loads((tmp_path / 'out' / 'brucellaid.json').read_text())
+    assert report['parameters']['ST to species table'] is None
 
 
 def test_main_reports_a_user_error_without_a_traceback(tmp_path, monkeypatch, capsys):

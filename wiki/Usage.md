@@ -39,7 +39,10 @@ go to standard error. See [Output files](Output-files).
 | --- | --- | --- |
 | `--min-hashes N` | 150 | Of the reference's 1000 min-hashes, how many the reads must share for a species to be reported |
 | `--min-reads N` | 5 | Reads behind an allele call for it to be kept |
-| `--no-mlst` | off | Identify the species only |
+| `--no-mlst` | off | Identify the species only. The ST then takes no part in the species call either |
+| `--no-st-species` | off | Do not let the ST take part in the species call: report the closest reference's species, whatever else was just as close |
+| `--min-st-purity F` | 0.95 | Share of the isolates of an ST that must carry the same species for that ST to take part |
+| `--min-st-isolates N` | 3 | Isolates an ST must rest on to take part |
 | `-k`, `--kmer-size N` | 25 | K-mer size used to assign the reads to the alleles |
 | `-m`, `--mismatch N` | 0 | Mismatches allowed between an allele k-mer and a read |
 
@@ -47,12 +50,17 @@ go to standard error. See [Output files](Output-files).
 would match the called allele and its neighbours alike. Raising it makes the allele calls less, not more,
 reliable.
 
+The ST is only consulted where the MASH distance leaves two species within reach, which in the sketch of
+the package means *B. canis* and *B. suis* bv. 4 and nothing else. `--no-st-species` restores the
+behaviour of version 1.0.0, where the closest reference decided alone. See
+[How it works](How-it-works) for what the `SpeciesSource` column reports.
+
 Lowering `--min-hashes` reports a species for a sample that holds little *Brucella* (a mixed culture, a low
 yield extraction); the closest reference is then still the closest of the 16, which is not the same as the
 right one. The `brucellaid_mash.tsv` report shows what the call rests on.
 
 ## Reference data
-The package ships all four files, and each can be replaced:
+The package ships all five files, and each can be replaced:
 
 | Option | What it takes |
 | --- | --- |
@@ -60,14 +68,16 @@ The package ships all four files, and each can be replaced:
 | `--references FILE` | The table saying what each genome of the sketch is |
 | `--alleles FILE` | A fasta file of MLST alleles, named `<locus>_<number>` |
 | `--profiles FILE` | A profile table: a header of `ST` and the loci, then one row per sequence type |
+| `--st-species FILE` | A table of the species of each ST: `ST`, `Species`, `Purity`, `Isolates`, `Biovars`, `OtherSpecies` |
 
 `--alleles` and `--profiles` go together: every allele a profile uses must be in the fasta file, and every
 locus of the fasta file must be a column of the table. The genomes of `--sketch` and the rows of
 `--references` should name the same genomes; BrucellaID warns when they do not, and a sample closest to a
 genome that is not in the table is reported without a species.
 
-`scripts/make_mlst_data.py` rebuilds the MLST files from PubMLST, and `scripts/make_reference_data.py`
-rebuilds the sketch from the accessions of the reference table.
+`scripts/make_mlst_data.py` rebuilds the MLST files from PubMLST, `scripts/make_st_species.py` rebuilds the
+ST to species table from PubMLST's isolate database, and `scripts/make_reference_data.py` rebuilds the
+sketch from the accessions of the reference table.
 
 ## Performance and other options
 | Option | Default | What it does |

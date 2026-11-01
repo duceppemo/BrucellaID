@@ -11,6 +11,7 @@ import pytest
 
 from brucellaid import mash, references, seal
 from brucellaid.mlst import alleles_fasta, load_profiles
+from brucellaid.species import load_st_species
 
 QUALITY = 'I'  # Phred 40, so that no tool trims the synthetic reads
 
@@ -161,7 +162,7 @@ def genome_reads(tmp_path, genome):
 def clear_caches():
     """The cached readers and tool lookups must not leak between tests."""
     cached_readers = (mash.executable, mash.sketch_references, seal.executable, references.load_references,
-                      load_profiles)
+                      load_profiles, load_st_species)
     for cached in cached_readers:
         cached.cache_clear()
     yield

@@ -1,7 +1,10 @@
 # How it works
 
-A run does two independent things to the same reads. Neither needs the other, and neither corrects the
-other: when they disagree, both numbers are in the reports and the disagreement is the finding.
+A run does two independent things to the same reads: it measures the distance to 16 reference genomes, and
+it calls the nine MLST alleles. The two answers are kept apart in the reports, with the numbers each one
+rests on, and a third step puts them together only where it has to — for the one pair of species a sketch
+of any size cannot separate. When they disagree anywhere else, both numbers are in the reports and the
+disagreement is the finding.
 
 ## 1. Which species: the MASH distance to 16 reference genomes
 
@@ -32,6 +35,13 @@ reference was nearly as close. For a biovar, use the classical biotyping, or
 
 Of the 16 references, two (*B. ceti* Cudo and *B. suis* bv. 4 strain 40) come from vSNP under their own
 names rather than from an accession; the other 14 are NCBI genomes, listed in `references.tsv`.
+
+**One pair this cannot decide.** *B. canis* ATCC 23365 and *B. suis* bv. 4 strain 40 are **0.00024** apart
+— the closest pair of the sixteen, closer than two *B. suis* references are to each other, and inside the
+variation within either species. Which of the two a *canis* or a *suis* bv. 4 read set lands on first is
+noise, and no sketch, at any size, with any number of references, will change that: they are that close. The
+next closest cross-species pair in the sketch is 0.0007 apart, which MASH decides on its own. Step 3 is
+about that one pair.
 
 ## 2. Which sequence type: the nine MLST alleles, called with Seal
 
@@ -75,12 +85,53 @@ over the runner-up is comfortable; below about 5x the ties start, and they are r
 guessed. Coverage at the very ends of a locus matters as much as in the middle: two alleles differing at a
 single position near one end can only be told apart by a read that reaches it.
 
+## 3. Which species, when the distance cannot say: the sequence type
+
+The two answers are different kinds of evidence, not sharper and blunter versions of the same one. A sketch
+measures the whole genome and smears the two species together; the nine MLST loci measure 4,396 bp and keep
+them apart. In the PubMLST *Brucella* isolate database, *B. canis* is ST 20, 21 and 106 and nothing else,
+*B. suis* is fourteen other STs, and **not one ST is shared between them**.
+
+So the species is decided like this:
+
+1. MASH names the species of the closest reference genome.
+2. If a reference of **another** species is within 0.0005 of the closest one, MASH has not chosen, and the
+   species it named is held open.
+3. The ST then chooses among the species MASH left within reach — and only among those.
+
+The result is in the `SpeciesSource` column:
+
+| `SpeciesSource` | What happened |
+| --- | --- |
+| `MASH` | One species was within reach, and no usable ST. The species is the closest reference's |
+| `MASH+ST (agree)` | One species was within reach, and the ST says the same thing |
+| `MASH+ST (arbitrated)` | Two species were within reach, and the ST confirms the closest one |
+| `ST (arbitrated)` | Two species were within reach, and the ST names the other one. **The species reported is the ST's**, and so are the biovar and the vSNP code, which are taken from the closest reference of that species |
+| `MASH (unresolved)` | Two species were within reach and the ST could not choose. The species is the closest reference's, and the note says why the ST was no help |
+| `MASH (conflict)` | The ST names a species that was not within reach at all. **The MASH call stands** — a thousand min-hashes against nine loci — and the note says to check the sample |
+
+An ST only speaks when the isolates carrying it agree on a species: at least **95%** of them
+(`--min-st-purity`), over at least **3** isolates (`--min-st-isolates`). The species labels in the isolate
+database are the submitters', and some of them are wrong — the same thing that turns up in NCBI assemblies
+— so an ST whose isolates disagree is left out of the decision rather than settled by a majority of three.
+Of the 118 STs with a species, 105 are seen in one species only and 113 clear the 95% bar; the exceptions
+are things like ST 1, which is *B. abortus* in 463 of 466 isolates and *B. melitensis* in 3. STs recorded
+only as "*Brucella* sp." say nothing and are ignored.
+
+`--no-st-species` turns the whole step off and reports the closest reference's species, whatever else was
+just as close.
+
+**This does not make the ST a species call.** It breaks one tie, in one direction, inside the set MASH
+already narrowed to. An ST that disagrees with a species MASH picked cleanly never wins; it is reported, and
+it is worth looking into.
+
 ## What the reference data is
 
 | File | Source |
 | --- | --- |
 | `references.msh`, `references.tsv` | The *Brucella* part of [vSNP](https://github.com/USDA-VS/vsnp)'s reference set, 16 genomes |
 | `mlst_alleles.fasta`, `mlst_profiles.tsv` | The MLST (9 locus) scheme of [PubMLST](https://pubmlst.org/organisms/brucella-spp), downloaded with `scripts/make_mlst_data.py` |
+| `mlst_st_species.tsv` | The species of each ST, counted over the 3,426 isolates of the PubMLST *Brucella* isolate database, with `scripts/make_st_species.py` |
 
 The MLST scheme itself is [Whatmore, Perrett and MacMillan (2007)](https://doi.org/10.1186/1471-2180-7-34):
 nine loci, 4,396 bp in all.

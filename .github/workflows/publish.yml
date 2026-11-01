@@ -34,9 +34,10 @@ jobs:
 
           wheel = glob.glob('dist/*.whl')[0]
           names = zipfile.ZipFile(wheel).namelist()
-          for name in ('references.msh', 'references.tsv', 'mlst_alleles.fasta', 'mlst_profiles.tsv'):
+          for name in ('references.msh', 'references.tsv', 'mlst_alleles.fasta', 'mlst_profiles.tsv',
+                       'mlst_st_species.tsv'):
               assert 'brucellaid/data/{}'.format(name) in names, (name, names)
-          print('{}: the four data files are there'.format(wheel))
+          print('{}: the five data files are there'.format(wheel))
           PY
       - run: python -m twine check --strict dist/*
       - uses: actions/upload-artifact@v7

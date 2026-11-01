@@ -25,6 +25,7 @@ from brucellaid.report import (
     write_legacy_xlsx,
     write_reports,
 )
+from brucellaid.species import call_species, load_st_species
 
 REFERENCES = parse_references([
     '\t'.join(COLUMNS) + '\n',
@@ -40,8 +41,9 @@ def good_sample():
     reference, notes = species_notes(found, REFERENCES)
     mlst = MlstResult(st='1', calls=[AlleleCall('gap', '2', 40, 'gap_3', 12), AlleleCall('aroA', '1', 38, '2', 10)],
                       assigned_reads=900, total_reads=1000)
+    call = call_species(found, REFERENCES, mlst=mlst, table=load_st_species())
     return SampleResult('good', ['good_R1.fastq.gz', 'good_R2.fastq.gz'], identification=found,
-                        reference=reference, mlst=mlst, notes=notes)
+                        reference=reference, mlst=mlst, notes=notes, call=call)
 
 
 def failed_sample():
@@ -58,6 +60,9 @@ def test_main_table():
     assert rows[0] == MAIN_HEADER
     good = dict(zip(MAIN_HEADER, rows[1], strict=True))
     assert good['Species'] == 'Brucella abortus'
+    # ST 1 is B. abortus in the isolate database too, and MASH had no second species to choose from
+    assert good['SpeciesSource'] == 'MASH+ST (agree)'
+    assert good['STSpecies'] == 'Brucella abortus'
     assert good['Biovar'] == '1'
     assert good['ClosestReference'] == 'NC_006932-NC_006933.fasta'
     assert good['MashDistance'] == '0.001234'

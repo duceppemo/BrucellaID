@@ -45,43 +45,51 @@ brucellaid -i reads -o results -t 8 -p 2
 ```
 16 reference genome(s) in .../brucellaid/data/references.msh
 9 MLST locus/loci: gap, aroA, glk, dnaK, gyrB, trpE, cobQ, int_hyp, omp25
+118 sequence type(s) with a species, to decide the species MASH cannot
 4 sample(s) found in reads
 4 sample(s), 2 at a time, 4 thread(s) each
 ERR2136546: identifying the species with MASH (2 file(s))
 ERR2136546: Brucella canis str. ATCC 23365 (NC_010103-NC_010104.fasta, MASH distance 0.00652, 773/1000 hashes)
 ERR2136546: calling the MLST alleles with Seal
 ERR2136546: ST 20 (profile 1-6-4-1-5-3-5-4-6)
+ERR2136546: Brucella canis (MASH+ST, arbitrated)
 ERR3454415: Brucella abortus bv. 1 str. 9-941 (NC_006932-NC_006933.fasta, MASH distance 0.00455, 833/1000 hashes)
 ERR3454415: ST 1 (profile 2-1-1-2-1-3-1-1-1)
 SRR19520329: Brucella melitensis bv. 3 str. Ether (NZ_CP007760-NZ_CP007761.fasta, MASH distance 0.00329, 875/1000 hashes)
 SRR19520329: ST 11 (profile 3-2-3-2-1-5-3-2-10)
 SRR8550484: Brucella suis bv. 2 str. ATCC 23445 (NC_010169-NC_010167.fasta, MASH distance 0.02484, 422/1000 hashes)
 SRR8550484: ST 15 (profile 1-2-7-1-3-3-5-3-2)
-Done in 35s
+Done in 30s
 ```
-35 seconds on 8 threads, for 4.6 million read pairs. `-p 2` runs two samples at a time and gives each of
+30 seconds on 8 threads, for 4.6 million read pairs. `-p 2` runs two samples at a time and gives each of
 them four of the eight threads.
 
 ## 4. Read the main table
 `results/brucellaid.tsv`, also printed to the terminal:
 
 ```
-Sample       Species             Biovar  ClosestReference           MashDistance  SharedHashes  SequenceType  AlleleProfile       Reads
-ERR2136546   Brucella canis              NC_010103-NC_010104.fasta  0.006524      773/1000      20            1-6-4-1-5-3-5-4-6   625576
-ERR3454415   Brucella abortus    1       NC_006932-NC_006933.fasta  0.004549      833/1000      1             2-1-1-2-1-3-1-1-1   1175082
-SRR19520329  Brucella melitensis 3       NZ_CP007760-NZ_CP007761.fasta  0.003285  875/1000      11            3-2-3-2-1-5-3-2-10  1136924
-SRR8550484   Brucella suis       2       NC_010169-NC_010167.fasta  0.024841      422/1000      15            1-2-7-1-3-3-5-3-2   1693672
+Sample       Species             Biovar  SpeciesSource         ClosestReference               SharedHashes  SequenceType  AlleleProfile       STSpecies            Reads
+ERR2136546   Brucella canis              MASH+ST (arbitrated)  NC_010103-NC_010104.fasta      773/1000      20            1-6-4-1-5-3-5-4-6   Brucella canis       625576
+ERR3454415   Brucella abortus    1       MASH+ST (agree)       NC_006932-NC_006933.fasta      833/1000      1             2-1-1-2-1-3-1-1-1   Brucella abortus     1175082
+SRR19520329  Brucella melitensis 3       MASH+ST (agree)       NZ_CP007760-NZ_CP007761.fasta  875/1000      11            3-2-3-2-1-5-3-2-10  Brucella melitensis  1136924
+SRR8550484   Brucella suis       2       MASH+ST (agree)       NC_010169-NC_010167.fasta      422/1000      15            1-2-7-1-3-3-5-3-2   Brucella suis        1693672
 ```
 Four species, four sequence types, and each species is the one the submitter labelled the run with.
+`MashDistance`, left out above to fit, reads 0.006524, 0.004549, 0.003285 and 0.024841.
 
-The `Notes` column, left out above to fit, holds one line, on the *B. canis* sample:
+**The first sample is the interesting one.** Its `SpeciesSource` says `arbitrated`, and the `Notes` column,
+also left out above, says why:
 
 ```
-nearly as close: B-REF-BS4-40.fasta (Brucella suis bv. 4, 768/1000 hashes)
+nearly as close: B-REF-BS4-40.fasta (Brucella suis bv. 4, 768/1000 hashes); MASH cannot separate
+Brucella canis and Brucella suis: ST 20 is Brucella canis in 70 of 70 isolate(s), which agrees with
+the closest reference
 ```
-That is BrucellaID saying what the genus is like: *B. canis* and *B. suis* are so close that the second
-reference is five hashes behind the first. The species on that line is still the right one, but it is won
-by a margin, not by a mile.
+*B. canis* came first by **five hashes out of a thousand** — 0.006524 against 0.006698, a margin that is
+noise, not a measurement. So the species was not decided by that margin: ST 20 was, and ST 20 is *B. canis*
+in all 70 isolates of the PubMLST isolate database that carry it, and never *B. suis*. Had the distances
+come out the other way round, as they easily could have, the answer would have been the same. See
+[How it works](How-it-works).
 
 ## 5. Read what the calls rest on
 `results/brucellaid_mash.tsv` has every distance. For the *B. canis* sample, the first four:

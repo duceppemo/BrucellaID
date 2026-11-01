@@ -35,17 +35,19 @@ To see it work on data you can look at, run `bash examples/run_example.sh`: it b
 alleles of a known sequence type, runs BrucellaID on it and prints the reports.
 
 ## Reference data
-The four files in `brucellaid/data/` are the reference data:
+The five files in `brucellaid/data/` are the reference data:
 
 | File | What it is |
 | --- | --- |
 | `references.msh` | The MASH sketch of the 16 *Brucella* reference genomes, as vSNP assembled it |
 | `references.tsv` | What each genome of the sketch is: species, biovar, strain, NCBI accessions |
-| `mlst_alleles.fasta` | The 263 alleles of the nine MLST-9 loci |
-| `mlst_profiles.tsv` | The 81 sequence types, as allele numbers |
+| `mlst_alleles.fasta` | The 309 alleles of the nine MLST-9 loci |
+| `mlst_profiles.tsv` | The 122 sequence types, as allele numbers |
+| `mlst_st_species.tsv` | The species of each sequence type, counted over PubMLST's isolate database |
 
-`scripts/make_mlst_data.py` rebuilds the two MLST files from PubMLST, and `scripts/make_reference_data.py` rebuilds
-the sketch from the accessions of `references.tsv`. Run them, check what changed, and say in the pull request which
+`scripts/make_mlst_data.py` rebuilds the two MLST files from PubMLST, `scripts/make_st_species.py` rebuilds the ST
+to species table from PubMLST's isolate database, and `scripts/make_reference_data.py` rebuilds the sketch from
+the accessions of `references.tsv`. Run them, check what changed, and say in the pull request which
 day the data was downloaded; `wiki/Changelog.md` records it too. A sketch must keep MASH's defaults (k = 21,
 1000 hashes), because the threshold of 150 shared hashes is read against that sketch size.
 

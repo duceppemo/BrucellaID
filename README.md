@@ -25,8 +25,9 @@ reference genomes, and type it with the nine-locus
 
 ```
 $ brucellaid -r1 sample_R1.fastq.gz -r2 sample_R2.fastq.gz -o results/
-Sample  Species           Biovar  ClosestReference           MashDistance  SharedHashes  SequenceType  AlleleProfile
-sample  Brucella abortus  1       NC_006932-NC_006933.fasta  0.000024      999/1000      1             2-1-1-2-1-3-1-1-1
+Sample  Species           Biovar  SpeciesSource         ClosestReference           SharedHashes  SequenceType  STSpecies
+sample  Brucella abortus  1       MASH+ST (agree)       NC_006932-NC_006933.fasta  999/1000      1             Brucella abortus
+canis   Brucella canis            MASH+ST (arbitrated)  NC_010103-NC_010104.fasta  1000/1000     20            Brucella canis
 ```
 
 Both the reference sketch and the MLST database come with the package: nothing to download, index or
@@ -34,26 +35,35 @@ configure.
 
 ## Features
 * **Two independent answers**: the species, from the closest of 16 *Brucella* reference genomes, and the
-  sequence type, from the nine MLST alleles. Neither call corrects the other, and both come with the
-  numbers they rest on.
+  sequence type, from the nine MLST alleles. Both come with the numbers they rest on, and neither is
+  quietly rewritten by the other.
+* **The ST decides the one pair a distance cannot.** *B. canis* and *B. suis* bv. 4 are 0.00024 apart — the
+  closest pair of the sixteen, closer than two *B. suis* references are to each other — so which one a
+  *canis* read set lands on first is noise. The two species share no sequence type at all, so where MASH
+  leaves both within reach, the ST chooses, from a table of the species of every ST counted over 3,426
+  PubMLST isolates. A `SpeciesSource` column says what each call rested on, and an ST that contradicts a
+  species MASH picked cleanly is reported, never obeyed.
 * **Nothing is hidden**: the distance to every reference, the reads behind every allele call and the
   runner-up that call had to beat, a note when a second reference was nearly as close, and a tie reported as
   a tie rather than broken by a coin toss.
 * **Batch mode**: point it at a folder; fastq files are found recursively, R1/R2 paired, and several samples
   run at a time. A sample that fails leaves the others readable.
-* **Current reference data**: the MLST database is PubMLST's, 309 alleles and 122 sequence types, rebuilt by
-  a script in the repository. The sketch is vSNP's 16 *Brucella* genomes, with the species, biovar, strain
-  and accession of each.
-* **Backwards compatible where it counts**: the species identification is vSNP's, down to the threshold of
-  150 shared hashes, and `--xlsx` still writes the `stat_alignment_summary_<date>.xlsx` of the first
-  version.
+* **Current reference data**: the MLST database is PubMLST's, 309 alleles and 122 sequence types, plus the
+  species of 118 of them counted over PubMLST's isolate database — all rebuilt by scripts in the
+  repository. The sketch is vSNP's 16 *Brucella* genomes, with the species, biovar, strain and accession of
+  each.
+* **Backwards compatible where it counts**: the MASH identification is vSNP's, down to the threshold of
+  150 shared hashes (`--no-st-species` reports it alone), and `--xlsx` still writes the
+  `stat_alignment_summary_<date>.xlsx` of the first version.
 * **Nothing to configure**: only the Python standard library, plus MASH and BBTools.
-* **Tested**: 194 tests, 100% coverage, end to end on a synthetic genome and on reads tiled over the real
+* **Tested**: 234 tests, 100% coverage, end to end on a synthetic genome and on reads tiled over the real
   MLST alleles.
 * **Validated** on 16 genomes with a known answer: every species, biovar and closest reference right, and
   all 14 sequence types the one the genome carries — read off the assembly by exact match, which shares no
-  code with the read-based caller. The nearest neighbouring species shares 4 of 1000 hashes and comes back
-  as not identified ([Validation](https://github.com/duceppemo/BrucellaID/wiki/Validation)).
+  code with the read-based caller. The *B. canis* genome is the one call the distance did not make on its
+  own, and the ST made it; not one of the sixteen came back as a disagreement. The nearest neighbouring
+  species shares 4 of 1000 hashes and comes back as not identified
+  ([Validation](https://github.com/duceppemo/BrucellaID/wiki/Validation)).
 
 ## Installation
 ```
@@ -75,11 +85,12 @@ The results are printed and saved in `results/`: one row per sample, one row per
 and a JSON report. To see it work on data with a known answer, run `bash examples/run_example.sh`, which
 builds its own reads from the alleles of a sequence type.
 
-**What the two answers mean**: the species is the species of the closest reference genome, and the biovar is
-that reference's biovar, which is not the same as a biovar call — the *Brucella* biovar references differ by
-very little. The sequence type is `new` when the nine alleles are called but the combination is not in the
-table, and `ND` when a locus could not be called. See
-[How it works](https://github.com/duceppemo/BrucellaID/wiki/How-it-works).
+**What the two answers mean**: the species is the species of the closest reference genome, except where a
+reference of another species is just as close and the sequence type chooses between the two — the
+`SpeciesSource` column says which happened. The biovar is that reference's biovar, which is not the same as
+a biovar call: the *Brucella* biovar references differ by very little. The sequence type is `new` when the
+nine alleles are called but the combination is not in the table, and `ND` when a locus could not be called.
+See [How it works](https://github.com/duceppemo/BrucellaID/wiki/How-it-works).
 
 ## Documentation
 The **[wiki](https://github.com/duceppemo/BrucellaID/wiki)** covers

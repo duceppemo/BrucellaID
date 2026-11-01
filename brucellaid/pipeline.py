@@ -9,6 +9,7 @@ from .mash import DEFAULT_MIN_HASHES, identify
 from .mlst import DEFAULT_MIN_READS, UNKNOWN, run_mlst
 from .references import load_references, lookup, reference_sketch
 from .seal import DEFAULT_KMER_SIZE, DEFAULT_MISMATCHES
+from .species import DEFAULT_MIN_ISOLATES, DEFAULT_MIN_PURITY, call_species, load_st_species
 
 log = logging.getLogger(__name__)
 
@@ -21,6 +22,7 @@ class SampleResult:
     identification: object = None  # mash.Identification
     reference: object = None  # references.Reference of the closest genome, when it is in the reference table
     mlst: object = None  # mlst.MlstResult
+    call: object = None  # species.SpeciesCall: the species reported, and what it rests on
     notes: list = field(default_factory=list)
     error: str | None = None
 
@@ -30,10 +32,8 @@ class SampleResult:
 
     @property
     def species(self):
-        """The species of the closest reference genome, or "ND"."""
-        if not self.identified:
-            return UNKNOWN
-        return self.reference.species if self.reference else UNKNOWN
+        """The species reported, which the closest reference genome and the ST decided between them, or "ND"."""
+        return self.call.species if self.call else UNKNOWN
 
     @property
     def closest_reference(self):
@@ -44,12 +44,13 @@ class SampleResult:
 
     @property
     def biovar(self):
-        return self.reference.biovar if self.identified and self.reference else ''
+        """The biovar of the closest reference genome of the species reported, when it has one."""
+        return self.call.biovar if self.call else ''
 
     @property
     def code(self):
         """The vSNP species code, written to the "species" column of the legacy xlsx report."""
-        return self.reference.code if self.identified and self.reference else UNKNOWN
+        return self.call.code if self.call else UNKNOWN
 
     @property
     def sequence_type(self):
@@ -95,14 +96,21 @@ def species_notes(identification, references):
 
 def analyse_sample(sample, sketch=None, references=None, min_hashes=DEFAULT_MIN_HASHES,
                    min_reads=DEFAULT_MIN_READS, kmer_size=DEFAULT_KMER_SIZE, mismatch=DEFAULT_MISMATCHES,
-                   threads=1, memory='1g', alleles=None, profiles=None, mlst=True):
+                   threads=1, memory='1g', alleles=None, profiles=None, mlst=True, st_table=None,
+                   use_st_species=True, min_st_purity=DEFAULT_MIN_PURITY,
+                   min_st_isolates=DEFAULT_MIN_ISOLATES):
     """
     Identify and type one sample.
 
     An error on one sample is kept in its SampleResult rather than raised, so that a run over a folder reports
     the samples that worked.
+
+    :param st_table: {ST: species.StSpecies}, instead of the table of the package
+    :param use_st_species: whether the sequence type may take part in the species call at all
     """
     references = load_references() if references is None else references
+    if use_st_species and st_table is None:
+        st_table = load_st_species()
     sketch = reference_sketch(sketch)
     result = SampleResult(sample.name, list(sample.files))
     log.info('%s: identifying the species with MASH (%d file(s))', sample.name, len(sample.files))
@@ -126,9 +134,21 @@ def analyse_sample(sample, sketch=None, references=None, min_hashes=DEFAULT_MIN_
                     result.notes.append('{}: {}'.format(call.locus, call.note))
             if result.mlst.note:
                 result.notes.append('ST {}: {}'.format(result.mlst.st, result.mlst.note))
+        # The species is decided once both are in: where MASH left more than one species within reach, the
+        # ST is what chooses between them.
+        result.call = call_species(result.identification, references, mlst=result.mlst,
+                                   table=st_table if use_st_species else None, min_purity=min_st_purity,
+                                   min_isolates=min_st_isolates)
+        result.notes.extend(result.call.notes)
+        if result.call.verdict:
+            log.info('%s: %s (%s, %s)', sample.name, result.call.species, result.call.source,
+                     result.call.verdict)
     except BrucellaIDError as e:
         log.error('%s: %s', sample.name, e)
         result.error = str(e)
+        if result.call is None and result.identification is not None:
+            # MASH had already answered when the typing failed: report the species it gave.
+            result.call = call_species(result.identification, references)
     return result
 
 

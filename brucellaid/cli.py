@@ -19,6 +19,7 @@ from .references import compare_with_sketch, load_references, reference_sketch
 from .report import print_table, run_info, write_reports
 from .samples import find_samples, single_sample
 from .seal import DEFAULT_KMER_SIZE, DEFAULT_MISMATCHES, auto_memory, check_seal
+from .species import DEFAULT_MIN_ISOLATES, DEFAULT_MIN_PURITY, load_st_species
 
 log = logging.getLogger('brucellaid')
 
@@ -80,7 +81,9 @@ def build_parser():
     max_cpu = available_cpus()
     parser = ArgumentParser(prog='brucellaid', formatter_class=RawDescriptionHelpFormatter, epilog=EPILOG,
                             description='Identify the Brucella species of sequencing reads by their MASH distance\n'
-                                        'to 16 reference genomes, and type them with the nine-locus MLST scheme.')
+                                        'to 16 reference genomes, and type them with the nine-locus MLST scheme.\n'
+                                        'Where two species are too close for MASH to choose, the sequence type\n'
+                                        'chooses between them.')
     inputs = parser.add_argument_group('input (one sample with -r1, or a folder of samples with -i)')
     source = inputs.add_mutually_exclusive_group(required=True)
     source.add_argument('-r1', '--r1', metavar='FILE',
@@ -110,6 +113,15 @@ def build_parser():
                               'Default: {}.'.format(DEFAULT_MIN_READS))
     calling.add_argument('--no-mlst', action='store_true',
                          help='Identify the species only, and skip the MLST typing.')
+    calling.add_argument('--no-st-species', action='store_true',
+                         help='Do not let the sequence type take part in the species call: report the species of '
+                              'the closest reference genome, whether or not another species is just as close.')
+    calling.add_argument('--min-st-purity', metavar='FRACTION', type=float, default=DEFAULT_MIN_PURITY,
+                         help='Share of the isolates of a sequence type that must carry the same species for '
+                              'that ST to take part in the species call. Default: {}.'.format(DEFAULT_MIN_PURITY))
+    calling.add_argument('--min-st-isolates', metavar='N', type=positive_int, default=DEFAULT_MIN_ISOLATES,
+                         help='Isolates a sequence type must rest on to take part in the species call. '
+                              'Default: {}.'.format(DEFAULT_MIN_ISOLATES))
     calling.add_argument('-k', '--kmer-size', metavar='N', type=positive_int, default=DEFAULT_KMER_SIZE,
                          help='K-mer size used to assign the reads to the MLST alleles. '
                               'Default: {}.'.format(DEFAULT_KMER_SIZE))
@@ -118,7 +130,7 @@ def build_parser():
                               'Default: {}, as the alleles of a locus differ by a few bases.'
                               .format(DEFAULT_MISMATCHES))
 
-    data = parser.add_argument_group('reference data (the package ships all three)')
+    data = parser.add_argument_group('reference data (the package ships all of it)')
     data.add_argument('--sketch', metavar='FILE',
                       help='MASH sketch of the reference genomes, instead of the one of the package.')
     data.add_argument('--references', metavar='FILE', dest='references',
@@ -127,6 +139,9 @@ def build_parser():
                       help='Fasta file of the MLST alleles, instead of the one of the package.')
     data.add_argument('--profiles', metavar='FILE',
                       help='Table of the MLST profiles, instead of the one of the package.')
+    data.add_argument('--st-species', metavar='FILE',
+                      help='Table of the species of each sequence type, instead of the one of the package. '
+                           'Built by scripts/make_st_species.py.')
 
     other = parser.add_argument_group('performance and other options')
     other.add_argument('-t', '--threads', metavar='N', type=positive_int, default=max_cpu,
@@ -152,6 +167,10 @@ def check_arguments(parser, args):
         parser.error('--min-reads must be >= 1')
     if args.mismatch < 0:
         parser.error('--mismatch cannot be negative')
+    if not 0.0 < args.min_st_purity <= 1.0:
+        parser.error('--min-st-purity must be a fraction between 0 and 1, not {}'.format(args.min_st_purity))
+    if args.st_species and args.no_st_species:
+        parser.error('--st-species gives a table to use and --no-st-species uses none: pick one')
     if args.mismatch >= args.kmer_size:
         parser.error('--mismatch ({}) must be smaller than --kmer-size ({})'.format(args.mismatch, args.kmer_size))
     if args.sample is not None and (not args.sample.strip() or '/' in args.sample or args.sample in ('.', '..')):
@@ -187,11 +206,14 @@ def main(argv=None):
         references = load_references(args.references)
         alleles = alleles_fasta(args.alleles)
         loci = load_profiles(args.profiles)[0] if mlst else ()
+        st_table = None if args.no_st_species else load_st_species(args.st_species)
         log.info('%d reference genome(s) in %s', len(sketch_references(sketch)), sketch)
         for message in compare_with_sketch(sketch_references(sketch), references):
             log.warning('%s', message)
         if mlst:
             log.info('%d MLST locus/loci: %s', len(loci), ', '.join(loci))
+        if st_table:
+            log.info('%d sequence type(s) with a species, to decide the species MASH cannot', len(st_table))
         if args.input:
             samples = find_samples(args.input, exclude=[output])
             log.info('%d sample(s) found in %s', len(samples), args.input)
@@ -202,13 +224,18 @@ def main(argv=None):
         results = analyse_samples(samples, jobs=jobs, threads=args.threads, sketch=sketch, references=references,
                                   min_hashes=args.min_hashes, min_reads=args.min_reads, kmer_size=args.kmer_size,
                                   mismatch=args.mismatch, memory=memory, alleles=args.alleles,
-                                  profiles=args.profiles, mlst=mlst)
+                                  profiles=args.profiles, mlst=mlst, st_table=st_table,
+                                  use_st_species=not args.no_st_species, min_st_purity=args.min_st_purity,
+                                  min_st_isolates=args.min_st_isolates)
         run = run_info(command, {'Input': ' '.join(os.path.abspath(f) for f in (args.input, args.r1, args.r2) if f),
                                  'Output folder': str(output.resolve()),
                                  'Reference sketch': os.path.abspath(sketch),
                                  'MLST alleles': os.path.abspath(alleles) if mlst else None,
                                  'Minimum shared hashes': args.min_hashes,
                                  'Minimum reads per allele': args.min_reads if mlst else None,
+                                 'ST to species table': None if st_table is None else len(st_table),
+                                 'Minimum ST purity': None if st_table is None else args.min_st_purity,
+                                 'Minimum ST isolates': None if st_table is None else args.min_st_isolates,
                                  'K-mer size': args.kmer_size, 'Mismatches': args.mismatch,
                                  'MLST': mlst, 'Threads': args.threads, 'Parallel samples': jobs,
                                  'Seal memory': memory}, started)

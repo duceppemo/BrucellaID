@@ -18,6 +18,23 @@ About 10x is comfortable, 20x is plenty. Below 5x, loci start coming back as tie
 rather than guesses. The species identification is the more forgiving of the two: at 5x the sketch still
 shares most of its hashes with the right reference.
 
+### What does `SpeciesSource` mean, and can the ST overrule MASH?
+It says what the species rests on. `MASH` is the distance alone, `MASH+ST (agree)` is both saying the same
+thing, and `(arbitrated)` means a reference of a second species was within 0.0005 of the closest one — so
+MASH had not really chosen — and the sequence type chose among those species. In the sketch of the package
+that happens for *B. canis* against *B. suis* bv. 4, and for no other pair.
+
+The ST cannot overrule a species MASH picked cleanly. An ST pointing at a species that was nowhere near the
+closest reference is reported as `MASH (conflict)`, with the MASH call kept: a thousand min-hashes against
+nine loci. `--no-st-species` leaves the ST out of it entirely. See
+[How it works](How-it-works).
+
+### Why not just add more reference genomes instead?
+Because the problem is not the number of references. *B. canis* and *B. suis* bv. 4 are 0.00024 apart, which
+is inside the variation within either species: in a dereplicated 389-genome *Brucella* database the nearest
+pair of *canis* and *suis* genomes is 0.000194 apart. More references move the boundary around; they do not
+create one. The MLST loci do separate the two, which is why the ST is what settles it.
+
 ### Is the biovar reliable?
 It is the biovar of the closest reference genome, which is not the same thing as a biovar call. The
 *Brucella* biovar references differ by very little; `brucellaid_mash.tsv` shows the margin, and a note says
@@ -55,8 +72,10 @@ calls — all of which are reported — but BrucellaID will not tell you "two st
 `brucellaid_mash.tsv` and the per-locus margins.
 
 ### Is it the same answer as vSNP?
-For the species, yes by construction: the same 16 reference genomes, the same sketch, the same threshold of
-150 shared hashes. For the MLST, the alleles are now called from the reads with Seal rather than with
+For the species, almost: the same 16 reference genomes, the same sketch and the same threshold of 150 shared
+hashes, so the MASH identification is vSNP's. It can differ for one pair — a *B. canis* or *B. suis* bv. 4
+read set, where the sequence type now chooses between the two instead of the distance deciding by a margin
+of noise. `--no-st-species` gives vSNP's answer exactly. For the MLST, the alleles are now called from the reads with Seal rather than with
 MLSTsippr, and the database comes from PubMLST rather than from a copy that had drifted: vSNP's copy still
 held a `gyrB_23` that PubMLST has since deleted, and that allele matched the *B. abortus* 9-941 genome
 better than the real one, which turned ST 1 into `new`.

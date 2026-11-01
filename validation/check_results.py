@@ -72,7 +72,8 @@ def main():
     expected = {row['sample']: row for row in read_table(args.genomes)}
     called = {row['Sample']: row for row in read_table(pathlib.Path(args.results) / 'brucellaid.tsv')}
 
-    header = ['sample', 'species', 'biovar', 'reference', 'hashes', 'ST called', 'ST in the genome', 'result']
+    header = ['sample', 'species', 'biovar', 'reference', 'hashes', 'ST called', 'ST in the genome',
+              'species from', 'result']
     rows, failures = [], []
     for sample, row in expected.items():
         if sample not in called:
@@ -88,6 +89,10 @@ def main():
                 problems.append('{} is "{}", expected "{}"'.format(column, result[column], want))
         if row['species'] == UNCHECKED and result['Species'] != 'ND':
             problems.append('identified as "{}", and it is not Brucella'.format(result['Species']))
+        # These genomes are what they say they are, so the two kinds of evidence must not contradict each
+        # other: a conflict here would mean the ST to species table and the reference table disagree.
+        if 'conflict' in result['SpeciesSource']:
+            problems.append('the ST contradicts the identification: {}'.format(result['Notes']))
 
         genome = pathlib.Path(args.data) / '{}.fasta'.format(sample)
         in_genome, notes = profile_of_genome(genome, alleles, loci)
@@ -102,7 +107,8 @@ def main():
             problems.append('ST is "{}", and the genome carries ST {}'.format(result['SequenceType'], st))
 
         rows.append([sample, result['Species'] or 'ND', result['Biovar'], result['ClosestReference'],
-                     result['SharedHashes'], result['SequenceType'], st, 'ok' if not problems else 'FAILED'])
+                     result['SharedHashes'], result['SequenceType'], st, result['SpeciesSource'],
+                     'ok' if not problems else 'FAILED'])
         failures += ['{}: {}'.format(sample, problem) for problem in problems]
 
     widths = [max(len(str(row[i])) for row in [header] + rows) for i in range(len(header))]

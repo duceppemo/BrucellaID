@@ -17,12 +17,14 @@ BrucellaID reads a *Brucella* fastq sample and answers two questions:
   [PubMLST](https://pubmlst.org/organisms/brucella-spp) profile table.
 
 Both the reference sketch and the MLST database come with the package: there is nothing to download, index or
-configure.
+configure. Where two species are too close for a sketch to choose between them — *B. canis* and
+*B. suis* bv. 4 are 0.00024 apart — the sequence type chooses, and the `SpeciesSource` column says so.
 
 ```
 $ brucellaid -r1 sample_R1.fastq.gz -r2 sample_R2.fastq.gz -o results/
-Sample  Species            Biovar  ClosestReference           MashDistance  SharedHashes  SequenceType  AlleleProfile
-sample  Brucella abortus   1       NC_006932-NC_006933.fasta  0.000024      999/1000      1             2-1-1-2-1-3-1-1-1
+Sample  Species            Biovar  SpeciesSource         ClosestReference           SharedHashes  SequenceType  STSpecies
+sample  Brucella abortus   1       MASH+ST (agree)       NC_006932-NC_006933.fasta  999/1000      1             Brucella abortus
+canis   Brucella canis             MASH+ST (arbitrated)  NC_010103-NC_010104.fasta  1000/1000     20            Brucella canis
 ```
 
 ## Start here

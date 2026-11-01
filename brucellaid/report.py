@@ -22,8 +22,8 @@ MLST_FILE = 'brucellaid_mlst.tsv'
 MASH_FILE = 'brucellaid_mash.tsv'
 JSON_FILE = 'brucellaid.json'
 
-MAIN_HEADER = ['Sample', 'Species', 'Biovar', 'ClosestReference', 'MashDistance', 'SharedHashes', 'SequenceType',
-               'AlleleProfile', 'Reads', 'Notes', 'Error']
+MAIN_HEADER = ['Sample', 'Species', 'Biovar', 'SpeciesSource', 'ClosestReference', 'MashDistance',
+               'SharedHashes', 'SequenceType', 'AlleleProfile', 'STSpecies', 'Reads', 'Notes', 'Error']
 MLST_HEADER = ['Sample', 'Locus', 'Allele', 'Reads', 'RunnerUp', 'RunnerUpReads', 'Note']
 MASH_HEADER = ['Sample', 'Reference', 'Species', 'Biovar', 'MashDistance', 'PValue', 'SharedHashes', 'TotalHashes']
 
@@ -42,18 +42,35 @@ def one_cell(text):
     return re.sub(r'[\t\r\n]+', ' ', str(text)).strip()
 
 
+def species_source(call):
+    """The SpeciesSource cell: "MASH", or "MASH+ST (agree)" when the two kinds of evidence had a tie to break."""
+    if call is None or not call.source:
+        return ''
+    return '{} ({})'.format(call.source, call.verdict) if call.verdict else call.source
+
+
 def main_row(result):
-    """One row of the main table: what one sample is."""
+    """
+    One row of the main table: what one sample is.
+
+    "SpeciesSource" says which evidence the species rests on -- MASH, the ST, or both agreeing -- and, when
+    the two had something to settle, how it was settled: "MASH+ST (agree)", "ST (arbitrated)",
+    "MASH (conflict)". "STSpecies" is the species the ST stands for, empty when the ST was not usable; the
+    note says why.
+    """
     best = result.identification.best if result.identification else None
     mlst = result.mlst
+    call = result.call
     return [result.sample,
             result.species,
             result.biovar,
+            species_source(call),
             result.closest_reference,
             '{:.6f}'.format(best.distance) if best else '',
             '{}/{}'.format(best.shared_hashes, best.total_hashes) if best else '',
             mlst.st if mlst else UNKNOWN,
             mlst.profile if mlst else '',
+            call.st_species if call else '',
             '' if mlst is None or mlst.total_reads is None else str(mlst.total_reads),
             one_cell(result.note),
             one_cell(result.error or '')]
@@ -115,6 +132,17 @@ def json_report(results, references, run=None):
             'biovar': result.biovar,
             'species_code': result.code,
             'identified': result.identified,
+            'species_call': None if result.call is None else {
+                'species': result.call.species,
+                'source': result.call.source,
+                'verdict': result.call.verdict,
+                'mash_candidates': list(result.call.candidates),
+                'sequence_type': result.call.st,
+                'st_species': result.call.st_species,
+                'st_purity': result.call.entry.purity if result.call.entry else None,
+                'st_isolates': result.call.entry.isolates if result.call.entry else None,
+                'notes': list(result.call.notes),
+            },
             'closest_reference': None if best is None else {
                 'reference': result.closest_reference,
                 'sketch_id': best.reference,
