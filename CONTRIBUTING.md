@@ -66,10 +66,15 @@ those changes would be overwritten. Edit the files in `wiki/` in your pull reque
 ## Releases (maintainers)
 1. Update the version in `brucellaid/__init__.py` and `CITATION.cff` (`version` and `date-released`).
 2. Rename "Unreleased" in `wiki/Changelog.md` to the version and date.
-3. Commit, tag (`git tag -a vX.Y.Z`), push the commit and the tag, then create the GitHub release once the tests pass.
-4. Publishing the GitHub release automatically uploads the package to
+3. Refresh the example report of the wiki if the report changed: run BrucellaID over the four read sets of the
+   [tutorial](wiki/Tutorial.md), then
+   `python3 scripts/make_example_report.py <output folder>`, which writes `assets/example_report.html` with the
+   machine it ran on removed. Never commit a report straight from a run: it names the host, the account and
+   every path.
+4. Commit, tag (`git tag -a vX.Y.Z`), push the commit and the tag, then create the GitHub release once the tests pass.
+5. Publishing the GitHub release automatically uploads the package to
    [PyPI](https://pypi.org/project/brucellaid/) (`.github/workflows/publish.yml`, trusted publishing: no token
    needed; the release tag must match the package version), and Zenodo archives it and mints a DOI. Add that DOI to
    `CITATION.cff` and to the badge in `README.md`.
-5. Bioconda: update `recipe/meta.yaml` (version and sha256 of the new GitHub tarball). Bioconda's bot usually opens
+6. Bioconda: update `recipe/meta.yaml` (version and sha256 of the new GitHub tarball). Bioconda's bot usually opens
    the pull request to `bioconda-recipes` on its own for new releases; otherwise copy the recipe and open it by hand.

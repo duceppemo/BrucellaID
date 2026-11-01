@@ -1,0 +1,534 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BrucellaID quality assurance report</title>
+<meta name="generator" content="BrucellaID 1.0.0">
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff; --panel: #f7f8fa; --ink: #16191d; --muted: #5c6670; --line: #dfe3e8;
+  --accent: #1a6ab3; --accent-soft: #e8f1fa;
+  --ok: #1a7f44; --ok-soft: #e7f5ec; --warn: #9a5b00; --warn-soft: #fdf2e2;
+  --bad: #ad2525; --bad-soft: #fdecec; --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #15181c; --panel: #1d2127; --ink: #e8eaed; --muted: #9aa3ad; --line: #2e343c;
+    --accent: #6fb3f2; --accent-soft: #19283a;
+    --ok: #67c48d; --ok-soft: #14271c; --warn: #e0a95c; --warn-soft: #2a2114;
+    --bad: #f08b8b; --bad-soft: #2b1818;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #15181c; --panel: #1d2127; --ink: #e8eaed; --muted: #9aa3ad; --line: #2e343c;
+  --accent: #6fb3f2; --accent-soft: #19283a;
+  --ok: #67c48d; --ok-soft: #14271c; --warn: #e0a95c; --warn-soft: #2a2114;
+  --bad: #f08b8b; --bad-soft: #2b1818;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; padding: 0 16px 64px; background: var(--bg); color: var(--ink);
+  font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+main { max-width: 1100px; margin: 0 auto; }
+h1 { font-size: 1.6rem; margin: 24px 0 4px; letter-spacing: -0.01em; }
+h2 {
+  font-size: 1.2rem; margin: 40px 0 12px; padding-bottom: 6px; border-bottom: 2px solid var(--line);
+}
+h3 { font-size: 1.02rem; margin: 22px 0 8px; }
+h4 { font-size: 0.92rem; margin: 18px 0 6px; color: var(--muted); text-transform: uppercase;
+     letter-spacing: 0.06em; }
+p, ul, ol { margin: 8px 0; }
+a { color: var(--accent); }
+code, .mono { font-family: var(--mono); font-size: 0.88em; }
+.sub { color: var(--muted); margin: 0 0 18px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 6px; }
+.chip {
+  display: inline-flex; align-items: baseline; gap: 6px; padding: 4px 10px; border-radius: 999px;
+  background: var(--panel); border: 1px solid var(--line); font-size: 0.85rem;
+}
+.chip b { font-size: 0.95rem; }
+.chip.ok { background: var(--ok-soft); border-color: var(--ok); color: var(--ok); }
+.chip.warning { background: var(--warn-soft); border-color: var(--warn); color: var(--warn); }
+.chip.failed { background: var(--bad-soft); border-color: var(--bad); color: var(--bad); }
+.tag {
+  display: inline-block; padding: 1px 7px; border-radius: 4px; font-size: 0.78rem; font-weight: 600;
+  border: 1px solid var(--line); background: var(--panel); white-space: nowrap;
+}
+.tag.ok { background: var(--ok-soft); border-color: var(--ok); color: var(--ok); }
+.tag.warning { background: var(--warn-soft); border-color: var(--warn); color: var(--warn); }
+.tag.failed { background: var(--bad-soft); border-color: var(--bad); color: var(--bad); }
+.tag.decided { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+table { border-collapse: collapse; width: 100%; margin: 10px 0 4px; font-size: 0.88rem; }
+caption { text-align: left; color: var(--muted); font-size: 0.85rem; padding-bottom: 6px; }
+th, td { text-align: left; padding: 5px 9px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { background: var(--panel); font-weight: 600; white-space: nowrap; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+tr.best td { background: var(--accent-soft); }
+tr.close td { background: var(--panel); }
+tbody tr:last-child td { border-bottom: 1px solid var(--line); }
+.group { margin: 0 0 4px; padding: 6px 10px; background: var(--accent-soft); border-left: 3px solid
+         var(--accent); font-size: 0.88rem; }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px;
+         margin: 12px 0; }
+.sample { border: 1px solid var(--line); border-radius: 10px; padding: 4px 16px 16px; margin: 18px 0;
+          background: var(--bg); }
+.sample > h3 { display: flex; flex-wrap: wrap; gap: 10px; align-items: baseline; }
+dl.facts { display: grid; grid-template-columns: max-content 1fr; gap: 3px 14px; margin: 8px 0; }
+dl.facts dt { color: var(--muted); font-size: 0.85rem; }
+dl.facts dd { margin: 0; }
+.sign { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 12px; }
+.sign div { border-top: 1px solid var(--ink); padding-top: 4px; font-size: 0.82rem; color: var(--muted); }
+.sign .line { height: 42px; border: 0; }
+nav.toc ol { margin: 4px 0; padding-left: 22px; }
+nav.toc { font-size: 0.9rem; }
+footer { margin-top: 40px; padding-top: 10px; border-top: 1px solid var(--line); color: var(--muted);
+         font-size: 0.8rem; }
+.wrap { overflow-wrap: anywhere; }
+@media (max-width: 640px) {
+  dl.facts { grid-template-columns: 1fr; }
+  dl.facts dd { margin-bottom: 6px; }
+  .sign { grid-template-columns: 1fr; }
+  table { font-size: 0.8rem; }
+}
+@media print {
+  @page { size: A4; margin: 14mm 12mm 16mm; }
+  body { padding: 0; font-size: 10pt; background: #fff; color: #000; }
+  :root { --bg: #fff; --panel: #f2f2f2; --ink: #000; --muted: #444; --line: #bbb; --accent: #0b4f8a;
+          --accent-soft: #eaf1f8; }
+  nav.toc, .noprint { display: none; }
+  h2 { break-before: page; }
+  h2.first { break-before: avoid; }
+  /* A sample block is often taller than a page, so it may not be kept whole: keeping its tables whole
+     is what matters, and a heading must not be left alone at the foot of a page. */
+  table, .panel { break-inside: avoid; }
+  h2, h3, h4 { break-after: avoid; }
+  thead { display: table-header-group; }
+  a { color: #000; text-decoration: none; }
+}
+</style>
+</head>
+<body>
+<main>
+<h1>BrucellaID quality assurance report</h1>
+<p class="sub">4 sample(s): 4 ok, 0 with a warning, 0 failed. BrucellaID 1.0.0, run on 2026-10-31T21:03:59-04:00.</p>
+<div class="panel noprint" style="border-color:var(--accent);background:var(--accent-soft)"><b>This is an example report.</b> It is a real run of the four public read sets of the <a href="https://github.com/duceppemo/BrucellaID/wiki/Tutorial">tutorial</a>, with the computer it ran on removed: the user account, the host name, the operating system and every directory path read <i>[removed]</i> below, and the input files are named without the folder they were in. Everything else is as BrucellaID wrote it. A report of your own names them all, which is what makes it worth signing.</div>
+<nav class="toc"><b>Contents</b><ol><li><a href="#summary">Summary</a></li><li><a href="#warnings">Notes, warnings and errors</a></li><li><a href="#samples">Samples</a></li><li><a href="#methods">Definitions and methods</a></li><li><a href="#run">Run information</a></li></ol></nav>
+<h2 class="first" id="summary">Summary</h2>
+<div class="chips"><span class="chip"><b>4</b> sample(s)</span><span class="chip ok"><b>4</b> ok</span></div>
+<dl class="facts">
+<dt>Run started</dt><dd class="wrap">2026-10-31T21:03:59-04:00</dd>
+<dt>Run finished</dt><dd class="wrap">2026-10-31T21:04:28-04:00</dd>
+<dt>Operator</dt><dd class="wrap">M-O Duceppe</dd>
+<dt>Command</dt><dd class="wrap">brucellaid -i reads -o results -t 16 -p 2 --operator &#x27;M-O Duceppe&#x27;</dd>
+</dl>
+<p class="group"><b>Brucella abortus</b> &mdash; ST 1 &mdash; 1 sample(s)</p>
+<table>
+<thead><tr><th>Sample</th><th>Species</th><th>Biovar</th><th>Species from</th><th>Decision</th><th>ST</th><th>Allele profile</th><th>Closest reference</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td>ERR3454415</td><td>Brucella abortus</td><td>1</td><td>MASH+ST</td><td>agree</td><td>1</td><td>2-1-1-2-1-3-1-1-1</td><td>NC_006932-NC_006933.fasta</td><td>ok</td></tr>
+</tbody></table>
+<p class="group"><b>Brucella canis</b> &mdash; ST 20 &mdash; 1 sample(s)</p>
+<table>
+<thead><tr><th>Sample</th><th>Species</th><th>Biovar</th><th>Species from</th><th>Decision</th><th>ST</th><th>Allele profile</th><th>Closest reference</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td>ERR2136546</td><td>Brucella canis</td><td></td><td>MASH+ST</td><td>arbitrated</td><td>20</td><td>1-6-4-1-5-3-5-4-6</td><td>NC_010103-NC_010104.fasta</td><td>ok</td></tr>
+</tbody></table>
+<p class="group"><b>Brucella melitensis</b> &mdash; ST 11 &mdash; 1 sample(s)</p>
+<table>
+<thead><tr><th>Sample</th><th>Species</th><th>Biovar</th><th>Species from</th><th>Decision</th><th>ST</th><th>Allele profile</th><th>Closest reference</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td>SRR19520329</td><td>Brucella melitensis</td><td>3</td><td>MASH+ST</td><td>agree</td><td>11</td><td>3-2-3-2-1-5-3-2-10</td><td>NZ_CP007760-NZ_CP007761.fasta</td><td>ok</td></tr>
+</tbody></table>
+<p class="group"><b>Brucella suis</b> &mdash; ST 15 &mdash; 1 sample(s)</p>
+<table>
+<thead><tr><th>Sample</th><th>Species</th><th>Biovar</th><th>Species from</th><th>Decision</th><th>ST</th><th>Allele profile</th><th>Closest reference</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td>SRR8550484</td><td>Brucella suis</td><td>2</td><td>MASH+ST</td><td>agree</td><td>15</td><td>1-2-7-1-3-3-5-3-2</td><td>NC_010169-NC_010167.fasta</td><td>ok</td></tr>
+</tbody></table>
+<div class="panel"><h4>Reviewed by</h4><div class="sign"><div class="line"></div><div class="line"></div><div class="line"></div><div>Name</div><div>Date</div><div>Signature</div></div></div>
+<h2 id="warnings">Notes, warnings and errors</h2>
+<table>
+<caption>Errors first, then the notes of each sample, in the order they were raised. A note on a sample whose status is &quot;ok&quot; is a remark, not a problem.</caption>
+<thead><tr><th>Sample</th><th>Status</th><th>What it says</th></tr></thead>
+<tbody>
+<tr><td>ERR2136546</td><td>ok</td><td>nearly as close: B-REF-BS4-40.fasta (Brucella suis bv. 4, 768/1000 hashes)</td></tr>
+<tr><td>ERR2136546</td><td>ok</td><td>MASH cannot separate Brucella canis and Brucella suis: ST 20 is Brucella canis in 70 of 70 isolate(s), which agrees with the closest reference</td></tr>
+</tbody></table>
+<h2 id="samples">Samples</h2>
+<section class="sample" id="sample-err3454415">
+<h3>ERR3454415 <span class="tag ok">ok</span> <span class="tag decided">Brucella abortus ST 1</span></h3>
+<h4>Identification: the MASH distances</h4>
+<dl class="facts">
+<dt>Closest reference</dt><dd class="wrap">NC_006932-NC_006933.fasta</dd>
+<dt>What it is</dt><dd class="wrap">Brucella abortus bv. 1 str. 9-941</dd>
+<dt>NCBI accessions</dt><dd class="wrap">NC_006932.1, NC_006933.1</dd>
+<dt>MASH distance</dt><dd class="wrap">0.004549</dd>
+<dt>Estimated identity</dt><dd class="wrap">99.545%</dd>
+<dt>Shared min-hashes</dt><dd class="wrap">833/1000 (at least 150 required)</dd>
+<dt>p-value</dt><dd class="wrap">0</dd>
+</dl>
+<table>
+<caption>Closest first. The closest is highlighted; a shaded row is near enough to the closest that the distance alone does not separate the two.</caption>
+<thead><tr><th>Reference genome</th><th>Species</th><th>Biovar</th><th>Strain</th><th class="num">Distance</th><th class="num">Identity %</th><th class="num">Shared hashes</th><th class="num">p-value</th></tr></thead>
+<tbody>
+<tr class="best"><td>NC_006932-NC_006933.fasta</td><td>Brucella abortus</td><td>1</td><td>9-941</td><td class="num">0.004549</td><td class="num">99.545</td><td class="num">833/1000</td><td class="num">0</td></tr>
+<tr><td>NZ_CP007682-NZ_CP007683.fasta</td><td>Brucella abortus</td><td>3</td><td>BER</td><td class="num">0.005741</td><td class="num">99.426</td><td class="num">796/1000</td><td class="num">0</td></tr>
+<tr><td>NC_012441-NC_012442.fasta</td><td>Brucella melitensis</td><td>2</td><td>ATCC 23457</td><td class="num">0.006734</td><td class="num">99.327</td><td class="num">767/1000</td><td class="num">0</td></tr>
+<tr><td>NZ_CP007760-NZ_CP007761.fasta</td><td>Brucella melitensis</td><td>3</td><td>Ether</td><td class="num">0.006769</td><td class="num">99.323</td><td class="num">766/1000</td><td class="num">0</td></tr>
+<tr><td>NZ_CP018508-NZ_CP018509.fasta</td><td>Brucella melitensis</td><td>1</td><td>BwIM_SOM_36b</td><td class="num">0.006769</td><td class="num">99.323</td><td class="num">766/1000</td><td class="num">0</td></tr>
+<tr><td>NC_013119_NC_013118.fasta</td><td>Brucella microti</td><td></td><td>CCM 4915</td><td class="num">0.006946</td><td class="num">99.305</td><td class="num">761/1000</td><td class="num">0</td></tr>
+<tr><td>NC_003317-NC_003318.fasta</td><td>Brucella melitensis</td><td>1</td><td>16M</td><td class="num">0.007088</td><td class="num">99.291</td><td class="num">757/1000</td><td class="num">0</td></tr>
+<tr><td>NC_022905-NC_022906.fasta</td><td>Brucella ceti</td><td></td><td>TE10759-12</td><td class="num">0.007124</td><td class="num">99.288</td><td class="num">756/1000</td><td class="num">0</td></tr>
+<tr><td>GCF_900446125.fasta</td><td>Brucella neotomae</td><td></td><td>NCTC 10084</td><td class="num">0.007304</td><td class="num">99.270</td><td class="num">751/1000</td><td class="num">0</td></tr>
+<tr><td>Bceti1Cudo.fasta</td><td>Brucella ceti</td><td></td><td>Cudo</td><td class="num">0.007486</td><td class="num">99.251</td><td class="num">746/1000</td><td class="num">0</td></tr>
+<tr><td>NC_017251-NC_017250.fasta</td><td>Brucella suis</td><td>1</td><td>1330</td><td class="num">0.007523</td><td class="num">99.248</td><td class="num">745/1000</td><td class="num">0</td></tr>
+<tr><td>NC_010103-NC_010104.fasta</td><td>Brucella canis</td><td></td><td>ATCC 23365</td><td class="num">0.007596</td><td class="num">99.240</td><td class="num">743/1000</td><td class="num">0</td></tr>
+<tr><td>B-REF-BS4-40.fasta</td><td>Brucella suis</td><td>4</td><td>40</td><td class="num">0.007633</td><td class="num">99.237</td><td class="num">742/1000</td><td class="num">0</td></tr>
+<tr><td>NC_010169-NC_010167.fasta</td><td>Brucella suis</td><td>2</td><td>ATCC 23445</td><td class="num">0.007781</td><td class="num">99.222</td><td class="num">738/1000</td><td class="num">0</td></tr>
+<tr><td>NZ_CP007719-NZ_CP007718.fasta</td><td>Brucella suis</td><td>3</td><td>686</td><td class="num">0.007893</td><td class="num">99.211</td><td class="num">735/1000</td><td class="num">0</td></tr>
+<tr><td>NC_009505-NC_009504.fasta</td><td>Brucella ovis</td><td></td><td>ATCC 25840</td><td class="num">0.008500</td><td class="num">99.150</td><td class="num">719/1000</td><td class="num">0</td></tr>
+</tbody></table>
+<h4>The species call</h4>
+<dl class="facts">
+<dt>Species reported</dt><dd class="wrap">Brucella abortus</dd>
+<dt>Biovar</dt><dd class="wrap">1 (of 9-941, the closest reference of that species)</dd>
+<dt>Decided by</dt><dd class="wrap">MASH+ST</dd>
+<dt>Species within reach of the closest</dt><dd class="wrap">Brucella abortus</dd>
+<dt>Sequence type</dt><dd class="wrap">1</dd>
+<dt>What that ST is, in the isolate database</dt><dd class="wrap">ST 1 is Brucella abortus in 463 of 466 isolate(s) (the rest: Brucella melitensis:3)</dd>
+<dt>Biovars recorded for it</dt><dd class="wrap">1:86, 2:16, 3:1, 4:7</dd>
+</dl>
+<p><span class="tag decided">agree</span> The sequence type names the same species as the closest reference genome, which named it on its own: the two kinds of evidence agree.</p>
+<h4>MLST: the nine allele calls</h4>
+<dl class="facts">
+<dt>Sequence type</dt><dd class="wrap">1</dd>
+<dt>Allele profile</dt><dd class="wrap">2-1-1-2-1-3-1-1-1</dd>
+<dt>Every locus called</dt><dd class="wrap">yes</dd>
+<dt>Reads in the input</dt><dd class="wrap">1,175,082</dd>
+<dt>Reads matching an allele</dt><dd class="wrap">2,948</dd>
+</dl>
+<table>
+<caption>&quot;Ahead by&quot; and &quot;Ratio&quot; are the margin the call had over the next allele of the locus. A ratio near 1.00 is the call to check first.</caption>
+<thead><tr><th>Locus</th><th>Allele</th><th class="num">Reads</th><th>Runner-up</th><th class="num">Its reads</th><th class="num">Ahead by</th><th class="num">Ratio</th><th>Note</th></tr></thead>
+<tbody>
+<tr><td>gap</td><td>2</td><td class="num">432</td><td>gap_6</td><td class="num">300</td><td class="num">132</td><td class="num">1.44</td><td></td></tr>
+<tr><td>aroA</td><td>1</td><td class="num">322</td><td>aroA_30</td><td class="num">210</td><td class="num">112</td><td class="num">1.53</td><td></td></tr>
+<tr><td>glk</td><td>1</td><td class="num">222</td><td>glk_21</td><td class="num">158</td><td class="num">64</td><td class="num">1.41</td><td></td></tr>
+<tr><td>dnaK</td><td>2</td><td class="num">340</td><td>dnaK_26</td><td class="num">222</td><td class="num">118</td><td class="num">1.53</td><td></td></tr>
+<tr><td>gyrB</td><td>1</td><td class="num">334</td><td>gyrB_22</td><td class="num">224</td><td class="num">110</td><td class="num">1.49</td><td></td></tr>
+<tr><td>trpE</td><td>3</td><td class="num">320</td><td>trpE_4</td><td class="num">242</td><td class="num">78</td><td class="num">1.32</td><td></td></tr>
+<tr><td>cobQ</td><td>1</td><td class="num">308</td><td>cobQ_12</td><td class="num">196</td><td class="num">112</td><td class="num">1.57</td><td></td></tr>
+<tr><td>int_hyp</td><td>1</td><td class="num">368</td><td>int_hyp_4</td><td class="num">256</td><td class="num">112</td><td class="num">1.44</td><td></td></tr>
+<tr><td>omp25</td><td>1</td><td class="num">292</td><td>omp25_12</td><td class="num">186</td><td class="num">106</td><td class="num">1.57</td><td></td></tr>
+</tbody></table>
+<h4>Input files</h4>
+<table>
+<thead><tr><th>File</th><th class="num">Size</th><th>Modified</th><th>MD5</th><th>Symbolic link to</th></tr></thead>
+<tbody>
+<tr><td>ERR3454415_1.fastq.gz</td><td class="num">87.4 MB</td><td>2026-10-31 21:03:58 EDT</td><td>8eaddc2c8044657712ec586ba5482c70</td><td></td></tr>
+<tr><td>ERR3454415_2.fastq.gz</td><td class="num">83.5 MB</td><td>2026-10-31 21:03:58 EDT</td><td>b2706df339382a63f38bba34222b4053</td><td></td></tr>
+</tbody></table>
+<p class="mono wrap" style="color:var(--muted)">ERR3454415_1.fastq.gz ERR3454415_2.fastq.gz</p>
+</section>
+<section class="sample" id="sample-err2136546">
+<h3>ERR2136546 <span class="tag ok">ok</span> <span class="tag decided">Brucella canis ST 20</span></h3>
+<h4>Identification: the MASH distances</h4>
+<dl class="facts">
+<dt>Closest reference</dt><dd class="wrap">NC_010103-NC_010104.fasta</dd>
+<dt>What it is</dt><dd class="wrap">Brucella canis str. ATCC 23365</dd>
+<dt>NCBI accessions</dt><dd class="wrap">NC_010103.1, NC_010104.1</dd>
+<dt>MASH distance</dt><dd class="wrap">0.006524</dd>
+<dt>Estimated identity</dt><dd class="wrap">99.348%</dd>
+<dt>Shared min-hashes</dt><dd class="wrap">773/1000 (at least 150 required)</dd>
+<dt>p-value</dt><dd class="wrap">0</dd>
+</dl>
+<table>
+<caption>Closest first. The closest is highlighted; a shaded row is near enough to the closest that the distance alone does not separate the two.</caption>
+<thead><tr><th>Reference genome</th><th>Species</th><th>Biovar</th><th>Strain</th><th class="num">Distance</th><th class="num">Identity %</th><th class="num">Shared hashes</th><th class="num">p-value</th></tr></thead>
+<tbody>
+<tr class="best"><td>NC_010103-NC_010104.fasta</td><td>Brucella canis</td><td></td><td>ATCC 23365</td><td class="num">0.006524</td><td class="num">99.348</td><td class="num">773/1000</td><td class="num">0</td></tr>
+<tr class="close"><td>B-REF-BS4-40.fasta</td><td>Brucella suis</td><td>4</td><td>40</td><td class="num">0.006698</td><td class="num">99.330</td><td class="num">768/1000</td><td class="num">0</td></tr>
+<tr><td>NC_017251-NC_017250.fasta</td><td>Brucella suis</td><td>1</td><td>1330</td><td class="num">0.007196</td><td class="num">99.280</td><td class="num">754/1000</td><td class="num">0</td></tr>
+<tr><td>NZ_CP007719-NZ_CP007718.fasta</td><td>Brucella suis</td><td>3</td><td>686</td><td class="num">0.007268</td><td class="num">99.273</td><td class="num">752/1000</td><td class="num">0</td></tr>
+<tr><td>NC_013119_NC_013118.fasta</td><td>Brucella microti</td><td></td><td>CCM 4915</td><td class="num">0.008080</td><td class="num">99.192</td><td class="num">730/1000</td><td class="num">0</td></tr>
+<tr><td>NC_010169-NC_010167.fasta</td><td>Brucella suis</td><td>2</td><td>ATCC 23445</td><td class="num">0.008849</td><td class="num">99.115</td><td class="num">710/1000</td><td class="num">0</td></tr>
+<tr><td>Bceti1Cudo.fasta</td><td>Brucella ceti</td><td></td><td>Cudo</td><td class="num">0.008889</td><td class="num">99.111</td><td class="num">709/1000</td><td class="num">0</td></tr>
+<tr><td>GCF_900446125.fasta</td><td>Brucella neotomae</td><td></td><td>NCTC 10084</td><td class="num">0.009086</td><td class="num">99.091</td><td class="num">704/1000</td><td class="num">0</td></tr>
+<tr><td>NC_022905-NC_022906.fasta</td><td>Brucella ceti</td><td></td><td>TE10759-12</td><td class="num">0.009366</td><td class="num">99.063</td><td class="num">697/1000</td><td class="num">0</td></tr>
+<tr><td>NZ_CP007760-NZ_CP007761.fasta</td><td>Brucella melitensis</td><td>3</td><td>Ether</td><td class="num">0.009568</td><td class="num">99.043</td><td class="num">692/1000</td><td class="num">0</td></tr>
+<tr><td>NC_006932-NC_006933.fasta</td><td>Brucella abortus</td><td>1</td><td>9-941</td><td class="num">0.009650</td><td class="num">99.035</td><td class="num">690/1000</td><td class="num">0</td></tr>
+<tr><td>NC_012441-NC_012442.fasta</td><td>Brucella melitensis</td><td>2</td><td>ATCC 23457</td><td class="num">0.009650</td><td class="num">99.035</td><td class="num">690/1000</td><td class="num">0</td></tr>
+<tr><td>NZ_CP007682-NZ_CP007683.fasta</td><td>Brucella abortus</td><td>3</td><td>BER</td><td class="num">0.009650</td><td class="num">99.035</td><td class="num">690/1000</td><td class="num">0</td></tr>
+<tr><td>NZ_CP018508-NZ_CP018509.fasta</td><td>Brucella melitensis</td><td>1</td><td>BwIM_SOM_36b</td><td class="num">0.009691</td><td class="num">99.031</td><td class="num">689/1000</td><td class="num">0</td></tr>
+<tr><td>NC_003317-NC_003318.fasta</td><td>Brucella melitensis</td><td>1</td><td>16M</td><td class="num">0.009938</td><td class="num">99.006</td><td class="num">683/1000</td><td class="num">0</td></tr>
+<tr><td>NC_009505-NC_009504.fasta</td><td>Brucella ovis</td><td></td><td>ATCC 25840</td><td class="num">0.011001</td><td class="num">98.900</td><td class="num">658/1000</td><td class="num">0</td></tr>
+</tbody></table>
+<h4>The species call</h4>
+<dl class="facts">
+<dt>Species reported</dt><dd class="wrap">Brucella canis</dd>
+<dt>Decided by</dt><dd class="wrap">MASH+ST</dd>
+<dt>Species within reach of the closest</dt><dd class="wrap">Brucella canis, Brucella suis</dd>
+<dt>Sequence type</dt><dd class="wrap">20</dd>
+<dt>What that ST is, in the isolate database</dt><dd class="wrap">ST 20 is Brucella canis in 70 of 70 isolate(s)</dd>
+</dl>
+<p><span class="tag decided">arbitrated</span> A reference of a second species was near enough to the closest one that the distance did not really choose. The sequence type chose between the species it left within reach.</p>
+<h4>MLST: the nine allele calls</h4>
+<dl class="facts">
+<dt>Sequence type</dt><dd class="wrap">20</dd>
+<dt>Allele profile</dt><dd class="wrap">1-6-4-1-5-3-5-4-6</dd>
+<dt>Every locus called</dt><dd class="wrap">yes</dd>
+<dt>Reads in the input</dt><dd class="wrap">625,576</dd>
+<dt>Reads matching an allele</dt><dd class="wrap">1,824</dd>
+</dl>
+<table>
+<caption>&quot;Ahead by&quot; and &quot;Ratio&quot; are the margin the call had over the next allele of the locus. A ratio near 1.00 is the call to check first.</caption>
+<thead><tr><th>Locus</th><th>Allele</th><th class="num">Reads</th><th>Runner-up</th><th class="num">Its reads</th><th class="num">Ahead by</th><th class="num">Ratio</th><th>Note</th></tr></thead>
+<tbody>
+<tr><td>gap</td><td>1</td><td class="num">232</td><td>gap_26</td><td class="num">170</td><td class="num">62</td><td class="num">1.36</td><td></td></tr>
+<tr><td>aroA</td><td>6</td><td class="num">194</td><td>aroA_31</td><td class="num">80</td><td class="num">114</td><td class="num">2.42</td><td></td></tr>
+<tr><td>glk</td><td>4</td><td class="num">148</td><td>glk_2</td><td class="num">94</td><td class="num">54</td><td class="num">1.57</td><td></td></tr>
+<tr><td>dnaK</td><td>1</td><td class="num">244</td><td>dnaK_2</td><td class="num">162</td><td class="num">82</td><td class="num">1.51</td><td></td></tr>
+<tr><td>gyrB</td><td>5</td><td class="num">224</td><td>gyrB_4</td><td class="num">110</td><td class="num">114</td><td class="num">2.04</td><td></td></tr>
+<tr><td>trpE</td><td>3</td><td class="num">178</td><td>trpE_5</td><td class="num">114</td><td class="num">64</td><td class="num">1.56</td><td></td></tr>
+<tr><td>cobQ</td><td>5</td><td class="num">172</td><td>cobQ_30</td><td class="num">108</td><td class="num">64</td><td class="num">1.59</td><td></td></tr>
+<tr><td>int_hyp</td><td>4</td><td class="num">234</td><td>int_hyp_1</td><td class="num">180</td><td class="num">54</td><td class="num">1.30</td><td></td></tr>
+<tr><td>omp25</td><td>6</td><td class="num">172</td><td>omp25_2</td><td class="num">98</td><td class="num">74</td><td class="num">1.76</td><td></td></tr>
+</tbody></table>
+<h4>Input files</h4>
+<table>
+<thead><tr><th>File</th><th class="num">Size</th><th>Modified</th><th>MD5</th><th>Symbolic link to</th></tr></thead>
+<tbody>
+<tr><td>ERR2136546_1.fastq.gz</td><td class="num">57.0 MB</td><td>2026-10-31 21:03:58 EDT</td><td>7573e407362c1458a464a4d92fec2db4</td><td></td></tr>
+<tr><td>ERR2136546_2.fastq.gz</td><td class="num">63.9 MB</td><td>2026-10-31 21:03:58 EDT</td><td>a83a9dceaee29371219b98f0a2f1dc39</td><td></td></tr>
+</tbody></table>
+<p class="mono wrap" style="color:var(--muted)">ERR2136546_1.fastq.gz ERR2136546_2.fastq.gz</p>
+<h4>Notes</h4><ul>
+<li class="wrap">nearly as close: B-REF-BS4-40.fasta (Brucella suis bv. 4, 768/1000 hashes)</li>
+<li class="wrap">MASH cannot separate Brucella canis and Brucella suis: ST 20 is Brucella canis in 70 of 70 isolate(s), which agrees with the closest reference</li>
+</ul>
+</section>
+<section class="sample" id="sample-srr19520329">
+<h3>SRR19520329 <span class="tag ok">ok</span> <span class="tag decided">Brucella melitensis ST 11</span></h3>
+<h4>Identification: the MASH distances</h4>
+<dl class="facts">
+<dt>Closest reference</dt><dd class="wrap">NZ_CP007760-NZ_CP007761.fasta</dd>
+<dt>What it is</dt><dd class="wrap">Brucella melitensis bv. 3 str. Ether</dd>
+<dt>NCBI accessions</dt><dd class="wrap">NZ_CP007760.1, NZ_CP007761.1</dd>
+<dt>MASH distance</dt><dd class="wrap">0.003285</dd>
+<dt>Estimated identity</dt><dd class="wrap">99.671%</dd>
+<dt>Shared min-hashes</dt><dd class="wrap">875/1000 (at least 150 required)</dd>
+<dt>p-value</dt><dd class="wrap">0</dd>
+</dl>
+<table>
+<caption>Closest first. The closest is highlighted; a shaded row is near enough to the closest that the distance alone does not separate the two.</caption>
+<thead><tr><th>Reference genome</th><th>Species</th><th>Biovar</th><th>Strain</th><th class="num">Distance</th><th class="num">Identity %</th><th class="num">Shared hashes</th><th class="num">p-value</th></tr></thead>
+<tbody>
+<tr class="best"><td>NZ_CP007760-NZ_CP007761.fasta</td><td>Brucella melitensis</td><td>3</td><td>Ether</td><td class="num">0.003285</td><td class="num">99.671</td><td class="num">875/1000</td><td class="num">0</td></tr>
+<tr><td>NC_012441-NC_012442.fasta</td><td>Brucella melitensis</td><td>2</td><td>ATCC 23457</td><td class="num">0.003966</td><td class="num">99.603</td><td class="num">852/1000</td><td class="num">0</td></tr>
+<tr><td>NZ_CP018508-NZ_CP018509.fasta</td><td>Brucella melitensis</td><td>1</td><td>BwIM_SOM_36b</td><td class="num">0.003996</td><td class="num">99.600</td><td class="num">851/1000</td><td class="num">0</td></tr>
+<tr><td>NC_003317-NC_003318.fasta</td><td>Brucella melitensis</td><td>1</td><td>16M</td><td class="num">0.004425</td><td class="num">99.558</td><td class="num">837/1000</td><td class="num">0</td></tr>
+<tr><td>NC_013119_NC_013118.fasta</td><td>Brucella microti</td><td></td><td>CCM 4915</td><td class="num">0.005411</td><td class="num">99.459</td><td class="num">806/1000</td><td class="num">0</td></tr>
+<tr><td>NC_006932-NC_006933.fasta</td><td>Brucella abortus</td><td>1</td><td>9-941</td><td class="num">0.005477</td><td class="num">99.452</td><td class="num">804/1000</td><td class="num">0</td></tr>
+<tr><td>NZ_CP007682-NZ_CP007683.fasta</td><td>Brucella abortus</td><td>3</td><td>BER</td><td class="num">0.005510</td><td class="num">99.449</td><td class="num">803/1000</td><td class="num">0</td></tr>
+<tr><td>NC_022905-NC_022906.fasta</td><td>Brucella ceti</td><td></td><td>TE10759-12</td><td class="num">0.005808</td><td class="num">99.419</td><td class="num">794/1000</td><td class="num">0</td></tr>
+<tr><td>Bceti1Cudo.fasta</td><td>Brucella ceti</td><td></td><td>Cudo</td><td class="num">0.005976</td><td class="num">99.402</td><td class="num">789/1000</td><td class="num">0</td></tr>
+<tr><td>GCF_900446125.fasta</td><td>Brucella neotomae</td><td></td><td>NCTC 10084</td><td class="num">0.006010</td><td class="num">99.399</td><td class="num">788/1000</td><td class="num">0</td></tr>
+<tr><td>NC_017251-NC_017250.fasta</td><td>Brucella suis</td><td>1</td><td>1330</td><td class="num">0.006078</td><td class="num">99.392</td><td class="num">786/1000</td><td class="num">0</td></tr>
+<tr><td>NC_010103-NC_010104.fasta</td><td>Brucella canis</td><td></td><td>ATCC 23365</td><td class="num">0.006214</td><td class="num">99.379</td><td class="num">782/1000</td><td class="num">0</td></tr>
+<tr><td>B-REF-BS4-40.fasta</td><td>Brucella suis</td><td>4</td><td>40</td><td class="num">0.006248</td><td class="num">99.375</td><td class="num">781/1000</td><td class="num">0</td></tr>
+<tr><td>NC_010169-NC_010167.fasta</td><td>Brucella suis</td><td>2</td><td>ATCC 23445</td><td class="num">0.006420</td><td class="num">99.358</td><td class="num">776/1000</td><td class="num">0</td></tr>
+<tr><td>NZ_CP007719-NZ_CP007718.fasta</td><td>Brucella suis</td><td>3</td><td>686</td><td class="num">0.006489</td><td class="num">99.351</td><td class="num">774/1000</td><td class="num">0</td></tr>
+<tr><td>NC_009505-NC_009504.fasta</td><td>Brucella ovis</td><td></td><td>ATCC 25840</td><td class="num">0.007304</td><td class="num">99.270</td><td class="num">751/1000</td><td class="num">0</td></tr>
+</tbody></table>
+<h4>The species call</h4>
+<dl class="facts">
+<dt>Species reported</dt><dd class="wrap">Brucella melitensis</dd>
+<dt>Biovar</dt><dd class="wrap">3 (of Ether, the closest reference of that species)</dd>
+<dt>Decided by</dt><dd class="wrap">MASH+ST</dd>
+<dt>Species within reach of the closest</dt><dd class="wrap">Brucella melitensis</dd>
+<dt>Sequence type</dt><dd class="wrap">11</dd>
+<dt>What that ST is, in the isolate database</dt><dd class="wrap">ST 11 is Brucella melitensis in 546 of 546 isolate(s)</dd>
+<dt>Biovars recorded for it</dt><dd class="wrap">1:1, 2:7, 3:12</dd>
+</dl>
+<p><span class="tag decided">agree</span> The sequence type names the same species as the closest reference genome, which named it on its own: the two kinds of evidence agree.</p>
+<h4>MLST: the nine allele calls</h4>
+<dl class="facts">
+<dt>Sequence type</dt><dd class="wrap">11</dd>
+<dt>Allele profile</dt><dd class="wrap">3-2-3-2-1-5-3-2-10</dd>
+<dt>Every locus called</dt><dd class="wrap">yes</dd>
+<dt>Reads in the input</dt><dd class="wrap">1,136,924</dd>
+<dt>Reads matching an allele</dt><dd class="wrap">2,824</dd>
+</dl>
+<table>
+<caption>&quot;Ahead by&quot; and &quot;Ratio&quot; are the margin the call had over the next allele of the locus. A ratio near 1.00 is the call to check first.</caption>
+<thead><tr><th>Locus</th><th>Allele</th><th class="num">Reads</th><th>Runner-up</th><th class="num">Its reads</th><th class="num">Ahead by</th><th class="num">Ratio</th><th>Note</th></tr></thead>
+<tbody>
+<tr><td>gap</td><td>3</td><td class="num">350</td><td>gap_34</td><td class="num">250</td><td class="num">100</td><td class="num">1.40</td><td></td></tr>
+<tr><td>aroA</td><td>2</td><td class="num">324</td><td>aroA_1</td><td class="num">256</td><td class="num">68</td><td class="num">1.27</td><td></td></tr>
+<tr><td>glk</td><td>3</td><td class="num">282</td><td>glk_26</td><td class="num">184</td><td class="num">98</td><td class="num">1.53</td><td></td></tr>
+<tr><td>dnaK</td><td>2</td><td class="num">280</td><td>dnaK_6</td><td class="num">204</td><td class="num">76</td><td class="num">1.37</td><td></td></tr>
+<tr><td>gyrB</td><td>1</td><td class="num">374</td><td>gyrB_2</td><td class="num">266</td><td class="num">108</td><td class="num">1.41</td><td></td></tr>
+<tr><td>trpE</td><td>5</td><td class="num">348</td><td>trpE_31</td><td class="num">242</td><td class="num">106</td><td class="num">1.44</td><td></td></tr>
+<tr><td>cobQ</td><td>3</td><td class="num">260</td><td>cobQ_2</td><td class="num">194</td><td class="num">66</td><td class="num">1.34</td><td></td></tr>
+<tr><td>int_hyp</td><td>2</td><td class="num">328</td><td>int_hyp_20</td><td class="num">222</td><td class="num">106</td><td class="num">1.48</td><td></td></tr>
+<tr><td>omp25</td><td>10</td><td class="num">270</td><td>omp25_8</td><td class="num">182</td><td class="num">88</td><td class="num">1.48</td><td></td></tr>
+</tbody></table>
+<h4>Input files</h4>
+<table>
+<thead><tr><th>File</th><th class="num">Size</th><th>Modified</th><th>MD5</th><th>Symbolic link to</th></tr></thead>
+<tbody>
+<tr><td>SRR19520329_1.fastq.gz</td><td class="num">35.9 MB</td><td>2026-10-31 21:03:58 EDT</td><td>12edf200445bafd03d033fac3d98118c</td><td></td></tr>
+<tr><td>SRR19520329_2.fastq.gz</td><td class="num">40.6 MB</td><td>2026-10-31 21:03:58 EDT</td><td>a81d3abf43d7a2849c9062061cd8603a</td><td></td></tr>
+</tbody></table>
+<p class="mono wrap" style="color:var(--muted)">SRR19520329_1.fastq.gz SRR19520329_2.fastq.gz</p>
+</section>
+<section class="sample" id="sample-srr8550484">
+<h3>SRR8550484 <span class="tag ok">ok</span> <span class="tag decided">Brucella suis ST 15</span></h3>
+<h4>Identification: the MASH distances</h4>
+<dl class="facts">
+<dt>Closest reference</dt><dd class="wrap">NC_010169-NC_010167.fasta</dd>
+<dt>What it is</dt><dd class="wrap">Brucella suis bv. 2 str. ATCC 23445</dd>
+<dt>NCBI accessions</dt><dd class="wrap">NC_010169.1, NC_010167.1</dd>
+<dt>MASH distance</dt><dd class="wrap">0.024841</dd>
+<dt>Estimated identity</dt><dd class="wrap">97.516%</dd>
+<dt>Shared min-hashes</dt><dd class="wrap">422/1000 (at least 150 required)</dd>
+<dt>p-value</dt><dd class="wrap">0</dd>
+</dl>
+<table>
+<caption>Closest first. The closest is highlighted; a shaded row is near enough to the closest that the distance alone does not separate the two.</caption>
+<thead><tr><th>Reference genome</th><th>Species</th><th>Biovar</th><th>Strain</th><th class="num">Distance</th><th class="num">Identity %</th><th class="num">Shared hashes</th><th class="num">p-value</th></tr></thead>
+<tbody>
+<tr class="best"><td>NC_010169-NC_010167.fasta</td><td>Brucella suis</td><td>2</td><td>ATCC 23445</td><td class="num">0.024841</td><td class="num">97.516</td><td class="num">422/1000</td><td class="num">0</td></tr>
+<tr><td>NC_017251-NC_017250.fasta</td><td>Brucella suis</td><td>1</td><td>1330</td><td class="num">0.025977</td><td class="num">97.402</td><td class="num">408/1000</td><td class="num">0</td></tr>
+<tr><td>NC_013119_NC_013118.fasta</td><td>Brucella microti</td><td></td><td>CCM 4915</td><td class="num">0.026060</td><td class="num">97.394</td><td class="num">407/1000</td><td class="num">0</td></tr>
+<tr><td>B-REF-BS4-40.fasta</td><td>Brucella suis</td><td>4</td><td>40</td><td class="num">0.026143</td><td class="num">97.386</td><td class="num">406/1000</td><td class="num">0</td></tr>
+<tr><td>NC_010103-NC_010104.fasta</td><td>Brucella canis</td><td></td><td>ATCC 23365</td><td class="num">0.026310</td><td class="num">97.369</td><td class="num">404/1000</td><td class="num">0</td></tr>
+<tr><td>NZ_CP007719-NZ_CP007718.fasta</td><td>Brucella suis</td><td>3</td><td>686</td><td class="num">0.026310</td><td class="num">97.369</td><td class="num">404/1000</td><td class="num">0</td></tr>
+<tr><td>Bceti1Cudo.fasta</td><td>Brucella ceti</td><td></td><td>Cudo</td><td class="num">0.026648</td><td class="num">97.335</td><td class="num">400/1000</td><td class="num">0</td></tr>
+<tr><td>GCF_900446125.fasta</td><td>Brucella neotomae</td><td></td><td>NCTC 10084</td><td class="num">0.027077</td><td class="num">97.292</td><td class="num">395/1000</td><td class="num">0</td></tr>
+<tr><td>NZ_CP018508-NZ_CP018509.fasta</td><td>Brucella melitensis</td><td>1</td><td>BwIM_SOM_36b</td><td class="num">0.027164</td><td class="num">97.284</td><td class="num">394/1000</td><td class="num">0</td></tr>
+<tr><td>NC_022905-NC_022906.fasta</td><td>Brucella ceti</td><td></td><td>TE10759-12</td><td class="num">0.027250</td><td class="num">97.275</td><td class="num">393/1000</td><td class="num">0</td></tr>
+<tr><td>NZ_CP007760-NZ_CP007761.fasta</td><td>Brucella melitensis</td><td>3</td><td>Ether</td><td class="num">0.027338</td><td class="num">97.266</td><td class="num">392/1000</td><td class="num">0</td></tr>
+<tr><td>NC_012441-NC_012442.fasta</td><td>Brucella melitensis</td><td>2</td><td>ATCC 23457</td><td class="num">0.027601</td><td class="num">97.240</td><td class="num">389/1000</td><td class="num">0</td></tr>
+<tr><td>NZ_CP007682-NZ_CP007683.fasta</td><td>Brucella abortus</td><td>3</td><td>BER</td><td class="num">0.027778</td><td class="num">97.222</td><td class="num">387/1000</td><td class="num">0</td></tr>
+<tr><td>NC_003317-NC_003318.fasta</td><td>Brucella melitensis</td><td>1</td><td>16M</td><td class="num">0.027866</td><td class="num">97.213</td><td class="num">386/1000</td><td class="num">0</td></tr>
+<tr><td>NC_006932-NC_006933.fasta</td><td>Brucella abortus</td><td>1</td><td>9-941</td><td class="num">0.027866</td><td class="num">97.213</td><td class="num">386/1000</td><td class="num">0</td></tr>
+<tr><td>NC_009505-NC_009504.fasta</td><td>Brucella ovis</td><td></td><td>ATCC 25840</td><td class="num">0.028588</td><td class="num">97.141</td><td class="num">378/1000</td><td class="num">0</td></tr>
+</tbody></table>
+<h4>The species call</h4>
+<dl class="facts">
+<dt>Species reported</dt><dd class="wrap">Brucella suis</dd>
+<dt>Biovar</dt><dd class="wrap">2 (of ATCC 23445, the closest reference of that species)</dd>
+<dt>Decided by</dt><dd class="wrap">MASH+ST</dd>
+<dt>Species within reach of the closest</dt><dd class="wrap">Brucella suis</dd>
+<dt>Sequence type</dt><dd class="wrap">15</dd>
+<dt>What that ST is, in the isolate database</dt><dd class="wrap">ST 15 is Brucella suis in 99 of 103 isolate(s) (the rest: Brucella melitensis:2, Brucella ovis:1, Brucella sp.:1)</dd>
+<dt>Biovars recorded for it</dt><dd class="wrap">2:60</dd>
+</dl>
+<p><span class="tag decided">agree</span> The sequence type names the same species as the closest reference genome, which named it on its own: the two kinds of evidence agree.</p>
+<h4>MLST: the nine allele calls</h4>
+<dl class="facts">
+<dt>Sequence type</dt><dd class="wrap">15</dd>
+<dt>Allele profile</dt><dd class="wrap">1-2-7-1-3-3-5-3-2</dd>
+<dt>Every locus called</dt><dd class="wrap">yes</dd>
+<dt>Reads in the input</dt><dd class="wrap">1,693,672</dd>
+<dt>Reads matching an allele</dt><dd class="wrap">3,204</dd>
+</dl>
+<table>
+<caption>&quot;Ahead by&quot; and &quot;Ratio&quot; are the margin the call had over the next allele of the locus. A ratio near 1.00 is the call to check first.</caption>
+<thead><tr><th>Locus</th><th>Allele</th><th class="num">Reads</th><th>Runner-up</th><th class="num">Its reads</th><th class="num">Ahead by</th><th class="num">Ratio</th><th>Note</th></tr></thead>
+<tbody>
+<tr><td>gap</td><td>1</td><td class="num">508</td><td>gap_14</td><td class="num">412</td><td class="num">96</td><td class="num">1.23</td><td></td></tr>
+<tr><td>aroA</td><td>2</td><td class="num">284</td><td>aroA_16</td><td class="num">232</td><td class="num">52</td><td class="num">1.22</td><td></td></tr>
+<tr><td>glk</td><td>7</td><td class="num">282</td><td>glk_4</td><td class="num">202</td><td class="num">80</td><td class="num">1.40</td><td></td></tr>
+<tr><td>dnaK</td><td>1</td><td class="num">302</td><td>dnaK_27</td><td class="num">224</td><td class="num">78</td><td class="num">1.35</td><td></td></tr>
+<tr><td>gyrB</td><td>3</td><td class="num">384</td><td>gyrB_1</td><td class="num">290</td><td class="num">94</td><td class="num">1.32</td><td></td></tr>
+<tr><td>trpE</td><td>3</td><td class="num">346</td><td>trpE_5</td><td class="num">296</td><td class="num">50</td><td class="num">1.17</td><td></td></tr>
+<tr><td>cobQ</td><td>5</td><td class="num">294</td><td>cobQ_4</td><td class="num">220</td><td class="num">74</td><td class="num">1.34</td><td></td></tr>
+<tr><td>int_hyp</td><td>3</td><td class="num">444</td><td>int_hyp_1</td><td class="num">272</td><td class="num">172</td><td class="num">1.63</td><td></td></tr>
+<tr><td>omp25</td><td>2</td><td class="num">330</td><td>omp25_21</td><td class="num">250</td><td class="num">80</td><td class="num">1.32</td><td></td></tr>
+</tbody></table>
+<h4>Input files</h4>
+<table>
+<thead><tr><th>File</th><th class="num">Size</th><th>Modified</th><th>MD5</th><th>Symbolic link to</th></tr></thead>
+<tbody>
+<tr><td>SRR8550484_1.fastq.gz</td><td class="num">71.6 MB</td><td>2026-10-31 21:03:58 EDT</td><td>68833febebe273fadd9dc6ee0e95ed16</td><td></td></tr>
+<tr><td>SRR8550484_2.fastq.gz</td><td class="num">72.4 MB</td><td>2026-10-31 21:03:59 EDT</td><td>9b8438792c71722cd7fb4fb0d18e414c</td><td></td></tr>
+</tbody></table>
+<p class="mono wrap" style="color:var(--muted)">SRR8550484_1.fastq.gz SRR8550484_2.fastq.gz</p>
+</section>
+<h2 id="methods">Definitions and methods</h2>
+<h3>The species, from a MASH distance</h3><p>The reads of a sample are reduced to the 1000 smallest hashes of their 21-mers, ignoring the k-mers seen once, and that sketch is compared with the sketch of each reference genome. The distance is an estimate of the fraction of positions that differ, so 0.000024 is about 99.998% identity. The closest reference names the species, provided the reads share at least the required number of its 1000 min-hashes; below that the sample is reported as ND, because the closest of sixteen genomes is not an answer.</p>
+<h3>Why the biovar is not a biovar call</h3><p>The biovar in this report is the biovar of the closest reference genome of the species reported. The Brucella biovar references differ by very little, so the distance table in each sample block is the thing to read before quoting a biovar. For a biovar, use classical biotyping or an in silico Bruce-ladder.</p>
+<h3>The sequence type, from the alleles</h3><p>The same reads are given to Seal with the alleles of the nine loci as references, counting each read for every allele it shares the highest number of 25-mers with and for no other. The allele the sample carries is therefore counted for every read of its locus, and a neighbouring allele only for the reads that fall where the two agree, so the allele with the most reads wins. No mismatch is allowed in a k-mer, because the alleles of a locus differ by as little as one base. Two alleles with the same count are reported as a tie rather than separated by a coin toss, and a locus below the minimum read count is not called.</p>
+<h3>What the ST values mean</h3><p>A number is a profile that is in the table. &quot;new&quot; means all nine alleles were called but the combination is not in the table, which is either a genuinely new ST or a novel allele called as its nearest neighbour. &quot;ND&quot; means at least one locus had no call; the note says which.</p>
+<h3>How the species is decided when two are equally close</h3><p>Some Brucella species are closer to each other than the variation within either of them: in the sketch that ships with BrucellaID, B. canis and B. suis bv. 4 are 0.00024 apart, the closest pair of the sixteen. Where a reference of a second species is within the close-match margin of the closest one, the distance has not really chosen, and the sequence type chooses among those species, because the two share no ST. An ST is only used when enough of its isolates agree on a species, and an ST that contradicts a species the distance picked cleanly is reported as a conflict and not obeyed.</p>
+<h3>What this report does not establish</h3><p>That the sample is what the label on the tube says, that the library is not a mixture of two isolates, or that the reference data is current. It establishes what the software was given, what it measured, and what it concluded from those measurements.</p>
+<h2 id="run">Run information</h2>
+<dl class="facts">
+<dt>Operator</dt><dd class="wrap">M-O Duceppe</dd>
+<dt>User account</dt><dd class="wrap">[removed]</dd>
+<dt>Computer</dt><dd class="wrap">[removed]</dd>
+<dt>Operating system</dt><dd class="wrap">[removed]</dd>
+<dt>Working directory</dt><dd class="wrap">[removed]</dd>
+<dt>Started</dt><dd class="wrap">2026-10-31T21:03:59-04:00</dd>
+<dt>Finished</dt><dd class="wrap">2026-10-31T21:04:28-04:00</dd>
+<dt>Command</dt><dd class="wrap">brucellaid -i reads -o results -t 16 -p 2 --operator &#x27;M-O Duceppe&#x27;</dd>
+</dl>
+<h3>Software</h3>
+<table>
+<thead><tr><th>Program</th><th>Version</th></tr></thead>
+<tbody>
+<tr><td>brucellaid</td><td>1.0.0</td></tr>
+<tr><td>Python</td><td>3.12.16</td></tr>
+<tr><td>MASH</td><td>2.3</td></tr>
+<tr><td>BBTools</td><td>40.05</td></tr>
+<tr><td>Java</td><td>openjdk version &quot;25.0.4.1&quot; 2026-08-18</td></tr>
+</tbody></table>
+<h3>Parameters</h3>
+<table>
+<thead><tr><th>Parameter</th><th>Value</th></tr></thead>
+<tbody>
+<tr><td>Input</td><td>[removed]/reads</td></tr>
+<tr><td>Output folder</td><td>[removed]/results</td></tr>
+<tr><td>Reference sketch</td><td>.../brucellaid/data/references.msh</td></tr>
+<tr><td>MLST alleles</td><td>.../brucellaid/data/mlst_alleles.fasta</td></tr>
+<tr><td>Minimum shared hashes</td><td>150</td></tr>
+<tr><td>Minimum reads per allele</td><td>5</td></tr>
+<tr><td>ST to species table</td><td>118</td></tr>
+<tr><td>Minimum ST purity</td><td>0.95</td></tr>
+<tr><td>Minimum ST isolates</td><td>3</td></tr>
+<tr><td>K-mer size</td><td>25</td></tr>
+<tr><td>Mismatches</td><td>0</td></tr>
+<tr><td>MLST</td><td>True</td></tr>
+<tr><td>Threads</td><td>16</td></tr>
+<tr><td>Parallel samples</td><td>2</td></tr>
+<tr><td>Seal memory</td><td>1024m</td></tr>
+<tr><td>Input checksums</td><td>MD5</td></tr>
+<tr><td>HTML report</td><td>True</td></tr>
+<tr><td>PDF report</td><td>False</td></tr>
+</tbody></table>
+<h3>Reference data</h3>
+<table>
+<caption>The checksum is what lets a second run, months later, be shown to have used the same reference data as this one.</caption>
+<thead><tr><th>Data</th><th>What it holds</th><th>Source</th><th>MD5</th><th>Path</th></tr></thead>
+<tbody>
+<tr><td>MASH sketch</td><td>16 reference genome(s), k = 21, 1000 hashes</td><td>the package&#x27;s</td><td>44117b188407e97c5caff376f6e3b4eb</td><td>.../brucellaid/data/references.msh</td></tr>
+<tr><td>Reference table</td><td>16 genome(s) with their species, biovar, strain and accessions</td><td>the package&#x27;s</td><td>d221a221f85377746fbbbb88906984dc</td><td>.../brucellaid/data/references.tsv</td></tr>
+<tr><td>MLST alleles</td><td>309 allele(s) of the 9 loci</td><td>the package&#x27;s</td><td>95fcf5e43f4cbf7ebe840c8e54bfbf46</td><td>.../brucellaid/data/mlst_alleles.fasta</td></tr>
+<tr><td>MLST profiles</td><td>122 sequence type(s)</td><td>the package&#x27;s</td><td>dd4bc06867bd58ce2a8f362755aa79a7</td><td>.../brucellaid/data/mlst_profiles.tsv</td></tr>
+<tr><td>ST to species</td><td>118 sequence type(s) with a species</td><td>the package&#x27;s</td><td>3a6751b8a1ab1273f3bc0e19e08efb7f</td><td>.../brucellaid/data/mlst_st_species.tsv</td></tr>
+</tbody></table>
+<h3>References</h3><ol>
+<li class="wrap">Whatmore AM, Perrett LL, MacMillan AP. Characterisation of the genetic diversity of Brucella by multilocus sequencing. BMC Microbiology 2007;7:34. doi:10.1186/1471-2180-7-34</li>
+<li class="wrap">Ondov BD, Treangen TJ, Melsted P, et al. Mash: fast genome and metagenome distance estimation using MinHash. Genome Biology 2016;17:132. doi:10.1186/s13059-016-0997-x</li>
+<li class="wrap">Jolley KA, Bray JE, Maiden MCJ. Open-access bacterial population genomics: BIGSdb software, the PubMLST.org website and their applications. Wellcome Open Research 2018;3:124. doi:10.12688/wellcomeopenres.14826.1</li>
+<li class="wrap">Bushnell B. BBTools. https://sourceforge.net/projects/bbmap/</li>
+</ol>
+<footer>BrucellaID 1.0.0 &middot; 2026-10-31T21:03:59-04:00 &middot; [removed]@[removed] &middot; this report is self-contained: it needs no network to render.</footer>
+</main>
+</body>
+</html>

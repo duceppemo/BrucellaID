@@ -81,6 +81,9 @@ every allele call, the input files with their checksums, the status and the erro
 ```
 
 ## `brucellaid_report.html` — the quality assurance report
+**[View an example report](https://htmlpreview.github.io/?https://github.com/duceppemo/BrucellaID/blob/main/assets/example_report.html)** — the four samples of the [Tutorial](Tutorial), with the machine it ran
+on removed ([the file itself](https://github.com/duceppemo/BrucellaID/blob/main/assets/example_report.html); GitHub shows HTML as source, hence the viewer).
+
 One self-contained HTML file: no stylesheet, no script, no font and no image is fetched from anywhere, so it
 renders the same on a machine with no network, in an email attachment or out of an archive in ten years. It
 prints to clean pages as it stands, and `--no-html` skips it.

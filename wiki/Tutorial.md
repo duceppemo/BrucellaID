@@ -133,6 +133,8 @@ away.
 
 ## 7. The quality assurance report
 `results/brucellaid_report.html` is the run with its evidence attached: open it in a browser, or print it.
+**[This is what it looks like](https://htmlpreview.github.io/?https://github.com/duceppemo/BrucellaID/blob/main/assets/example_report.html)** for the four samples of this tutorial, with the machine it ran on
+removed.
 The *B. canis* sample is the one to look at — its block holds all sixteen distances, with
 `NC_010103-NC_010104.fasta` highlighted as the closest and `B-REF-BS4-40.fasta` shaded, because at
 0.006524 against 0.006698 the distance did not really choose. Under them, **The species call** shows what
