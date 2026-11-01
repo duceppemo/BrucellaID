@@ -196,6 +196,7 @@ class SpeciesCall:
     candidates: tuple = ()  # The species MASH put within reach, the closest first
     st: str = ''  # The sequence type the ST evidence came from, or ""
     entry: object = None  # The StSpecies row used, or None when the ST said nothing usable
+    st_reason: str = ''  # Why the ST was not used, when it was not: a report has to be able to say
     notes: tuple = ()
 
     @property
@@ -260,7 +261,7 @@ def call_species(identification, references, mlst=None, table=None, min_purity=D
     entry, why_not = st_evidence(mlst, table, min_purity=min_purity, min_isolates=min_isolates)
     st = mlst.st if mlst else ''
     if identification is None:
-        return SpeciesCall(st=st, entry=entry, notes=())
+        return SpeciesCall(st=st, entry=entry, st_reason=why_not)
 
     best = lookup(references, identification.best.reference)
     candidates = candidates_of(identification, references) if identification.identified else ()
@@ -271,7 +272,7 @@ def call_species(identification, references, mlst=None, table=None, min_purity=D
     # about different amounts of the genome, and this one is the weaker.
     if not identification.identified:
         notes = ['{}, but the reads are not identified as Brucella'.format(entry.evidence)] if entry else []
-        return SpeciesCall(st=st, entry=entry, notes=tuple(notes))
+        return SpeciesCall(st=st, entry=entry, st_reason=why_not, notes=tuple(notes))
 
     # A custom sketch whose closest genome the reference table does not name: MASH has no species to offer,
     # so a reliable ST is all there is.
@@ -280,16 +281,17 @@ def call_species(identification, references, mlst=None, table=None, min_purity=D
             return SpeciesCall(species=entry.species, source=FROM_ST, verdict=ARBITRATED, st=st, entry=entry,
                                notes=('the closest reference has no species in the reference table, so the species '
                                       'is the ST\'s: {}'.format(entry.evidence),))
-        return SpeciesCall(st=st, entry=entry)
+        return SpeciesCall(st=st, entry=entry, st_reason=why_not)
 
     if entry is None:
         # Nothing to arbitrate with. Worth saying so only when MASH actually needed it.
         if len(candidates) > 1:
             return SpeciesCall(species=mash_species, reference=best, source=FROM_MASH, verdict=UNRESOLVED,
-                               candidates=candidates, st=st,
+                               candidates=candidates, st=st, st_reason=why_not,
                                notes=('MASH cannot separate {}: the closest is {}, and the ST cannot choose '
                                       'because {}'.format(' and '.join(candidates), mash_species, why_not),))
-        return SpeciesCall(species=mash_species, reference=best, source=FROM_MASH, candidates=candidates, st=st)
+        return SpeciesCall(species=mash_species, reference=best, source=FROM_MASH, candidates=candidates,
+                           st=st, st_reason=why_not)
 
     if entry.species == mash_species:
         # The ST agrees. Where MASH had a choice to make, that agreement is the thing that settles it.

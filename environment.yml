@@ -12,7 +12,9 @@ dependencies:
   - gsl=2.7.0
   - bbmap>=38.0
   - xlsxwriter  # Only for the legacy xlsx report (--xlsx)
+  - reportlab>=4  # Only for the PDF quality assurance report (--pdf); the HTML one needs nothing
   - pytest
   - pytest-cov
   - openpyxl  # Reads the xlsx report back in the tests
+  - pypdf  # Reads the PDF report back in the tests
   - pip

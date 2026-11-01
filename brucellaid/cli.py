@@ -10,16 +10,16 @@ from argparse import ArgumentParser, ArgumentTypeError, RawDescriptionHelpFormat
 from datetime import datetime
 from pathlib import Path
 
-from . import __version__
+from . import __version__, qa
 from .errors import BrucellaIDError
 from .mash import DEFAULT_MIN_HASHES, check_mash, sketch_references
-from .mlst import DEFAULT_MIN_READS, alleles_fasta, load_profiles
+from .mlst import DEFAULT_MIN_READS, PROFILES_FILE, alleles_fasta, load_profiles
 from .pipeline import analyse_samples
-from .references import compare_with_sketch, load_references, reference_sketch
+from .references import REFERENCES_FILE, compare_with_sketch, data_path, load_references, reference_sketch
 from .report import print_table, run_info, write_reports
 from .samples import find_samples, single_sample
 from .seal import DEFAULT_KMER_SIZE, DEFAULT_MISMATCHES, auto_memory, check_seal
-from .species import DEFAULT_MIN_ISOLATES, DEFAULT_MIN_PURITY, load_st_species
+from .species import DEFAULT_MIN_ISOLATES, DEFAULT_MIN_PURITY, ST_SPECIES_FILE, load_st_species
 
 log = logging.getLogger('brucellaid')
 
@@ -103,6 +103,16 @@ def build_parser():
     output.add_argument('--xlsx', action='store_true',
                         help='Also write the legacy vSNP-style report, stat_alignment_summary_<date>.xlsx. Needs '
                              'the xlsxwriter package.')
+    output.add_argument('--no-html', action='store_true',
+                        help='Do not write brucellaid_report.html, the self-contained quality assurance report.')
+    output.add_argument('--pdf', action='store_true',
+                        help='Also write the quality assurance report as a PDF, brucellaid_report.pdf. Needs '
+                             'the reportlab package ("pip install brucellaid[pdf]").')
+    output.add_argument('--no-md5', action='store_true',
+                        help='Do not checksum the input files for the reports. MD5 takes a second or two per '
+                             'gigabyte.')
+    output.add_argument('--operator', metavar='NAME',
+                        help='Name to put on the quality assurance report. Default: the user account.')
 
     calling = parser.add_argument_group('identification and typing')
     calling.add_argument('--min-hashes', metavar='N', type=int, default=DEFAULT_MIN_HASHES,
@@ -187,6 +197,29 @@ def file_bases(path):
         return 0
 
 
+def reference_data(args, sketch, references, loci, st_table, mlst=True, md5=True):
+    """
+    The reference data files the run measured against, each with what it holds, for the reports.
+
+    A quality assurance report that names "the MLST profile table" proves nothing. These are the files, with
+    their checksums, so that two runs can be shown to have used the same data, or not.
+    """
+    alleles = alleles_fasta(args.alleles)
+    files = [('MASH sketch', sketch, '{} reference genome(s), k = 21, 1000 hashes'.format(
+                  len(sketch_references(sketch)))),
+             ('Reference table', args.references or data_path(REFERENCES_FILE),
+              '{} genome(s) with their species, biovar, strain and accessions'.format(len(references)))]
+    if mlst:
+        files.append(('MLST alleles', alleles, '{} allele(s) of the {} loci'.format(
+            qa.fasta_count(alleles), len(loci))))
+        files.append(('MLST profiles', args.profiles or data_path(PROFILES_FILE),
+                      '{} sequence type(s)'.format(len(load_profiles(args.profiles)[1]))))
+    if st_table is not None:
+        files.append(('ST to species', args.st_species or data_path(ST_SPECIES_FILE),
+                      '{} sequence type(s) with a species'.format(len(st_table))))
+    return qa.data_facts(files, md5=md5)
+
+
 def main(argv=None):
     parser = build_parser()
     args = parser.parse_args(argv)
@@ -207,6 +240,7 @@ def main(argv=None):
         alleles = alleles_fasta(args.alleles)
         loci = load_profiles(args.profiles)[0] if mlst else ()
         st_table = None if args.no_st_species else load_st_species(args.st_species)
+        data = reference_data(args, sketch, references, loci, st_table, mlst=mlst, md5=not args.no_md5)
         log.info('%d reference genome(s) in %s', len(sketch_references(sketch)), sketch)
         for message in compare_with_sketch(sketch_references(sketch), references):
             log.warning('%s', message)
@@ -238,9 +272,13 @@ def main(argv=None):
                                  'Minimum ST isolates': None if st_table is None else args.min_st_isolates,
                                  'K-mer size': args.kmer_size, 'Mismatches': args.mismatch,
                                  'MLST': mlst, 'Threads': args.threads, 'Parallel samples': jobs,
-                                 'Seal memory': memory}, started)
+                                 'Seal memory': memory,
+                                 'Input checksums': 'none' if args.no_md5 else 'MD5',
+                                 'HTML report': not args.no_html, 'PDF report': args.pdf},
+                       started, operator=args.operator, data=data)
         rows, reports = write_reports(results, references, output, started, command=command, run=run,
-                                      xlsx=args.xlsx)
+                                      xlsx=args.xlsx, html=not args.no_html, pdf=args.pdf,
+                                      md5=not args.no_md5)
     except USER_ERRORS as e:
         log.error('%s', e)
         log.debug('Traceback:', exc_info=True)  # Shown with --verbose

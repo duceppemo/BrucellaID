@@ -1,7 +1,7 @@
 # Output files
 
-A run writes four files to the output folder, and a fifth with `--xlsx`. Every table is tab separated, with
-the command that produced it on a first `#` line.
+A run writes six files to the output folder, and one more with `--pdf` or `--xlsx`. Every table is tab
+separated, with the command that produced it on a first `#` line.
 
 ## `brucellaid.tsv` — one row per sample
 Also printed to standard output.
@@ -55,9 +55,10 @@ call surprises you: the *Brucella* genomes are close to one another, and the sec
 behind the first.
 
 ## `brucellaid.json` — everything, for a pipeline
-The command, the start and end times, the versions of BrucellaID, Python, MASH, BBTools and Java, the
-parameters, the reference table, and per sample: the species and what decided it, the closest reference with
-its accessions, the close matches, every allele call and the error, if any.
+The command, the start and end times, who ran it and on what, the versions of BrucellaID, Python, MASH,
+BBTools and Java, the parameters, the reference table, the MD5 of every reference data file, and per
+sample: the species and what decided it, the closest reference with its accessions, the close matches,
+every allele call, the input files with their checksums, the status and the error, if any.
 
 ```json
 {
@@ -78,6 +79,60 @@ its accessions, the close matches, every allele call and the error, if any.
   ]
 }
 ```
+
+## `brucellaid_report.html` — the quality assurance report
+One self-contained HTML file: no stylesheet, no script, no font and no image is fetched from anywhere, so it
+renders the same on a machine with no network, in an email attachment or out of an archive in ten years. It
+prints to clean pages as it stands, and `--no-html` skips it.
+
+It is written for the question "can I show how this result was reached?", so it holds the evidence rather
+than the conclusion:
+
+1. **Summary**: the run, the operator, and the samples grouped by what they were called — same species and
+   same ST together, the largest group first, the failed samples last — with a **Reviewed by** box for a
+   name, a date and a signature.
+2. **Notes, warnings and errors**: one row per note, errors first. A note on a sample whose status is `ok`
+   is a remark, not a problem.
+3. **Samples**, one block each: the identification with **every** distance MASH measured and not only the
+   winning one (the closest row highlighted, and the rows near enough that the distance does not separate
+   them shaded); how the species was decided, including what the ST contributed and, when it was left out,
+   why; the nine allele calls with the allele each one had to beat and the margin it had; and the input
+   files with their size, date and MD5.
+4. **Definitions and methods**: what a MASH distance is, why the biovar is not a biovar call, how Seal
+   counts, what `new` and `ND` mean, how the species is decided when two are equally close, and what the
+   report does *not* establish.
+5. **Run information**: operator, user account, computer, operating system, working directory, start and
+   end time, the exact command, every parameter, the versions of BrucellaID, Python, MASH, BBTools and
+   Java, and **the MD5 of every reference data file the run measured against** — which is what lets two
+   runs a year apart be shown to have used the same data, or not.
+
+Each sample has a `Status`: `ok`, `warning` (not identified, no ST, a `new` profile, or the two kinds of
+evidence disagreeing) or `failed`.
+
+`--no-md5` skips the checksums of the input files, which cost a second or two per gigabyte. `--operator
+NAME` puts a name other than the user account on the report.
+
+## `brucellaid_report.pdf` — the same report as a PDF (`--pdf`)
+The same evidence, laid out for paper, with "Page 3 of 9" in the footer of every page so a loose sheet can
+be placed. It needs reportlab, which is not installed by default:
+
+```bash
+pip install 'brucellaid[pdf]'     # or: conda install -c conda-forge reportlab
+```
+The HTML report holds the same information and needs nothing installed, so the PDF is for the places that
+want a file to sign and file rather than a page to read.
+
+## `brucellaid_mqc.json` — for MultiQC
+A [MultiQC custom content](https://docs.seqera.io/multiqc/custom_content) file. Run `multiqc` on the output
+folder and the run appears as a **BrucellaID** section: one row per sample with the species, biovar,
+`SpeciesSource`, `STSpecies`, sequence type, shared hashes, closest reference and status.
+
+```bash
+brucellaid -i reads/ -o results/
+multiqc results/
+```
+JSON rather than TSV on purpose: a sequence type is a label, and MultiQC would right-align a column of them
+and offer to average it.
 
 ## `stat_alignment_summary_<date>.xlsx` — the legacy report (`--xlsx`)
 The report the first version of BrucellaID wrote, for whatever still reads it: the four columns

@@ -46,6 +46,15 @@ configure.
 * **Nothing is hidden**: the distance to every reference, the reads behind every allele call and the
   runner-up that call had to beat, a note when a second reference was nearly as close, and a tie reported as
   a tie rather than broken by a coin toss.
+* **A quality assurance report you can sign**: every run writes `brucellaid_report.html`, one
+  self-contained file — no script, no stylesheet, nothing fetched from anywhere — holding every distance
+  MASH measured and not only the winning one, how the species was decided, every allele call with the
+  margin it had, the input files with their MD5, the exact command, and **the checksum of every reference
+  data file the run measured against**, so two runs a year apart can be shown to have used the same data.
+  With a box for a reviewer's name, date and signature. `--pdf` writes the same thing as a PDF.
+* **Fits your pipeline**: a JSON report with everything in it, and a
+  [MultiQC](https://docs.seqera.io/multiqc/custom_content) file, so `multiqc results/` folds the run into
+  the report your pipeline already produces.
 * **Batch mode**: point it at a folder; fastq files are found recursively, R1/R2 paired, and several samples
   run at a time. A sample that fails leaves the others readable.
 * **Current reference data**: the MLST database is PubMLST's, 309 alleles and 122 sequence types, plus the
@@ -55,8 +64,9 @@ configure.
 * **Backwards compatible where it counts**: the MASH identification is vSNP's, down to the threshold of
   150 shared hashes (`--no-st-species` reports it alone), and `--xlsx` still writes the
   `stat_alignment_summary_<date>.xlsx` of the first version.
-* **Nothing to configure**: only the Python standard library, plus MASH and BBTools.
-* **Tested**: 234 tests, 100% coverage, end to end on a synthetic genome and on reads tiled over the real
+* **Nothing to configure**: only the Python standard library, plus MASH and BBTools. The two optional
+  output formats, xlsx and PDF, are the only things that want a package, and neither is needed.
+* **Tested**: 303 tests, 100% coverage, end to end on a synthetic genome and on reads tiled over the real
   MLST alleles.
 * **Validated** on 16 genomes with a known answer: every species, biovar and closest reference right, and
   all 14 sequence types the one the genome carries — read off the assembly by exact match, which shares no
@@ -82,8 +92,9 @@ brucellaid -i reads/ -o results/ -p 4                                 # A folder
 brucellaid -i reads/ -o results/ --no-mlst                            # Species only
 ```
 The results are printed and saved in `results/`: one row per sample, one row per locus, every MASH distance,
-and a JSON report. To see it work on data with a known answer, run `bash examples/run_example.sh`, which
-builds its own reads from the alleles of a sequence type.
+a JSON report, a MultiQC file, and `brucellaid_report.html` — a self-contained quality assurance report with
+the evidence behind every call and a box to sign. To see it work on data with a known answer, run
+`bash examples/run_example.sh`, which builds its own reads from the alleles of a sequence type.
 
 **What the two answers mean**: the species is the species of the closest reference genome, except where a
 reference of another species is just as close and the sequence type chooses between the two — the

@@ -114,6 +114,39 @@ def test_main_without_the_st_species_table(tmp_path, monkeypatch, capsys):
     assert report['parameters']['ST to species table'] is None
 
 
+def test_main_writes_the_quality_assurance_reports(tmp_path, monkeypatch, capsys):
+    """--pdf and --operator: the HTML, the MultiQC file and the PDF, with the operator's name on them."""
+    pytest.importorskip('reportlab')
+    fake_run(monkeypatch)
+    reads = write_fastq(tmp_path / 'a_R1.fastq.gz', [('r', 'ACGT')])
+    out = tmp_path / 'out'
+    cli.main(['-r1', str(reads), '-o', str(out), '--pdf', '--operator', 'A Reviewer', '--no-md5'])
+    markup = (out / 'brucellaid_report.html').read_text(encoding='utf-8')
+    assert 'A Reviewer' in markup
+    assert 'not computed (--no-md5)' in markup
+    assert (out / 'brucellaid_report.pdf').stat().st_size > 1000
+    assert json.loads((out / 'brucellaid_mqc.json').read_text())['id'] == 'brucellaid'
+    report = json.loads((out / 'brucellaid.json').read_text())
+    assert report['operator'] == 'A Reviewer'
+    assert report['parameters']['Input checksums'] == 'none'
+    assert [item['name'] for item in report['reference_data']] == [
+        'MASH sketch', 'Reference table', 'MLST alleles', 'MLST profiles', 'ST to species']
+    assert all(item['md5'] == '' for item in report['reference_data'])  # --no-md5 covers these too
+
+
+def test_main_without_the_html_report(tmp_path, monkeypatch, capsys):
+    fake_run(monkeypatch)
+    reads = write_fastq(tmp_path / 'a_R1.fastq.gz', [('r', 'ACGT')])
+    out = tmp_path / 'out'
+    cli.main(['-r1', str(reads), '-o', str(out), '--no-html', '--no-mlst'])
+    assert not (out / 'brucellaid_report.html').exists()
+    assert (out / 'brucellaid_mqc.json').exists()  # The MultiQC file is small and always written
+    report = json.loads((out / 'brucellaid.json').read_text())
+    # Without the MLST, the allele and profile files are not part of what the run measured against
+    assert [item['name'] for item in report['reference_data']] == [
+        'MASH sketch', 'Reference table', 'ST to species']
+
+
 def test_main_reports_a_user_error_without_a_traceback(tmp_path, monkeypatch, capsys):
     fake_run(monkeypatch, error=BrucellaIDError('the sketch is empty'))
     reads = write_fastq(tmp_path / 'a_R1.fastq.gz', [('r', 'ACGT')])

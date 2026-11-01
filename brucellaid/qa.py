@@ -1,0 +1,249 @@
+"""
+The facts a quality assurance report rests on, in a form the HTML and the PDF renderers share.
+
+A result is only as good as what can be checked about it afterwards. That means, for every sample: which
+files went in and what they were (size, date, checksum), every distance MASH measured rather than only the
+winning one, what the sequence type contributed to the species call, and how far each allele call was ahead
+of the allele it beat. And for the run: who ran what, where, with which versions, and against which
+reference data, identified by checksum rather than by name.
+
+Nothing here renders anything. The numbers are gathered once and the two report formats lay the same numbers
+out differently.
+"""
+
+import getpass
+import hashlib
+import os
+import platform
+import socket
+from dataclasses import dataclass
+from datetime import datetime
+from pathlib import Path
+
+from .mlst import NEW_PROFILE, UNKNOWN
+from .references import SKETCH_FILE, data_path
+from .species import CONFLICT, UNRESOLVED
+
+BLOCK = 1 << 20  # Read a file for its checksum a megabyte at a time: an input file can be gigabytes
+
+OK = 'ok'
+WARNING = 'warning'
+FAILED = 'failed'
+
+
+def file_md5(path):
+    """
+    MD5 of a file.
+
+    usedforsecurity=False because this is a checksum of a file a reviewer may want to match against the
+    one the sequencer wrote, not a security measure; without it, MD5 is unavailable on a FIPS enabled host.
+    """
+    digest = hashlib.md5(usedforsecurity=False)
+    with open(path, 'rb') as f:
+        for block in iter(lambda: f.read(BLOCK), b''):
+            digest.update(block)
+    return digest.hexdigest()
+
+
+def human_size(size):
+    """A file size a person can read: 1.2 GB."""
+    for unit in ('B', 'kB', 'MB', 'GB', 'TB'):
+        if size < 1024 or unit == 'TB':
+            return '{:.0f} {}'.format(size, unit) if unit == 'B' else '{:.1f} {}'.format(size, unit)
+        size /= 1024.0
+    return '{:.1f} TB'.format(size)  # pragma: no cover - the loop returns at TB
+
+
+@dataclass(frozen=True)
+class FileFacts:
+    """What one input file was when the report was written."""
+    path: str  # Absolute, with symbolic links left alone: that is what the operator typed
+    size: int
+    modified: str
+    md5: str = ''  # Empty with --no-md5
+    target: str = ''  # The real file, when path is a symbolic link
+
+    @classmethod
+    def describe(cls, path, md5=True):
+        stat = os.stat(path)
+        absolute = os.path.abspath(path)
+        real = os.path.realpath(path)
+        modified = datetime.fromtimestamp(stat.st_mtime).astimezone().strftime('%Y-%m-%d %H:%M:%S %Z')
+        return cls(absolute, stat.st_size, modified, file_md5(path) if md5 else '',
+                   real if real != absolute else '')
+
+    @property
+    def name(self):
+        return os.path.basename(self.path)
+
+    @property
+    def size_text(self):
+        return human_size(self.size)
+
+
+def describe_inputs(results, md5=True):
+    """
+    {sample: [FileFacts]} for every sample of a run.
+
+    A file that has gone away since the run is skipped rather than raised over: the report is written after
+    the analysis, and a missing input should not cost the operator the whole report.
+    """
+    described = {}
+    for result in results:
+        facts = []
+        for path in result.files:
+            try:
+                facts.append(FileFacts.describe(path, md5=md5))
+            except OSError:
+                continue
+        described[result.sample] = facts
+    return described
+
+
+def fasta_count(path):
+    """How many sequences a fasta file holds, for the line that describes it in a report."""
+    count = 0
+    with open(path) as f:
+        for line in f:
+            count += line.startswith('>')
+    return count
+
+
+def user_name():
+    """The login name, or the numeric user id when there is no name (some containers have none)."""
+    try:
+        return getpass.getuser()
+    except (KeyError, OSError):
+        return str(os.getuid()) if hasattr(os, 'getuid') else 'unknown'
+
+
+def environment(operator=None):
+    """Who ran it, on what, and where."""
+    user = user_name()
+    return {'operator': operator or user, 'user': user, 'host': socket.gethostname(),
+            'system': platform.platform(), 'working_directory': os.getcwd()}
+
+
+def is_packaged(path):
+    """Whether a reference data file is the one that ships with the package."""
+    try:
+        return Path(path).resolve().parent == Path(data_path(SKETCH_FILE)).resolve().parent
+    except OSError:
+        return False
+
+
+def data_facts(files, md5=True):
+    """
+    The reference data a run measured against, each file identified by its checksum.
+
+    A report that names "the MLST profile table" proves nothing; one that gives its MD5 lets a reviewer show
+    that two runs a year apart used the same table, or that they did not.
+
+    :param files: [(name, path, detail)], the files the run actually used
+    :return: [{'name', 'path', 'detail', 'md5', 'packaged'}], skipping the files that cannot be read
+    """
+    facts = []
+    for name, path, detail in files:
+        if not path or not os.path.isfile(path):
+            continue
+        facts.append({'name': name, 'path': os.path.abspath(path), 'detail': detail,
+                      'md5': file_md5(path) if md5 else '', 'packaged': is_packaged(path)})
+    return facts
+
+
+def status(result):
+    """
+    Whether a sample needs a second look: "ok", "warning" or "failed".
+
+    A warning is for the things a reviewer has to resolve, not for every note: a read set that was not
+    identified, a sequence type that could not be called or is not in the table, and a species the two kinds
+    of evidence disagree about. A sample whose second reference was nearly as close is normal, and says so
+    in its notes without being flagged.
+    """
+    if result.error:
+        return FAILED
+    if not result.identified:
+        return WARNING
+    if result.mlst is not None and result.sequence_type in (UNKNOWN, NEW_PROFILE):
+        return WARNING
+    if result.call is not None and result.call.verdict in (CONFLICT, UNRESOLVED):
+        return WARNING
+    return OK
+
+
+def counted(results):
+    """{status: how many samples}, for the summary line of a report."""
+    counts = {OK: 0, WARNING: 0, FAILED: 0}
+    for result in results:
+        counts[status(result)] += 1
+    return counts
+
+
+def groups(results):
+    """
+    The samples of a run, grouped by what they were called: the same species and the same ST together.
+
+    The largest group first, so a report opens on the bulk of the run, and the failed samples last, where a
+    reviewer looks for them. Within a group the samples keep the order they were analysed in.
+
+    :return: [((species, ST), [SampleResult])], the failed samples under ('', '')
+    """
+    buckets = {}
+    for result in results:
+        key = ('', '') if result.error else (result.species, result.sequence_type)
+        buckets.setdefault(key, []).append(result)
+    failed = buckets.pop(('', ''), None)
+    ordered = sorted(buckets.items(), key=lambda item: (-len(item[1]), item[0]))
+    if failed:
+        ordered.append((('', ''), failed))
+    return ordered
+
+
+def margin(call):
+    """
+    How far an allele call was ahead of the allele it had to beat: (difference, ratio).
+
+    The ratio is what says whether a call is comfortable. A locus whose runner-up is one read behind is a
+    call, but it is the one to look at when a profile comes back as "new".
+
+    :return: (reads ahead, ratio) or (None, None) when there was no call or no runner-up
+    """
+    if not call.allele or not call.runner_up:
+        return None, None
+    if not call.runner_up_reads:
+        return call.reads, None
+    return call.reads - call.runner_up_reads, call.reads / call.runner_up_reads
+
+
+def close_hits(result, references):
+    """
+    The MASH hits that were in the running: the closest, and the ones near enough to be reported with it.
+
+    :return: [(MashHit, Reference or None, is_close)] in the order MASH ranked them, closest first
+    """
+    if result.identification is None:
+        return []
+    close = {id(hit) for hit in result.identification.close_matches}
+    rows = []
+    for hit in result.identification.hits:
+        reference = references.get(hit.reference) or references.get(os.path.basename(hit.reference))
+        rows.append((hit, reference, id(hit) in close))
+    return rows
+
+
+def warnings(results):
+    """
+    [(sample, status, text)] of everything a reviewer has to read: the errors first, then the notes.
+
+    One row per note rather than one row per sample, because a sample with four notes is exactly the sample
+    whose notes should not be run together into a paragraph.
+    """
+    rows = []
+    for result in results:
+        if result.error:
+            rows.append((result.sample, FAILED, result.error))
+    for result in results:
+        for note in result.notes:
+            if note:
+                rows.append((result.sample, status(result), note))
+    return rows

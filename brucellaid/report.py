@@ -8,7 +8,7 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
-from . import __version__
+from . import __version__, htmlreport, qa
 from .errors import BrucellaIDError
 from .mash import versions as mash_versions
 from .mlst import UNKNOWN
@@ -21,6 +21,8 @@ MAIN_FILE = 'brucellaid.tsv'
 MLST_FILE = 'brucellaid_mlst.tsv'
 MASH_FILE = 'brucellaid_mash.tsv'
 JSON_FILE = 'brucellaid.json'
+MQC_FILE = 'brucellaid_mqc.json'
+PDF_FILE = 'brucellaid_report.pdf'
 
 MAIN_HEADER = ['Sample', 'Species', 'Biovar', 'SpeciesSource', 'ClosestReference', 'MashDistance',
                'SharedHashes', 'SequenceType', 'AlleleProfile', 'STSpecies', 'Reads', 'Notes', 'Error']
@@ -119,7 +121,7 @@ def mash_table(results, references):
     return rows
 
 
-def json_report(results, references, run=None):
+def json_report(results, references, run=None, inputs=None):
     """Everything the run produced, for a pipeline: parameters, versions, and the result of each sample."""
     samples = []
     for result in results:
@@ -141,6 +143,7 @@ def json_report(results, references, run=None):
                 'st_species': result.call.st_species,
                 'st_purity': result.call.entry.purity if result.call.entry else None,
                 'st_isolates': result.call.entry.isolates if result.call.entry else None,
+                'st_not_used': result.call.st_reason or None,
                 'notes': list(result.call.notes),
             },
             'closest_reference': None if best is None else {
@@ -174,6 +177,10 @@ def json_report(results, references, run=None):
                 'note': result.mlst.note,
             },
             'notes': list(result.notes),
+            'status': qa.status(result),
+            'input_files': [{'path': f.path, 'size': f.size, 'modified': f.modified, 'md5': f.md5 or None,
+                             'symlink_to': f.target or None}
+                            for f in (inputs or {}).get(result.sample, [])],
             'error': result.error,
         })
     report = {'tool': 'brucellaid', 'version': __version__,
@@ -185,10 +192,48 @@ def json_report(results, references, run=None):
     return report
 
 
-def write_json(results, references, path, run=None):
+def write_json(results, references, path, run=None, inputs=None):
     with open(path, 'w') as f:
-        json.dump(json_report(results, references, run=run), f, indent=2, sort_keys=False)
+        json.dump(json_report(results, references, run=run, inputs=inputs), f, indent=2, sort_keys=False)
         f.write('\n')
+
+
+MQC_COLUMNS = ('Species', 'Biovar', 'SpeciesSource', 'STSpecies', 'SequenceType', 'SharedHashes',
+               'ClosestReference', 'Status')
+
+
+def write_multiqc(results, path):
+    """
+    A MultiQC custom content file: run "multiqc" on the output folder and the run appears as a
+    "BrucellaID" table.
+
+    JSON rather than TSV, because a sequence type is a label and not a number: MultiQC would right-align
+    "20" and happily average a column of them.
+    """
+    data = {}
+    for result in results:
+        values = (result.species, result.biovar, species_source(result.call),
+                  result.call.st_species if result.call else '', result.sequence_type,
+                  '{}/{}'.format(result.identification.best.shared_hashes,
+                                 result.identification.best.total_hashes) if result.identification else '',
+                  result.closest_reference, qa.status(result))
+        data[result.sample] = {column: value or '-' for column, value in zip(MQC_COLUMNS, values, strict=True)}
+    link = '<a href="https://github.com/duceppemo/BrucellaID">BrucellaID</a> {}'.format(__version__)
+    content = {
+        'id': 'brucellaid',
+        'section_name': 'BrucellaID',
+        'description': 'Brucella species from the MASH distance to 16 reference genomes, and the nine-locus '
+                       'sequence type, by {}. "SpeciesSource" says whether the species rests on the distance, '
+                       'on the sequence type, or on both.'.format(link),
+        'plot_type': 'table',
+        'pconfig': {'id': 'brucellaid_table', 'namespace': 'BrucellaID', 'title': 'BrucellaID'},
+        'headers': {column: {'title': column, 'scale': False} for column in MQC_COLUMNS},
+        'data': data,
+    }
+    with open(path, 'w') as f:
+        json.dump(content, f, indent=2)
+        f.write('\n')
+    return path
 
 
 def legacy_filename(started):
@@ -223,14 +268,23 @@ def write_legacy_xlsx(results, path, started):
     return path
 
 
-def run_info(command, parameters, started, finished=None):
-    """The run metadata of the JSON report: what was run, with which versions and parameters."""
+def run_info(command, parameters, started, finished=None, operator=None, data=None):
+    """
+    The run metadata of the JSON report and of the quality assurance report: what was run, by whom, on what,
+    with which versions and parameters, and against which reference data.
+
+    :param operator: the name to put on the report, when it is not the user account's
+    :param data: reference data facts from qa.data_facts(), identifying each file by its checksum
+    """
     software = {'brucellaid': __version__, 'Python': platform.python_version()}
     software.update(mash_versions())
     software.update(seal_versions())
-    return {'command': command, 'started': started.isoformat(timespec='seconds'),
+    info = {'command': command, 'started': started.isoformat(timespec='seconds'),
             'finished': (finished or datetime.now().astimezone()).isoformat(timespec='seconds'),
             'software': software, 'parameters': parameters}
+    info.update(qa.environment(operator))
+    info['reference_data'] = list(data or [])
+    return info
 
 
 def print_table(rows, stream=None):
@@ -241,10 +295,18 @@ def print_table(rows, stream=None):
     stream.flush()
 
 
-def write_reports(results, references, output, started, command=None, run=None, xlsx=False):
-    """Write the reports in the output folder and return (main table, paths), the main table first."""
+def write_reports(results, references, output, started, command=None, run=None, xlsx=False, html=True,
+                  pdf=False, md5=True):
+    """
+    Write the reports in the output folder and return (main table, paths), the main table first.
+
+    :param html: write the self-contained quality assurance report
+    :param pdf: write the same report as a PDF, which needs reportlab
+    :param md5: checksum the input files, for the reports
+    """
     output = Path(output)
     output.mkdir(parents=True, exist_ok=True)
+    inputs = qa.describe_inputs(results, md5=md5)
     rows = main_table(results)
     write_table(rows, output / MAIN_FILE, command=command)
     paths = [output / MAIN_FILE]
@@ -256,8 +318,19 @@ def write_reports(results, references, output, started, command=None, run=None, 
     if len(mash_rows) > 1:
         write_table(mash_rows, output / MASH_FILE, command=command)
         paths.append(output / MASH_FILE)
-    write_json(results, references, output / JSON_FILE, run=run)
+    write_json(results, references, output / JSON_FILE, run=run, inputs=inputs)
     paths.append(output / JSON_FILE)
+    write_multiqc(results, output / MQC_FILE)
+    paths.append(output / MQC_FILE)
+    if html:
+        htmlreport.write(results, references, run or {}, output / htmlreport.REPORT_FILE, inputs=inputs,
+                         data=(run or {}).get('reference_data'))
+        paths.append(output / htmlreport.REPORT_FILE)
+    if pdf:
+        from . import pdfreport  # Imported here: it needs reportlab, which only --pdf requires
+        pdfreport.write(results, references, run or {}, output / PDF_FILE, inputs=inputs,
+                        data=(run or {}).get('reference_data'))
+        paths.append(output / PDF_FILE)
     if xlsx:
         paths.append(write_legacy_xlsx(results, output / legacy_filename(started), started))
     return rows, paths

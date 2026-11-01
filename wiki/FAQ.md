@@ -66,6 +66,18 @@ All nine alleles were called, but their combination is not in the profile table.
 Because that is what the first version wrote, and `--xlsx` exists for the pipelines that read it. The
 species name is in `brucellaid.tsv` and in the JSON report, with the vSNP code as `species_code`.
 
+### What is the HTML report for, and can I send it to someone?
+It is the evidence behind a run, in one file: every distance rather than the winning one, every allele call
+with the margin it had, the checksums of the inputs and of the reference data, the exact command, and a box
+for a reviewer to sign. It fetches nothing from the network — no script, no stylesheet, no font — so it
+renders the same in an email attachment, on an offline machine, or out of an archive years later, and it
+prints to clean pages. `--pdf` writes the same report as a PDF, which needs reportlab. `--no-html` skips it.
+
+### Can I get the results into MultiQC?
+Yes, with nothing to configure: every run writes `brucellaid_mqc.json`, so `multiqc results/` shows a
+**BrucellaID** table with the species, biovar, what decided the species, the sequence type, the shared
+hashes and the status of each sample.
+
 ### Does it detect mixed samples?
 Not as such. A mixture shows up as a lower share of hashes, a close second reference, or ties in the allele
 calls — all of which are reported — but BrucellaID will not tell you "two strains". Read

@@ -131,7 +131,33 @@ It is still typed, and the MLST is unbothered — the allele calls only use the 
 but it is the kind of number worth carrying into the report. BrucellaID prints it rather than rounding it
 away.
 
-## 7. The JSON report
+## 7. The quality assurance report
+`results/brucellaid_report.html` is the run with its evidence attached: open it in a browser, or print it.
+The *B. canis* sample is the one to look at — its block holds all sixteen distances, with
+`NC_010103-NC_010104.fasta` highlighted as the closest and `B-REF-BS4-40.fasta` shaded, because at
+0.006524 against 0.006698 the distance did not really choose. Under them, **The species call** shows what
+decided it:
+
+```
+Species reported                          Brucella canis
+Decided by                                MASH+ST
+Species within reach of the closest       Brucella canis, Brucella suis
+Sequence type                             20
+What that ST is, in the isolate database  ST 20 is Brucella canis in 70 of 70 isolate(s)
+```
+
+The file fetches nothing from the network, so it can be emailed, archived or opened on an offline machine
+and still look the same. `--pdf` writes the same report as a PDF (it needs reportlab), `--operator NAME`
+puts a name on it, and `--no-html` skips it.
+
+`results/brucellaid_mqc.json` needs no options at all:
+
+```bash
+multiqc results/
+```
+gives a MultiQC report with a **BrucellaID** table of the four samples.
+
+## 8. The JSON report
 `results/brucellaid.json` holds everything, including what produced it:
 
 ```json
@@ -146,7 +172,7 @@ away.
 and, per sample, the species with its accessions, the close matches, every allele with its reads and its
 runner-up, and the error if the sample failed.
 
-## 8. The legacy report
+## 9. The legacy report
 If something downstream reads the xlsx of the first version:
 
 ```bash

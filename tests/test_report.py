@@ -5,7 +5,7 @@ from datetime import datetime
 
 import pytest
 
-from brucellaid import report
+from brucellaid import htmlreport, report
 from brucellaid.errors import BrucellaIDError
 from brucellaid.mash import Identification, parse_dist
 from brucellaid.mlst import UNKNOWN, AlleleCall, MlstResult
@@ -101,7 +101,8 @@ def test_write_reports(tmp_path):
     run = run_info('brucellaid -i reads/ -o out/', {'Threads': 4}, STARTED)
     rows, paths = write_reports(results, REFERENCES, tmp_path / 'out', STARTED, command='brucellaid -i reads/',
                                run=run)
-    assert [path.name for path in paths] == [report.MAIN_FILE, report.MLST_FILE, report.MASH_FILE, report.JSON_FILE]
+    assert [path.name for path in paths] == [report.MAIN_FILE, report.MLST_FILE, report.MASH_FILE,
+                                            report.JSON_FILE, report.MQC_FILE, htmlreport.REPORT_FILE]
     assert rows[0] == MAIN_HEADER
     assert (tmp_path / 'out' / report.MAIN_FILE).read_text().startswith('#brucellaid -i reads/\n')
 
@@ -127,7 +128,8 @@ def test_write_reports_of_a_run_without_mlst(tmp_path):
     result = good_sample()
     result.mlst = None
     _, paths = write_reports([result], REFERENCES, tmp_path / 'out', STARTED)
-    assert [path.name for path in paths] == [report.MAIN_FILE, report.MASH_FILE, report.JSON_FILE]
+    assert [path.name for path in paths] == [report.MAIN_FILE, report.MASH_FILE, report.JSON_FILE,
+                                            report.MQC_FILE, htmlreport.REPORT_FILE]
 
 
 def test_run_info():

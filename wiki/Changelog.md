@@ -1,6 +1,31 @@
 # Changelog
 
 ## Unreleased
+**A quality assurance report.** Every run now writes `brucellaid_report.html`: one self-contained file —
+no script, no stylesheet, no font, nothing fetched from anywhere — holding what a result rests on rather
+than only the result.
+
+* **`brucellaid_report.html`**, written on every run (`--no-html` skips it): a summary with the samples
+  grouped by what they were called and a box for a reviewer's name, date and signature; the notes,
+  warnings and errors one row each; a block per sample with **every** distance MASH measured (the closest
+  highlighted, the ones near enough to it shaded), how the species was decided and what the sequence type
+  contributed, the nine allele calls with the margin each had over the allele it beat, and the input files
+  with their size, date and MD5; what the numbers mean; and the run itself — operator, computer, command,
+  versions, and **the MD5 of every reference data file**. It prints to clean pages as it stands.
+* **`brucellaid_mqc.json`**, also on every run: a MultiQC custom content table, so `multiqc results/` shows
+  a BrucellaID section with the species, what decided it, the sequence type and the status of each sample.
+* **`--pdf`** writes the same report as a PDF, with "Page 3 of 9" in every footer. It needs reportlab,
+  which is an optional extra: `pip install 'brucellaid[pdf]'`. BrucellaID itself still installs with
+  nothing but the standard library, and the HTML report holds the same information.
+* **`--no-md5`** skips the checksums of the input files, which cost a second or two per gigabyte, and
+  **`--operator NAME`** puts a name other than the user account on the report.
+* Each sample now has a status — `ok`, `warning` (not identified, no ST, a `new` profile, or the two kinds
+  of evidence disagreeing) or `failed` — in the reports and in the MultiQC table.
+* `brucellaid.json` gains, per sample, the `status`, the input files with their checksums and, in
+  `species_call`, `st_not_used`: why the sequence type was left out of the species call when it was. Its
+  run block gains the operator, the user, the computer, the operating system, the working directory and
+  the checksummed `reference_data`.
+
 **The sequence type now decides the species MASH cannot.** *B. canis* ATCC 23365 and *B. suis* bv. 4 strain
 40 are 0.00024 apart in the sketch — the closest pair of the sixteen, closer than two *B. suis* references
 are to each other — so which one a *canis* or a *suis* bv. 4 read set lands on first is noise. The two

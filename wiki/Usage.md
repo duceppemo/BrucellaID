@@ -29,10 +29,19 @@ reads fastq only (see the [FAQ](FAQ)).
 | Option | What it does |
 | --- | --- |
 | `-o`, `--output FOLDER` | Folder for the reports. Created if needed |
+| `--no-html` | Do not write `brucellaid_report.html`, the quality assurance report |
+| `--pdf` | Also write that report as a PDF. Needs reportlab: `pip install 'brucellaid[pdf]'` |
+| `--no-md5` | Do not checksum the input files for the reports (a second or two per gigabyte) |
+| `--operator NAME` | The name to put on the report. Default: the user account |
 | `--xlsx` | Also write `stat_alignment_summary_<date>.xlsx`, the report of the first version |
 
 The main table is printed to standard output as well, so `brucellaid ... > results.tsv` works: the messages
 go to standard error. See [Output files](Output-files).
+
+Six files are written by default: the three tables, the JSON report, a MultiQC file and
+`brucellaid_report.html`, a self-contained quality assurance report holding every distance, every allele
+call with its margin, the input files with their checksums and the checksum of every reference data file.
+Run `multiqc results/` on the output folder to fold the run into a MultiQC report.
 
 ## Identification and typing
 | Option | Default | What it does |
