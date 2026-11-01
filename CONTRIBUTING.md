@@ -68,9 +68,9 @@ those changes would be overwritten. Edit the files in `wiki/` in your pull reque
 2. Rename "Unreleased" in `wiki/Changelog.md` to the version and date.
 3. Refresh the example report of the wiki if the report changed: run BrucellaID over the four read sets of the
    [tutorial](wiki/Tutorial.md), then
-   `python3 scripts/make_example_report.py <output folder>`, which writes `assets/example_report.html` with the
+   `python3 scripts/make_example_report.py <output folder>`, which writes `docs/example_report.html` with the
    machine it ran on removed. Never commit a report straight from a run: it names the host, the account and
-   every path.
+   every path. `docs/` is published at https://duceppemo.github.io/BrucellaID/ by GitHub Pages.
 4. Commit, tag (`git tag -a vX.Y.Z`), push the commit and the tag, then create the GitHub release once the tests pass.
 5. Publishing the GitHub release automatically uploads the package to
    [PyPI](https://pypi.org/project/brucellaid/) (`.github/workflows/publish.yml`, trusted publishing: no token

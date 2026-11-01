@@ -2,12 +2,13 @@
 """
 Make the example quality assurance report of the wiki from a real run, with the machine it ran on removed.
 
-    python3 scripts/make_example_report.py RUN_FOLDER -o assets/example_report.html
+    python3 scripts/make_example_report.py RUN_FOLDER -o docs/example_report.html
 
 A quality assurance report names the computer it was produced on, the account that produced it and the full
 path of every file it touched. That is the point of it, and it is exactly what should not be published in a
 repository. This script takes a real report and blanks those values -- and only those -- so that the example
-shows what the report holds without publishing anyone's machine.
+shows what the report holds without publishing anyone's machine. The result is served by GitHub Pages
+out of docs/, because GitHub shows an HTML file in a repository as source rather than rendering it.
 
 It reads the values to remove out of brucellaid.json rather than guessing at them with a pattern, so it
 removes what that run actually recorded and cannot quietly miss a path in a corner of the report. Each
@@ -96,7 +97,7 @@ def check(markup, pairs):
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[1])
     parser.add_argument('run', help='the output folder of a run, holding {} and {}'.format(REPORT, JSON))
-    parser.add_argument('-o', '--out', default='assets/example_report.html', metavar='FILE',
+    parser.add_argument('-o', '--out', default='docs/example_report.html', metavar='FILE',
                         help='where to write the example (default: %(default)s)')
     args = parser.parse_args(argv)
 

@@ -19,8 +19,9 @@ than only the result.
   nothing but the standard library, and the HTML report holds the same information.
 * **`--no-md5`** skips the checksums of the input files, which cost a second or two per gigabyte, and
   **`--operator NAME`** puts a name other than the user account on the report.
-* An [example report](https://htmlpreview.github.io/?https://github.com/duceppemo/BrucellaID/blob/main/assets/example_report.html) is in the wiki: the four read sets of the [Tutorial](Tutorial), with the
-  machine it ran on removed by `scripts/make_example_report.py`.
+* An [example report](https://duceppemo.github.io/BrucellaID/example_report.html) is in the wiki: the four read sets of the [Tutorial](Tutorial), with the
+  machine it ran on removed by `scripts/make_example_report.py`, and published with GitHub Pages from
+  `docs/` so that a browser renders it instead of showing its source.
 * Each sample now has a status — `ok`, `warning` (not identified, no ST, a `new` profile, or the two kinds
   of evidence disagreeing) or `failed` — in the reports and in the MultiQC table.
 * `brucellaid.json` gains, per sample, the `status`, the input files with their checksums and, in

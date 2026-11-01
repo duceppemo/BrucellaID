@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BrucellaID</title>
+<meta name="description" content="Brucella species identification and MLST from sequencing reads: example quality assurance report.">
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff; --panel: #f7f8fa; --ink: #16191d; --muted: #5c6670; --line: #dfe3e8;
+  --accent: #1a6ab3; --accent-soft: #e8f1fa;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #15181c; --panel: #1d2127; --ink: #e8eaed; --muted: #9aa3ad; --line: #2e343c;
+    --accent: #6fb3f2; --accent-soft: #19283a;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #15181c; --panel: #1d2127; --ink: #e8eaed; --muted: #9aa3ad; --line: #2e343c;
+  --accent: #6fb3f2; --accent-soft: #19283a;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; padding: 0 16px 64px; background: var(--bg); color: var(--ink);
+  font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+main { max-width: 760px; margin: 0 auto; }
+header { padding: 48px 0 8px; }
+h1 { font-size: 1.9rem; margin: 0 0 6px; letter-spacing: -0.01em; }
+h2 { font-size: 1.15rem; margin: 36px 0 8px; }
+p { margin: 10px 0; }
+a { color: var(--accent); }
+.lead { color: var(--muted); margin: 0 0 4px; }
+.card {
+  display: block; margin: 18px 0; padding: 18px 20px; background: var(--panel);
+  border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 8px;
+  color: inherit; text-decoration: none;
+}
+.card:hover { background: var(--accent-soft); }
+.card b { display: block; font-size: 1.05rem; color: var(--accent); margin-bottom: 4px; }
+.card span { color: var(--muted); font-size: 0.92rem; }
+ul { padding-left: 20px; }
+li { margin: 4px 0; }
+footer { margin-top: 44px; padding-top: 12px; border-top: 1px solid var(--line); color: var(--muted);
+         font-size: 0.86rem; }
+code { font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace; font-size: 0.88em; }
+</style>
+</head>
+<body>
+<main>
+<header>
+  <h1>BrucellaID</h1>
+  <p class="lead">Identify the <i>Brucella</i> species of a fastq sample by its MASH distance to 16
+  reference genomes, and type it with the nine-locus Whatmore MLST scheme.</p>
+</header>
+
+<p>This page exists for one reason: GitHub serves an HTML file in a repository as source code rather than
+rendering it, and the quality assurance report is easier to judge by looking at it.</p>
+
+<a class="card" href="example_report.html">
+  <b>Example quality assurance report &rarr;</b>
+  <span>A real run of the four public read sets of the tutorial, including the <i>B. canis</i> sample whose
+  species the sequence type decides, with the machine it ran on removed. One self-contained file: no
+  script, no stylesheet, no font, nothing fetched from anywhere.</span>
+</a>
+
+<h2>Everything else</h2>
+<ul>
+  <li><a href="https://github.com/duceppemo/BrucellaID">The repository</a></li>
+  <li><a href="https://github.com/duceppemo/BrucellaID/wiki">The wiki</a>: installation, a tutorial on
+      public read sets, usage, output files, how it works, validation and the FAQ</li>
+  <li><a href="https://pypi.org/project/brucellaid/">brucellaid on PyPI</a> —
+      <code>pip install brucellaid</code></li>
+  <li><a href="https://doi.org/10.5281/zenodo.23845956">Zenodo</a>, for the DOI of each release</li>
+</ul>
+
+<footer>
+  BrucellaID is by Marc-Olivier Duceppe, Canadian Food Inspection Agency, under the MIT licence.
+</footer>
+</main>
+</body>
+</html>

@@ -52,7 +52,7 @@ configure.
   margin it had, the input files with their MD5, the exact command, and **the checksum of every reference
   data file the run measured against**, so two runs a year apart can be shown to have used the same data.
   With a box for a reviewer's name, date and signature. `--pdf` writes the same thing as a PDF.
-  **[See an example report](https://htmlpreview.github.io/?https://github.com/duceppemo/BrucellaID/blob/main/assets/example_report.html)**.
+  **[See an example report](https://duceppemo.github.io/BrucellaID/example_report.html)**.
 * **Fits your pipeline**: a JSON report with everything in it, and a
   [MultiQC](https://docs.seqera.io/multiqc/custom_content) file, so `multiqc results/` folds the run into
   the report your pipeline already produces.
