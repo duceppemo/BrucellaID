@@ -47,7 +47,7 @@ docker run --rm -v "$PWD":/data quay.io/biocontainers/brucellaid:<tag> brucellai
 The tag is listed on the [biocontainers page](https://biocontainers.pro/tools/brucellaid).
 
 ## What is installed
-The package ships its reference data, about 300 kB in all:
+The package ships its reference data and the logo of the reports, about 360 kB in all:
 
 | File | What it is |
 | --- | --- |
@@ -56,6 +56,7 @@ The package ships its reference data, about 300 kB in all:
 | `mlst_alleles.fasta` | The 309 alleles of the nine MLST loci |
 | `mlst_profiles.tsv` | The 122 sequence types |
 | `mlst_st_species.tsv` | The species of each sequence type, from PubMLST's isolate database |
+| `logo.svg`, `logo.png` | The logo the quality assurance reports carry |
 
 `--sketch`, `--references`, `--alleles`, `--profiles` and `--st-species` take files of your own instead
 (see [Usage](Usage)).

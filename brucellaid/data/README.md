@@ -1,6 +1,6 @@
 # Reference data
 
-Five files, about 300 kB. `brucellaid --sketch/--references/--alleles/--profiles` take files of your own
+Seven files, about 360 kB. `brucellaid --sketch/--references/--alleles/--profiles` take files of your own
 instead of these.
 
 | File | What it is | Where it comes from |
@@ -10,6 +10,8 @@ instead of these.
 | `mlst_alleles.fasta` | 309 alleles of the nine MLST loci | [PubMLST](https://pubmlst.org/organisms/brucella-spp), "MLST (9 locus)", downloaded 2026-10-31 |
 | `mlst_profiles.tsv` | 122 sequence types | The same scheme, the same day |
 | `mlst_st_species.tsv` | The species of each of 118 of those STs, with how consistently its isolates carry it | The [PubMLST *Brucella* isolate database](https://pubmlst.org/organisms/brucella-spp), 3426 isolates, read 2026-10-31 |
+| `logo.svg` | The logo the HTML report inlines, with its four colours as CSS variables so that one drawing serves the light and the dark page | `assets/make_logo.py` |
+| `logo.png` | The same logo for the PDF report, which draws a png without needing anything that reads svg | `assets/make_logo.py` |
 
 The sketch ID of a genome is the name of the file it was built from, which is what `mash dist` reports and
 what `references.tsv` keys on.

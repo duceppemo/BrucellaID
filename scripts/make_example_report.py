@@ -1,124 +1,177 @@
 #!/usr/bin/env python3
 """
-Make the example quality assurance report of the wiki from a real run, with the machine it ran on removed.
+Make the example quality assurance reports of the wiki, with the machine they ran on left out.
 
-    python3 scripts/make_example_report.py RUN_FOLDER -o docs/example_report.html
+    python3 scripts/make_example_report.py READS_FOLDER            # writes docs/example_report.html and .pdf
 
 A quality assurance report names the computer it was produced on, the account that produced it and the full
-path of every file it touched. That is the point of it, and it is exactly what should not be published in a
-repository. This script takes a real report and blanks those values -- and only those -- so that the example
-shows what the report holds without publishing anyone's machine. The result is served by GitHub Pages
-out of docs/, because GitHub shows an HTML file in a repository as source rather than rendering it.
+path of every file it touched. That is the point of it, and it is exactly what must not be committed to a
+public repository.
 
-It reads the values to remove out of brucellaid.json rather than guessing at them with a pattern, so it
-removes what that run actually recorded and cannot quietly miss a path in a corner of the report. Each
-removed value is replaced by a marker that says what used to be there, and a banner is added at the top of
-the page saying that the environment was removed, so the example is never mistaken for a complete report.
+So the example is not a report with those values painted over afterwards: the run is real, and the reports
+are rendered from it with those values replaced before anything is written. That is the only way the PDF
+can be redacted at all -- there is no sensible way to edit text out of a finished PDF -- and it means the
+HTML and the PDF are redacted identically, by construction rather than by two sets of rules.
+
+What is left out: the user account, the host name, the operating system and the working directory, each
+replaced by [removed], and the folder of every input and reference data file, leaving the file name. What
+stays: every measurement, every checksum, the parameters, the versions, the timestamps and the operator
+name, which is a byline rather than a machine.
+
+The reads are the four public read sets of the tutorial. Fetch them first:
+https://github.com/duceppemo/BrucellaID/wiki/Tutorial
 """
 import argparse
-import html
-import json
+import dataclasses
 import pathlib
+import shlex
 import sys
+from datetime import datetime
 
-REPORT = 'brucellaid_report.html'
-JSON = 'brucellaid.json'
-BANNER = (
-    '<div class="panel noprint" style="border-color:var(--accent);background:var(--accent-soft)">'
-    '<b>This is an example report.</b> It is a real run of the four public read sets of the '
-    '<a href="https://github.com/duceppemo/BrucellaID/wiki/Tutorial">tutorial</a>, with the computer it ran '
-    'on removed: the user account, the host name, the operating system and every directory path read '
-    '<i>[removed]</i> below, and the input files are named without the folder they were in. Everything '
-    'else is as BrucellaID wrote it. A report of your own names them all, which is what makes it worth '
-    'signing.</div>')
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent))
+
+from brucellaid import htmlreport, pdfreport, qa  # noqa: E402
+from brucellaid.mlst import PROFILES_FILE, alleles_fasta, load_profiles  # noqa: E402
+from brucellaid.pipeline import analyse_samples  # noqa: E402
+from brucellaid.references import (  # noqa: E402
+    REFERENCES_FILE,
+    data_path,
+    load_references,
+    reference_sketch,
+)
+from brucellaid.report import run_info  # noqa: E402
+from brucellaid.samples import find_samples  # noqa: E402
+from brucellaid.species import ST_SPECIES_FILE, load_st_species  # noqa: E402
+
+REMOVED = '[removed]'
+HIDDEN = ('user', 'host', 'system', 'working_directory')
+NOTE = ('This is an example report: a real run of the four public read sets of the BrucellaID tutorial, '
+        'produced by scripts/make_example_report.py, which leaves out the computer it ran on. The user '
+        'account, the host name, the operating system and the working directory read [removed], and the '
+        'input and reference files are named without the folder they were in. Everything else is as '
+        'BrucellaID wrote it. A report of your own names them all, which is what makes it worth signing.')
 
 
-def replacements(report):
+def redact_run(run):
+    """The run information with the machine taken out, and the reference data files named without a folder."""
+    run = dict(run)
+    for key in HIDDEN:
+        if run.get(key):
+            run[key] = REMOVED
+    run['reference_data'] = [{**item, 'path': '.../brucellaid/data/{}'.format(pathlib.PurePath(
+        item['path']).name)} for item in run.get('reference_data', [])]
+    return run
+
+
+def redact_inputs(inputs):
+    """The input files named without the folder they were in, and with no symbolic link target."""
+    return {sample: [dataclasses.replace(facts, path=pathlib.PurePath(facts.path).name, target='')
+                     for facts in files]
+            for sample, files in inputs.items()}
+
+
+def secrets(run, inputs, reads):
     """
-    {text to remove: what to put in its place}, read from the JSON report of the same run.
+    Every string that must not survive into a report, taken from the run before it was redacted.
 
-    Longest first, so that a working directory is removed before a path that merely starts with it.
+    Checked against the real values rather than against the redacted ones -- the first version of this
+    script compared the output with the values it had already replaced, which can only ever pass.
     """
-    pairs = {}
-    # One short marker for all of them: the label to the left of the value already says what is gone,
-    # and the footer reads "[removed]@[removed]" rather than running off the line.
-    for key in ('working_directory', 'host', 'user', 'system'):
-        value = report.get(key)
-        if value:
-            pairs[value] = '[removed]'
-    # A reference data file keeps its name, which is what a reader needs, and loses the folder it sits in
-    for item in report.get('reference_data', []):
-        path = item.get('path', '')
-        if path:
-            pairs[path] = '.../brucellaid/data/{}'.format(pathlib.PurePath(path).name)
-    # An input file keeps its name too: the report shows the same name in the table just above the path
-    for sample in report.get('samples', []):
-        for item in sample.get('input_files', []):
-            path = item.get('path', '')
-            if path:
-                pairs[path] = pathlib.PurePath(path).name
-        for path in sample.get('files', []):
-            pairs.setdefault(path, pathlib.PurePath(path).name)
-    return dict(sorted(pairs.items(), key=lambda pair: -len(pair[0])))
+    values = {run.get(key) for key in HIDDEN}
+    values.add(str(pathlib.Path.cwd()))
+    values.add(str(pathlib.Path(reads).resolve()))
+    for files in inputs.values():
+        for facts in files:
+            values.add(str(pathlib.PurePath(facts.path).parent))
+    for item in run.get('reference_data', []):
+        values.add(str(pathlib.PurePath(item['path']).parent))
+    return {value for value in values if value and value not in (REMOVED, '.', '/')}
 
 
-def redact(markup, pairs):
-    """
-    Remove each value from the page, in the plain and the HTML escaped form.
-
-    The report escapes everything it writes, so a path holding an "&" appears escaped in the file; replacing
-    both forms means a value cannot survive because of the character it happens to contain.
-    """
-    removed = {}
-    for value, marker in pairs.items():
-        for form in (html.escape(value, quote=True), value):
-            if form in markup:
-                markup = markup.replace(form, html.escape(marker, quote=True))
-                removed[value] = removed.get(value, 0) + 1
-    return markup, removed
+def leaks(text, values):
+    """The values that are still in a report, so that the script can refuse to write it."""
+    return sorted(value for value in values if value in text)
 
 
-def add_banner(markup):
-    """Put the banner under the subtitle, where a reader cannot miss it."""
-    anchor = '</p>\n<nav class="toc">'
-    if anchor not in markup:
-        raise SystemExit('The report does not look like one of brucellaid: no subtitle before the contents.')
-    return markup.replace(anchor, '</p>\n{}\n<nav class="toc">'.format(BANNER), 1)
+def pdf_text(path):
+    """The text of a PDF, with its whitespace collapsed, for checking what is in it."""
+    try:
+        from pypdf import PdfReader
+    except ImportError:
+        raise SystemExit('Checking the PDF needs pypdf: pip install pypdf. The report is not written '
+                         'unless it can be checked.') from None
+    reader = PdfReader(str(path))
+    return ' '.join(' '.join((page.extract_text() or '') for page in reader.pages).split())
 
 
-def check(markup, pairs):
-    """Make sure nothing that had to go is still in the page."""
-    left = [value for value in pairs
-            if value in markup or html.escape(value, quote=True) in markup]
-    if left:
-        raise SystemExit('Still in the page after redacting: {}'.format(', '.join(left)))
+def reference_data(sketch, references, loci, st_table):
+    """The reference data of the run, as the command line builds it."""
+    alleles = alleles_fasta(None)
+    return qa.data_facts([
+        ('MASH sketch', sketch, '{} reference genome(s), k = 21, 1000 hashes'.format(len(references))),
+        ('Reference table', data_path(REFERENCES_FILE),
+         '{} genome(s) with their species, biovar, strain and accessions'.format(len(references))),
+        ('MLST alleles', alleles, '{} allele(s) of the {} loci'.format(qa.fasta_count(alleles), len(loci))),
+        ('MLST profiles', data_path(PROFILES_FILE),
+         '{} sequence type(s)'.format(len(load_profiles(None)[1]))),
+        ('ST to species', data_path(ST_SPECIES_FILE),
+         '{} sequence type(s) with a species'.format(len(st_table))),
+    ])
 
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[1])
-    parser.add_argument('run', help='the output folder of a run, holding {} and {}'.format(REPORT, JSON))
-    parser.add_argument('-o', '--out', default='docs/example_report.html', metavar='FILE',
-                        help='where to write the example (default: %(default)s)')
+    parser.add_argument('reads', help='folder holding the fastq files of the tutorial')
+    parser.add_argument('-o', '--out', default='docs', metavar='FOLDER',
+                        help='where to write example_report.html and example_report.pdf (default: %(default)s)')
+    parser.add_argument('--operator', default='M-O Duceppe', help='the name on the report')
+    parser.add_argument('-t', '--threads', type=int, default=8)
+    parser.add_argument('-p', '--parallel', type=int, default=2)
     args = parser.parse_args(argv)
 
-    folder = pathlib.Path(args.run)
-    report_path, json_path = folder / REPORT, folder / JSON
-    for path in (report_path, json_path):
-        if not path.is_file():
-            raise SystemExit('{} is not there: run brucellaid with its reports first.'.format(path))
+    samples = find_samples(args.reads)
+    if not samples:
+        raise SystemExit('No fastq file in {}.'.format(args.reads))
+    print('{} sample(s): {}'.format(len(samples), ', '.join(s.name for s in samples)), file=sys.stderr)
 
-    report = json.loads(json_path.read_text())
-    pairs = replacements(report)
-    markup, removed = redact(report_path.read_text(encoding='utf-8'), pairs)
-    check(markup, pairs)
-    markup = add_banner(markup)
+    references = load_references()
+    st_table = load_st_species()
+    loci = load_profiles(None)[0]
+    started = datetime.now().astimezone()
+    results = analyse_samples(samples, jobs=args.parallel, threads=args.threads, references=references,
+                              st_table=st_table)
+
+    # The command is recorded with the reads folder named, not its path: it is a path like any other
+    command = shlex.join(['python3', 'scripts/make_example_report.py',
+                          pathlib.PurePath(args.reads.rstrip('/')).name])
+    run = run_info(command, {'Threads': args.threads, 'Parallel samples': args.parallel, 'MLST': True,
+                             'Input checksums': 'MD5'}, started, operator=args.operator,
+                   data=reference_data(reference_sketch(None), references, loci, st_table))
+    real_inputs = qa.describe_inputs(results)
+    must_go = secrets(run, real_inputs, args.reads)
+    run = redact_run(run)
+    inputs = redact_inputs(real_inputs)
 
     out = pathlib.Path(args.out)
-    out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(markup, encoding='utf-8')
-    print('{}: {:,} bytes, {} value(s) removed'.format(out, len(markup), len(removed)), file=sys.stderr)
-    for value in pairs:
-        print('  {} -> {}'.format(value, pairs[value]), file=sys.stderr)
+    out.mkdir(parents=True, exist_ok=True)
+    markup = htmlreport.build(results, references, run, inputs=inputs, data=run['reference_data'], note=NOTE)
+    left = leaks(markup, must_go)
+    if left:
+        raise SystemExit('Still in the HTML report: {}'.format(', '.join(left)))
+    (out / 'example_report.html').write_text(markup, encoding='utf-8')
+
+    # The PDF is written to a temporary name and only kept once it has been read back and found clean
+    draft = out / 'example_report.pdf.part'
+    pdfreport.write(results, references, run, draft, inputs=inputs, data=run['reference_data'], note=NOTE)
+    left = leaks(pdf_text(draft), must_go)
+    if left:
+        draft.unlink()
+        raise SystemExit('Still in the PDF report: {}'.format(', '.join(left)))
+    draft.replace(out / 'example_report.pdf')
+
+    print('checked against {} value(s) that had to go'.format(len(must_go)), file=sys.stderr)
+    for name in ('example_report.html', 'example_report.pdf'):
+        print('{}: {:,} bytes'.format(out / name, (out / name).stat().st_size), file=sys.stderr)
     return 0
 
 

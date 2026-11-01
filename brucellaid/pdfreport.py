@@ -13,11 +13,15 @@ that BrucellaID itself still installs with nothing but the standard library.
 
 from . import __version__
 from .errors import BrucellaIDError
-from .htmlreport import METHODS, REFERENCES_CITED, VERDICTS
+from .htmlreport import HEADING, METHODS, REFERENCES_CITED, VERDICTS
 from .mlst import UNKNOWN
 from .qa import FAILED, OK, WARNING, close_hits, counted, groups, margin, status, warnings
+from .references import data_path
 
 TITLE = 'BrucellaID quality assurance report'
+LOGO_FILE = 'logo.png'
+LOGO_WIDTH = 72  # Millimetres; the logo is 607 by 122 user units, so about 14.5 mm tall
+LOGO_ASPECT = 122 / 607
 # Grey for the rules and the header rows, blue for the row a reader should land on first, and the three
 # status colours of the HTML report, so that the two look like the same document.
 INK = '#16191d'
@@ -43,6 +47,7 @@ def _modules():
         from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
         from reportlab.lib.units import mm
         from reportlab.platypus import (
+            Image,
             KeepTogether,
             PageBreak,
             Paragraph,
@@ -59,7 +64,7 @@ def _modules():
     return {'colors': colors, 'TA_LEFT': TA_LEFT, 'A4': A4, 'ParagraphStyle': ParagraphStyle,
             'getSampleStyleSheet': getSampleStyleSheet, 'mm': mm, 'KeepTogether': KeepTogether,
             'PageBreak': PageBreak, 'Paragraph': Paragraph, 'SimpleDocTemplate': SimpleDocTemplate,
-            'Spacer': Spacer, 'Table': Table, 'TableStyle': TableStyle}
+            'Spacer': Spacer, 'Table': Table, 'TableStyle': TableStyle, 'Image': Image}
 
 
 def escape(value):
@@ -177,12 +182,28 @@ class Report:
         self.story.append(rl['KeepTogether'](table))
 
     # -- sections -----------------------------------------------------------------------------------
-    def summary(self, results, run):
+    def logo(self):
+        """The logo at the top of the first page, when the package has it."""
+        try:
+            path = data_path(LOGO_FILE)
+        except BrucellaIDError:
+            return  # A package without the image still writes the report
+        mm = self.rl['mm']
+        image = self.rl['Image'](path, width=LOGO_WIDTH * mm, height=LOGO_WIDTH * LOGO_ASPECT * mm,
+                                 hAlign='LEFT')
+        self.story.append(image)
+        self.space(4)
+
+    def summary(self, results, run, note=''):
         counts = counted(results)
-        self.para(TITLE, 'title')
+        self.logo()
+        self.para(HEADING, 'title')
         self.para('{} sample(s): {} ok, {} with a warning, {} failed. BrucellaID {}, run on {}.'.format(
             len(results), counts[OK], counts[WARNING], counts[FAILED], __version__,
             run.get('started', '')), 'sub')
+        if note:
+            self.rich('<b>{}</b>'.format(escape(note)))
+            self.space(4)
         self.para('Summary', 'h2')
         self.facts([('Run started', run.get('started', '')), ('Run finished', run.get('finished', '')),
                     ('Operator', run.get('operator', '')), ('Command', run.get('command', ''))])
@@ -387,7 +408,7 @@ def numbered_canvas(run, margin, baseline):
     return NumberedCanvas
 
 
-def write(results, references, run, path, inputs=None, data=None):
+def write(results, references, run, path, inputs=None, data=None, note=''):
     """
     Write the PDF report and return its path.
 
@@ -401,7 +422,7 @@ def write(results, references, run, path, inputs=None, data=None):
         bottomMargin=16 * mm, title=TITLE, author=run.get('operator', ''), subject='BrucellaID run',
         creator='BrucellaID {}'.format(__version__))
     report = Report(rl)
-    report.summary(results, run)
+    report.summary(results, run, note=note)
     report.warnings(results)
     for _, members in groups(results):
         for result in members:

@@ -13,16 +13,22 @@ mean; and last, the run itself -- operator, machine, command, versions and the c
 data file it measured against.
 """
 
+import pathlib
 import re
+from functools import cache
 from html import escape as _escape
 
 from . import __version__
+from .errors import BrucellaIDError
 from .mlst import UNKNOWN
 from .qa import FAILED, OK, WARNING, close_hits, counted, groups, margin, status, warnings
+from .references import data_path
 from .species import AGREE, ARBITRATED, CONFLICT, UNRESOLVED
 
 REPORT_FILE = 'brucellaid_report.html'
+LOGO_FILE = 'logo.svg'
 TITLE = 'BrucellaID quality assurance report'
+HEADING = 'Quality assurance report'
 
 # One stylesheet, inline, with the colours as tokens so the dark variant only has to redefine them. The
 # print rules matter as much as the screen ones: this is a document that gets signed on paper.
@@ -33,6 +39,8 @@ CSS = """
   --accent: #1a6ab3; --accent-soft: #e8f1fa;
   --ok: #1a7f44; --ok-soft: #e7f5ec; --warn: #9a5b00; --warn-soft: #fdf2e2;
   --bad: #ad2525; --bad-soft: #fdecec; --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  /* The logo of the package writes its four colours as these variables, so one file serves both themes */
+  --logo-ink: #2f2a3d; --logo-accent: #7d4a9e; --logo-reference: #9aa5ad; --logo-muted: #5d6a72;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -40,6 +48,8 @@ CSS = """
     --accent: #6fb3f2; --accent-soft: #19283a;
     --ok: #67c48d; --ok-soft: #14271c; --warn: #e0a95c; --warn-soft: #2a2114;
     --bad: #f08b8b; --bad-soft: #2b1818;
+    --logo-ink: #f0edf5; --logo-accent: #b185d8; --logo-reference: #6d787f;
+    --logo-muted: #a9b6bd;
   }
 }
 :root[data-theme="dark"] {
@@ -47,6 +57,8 @@ CSS = """
   --accent: #6fb3f2; --accent-soft: #19283a;
   --ok: #67c48d; --ok-soft: #14271c; --warn: #e0a95c; --warn-soft: #2a2114;
   --bad: #f08b8b; --bad-soft: #2b1818;
+  --logo-ink: #f0edf5; --logo-accent: #b185d8; --logo-reference: #6d787f;
+  --logo-muted: #a9b6bd;
 }
 * { box-sizing: border-box; }
 body {
@@ -54,7 +66,9 @@ body {
   font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 main { max-width: 1100px; margin: 0 auto; }
-h1 { font-size: 1.6rem; margin: 24px 0 4px; letter-spacing: -0.01em; }
+.logo { margin: 26px 0 2px; }
+.logo svg { width: 360px; max-width: 100%; height: auto; display: block; }
+h1 { font-size: 1.6rem; margin: 10px 0 4px; letter-spacing: -0.01em; }
 h2 {
   font-size: 1.2rem; margin: 40px 0 12px; padding-bottom: 6px; border-bottom: 2px solid var(--line);
 }
@@ -120,6 +134,7 @@ footer { margin-top: 40px; padding-top: 10px; border-top: 1px solid var(--line);
   :root { --bg: #fff; --panel: #f2f2f2; --ink: #000; --muted: #444; --line: #bbb; --accent: #0b4f8a;
           --accent-soft: #eaf1f8; }
   nav.toc, .noprint { display: none; }
+  .logo svg { width: 230px; }
   h2 { break-before: page; }
   h2.first { break-before: avoid; }
   /* A sample block is often taller than a page, so it may not be kept whole: keeping its tables whole
@@ -130,6 +145,23 @@ footer { margin-top: 40px; padding-top: 10px; border-top: 1px solid var(--line);
   a { color: #000; text-decoration: none; }
 }
 """
+
+
+@cache
+def logo():
+    """
+    The logo of the package, as svg markup to inline.
+
+    Inlined rather than linked, because a report that fetches an image is no longer one file, and the
+    colours are CSS variables, so the same markup follows the light and the dark theme. A package without
+    the file still writes a report; it simply has no logo on it.
+    """
+    try:
+        markup = pathlib.Path(data_path(LOGO_FILE)).read_text(encoding='utf-8')
+    except (BrucellaIDError, OSError):
+        return ''
+    # The file carries its own width and height; the stylesheet sizes it instead
+    return re.sub(r'\s+(width|height)="[^"]*"', '', markup, count=2)
 
 
 def escape(value):
@@ -467,7 +499,7 @@ def run_section(run, data):
     return out
 
 
-def build(results, references, run, inputs=None, data=None):
+def build(results, references, run, inputs=None, data=None, note=''):
     """
     The whole report, as one string of HTML.
 
@@ -476,6 +508,7 @@ def build(results, references, run, inputs=None, data=None):
     :param run: the run dictionary of report.run_info()
     :param inputs: {sample: [qa.FileFacts]}, from qa.describe_inputs()
     :param data: [reference data facts], from qa.data_facts()
+    :param note: a line to put at the top of the report, for a report that is an example or a draft
     """
     inputs = inputs or {}
     counts = counted(results)
@@ -486,7 +519,11 @@ def build(results, references, run, inputs=None, data=None):
            '<title>{}</title>'.format(escape(TITLE)),
            '<meta name="generator" content="BrucellaID {}">'.format(escape(__version__)),
            '<style>{}</style>'.format(CSS), '</head>', '<body>', '<main>',
-           '<h1>{}</h1>'.format(escape(TITLE)), '<p class="sub">{}</p>'.format(escape(subtitle)),
+           '<div class="logo">{}</div>'.format(logo()) if logo() else '',
+           '<h1>{}</h1>'.format(escape(HEADING if logo() else TITLE)),
+           '<p class="sub">{}</p>'.format(escape(subtitle)),
+           '<div class="panel" style="border-color:var(--accent);background:var(--accent-soft)">{}</div>'.format(
+               escape(note)) if note else '',
            '<nav class="toc"><b>Contents</b><ol>'
            '<li><a href="#summary">Summary</a></li>'
            '<li><a href="#warnings">Notes, warnings and errors</a></li>'
@@ -506,8 +543,8 @@ def build(results, references, run, inputs=None, data=None):
     return '\n'.join(out) + '\n'
 
 
-def write(results, references, run, path, inputs=None, data=None):
+def write(results, references, run, path, inputs=None, data=None, note=''):
     """Write the report and return its path."""
     with open(path, 'w', encoding='utf-8') as f:
-        f.write(build(results, references, run, inputs=inputs, data=data))
+        f.write(build(results, references, run, inputs=inputs, data=data, note=note))
     return path

@@ -149,8 +149,8 @@ What that ST is, in the isolate database  ST 20 is Brucella canis in 70 of 70 is
 ```
 
 The file fetches nothing from the network, so it can be emailed, archived or opened on an offline machine
-and still look the same. `--pdf` writes the same report as a PDF (it needs reportlab), `--operator NAME`
-puts a name on it, and `--no-html` skips it.
+and still look the same. `--pdf` writes [the same report as a PDF](https://duceppemo.github.io/BrucellaID/example_report.pdf) (it needs reportlab),
+`--operator NAME` puts a name on it, and `--no-html` skips it.
 
 `results/brucellaid_mqc.json` needs no options at all:
 

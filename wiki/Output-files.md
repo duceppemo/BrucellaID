@@ -124,7 +124,8 @@ be placed. It needs reportlab, which is not installed by default:
 pip install 'brucellaid[pdf]'     # or: conda install -c conda-forge reportlab
 ```
 The HTML report holds the same information and needs nothing installed, so the PDF is for the places that
-want a file to sign and file rather than a page to read.
+want a file to sign and file rather than a page to read. **[Example PDF report](https://duceppemo.github.io/BrucellaID/example_report.pdf)** — the same four
+samples, 12 pages.
 
 ## `brucellaid_mqc.json` — for MultiQC
 A [MultiQC custom content](https://docs.seqera.io/multiqc/custom_content) file. Run `multiqc` on the output

@@ -1,12 +1,18 @@
 #!/usr/bin/env python3
 """
-Generate assets/logo.svg and assets/logo_dark.svg.
+Generate the logo: assets/logo.svg and assets/logo_dark.svg for the README and the wiki, and
+brucellaid/data/logo.svg and logo.png for the reports BrucellaID writes.
 
 The text is written as outlines rather than as <text>, so the logo renders identically everywhere: a viewer
 without DejaVu Sans would otherwise fall back to a wider font and the tagline would run past the canvas. The
 canvas is then trimmed to the ink, so the logo centres properly wherever it is placed.
 
     python3 assets/make_logo.py        # needs fonttools, cairosvg, pillow and the DejaVu fonts
+
+The copy in the package is the same drawing with its four colours written as CSS variables, so that one
+file serves the light and the dark report instead of two; a viewer that knows nothing of the variables,
+such as a browser opening the file on its own, gets the light colours from the fallbacks. The png is for
+the PDF report, which reportlab draws without needing anything that can read an svg.
 
 Edit the layout below and run it again; the generated files are what the repository ships.
 """
@@ -28,6 +34,11 @@ ACCENT = '#7d4a9e'     # the sample at the centre, the reference it is closest t
 REFERENCE = '#9aa5ad'  # the other reference genomes of the sketch
 MUTED = '#5d6a72'      # the tagline
 DARK = {INK: '#f0edf5', ACCENT: '#b185d8', REFERENCE: '#6d787f', MUTED: '#a9b6bd'}
+# The same four colours as CSS variables, for the copy the reports inline
+THEMED = {INK: 'var(--logo-ink, {})'.format(INK), ACCENT: 'var(--logo-accent, {})'.format(ACCENT),
+          REFERENCE: 'var(--logo-reference, {})'.format(REFERENCE),
+          MUTED: 'var(--logo-muted, {})'.format(MUTED)}
+PNG_WIDTH = 1200  # Wide enough for the PDF report at 300 dpi
 
 TAGLINE = 'Brucella species identification and MLST from reads'
 MARGIN = 10  # Uniform margin around the ink, in user units
@@ -110,6 +121,12 @@ def ink_box(svg, scale=4):
             box[2] / scale + offset_x, box[3] / scale + offset_y]
 
 
+def write_png(svg, path, width=PNG_WIDTH):
+    """The light logo as a transparent png, for the PDF report."""
+    import cairosvg
+    cairosvg.svg2png(bytestring=svg.encode(), write_to=str(path), output_width=width)
+
+
 def main():
     # First pass on a canvas large enough for anything, then trim it to the ink
     box = ink_box(build([0, 0, 900, 200]))
@@ -122,9 +139,18 @@ def main():
     for light, replacement in DARK.items():
         dark = dark.replace(light, replacement)
     (assets / 'logo_dark.svg').write_text(dark)
+
+    # The copies the reports use, inside the package
+    data = assets.parent / 'brucellaid' / 'data'
+    themed = svg
+    for light, replacement in THEMED.items():
+        themed = themed.replace('"{}"'.format(light), '"{}"'.format(replacement))
+    (data / 'logo.svg').write_text(themed)
+    write_png(svg, data / 'logo.png')
+
     print('viewBox {:.1f} {:.1f} {:.1f} {:.1f}'.format(*view_box))
-    for name in ('logo.svg', 'logo_dark.svg'):
-        print('{}: {:,} bytes'.format(name, (assets / name).stat().st_size))
+    for path in (assets / 'logo.svg', assets / 'logo_dark.svg', data / 'logo.svg', data / 'logo.png'):
+        print('{}: {:,} bytes'.format(path.relative_to(assets.parent), path.stat().st_size))
     return 0
 
 

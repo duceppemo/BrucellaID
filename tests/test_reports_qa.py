@@ -104,6 +104,26 @@ def test_html_report_is_well_formed_and_holds_every_section(tmp_path):
     assert 'Reviewed by' in markup and 'Signature' in markup
 
 
+def test_html_report_carries_the_logo():
+    markup = htmlreport.build([good()], REFERENCES, RUN)
+    assert '<div class="logo"><svg' in markup
+    assert 'var(--logo-accent' in markup  # Themed, so one drawing serves light and dark
+    assert '<h1>Quality assurance report</h1>' in markup  # The wordmark is in the logo
+    assert '<title>BrucellaID quality assurance report</title>' in markup
+    parse(markup)
+
+
+def test_html_report_without_the_logo(monkeypatch):
+    """The report is still written, with the name as a heading instead of the drawing."""
+    htmlreport.logo.cache_clear()
+    monkeypatch.setattr('brucellaid.htmlreport.data_path',
+                        lambda name: (_ for _ in ()).throw(BrucellaIDError('no logo')))
+    markup = htmlreport.build([good()], REFERENCES, RUN)
+    htmlreport.logo.cache_clear()
+    assert '<div class="logo">' not in markup
+    assert '<h1>BrucellaID quality assurance report</h1>' in markup
+
+
 def test_html_report_needs_no_network():
     """The point of the report: it renders the same in ten years, on a machine with no network."""
     markup = htmlreport.build([good()], REFERENCES, RUN)
@@ -264,6 +284,29 @@ def test_pdf_report_says_how_to_install_reportlab(monkeypatch, tmp_path):
         pdfreport.write([good()], REFERENCES, RUN, tmp_path / 'r.pdf')
 
 
+def test_pdf_report_carries_the_logo(tmp_path):
+    """The wordmark is the logo image, so the page must really hold an image."""
+    pytest.importorskip('reportlab')
+    from brucellaid import pdfreport
+    path = pdfreport.write([good()], REFERENCES, RUN, tmp_path / 'r.pdf')
+    reader, _ = read_pdf(path)
+    images = list(reader.pages[0].images)
+    assert len(images) == 1
+    assert images[0].image.width > 500  # The logo, not a stray pixel
+
+
+def test_pdf_report_without_the_logo(monkeypatch, tmp_path):
+    """A package whose data folder lost the image still writes the report."""
+    pytest.importorskip('reportlab')
+    from brucellaid import pdfreport
+    monkeypatch.setattr('brucellaid.pdfreport.data_path',
+                        lambda name: (_ for _ in ()).throw(BrucellaIDError('no logo')))
+    path = pdfreport.write([good()], REFERENCES, RUN, tmp_path / 'r.pdf')
+    reader, text = read_pdf(path)
+    assert list(reader.pages[0].images) == []
+    assert 'Quality assurance report' in text
+
+
 def test_pdf_escape():
     from brucellaid import pdfreport
     assert pdfreport.escape('a & b <i> c') == 'a &amp; b &lt;i&gt; c'
@@ -296,7 +339,7 @@ def test_pdf_report(tmp_path):
     assert len(reader.pages) > 4
     assert reader.metadata['/Title'] == pdfreport.TITLE
     assert reader.metadata['/Author'] == 'A Reviewer'
-    for expected in ('BrucellaID quality assurance report', 'Summary', 'Reviewed by', 'Signature',
+    for expected in ('Quality assurance report', 'Summary', 'Reviewed by', 'Signature',
                      'Notes, warnings and errors', 'Definitions and methods', 'Run information',
                      'ST 20 is Brucella canis', 'B-REF-BS4-40.fasta', 'Seal failed',
                      'MASH did not run for this sample.', 'abc123', 'doi:10.1186/1471-2180-7-34'):
@@ -323,7 +366,7 @@ def test_pdf_report_without_any_run_information(tmp_path):
     result.notes = ['', 'nearly as close: something']  # An empty note is skipped, not printed as a bullet
     path = pdfreport.write([result], REFERENCES, {}, tmp_path / 'r.pdf')
     _, text = read_pdf(path)
-    assert 'BrucellaID quality assurance report' in text
+    assert 'Quality assurance report' in text
     assert '- nearly as close: something' in text
 
 
