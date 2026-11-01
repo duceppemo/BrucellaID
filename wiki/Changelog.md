@@ -105,8 +105,8 @@ which *Brucella* species a read set is, and which sequence type — and it answe
 before. What changed is everything around that, and how the MLST is called.
 
 **Packaging and interface**
-* Installable with `pip install brucellaid`, or from bioconda: a `brucellaid` command, and
-  `python -m brucellaid`.
+* Installable with `pip install brucellaid` (and from bioconda once the recipe is merged): a
+  `brucellaid` command, and `python -m brucellaid`.
 * **The two OLC dependencies are gone**: `accessoryFunctions` (OLCTools), which every function imported, and
   `MLSTsippr` (sipprverse), which ran the MLST. Neither installs from PyPI, so neither could be packaged.
   BrucellaID now needs nothing but the Python standard library, plus MASH and BBTools.

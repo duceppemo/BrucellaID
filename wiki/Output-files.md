@@ -44,6 +44,8 @@ What each allele call rests on.
 
 | Column | What it holds |
 | --- | --- |
+| `Sample` | The sample name |
+| `Locus` | One of the nine loci: `gap`, `aroA`, `glk`, `dnaK`, `gyrB`, `trpE`, `cobQ`, `int_hyp`, `omp25` |
 | `Allele` | The allele called, or `ND` |
 | `Reads` | Reads whose best match among the alleles of the locus is that allele |
 | `RunnerUp`, `RunnerUpReads` | The next allele, and its reads: the margin the call has |
@@ -53,9 +55,18 @@ A call whose runner-up is close behind is still a call, but it is worth a look: 
 [How it works](How-it-works).
 
 ## `brucellaid_mash.tsv` — one row per sample and reference genome
-Every distance, closest first, with the species of each reference. This is the file to read when a species
-call surprises you: the *Brucella* genomes are close to one another, and the second line is often not far
-behind the first.
+Every distance, closest first. This is the file to read when a species call surprises you, and the one the
+quality assurance report points at when it lists only the closest few: the *Brucella* genomes are close to
+one another, and the second line is often not far behind the first.
+
+| Column | What it holds |
+| --- | --- |
+| `Sample` | The sample name |
+| `Reference` | The reference genome, named as the reference table names it |
+| `Species`, `Biovar` | What that **reference genome** is. The biovar here is the reference's own, not a call about the sample |
+| `MashDistance` | The distance from the reads to that reference: roughly the fraction of positions that differ |
+| `PValue` | MASH's p-value for the shared hashes, which is 0 for anything in the genus |
+| `SharedHashes`, `TotalHashes` | Hashes shared, and the sketch size they are out of (1000) |
 
 ## `brucellaid.json` — everything, for a pipeline
 The command, the start and end times, who ran it and on what, the versions of BrucellaID, Python, MASH,

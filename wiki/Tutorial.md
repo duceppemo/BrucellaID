@@ -5,13 +5,17 @@ it the download. Every command and every output below is a real run.
 
 ## 1. Install
 ```bash
-conda create -n brucellaid -c conda-forge -c bioconda brucellaid
+conda create -n brucellaid -c conda-forge -c bioconda mash "gsl=2.7.0" bbmap python">=3.10"
 conda activate brucellaid
+pip install brucellaid
 brucellaid --version
 ```
 ```
-brucellaid 1.0.0
+brucellaid 1.1.0
 ```
+One `conda install brucellaid` will do all of it once the
+[bioconda recipe](https://github.com/bioconda/bioconda-recipes/pull/71040) is merged. See
+[Installation](Installation).
 
 ## 2. Get four samples
 Four runs from the ENA, one per species, about 540 MB in all:
@@ -166,7 +170,7 @@ gives a MultiQC report with a **BrucellaID** table of the four samples.
 
 ```json
 "software": {
-  "brucellaid": "1.0.0",
+  "brucellaid": "1.1.0",
   "Python": "3.12.16",
   "MASH": "2.3",
   "BBTools": "40.05",

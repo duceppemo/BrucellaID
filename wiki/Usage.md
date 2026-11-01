@@ -39,8 +39,9 @@ The main table is printed to standard output as well, so `brucellaid ... > resul
 go to standard error. See [Output files](Output-files).
 
 Six files are written by default: the three tables, the JSON report, a MultiQC file and
-`brucellaid_report.html`, a self-contained quality assurance report holding every distance, every allele
-call with its margin, the input files with their checksums and the checksum of every reference data file.
+`brucellaid_report.html`, a self-contained quality assurance report holding the closest reference
+genomes, every allele call with its margin, the input files with their checksums and the checksum of
+every reference data file.
 Run `multiqc results/` on the output folder to fold the run into a MultiQC report.
 
 ## Identification and typing
@@ -92,7 +93,7 @@ sketch from the accessions of the reference table.
 | Option | Default | What it does |
 | --- | --- | --- |
 | `-t`, `--threads N` | all available | Threads given to MASH and to Seal |
-| `-p`, `-j`, `--parallel N` | 1 | With `-i`: samples analysed at the same time, sharing the threads |
+| `-p`, `-j`, `--parallel`, `--jobs N` | 1 | With `-i`: samples analysed at the same time, sharing the threads |
 | `--memory SIZE` | from the allele file | Java heap for Seal, per job, e.g. `2g` |
 | `--verbose` | off | Debug messages, including the MASH and Seal command lines |
 | `-v`, `--version` | | Print the version |

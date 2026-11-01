@@ -75,9 +75,9 @@ Because that is what the first version wrote, and `--xlsx` exists for the pipeli
 species name is in `brucellaid.tsv` and in the JSON report, with the vSNP code as `species_code`.
 
 ### What is the HTML report for, and can I send it to someone?
-It is the evidence behind a run, in one file: every distance rather than the winning one, every allele call
-with the margin it had, the checksums of the inputs and of the reference data, the exact command, and a box
-for a reviewer to sign. It fetches nothing from the network — no script, no stylesheet, no font — so it
+It is the evidence behind a run, in one file: the closest reference genomes rather than the winning one
+alone, every allele call with the margin it had, the checksums of the inputs and of the reference data,
+the exact command, and a box for a reviewer to sign. It fetches nothing from the network — no script, no stylesheet, no font — so it
 renders the same in an email attachment, on an offline machine, or out of an archive years later, and it
 prints to clean pages. `--pdf` writes the same report as a PDF, which needs reportlab. `--no-html` skips it.
 

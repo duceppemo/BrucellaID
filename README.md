@@ -79,12 +79,15 @@ configure.
 
 ## Installation
 ```
-conda create -n brucellaid -c conda-forge -c bioconda brucellaid
+conda create -n brucellaid -c conda-forge -c bioconda mash "gsl=2.7.0" bbmap "python>=3.10"
 conda activate brucellaid
+pip install brucellaid
 ```
 MASH and BBTools (which provides `seal.sh`) are not on PyPI, so they come from bioconda; BrucellaID itself
-needs nothing else. See [Installation](https://github.com/duceppemo/BrucellaID/wiki/Installation) for pip
-and for running it from a clone.
+needs nothing else. A bioconda package that installs all three in one command is
+[awaiting review](https://github.com/bioconda/bioconda-recipes/pull/71040), so `conda install brucellaid`
+does not find it yet. See [Installation](https://github.com/duceppemo/BrucellaID/wiki/Installation) for
+the details and for running it from a clone.
 
 ## Quick start
 ```

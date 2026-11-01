@@ -7,19 +7,12 @@ library. Two output formats need a package each, and neither is required: `xlsxw
 report (`--xlsx`) and `reportlab` for the PDF quality assurance report (`--pdf`). The HTML version of that
 report holds the same information and needs nothing.
 
-## conda (recommended)
-```bash
-conda create -n brucellaid -c conda-forge -c bioconda brucellaid
-conda activate brucellaid
-brucellaid --version
-```
-This brings MASH and BBTools with it.
-
-## pip, with the tools from conda
+## pip, with the tools from conda (recommended)
 ```bash
 conda create -n brucellaid -c conda-forge -c bioconda mash "gsl=2.7.0" bbmap python">=3.10"
 conda activate brucellaid
 pip install brucellaid
+brucellaid --version
 ```
 The `gsl=2.7.0` pin is not cosmetic: the bioconda builds of mash 2.3 are linked against `libgsl.so.25`, while
 their recipe accepts gsl 2.7.1, which provides `libgsl.so.27`. Without the pin, mash may fail to start with
@@ -27,6 +20,15 @@ their recipe accepts gsl 2.7.1, which provides `libgsl.so.27`. Without the pin, 
 
 The optional output formats: `pip install 'brucellaid[xlsx]'`, `pip install 'brucellaid[pdf]'`, or
 `pip install 'brucellaid[all]'` for both. With conda, `conda install -c conda-forge xlsxwriter reportlab`.
+
+## conda, in one command — not yet
+```bash
+conda create -n brucellaid -c conda-forge -c bioconda brucellaid    # once the recipe is merged
+```
+This will bring MASH and BBTools with it, and is the shortest way in. The recipe is
+[awaiting review on bioconda](https://github.com/bioconda/bioconda-recipes/pull/71040); until it is merged the command above finds nothing, so use pip as
+above. The same goes for the ready-made container: biocontainers builds one from the bioconda package, so
+there is none yet.
 
 ## From a clone
 ```bash
@@ -40,14 +42,15 @@ pytest            # optional: 310 tests
 `python -m brucellaid` works too, and takes the same arguments as the `brucellaid` command.
 
 ## Docker or Singularity
-The bioconda package gives a container for free:
+Once the bioconda recipe is merged, biocontainers builds an image from it automatically:
 ```bash
 docker run --rm -v "$PWD":/data quay.io/biocontainers/brucellaid:<tag> brucellaid -i /data/reads -o /data/results
 ```
-The tag is listed on the [biocontainers page](https://biocontainers.pro/tools/brucellaid).
+The tag will be listed on biocontainers.pro. Until then, build your own from the pip install above, or run
+BrucellaID from a clone.
 
 ## What is installed
-The package ships its reference data and the logo of the reports, about 360 kB in all:
+The package ships its reference data and the logo of the reports, about 350 kB in all:
 
 | File | What it is |
 | --- | --- |

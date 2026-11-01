@@ -7,7 +7,7 @@ The bioconda builds of mash 2.3 are linked against `libgsl.so.25`, but their rec
 ```bash
 conda install -n brucellaid -c conda-forge "gsl=2.7.0"
 ```
-`environment.yml` already pins it, and installing BrucellaID from bioconda pulls a working combination.
+`environment.yml` already pins it, and the bioconda package will pull a working combination once the recipe is merged.
 
 ## `"mash" was not found in your PATH` / `"seal.sh" was not found in your PATH`
 Neither tool is on PyPI, so `pip install brucellaid` does not bring them:

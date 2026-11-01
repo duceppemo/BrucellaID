@@ -1,7 +1,7 @@
 # Reference data
 
-Seven files, about 360 kB. `brucellaid --sketch/--references/--alleles/--profiles` take files of your own
-instead of these.
+Seven files, about 350 kB. `brucellaid --sketch/--references/--alleles/--profiles/--st-species` take
+files of your own instead of the first five; the logo is only used by the reports.
 
 | File | What it is | Where it comes from |
 | --- | --- | --- |
