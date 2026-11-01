@@ -23,24 +23,24 @@ the distance and the sequence type must not name species that are nowhere near e
 ## What came back
 
 ```
-sample                   species              biovar  reference                      hashes     ST called  ST in the genome  species from          result
------------------------  -------------------  ------  -----------------------------  ---------  ---------  ----------------  --------------------  ------
-abortus_9-941            Brucella abortus     1       NC_006932-NC_006933.fasta      999/1000   1          1                 MASH+ST (agree)       ok
-abortus_BER              Brucella abortus     3       NZ_CP007682-NZ_CP007683.fasta  998/1000   6          6                 MASH+ST (agree)       ok
-melitensis_16M           Brucella melitensis  1       NC_003317-NC_003318.fasta      995/1000   7          7                 MASH+ST (agree)       ok
-melitensis_ATCC23457     Brucella melitensis  2       NC_012441-NC_012442.fasta      999/1000   8          8                 MASH+ST (agree)       ok
-melitensis_Ether         Brucella melitensis  3       NZ_CP007760-NZ_CP007761.fasta  1000/1000  9          9                 MASH+ST (agree)       ok
-melitensis_BwIM_SOM_36b  Brucella melitensis  1       NZ_CP018508-NZ_CP018509.fasta  998/1000   12         12                MASH+ST (agree)       ok
-suis_1330                Brucella suis        1       NC_017251-NC_017250.fasta      995/1000   14         14                MASH+ST (agree)       ok
-suis_ATCC23445           Brucella suis        2       NC_010169-NC_010167.fasta      998/1000   15         15                MASH+ST (agree)       ok
-suis_686                 Brucella suis        3       NZ_CP007719-NZ_CP007718.fasta  999/1000   17         17                MASH                  ok
-canis_ATCC23365          Brucella canis               NC_010103-NC_010104.fasta      1000/1000  20         20                MASH+ST (arbitrated)  ok
-ovis_ATCC25840           Brucella ovis                NC_009505-NC_009504.fasta      996/1000   13         13                MASH+ST (agree)       ok
-ceti_TE10759-12          Brucella ceti                NC_022905-NC_022906.fasta      995/1000   26         26                MASH+ST (agree)       ok
-microti_CCM4915          Brucella microti             NC_013119_NC_013118.fasta      998/1000   53         53                MASH+ST (agree)       ok
-abortus_2308             Brucella abortus     1       NC_006932-NC_006933.fasta      992/1000   5          5                 MASH+ST (agree)       ok
-anthropi_ATCC49188       ND                           B-REF-BS4-40.fasta             4/1000     ND         ND (no locus)                           ok
-coli_MG1655              ND                           B-REF-BS4-40.fasta             0/1000     ND         ND (no locus)                           ok
+sample                   species              biovar of the genome  reference                      hashes     ST called  ST in the genome  species from          result
+-----------------------  -------------------  --------------------  -----------------------------  ---------  ---------  ----------------  --------------------  ------
+abortus_9-941            Brucella abortus     1                     NC_006932-NC_006933.fasta      999/1000   1          1                 MASH+ST (agree)       ok
+abortus_BER              Brucella abortus     3                     NZ_CP007682-NZ_CP007683.fasta  998/1000   6          6                 MASH+ST (agree)       ok
+melitensis_16M           Brucella melitensis  1                     NC_003317-NC_003318.fasta      995/1000   7          7                 MASH+ST (agree)       ok
+melitensis_ATCC23457     Brucella melitensis  2                     NC_012441-NC_012442.fasta      999/1000   8          8                 MASH+ST (agree)       ok
+melitensis_Ether         Brucella melitensis  3                     NZ_CP007760-NZ_CP007761.fasta  1000/1000  9          9                 MASH+ST (agree)       ok
+melitensis_BwIM_SOM_36b  Brucella melitensis  1                     NZ_CP018508-NZ_CP018509.fasta  998/1000   12         12                MASH+ST (agree)       ok
+suis_1330                Brucella suis        1                     NC_017251-NC_017250.fasta      995/1000   14         14                MASH+ST (agree)       ok
+suis_ATCC23445           Brucella suis        2                     NC_010169-NC_010167.fasta      998/1000   15         15                MASH+ST (agree)       ok
+suis_686                 Brucella suis        3                     NZ_CP007719-NZ_CP007718.fasta  999/1000   17         17                MASH                  ok
+canis_ATCC23365          Brucella canis       -                     NC_010103-NC_010104.fasta      1000/1000  20         20                MASH+ST (arbitrated)  ok
+ovis_ATCC25840           Brucella ovis        -                     NC_009505-NC_009504.fasta      996/1000   13         13                MASH+ST (agree)       ok
+ceti_TE10759-12          Brucella ceti        -                     NC_022905-NC_022906.fasta      995/1000   26         26                MASH+ST (agree)       ok
+microti_CCM4915          Brucella microti     -                     NC_013119_NC_013118.fasta      998/1000   53         53                MASH+ST (agree)       ok
+abortus_2308             Brucella abortus     -                     NC_006932-NC_006933.fasta      992/1000   5          5                 MASH+ST (agree)       ok
+anthropi_ATCC49188       ND                   -                     B-REF-BS4-40.fasta             4/1000     ND         ND (no locus)                           ok
+coli_MG1655              ND                   -                     B-REF-BS4-40.fasta             0/1000     ND         ND (no locus)                           ok
 
 16 sample(s), all as expected.
 ```
@@ -48,8 +48,10 @@ coli_MG1655              ND                           B-REF-BS4-40.fasta        
 ## What that establishes
 
 **The identification names the right genome.** Each of the 13 genomes that are in the sketch came back as
-itself, with 995 to 1000 of its 1000 hashes shared, and with the species and biovar the reference table
-gives it.
+itself, with 995 to 1000 of its 1000 hashes shared, and with the species the reference table gives it. The
+"biovar of the genome" column is what `genomes.tsv` says each genome is, not something BrucellaID
+reported: it reports no biovar (see [How it works](How-it-works#no-biovar)), and the column is there so
+that a reader can see which biovars the check covered.
 
 **And the right species for a genome that is not in the sketch.** *B. abortus* 2308 is not one of the 16.
 It was identified as *Brucella abortus* through 9-941, sharing 992 hashes.
@@ -70,8 +72,9 @@ that is not one.
 
 **How tight the genus is, in numbers.** The distance between the closest reference and the second closest
 ranged from 0.00024 to 0.00354. The narrowest was *B. canis* ATCC 23365, which is 0.00024 away from
-*B. suis* bv. 4 strain 40 — ten hashes out of a thousand. This is why [How it works](How-it-works) asks you
-to read the biovar as the biovar of the closest reference and not as a biovar call.
+*B. suis* bv. 4 strain 40 — ten hashes out of a thousand. The same measurement taken within a species is
+why there is no biovar in the reports: the two *B. melitensis* biovar 1 references of this very sketch are
+0.000756 apart, further than the biovar 2 and biovar 3 references are from each other.
 
 **And the one call the distance did not make.** That *B. canis* sample is the only one of the sixteen whose
 `species from` reads `arbitrated`: *B. suis* bv. 4 was inside the margin, so MASH had not really chosen, and
@@ -102,6 +105,6 @@ reads give ST 1. See the [Changelog](Changelog).
   no indels. The [Tutorial](Tutorial) runs four real public read sets, where the numbers are less tidy — one
   of them shares 422 hashes of 1000 and is still typed.
 * **Low depth.** Everything here is 20x. Run the script with `COVERAGE=5` to see where the ties begin.
-* **Biovars.** The biovar of the closest reference was right for all 13 sketch genomes, but those genomes
-  *are* the references. It says nothing about calling the biovar of an unknown isolate.
+* **Biovars.** Nothing at all: BrucellaID does not report a biovar, and this validation does not test for
+  one. See [How it works](How-it-works#no-biovar) for the three reasons.
 * **Novel alleles.** Every genome here carries alleles the database holds.

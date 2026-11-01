@@ -68,14 +68,15 @@ them four of the eight threads.
 `results/brucellaid.tsv`, also printed to the terminal:
 
 ```
-Sample       Species             Biovar  SpeciesSource         ClosestReference               SharedHashes  SequenceType  AlleleProfile       STSpecies            Reads
-ERR2136546   Brucella canis              MASH+ST (arbitrated)  NC_010103-NC_010104.fasta      773/1000      20            1-6-4-1-5-3-5-4-6   Brucella canis       625576
-ERR3454415   Brucella abortus    1       MASH+ST (agree)       NC_006932-NC_006933.fasta      833/1000      1             2-1-1-2-1-3-1-1-1   Brucella abortus     1175082
-SRR19520329  Brucella melitensis 3       MASH+ST (agree)       NZ_CP007760-NZ_CP007761.fasta  875/1000      11            3-2-3-2-1-5-3-2-10  Brucella melitensis  1136924
-SRR8550484   Brucella suis       2       MASH+ST (agree)       NC_010169-NC_010167.fasta      422/1000      15            1-2-7-1-3-3-5-3-2   Brucella suis        1693672
+Sample       Species              SpeciesSource         ClosestReference               SharedHashes  SequenceType  AlleleProfile       STSpecies            Reads
+ERR2136546   Brucella canis       MASH+ST (arbitrated)  NC_010103-NC_010104.fasta      773/1000      20            1-6-4-1-5-3-5-4-6   Brucella canis       625576
+ERR3454415   Brucella abortus     MASH+ST (agree)       NC_006932-NC_006933.fasta      833/1000      1             2-1-1-2-1-3-1-1-1   Brucella abortus     1175082
+SRR19520329  Brucella melitensis  MASH+ST (agree)       NZ_CP007760-NZ_CP007761.fasta  875/1000      11            3-2-3-2-1-5-3-2-10  Brucella melitensis  1136924
+SRR8550484   Brucella suis        MASH+ST (agree)       NC_010169-NC_010167.fasta      422/1000      15            1-2-7-1-3-3-5-3-2   Brucella suis        1693672
 ```
 Four species, four sequence types, and each species is the one the submitter labelled the run with.
-`MashDistance`, left out above to fit, reads 0.006524, 0.004549, 0.003285 and 0.024841.
+`MashDistance`, left out above to fit, reads 0.006524, 0.004549, 0.003285 and 0.024841. There is no biovar
+column: see [How it works](How-it-works#no-biovar).
 
 **The first sample is the interesting one.** Its `SpeciesSource` says `arbitrated`, and the `Notes` column,
 also left out above, says why:
@@ -132,13 +133,14 @@ but it is the kind of number worth carrying into the report. BrucellaID prints i
 away.
 
 ## 7. The quality assurance report
-`results/brucellaid_report.html` is the run with its evidence attached: open it in a browser, or print it.
+`results/brucellaid_report.html` is the run with its evidence attached: open it in a browser, or print it
+&mdash; it lays out one sample to a page.
 **[This is what it looks like](https://duceppemo.github.io/BrucellaID/example_report.html)** for the four samples of this tutorial, with the machine it ran on
 removed.
-The *B. canis* sample is the one to look at — its block holds all sixteen distances, with
+The *B. canis* sample is the one to look at — its block lists the five closest references, with
 `NC_010103-NC_010104.fasta` highlighted as the closest and `B-REF-BS4-40.fasta` shaded, because at
-0.006524 against 0.006698 the distance did not really choose. Under them, **The species call** shows what
-decided it:
+0.006524 against 0.006698 the distance did not really choose. Beside them, **The species call** shows
+what decided it:
 
 ```
 Species reported                          Brucella canis

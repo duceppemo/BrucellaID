@@ -172,9 +172,9 @@ def candidates_of(identification, references):
 
 def closest_of(identification, references, species):
     """
-    The closest reference genome of one species, which is where its biovar and its vSNP code come from.
+    The closest reference genome of one species, which is where its vSNP species code comes from.
 
-    When the ST moves the call to another species, the biovar of the genome MASH landed on belongs to the
+    When the ST moves the call to another species, the code of the genome MASH landed on belongs to the
     species it named, not to the one being reported, so it cannot be carried over.
 
     :return: references.Reference, or None when the sketch holds no genome of that species
@@ -190,7 +190,7 @@ def closest_of(identification, references, species):
 class SpeciesCall:
     """The species reported for one sample, and what it rests on."""
     species: str = UNKNOWN
-    reference: object = None  # references.Reference the biovar and the vSNP code are taken from, or None
+    reference: object = None  # references.Reference the vSNP code is taken from, or None
     source: str = ''  # FROM_MASH, FROM_BOTH, FROM_ST, or "" when no species could be called
     verdict: str = ''  # AGREE, ARBITRATED, CONFLICT, UNRESOLVED, or "" when only MASH had anything to say
     candidates: tuple = ()  # The species MASH put within reach, the closest first
@@ -198,10 +198,6 @@ class SpeciesCall:
     entry: object = None  # The StSpecies row used, or None when the ST said nothing usable
     st_reason: str = ''  # Why the ST was not used, when it was not: a report has to be able to say
     notes: tuple = ()
-
-    @property
-    def biovar(self):
-        return self.reference.biovar if self.reference else ''
 
     @property
     def code(self):

@@ -21,7 +21,18 @@ from html import escape as _escape
 from . import __version__
 from .errors import BrucellaIDError
 from .mlst import UNKNOWN
-from .qa import FAILED, OK, WARNING, close_hits, counted, groups, margin, status, warnings
+from .qa import (
+    FAILED,
+    OK,
+    WARNING,
+    close_hits,
+    counted,
+    groups,
+    margin,
+    status,
+    top_hits,
+    warnings,
+)
 from .references import data_path
 from .species import AGREE, ARBITRATED, CONFLICT, UNRESOLVED
 
@@ -35,112 +46,191 @@ HEADING = 'Quality assurance report'
 CSS = """
 :root {
   color-scheme: light dark;
-  --bg: #ffffff; --panel: #f7f8fa; --ink: #16191d; --muted: #5c6670; --line: #dfe3e8;
-  --accent: #1a6ab3; --accent-soft: #e8f1fa;
-  --ok: #1a7f44; --ok-soft: #e7f5ec; --warn: #9a5b00; --warn-soft: #fdf2e2;
-  --bad: #ad2525; --bad-soft: #fdecec; --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
-  /* The logo of the package writes its four colours as these variables, so one file serves both themes */
+  --bg: #ffffff; --panel: #f6f7f9; --raised: #ffffff; --ink: #14171a; --soft-ink: #3d454d;
+  --muted: #6b747d; --line: #e3e7ec; --hair: #eef1f4;
+  --accent: #15639f; --accent-soft: #eaf2fa; --accent-line: #bcd7ee;
+  --ok: #16723c; --ok-soft: #e9f5ed; --warn: #8a5000; --warn-soft: #fdf1df;
+  --bad: #a51f1f; --bad-soft: #fcebeb;
+  --shadow: 0 1px 2px rgba(16, 24, 32, 0.05), 0 1px 10px rgba(16, 24, 32, 0.04);
+  --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
   --logo-ink: #2f2a3d; --logo-accent: #7d4a9e; --logo-reference: #9aa5ad; --logo-muted: #5d6a72;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #15181c; --panel: #1d2127; --ink: #e8eaed; --muted: #9aa3ad; --line: #2e343c;
-    --accent: #6fb3f2; --accent-soft: #19283a;
-    --ok: #67c48d; --ok-soft: #14271c; --warn: #e0a95c; --warn-soft: #2a2114;
-    --bad: #f08b8b; --bad-soft: #2b1818;
-    --logo-ink: #f0edf5; --logo-accent: #b185d8; --logo-reference: #6d787f;
-    --logo-muted: #a9b6bd;
+    --bg: #111418; --panel: #191d22; --raised: #171b20; --ink: #e9ecef; --soft-ink: #c7ced5;
+    --muted: #949da6; --line: #2a3037; --hair: #22272d;
+    --accent: #6cb2ef; --accent-soft: #15242f; --accent-line: #2b4559;
+    --ok: #5ec488; --ok-soft: #12241a; --warn: #e0a95c; --warn-soft: #2a2114;
+    --bad: #ef8d8d; --bad-soft: #2b1818;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --logo-ink: #f0edf5; --logo-accent: #b185d8; --logo-reference: #6d787f; --logo-muted: #a9b6bd;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #15181c; --panel: #1d2127; --ink: #e8eaed; --muted: #9aa3ad; --line: #2e343c;
-  --accent: #6fb3f2; --accent-soft: #19283a;
-  --ok: #67c48d; --ok-soft: #14271c; --warn: #e0a95c; --warn-soft: #2a2114;
-  --bad: #f08b8b; --bad-soft: #2b1818;
-  --logo-ink: #f0edf5; --logo-accent: #b185d8; --logo-reference: #6d787f;
-  --logo-muted: #a9b6bd;
+  --bg: #111418; --panel: #191d22; --raised: #171b20; --ink: #e9ecef; --soft-ink: #c7ced5;
+  --muted: #949da6; --line: #2a3037; --hair: #22272d;
+  --accent: #6cb2ef; --accent-soft: #15242f; --accent-line: #2b4559;
+  --ok: #5ec488; --ok-soft: #12241a; --warn: #e0a95c; --warn-soft: #2a2114;
+  --bad: #ef8d8d; --bad-soft: #2b1818;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --logo-ink: #f0edf5; --logo-accent: #b185d8; --logo-reference: #6d787f; --logo-muted: #a9b6bd;
 }
 * { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
 body {
-  margin: 0; padding: 0 16px 64px; background: var(--bg); color: var(--ink);
-  font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  margin: 0; padding: 0 20px 72px; background: var(--bg); color: var(--ink);
+  font: 15px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-variant-numeric: tabular-nums;
 }
-main { max-width: 1100px; margin: 0 auto; }
-.logo { margin: 26px 0 2px; }
-.logo svg { width: 360px; max-width: 100%; height: auto; display: block; }
-h1 { font-size: 1.6rem; margin: 10px 0 4px; letter-spacing: -0.01em; }
+main { max-width: 1120px; margin: 0 auto; }
+.masthead { padding: 34px 0 6px; }
+.logo svg { width: 326px; max-width: 100%; height: auto; display: block; }
+h1 { font-size: 1.55rem; font-weight: 650; margin: 14px 0 2px; letter-spacing: -0.015em; }
+.sub { color: var(--muted); font-size: 0.92rem; margin: 0; }
 h2 {
-  font-size: 1.2rem; margin: 40px 0 12px; padding-bottom: 6px; border-bottom: 2px solid var(--line);
+  font-size: 1.22rem; font-weight: 650; letter-spacing: -0.01em; margin: 46px 0 14px;
+  padding-bottom: 8px; border-bottom: 1px solid var(--line); display: flex; align-items: baseline; gap: 10px;
 }
-h3 { font-size: 1.02rem; margin: 22px 0 8px; }
-h4 { font-size: 0.92rem; margin: 18px 0 6px; color: var(--muted); text-transform: uppercase;
-     letter-spacing: 0.06em; }
-p, ul, ol { margin: 8px 0; }
-a { color: var(--accent); }
-code, .mono { font-family: var(--mono); font-size: 0.88em; }
-.sub { color: var(--muted); margin: 0 0 18px; }
-.chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 6px; }
+h2 .n {
+  font-size: 0.72rem; font-weight: 700; color: var(--accent); background: var(--accent-soft);
+  border: 1px solid var(--accent-line); border-radius: 5px; padding: 1px 7px; letter-spacing: 0.02em;
+}
+h3 { font-size: 1.02rem; font-weight: 650; margin: 24px 0 8px; }
+h4 {
+  font-size: 0.72rem; font-weight: 700; margin: 18px 0 7px; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 0.08em;
+}
+p, ul, ol { margin: 9px 0; }
+a { color: var(--accent); text-underline-offset: 2px; }
+code, .mono { font-family: var(--mono); font-size: 0.86em; }
+
+/* The run at a glance */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 16px; }
 .chip {
-  display: inline-flex; align-items: baseline; gap: 6px; padding: 4px 10px; border-radius: 999px;
-  background: var(--panel); border: 1px solid var(--line); font-size: 0.85rem;
+  display: inline-flex; align-items: baseline; gap: 6px; padding: 5px 12px; border-radius: 999px;
+  background: var(--panel); border: 1px solid var(--line); font-size: 0.84rem; color: var(--soft-ink);
 }
-.chip b { font-size: 0.95rem; }
-.chip.ok { background: var(--ok-soft); border-color: var(--ok); color: var(--ok); }
-.chip.warning { background: var(--warn-soft); border-color: var(--warn); color: var(--warn); }
-.chip.failed { background: var(--bad-soft); border-color: var(--bad); color: var(--bad); }
-.tag {
-  display: inline-block; padding: 1px 7px; border-radius: 4px; font-size: 0.78rem; font-weight: 600;
-  border: 1px solid var(--line); background: var(--panel); white-space: nowrap;
+.chip b { font-size: 1rem; font-weight: 650; color: var(--ink); }
+.chip.ok { background: var(--ok-soft); border-color: transparent; color: var(--ok); }
+.chip.ok b { color: var(--ok); }
+.chip.warning { background: var(--warn-soft); border-color: transparent; color: var(--warn); }
+.chip.warning b { color: var(--warn); }
+.chip.failed { background: var(--bad-soft); border-color: transparent; color: var(--bad); }
+.chip.failed b { color: var(--bad); }
+
+.pill {
+  display: inline-flex; align-items: center; gap: 5px; padding: 2px 9px; border-radius: 999px;
+  font-size: 0.76rem; font-weight: 600; border: 1px solid var(--line); background: var(--panel);
+  color: var(--soft-ink); white-space: nowrap;
 }
-.tag.ok { background: var(--ok-soft); border-color: var(--ok); color: var(--ok); }
-.tag.warning { background: var(--warn-soft); border-color: var(--warn); color: var(--warn); }
-.tag.failed { background: var(--bad-soft); border-color: var(--bad); color: var(--bad); }
-.tag.decided { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
-table { border-collapse: collapse; width: 100%; margin: 10px 0 4px; font-size: 0.88rem; }
-caption { text-align: left; color: var(--muted); font-size: 0.85rem; padding-bottom: 6px; }
-th, td { text-align: left; padding: 5px 9px; border-bottom: 1px solid var(--line); vertical-align: top; }
-th { background: var(--panel); font-weight: 600; white-space: nowrap; }
-td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
-tr.best td { background: var(--accent-soft); }
+.pill::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.pill.ok { background: var(--ok-soft); border-color: transparent; color: var(--ok); }
+.pill.warning { background: var(--warn-soft); border-color: transparent; color: var(--warn); }
+.pill.failed { background: var(--bad-soft); border-color: transparent; color: var(--bad); }
+.pill.decided { background: var(--accent-soft); border-color: transparent; color: var(--accent); }
+.pill.plain::before { display: none; }
+
+table { border-collapse: collapse; width: 100%; margin: 8px 0 2px; font-size: 0.86rem; }
+caption { text-align: left; color: var(--muted); font-size: 0.82rem; padding: 0 0 7px; line-height: 1.45; }
+th {
+  text-align: left; padding: 7px 10px; background: transparent; color: var(--muted); font-weight: 650;
+  font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap;
+  border-bottom: 1px solid var(--line);
+}
+td { padding: 7px 10px; border-bottom: 1px solid var(--hair); vertical-align: top; color: var(--soft-ink); }
+td:first-child { color: var(--ink); }
+td.num, th.num { text-align: right; }
+td.nw { white-space: nowrap; }
+tr.best td { background: var(--accent-soft); color: var(--ink); }
+tr.best td:first-child { box-shadow: inset 3px 0 0 var(--accent); font-weight: 600; }
 tr.close td { background: var(--panel); }
-tbody tr:last-child td { border-bottom: 1px solid var(--line); }
-.group { margin: 0 0 4px; padding: 6px 10px; background: var(--accent-soft); border-left: 3px solid
-         var(--accent); font-size: 0.88rem; }
-.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px;
-         margin: 12px 0; }
-.sample { border: 1px solid var(--line); border-radius: 10px; padding: 4px 16px 16px; margin: 18px 0;
-          background: var(--bg); }
-.sample > h3 { display: flex; flex-wrap: wrap; gap: 10px; align-items: baseline; }
-dl.facts { display: grid; grid-template-columns: max-content 1fr; gap: 3px 14px; margin: 8px 0; }
-dl.facts dt { color: var(--muted); font-size: 0.85rem; }
-dl.facts dd { margin: 0; }
-.sign { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 12px; }
-.sign div { border-top: 1px solid var(--ink); padding-top: 4px; font-size: 0.82rem; color: var(--muted); }
-.sign .line { height: 42px; border: 0; }
-nav.toc ol { margin: 4px 0; padding-left: 22px; }
-nav.toc { font-size: 0.9rem; }
-footer { margin-top: 40px; padding-top: 10px; border-top: 1px solid var(--line); color: var(--muted);
-         font-size: 0.8rem; }
-.wrap { overflow-wrap: anywhere; }
-@media (max-width: 640px) {
-  dl.facts { grid-template-columns: 1fr; }
-  dl.facts dd { margin-bottom: 6px; }
-  .sign { grid-template-columns: 1fr; }
-  table { font-size: 0.8rem; }
+tr.warning td:first-child { box-shadow: inset 3px 0 0 var(--warn); }
+tr.failed td:first-child { box-shadow: inset 3px 0 0 var(--bad); }
+
+tr.grouprow td {
+  background: var(--panel); font-weight: 650; color: var(--ink); font-size: 0.85rem;
+  border-bottom: 1px solid var(--line); padding: 7px 10px;
 }
+tr.grouprow .count { font-weight: 400; color: var(--muted); font-size: 0.8rem; margin-left: 10px; }
+
+.panel {
+  background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px;
+  margin: 14px 0;
+}
+.note { background: var(--accent-soft); border-color: var(--accent-line); color: var(--soft-ink); }
+
+.sample {
+  border: 1px solid var(--line); border-radius: 12px; padding: 2px 18px 18px; margin: 16px 0;
+  background: var(--raised); box-shadow: var(--shadow); border-left: 3px solid var(--line);
+}
+.sample.ok { border-left-color: var(--ok); }
+.sample.warning { border-left-color: var(--warn); }
+.sample.failed { border-left-color: var(--bad); }
+.sample h3 { display: flex; flex-wrap: wrap; gap: 9px; align-items: center; margin-top: 16px; }
+.sample h3 .name { font-size: 1.08rem; }
+
+/* Two columns of facts: the page is wide, and a sample should stay on one printed page */
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 34px; align-items: start; }
+dl.facts { display: grid; grid-template-columns: max-content 1fr; gap: 2px 14px; margin: 6px 0 2px; }
+dl.facts dt { color: var(--muted); font-size: 0.82rem; line-height: 1.5; }
+dl.facts dd { margin: 0; font-size: 0.86rem; line-height: 1.5; }
+
+.sign { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 10px; }
+.sign .line { height: 44px; border-bottom: 1px solid var(--soft-ink); }
+.sign .what { padding-top: 5px; font-size: 0.78rem; color: var(--muted); }
+
+nav.toc { font-size: 0.9rem; margin: 18px 0 0; }
+nav.toc ol { margin: 6px 0 0; padding-left: 20px; color: var(--muted); }
+nav.toc li { margin: 2px 0; }
+footer {
+  margin-top: 48px; padding-top: 12px; border-top: 1px solid var(--line); color: var(--muted);
+  font-size: 0.78rem;
+}
+.wrap { overflow-wrap: anywhere; }
+
+/* Screen only: an A4 page is about 750 CSS pixels wide, so a plain max-width rule would collapse the
+   columns when printing, which is exactly where they are needed. */
+@media screen and (max-width: 760px) {
+  .cols, .sign { grid-template-columns: 1fr; }
+  dl.facts { grid-template-columns: 1fr; }
+  dl.facts dd { margin-bottom: 7px; }
+  table { font-size: 0.78rem; }
+  th, td { padding: 6px 7px; }
+}
+
 @media print {
-  @page { size: A4; margin: 14mm 12mm 16mm; }
-  body { padding: 0; font-size: 10pt; background: #fff; color: #000; }
-  :root { --bg: #fff; --panel: #f2f2f2; --ink: #000; --muted: #444; --line: #bbb; --accent: #0b4f8a;
-          --accent-soft: #eaf1f8; }
+  @page { size: A4; margin: 13mm 11mm 15mm; }
+  body { padding: 0; font-size: 9.2pt; line-height: 1.42; background: #fff; }
+  :root {
+    --bg: #fff; --panel: #f4f5f7; --raised: #fff; --ink: #000; --soft-ink: #1f2429; --muted: #4a5157;
+    --line: #c2c8ce; --hair: #e2e6ea; --accent: #0d4f82; --accent-soft: #eaf2fa; --shadow: none;
+  }
   nav.toc, .noprint { display: none; }
-  .logo svg { width: 230px; }
-  h2 { break-before: page; }
+  .logo svg { width: 196px; }
+  h1 { font-size: 15pt; }
+  h2 { font-size: 12pt; margin: 0 0 8pt; break-before: page; }
   h2.first { break-before: avoid; }
-  /* A sample block is often taller than a page, so it may not be kept whole: keeping its tables whole
-     is what matters, and a heading must not be left alone at the foot of a page. */
-  table, .panel { break-inside: avoid; }
   h2, h3, h4 { break-after: avoid; }
+  /* One sample to a page: with the five closest references it fits, and a reviewer reads one at a time.
+     Everything below is what buys the room for that -- a sample that spills makes two half-empty pages. */
+  .sample {
+    break-before: page; break-inside: avoid; box-shadow: none; margin: 0;
+    border: 0; border-left: 2pt solid; border-radius: 0; padding: 0 0 0 8pt;
+  }
+  .sample:first-of-type { break-before: avoid; }
+  .sample h3 { margin: 0 0 2pt; gap: 7px; }
+  table { font-size: 8.3pt; margin: 3pt 0 1pt; }
+  th { padding: 3pt 5pt 2.5pt; font-size: 7pt; }
+  td { padding: 2.6pt 5pt; }
+  caption { font-size: 7.4pt; padding-bottom: 3pt; line-height: 1.35; }
+  h4 { margin: 8pt 0 2pt; font-size: 7.2pt; }
+  h3 { margin: 10pt 0 3pt; }
+  p { margin: 4pt 0; }
+  dl.facts { gap: 0 12px; margin: 3pt 0 0; }
+  dl.facts dt, dl.facts dd { font-size: 8.3pt; line-height: 1.34; }
+  .cols { gap: 0 26px; }
+  .chips { margin-bottom: 8pt; }
+  table, .panel, .sign { break-inside: avoid; }
   thead { display: table-header-group; }
   a { color: #000; text-decoration: none; }
 }
@@ -174,23 +264,60 @@ def anchor(name):
     return 'sample-' + re.sub(r'[^A-Za-z0-9_-]+', '-', str(name)).strip('-').lower()
 
 
-def tag(text, kind=''):
-    """A coloured label: a status, or a verdict."""
-    return '<span class="tag {}">{}</span>'.format(escape(kind), escape(text)) if kind else \
-        '<span class="tag">{}</span>'.format(escape(text))
+def pill(text, kind=''):
+    """A small coloured label: a status, or what decided a species."""
+    return '<span class="pill {}">{}</span>'.format(escape(kind), escape(text)) if kind else \
+        '<span class="pill plain">{}</span>'.format(escape(text))
 
 
-def cell(value, numeric=False):
-    return '<td class="num">{}</td>'.format(escape(value)) if numeric else '<td>{}</td>'.format(escape(value))
+def heading(number, title, anchor_id):
+    """A numbered section heading, so that the contents list and the page agree."""
+    return '<h2 id="{}"{}><span class="n">{}</span> {}</h2>'.format(
+        escape(anchor_id), ' class="first"' if number == 1 else '', number, escape(title))
 
 
-def table(headers, rows, caption='', numeric=(), classes=()):
+class Raw(str):
+    """A cell value that is markup already, such as a pill, and must not be escaped again."""
+
+
+def cell(value, numeric=False, nowrap=False):
+    text = value if isinstance(value, Raw) else escape(value)
+    classes = ' '.join(name for name, on in (('num', numeric), ('nw', nowrap)) if on)
+    return '<td class="{}">{}</td>'.format(classes, text) if classes else '<td>{}</td>'.format(text)
+
+
+def grouped_table(headers, sections, caption):
+    """
+    One table whose rows are divided by a labelled row, instead of one table per group.
+
+    Four groups of one sample each should not be four tables with four header rows; the groups are
+    separated by a row that names them.
+
+    :param sections: [(label, count label, rows)], a row being values or (values, row class)
+    """
+    out = ['<table>', '<caption>{}</caption>'.format(escape(caption)),
+           '<thead><tr>{}</tr></thead>'.format(''.join('<th>{}</th>'.format(escape(h)) for h in headers)),
+           '<tbody>']
+    for label, count, rows in sections:
+        out.append('<tr class="grouprow"><td colspan="{}">{}<span class="count">{}</span></td></tr>'.format(
+            len(headers), escape(label), escape(count)))
+        for row in rows:
+            values, row_class = row if isinstance(row, tuple) else (row, '')
+            cells = ''.join(cell(value) for value in values)
+            out.append('<tr class="{}">{}</tr>'.format(escape(row_class), cells) if row_class
+                       else '<tr>{}</tr>'.format(cells))
+    out.append('</tbody></table>')
+    return '\n'.join(out)
+
+
+def table(headers, rows, caption='', numeric=(), classes=(), nowrap=()):
     """
     A table from already escaped-on-write values.
 
     :param headers: column titles
     :param rows: list of rows of values, or (values, row class) pairs when a row is highlighted
     :param numeric: indexes of the columns to align right
+    :param nowrap: indexes of the columns that must stay on one line, such as a date
     """
     out = ['<table class="{}">'.format(' '.join(classes)) if classes else '<table>']
     if caption:
@@ -201,7 +328,7 @@ def table(headers, rows, caption='', numeric=(), classes=()):
     out.append('<tbody>')
     for row in rows:
         values, row_class = row if isinstance(row, tuple) else (row, '')
-        cells = ''.join(cell(v, i in numeric) for i, v in enumerate(values))
+        cells = ''.join(cell(v, i in numeric, i in nowrap) for i, v in enumerate(values))
         out.append('<tr class="{}">{}</tr>'.format(escape(row_class), cells) if row_class
                    else '<tr>{}</tr>'.format(cells))
     out.append('</tbody></table>')
@@ -239,40 +366,41 @@ def summary_section(results, run):
     for kind, label in ((OK, 'ok'), (WARNING, 'warning'), (FAILED, 'failed')):
         if counts[kind]:
             chips.append('<span class="chip {}"><b>{}</b> {}</span>'.format(kind, counts[kind], label))
-    out = ['<h2 class="first" id="summary">Summary</h2>',
+    out = [heading(1, 'Summary', 'summary'),
            '<div class="chips">{}</div>'.format(''.join(chips)),
            facts([('Run started', run.get('started', '')),
                   ('Run finished', run.get('finished', '')),
                   ('Operator', run.get('operator', '')),
                   ('Command', run.get('command', ''))])]
+    sections = []
     for (species, st), members in groups(results):
-        if species:
-            out.append('<p class="group"><b>{}</b>{} &mdash; ST {} &mdash; {} sample(s)</p>'.format(
-                escape(species), '', escape(st), len(members)))
-        else:
-            out.append('<p class="group" style="border-color:var(--bad)"><b>Failed</b> &mdash; '
-                       '{} sample(s)</p>'.format(len(members)))
+        label = '{} \u00b7 ST {}'.format(species, st) if species else 'Failed'
         rows = []
         for result in members:
             state = status(result)
-            rows.append(([result.sample, result.species or UNKNOWN, result.biovar,
+            rows.append(([result.sample, result.species or UNKNOWN,
                           result.call.source if result.call else '',
                           result.call.verdict if result.call and result.call.verdict else '',
                           result.sequence_type, result.mlst.profile if result.mlst else '',
-                          result.closest_reference, state], state if state != OK else ''))
-        out.append(table(['Sample', 'Species', 'Biovar', 'Species from', 'Decision', 'ST', 'Allele profile',
-                          'Closest reference', 'Status'], rows))
+                          result.closest_reference, Raw(pill(state, state))],
+                         state if state != OK else ''))
+        sections.append((label, '{} sample(s)'.format(len(members)), rows))
+    out.append(grouped_table(['Sample', 'Species', 'Species from', 'Decision', 'ST', 'Allele profile',
+                              'Closest reference', 'Status'], sections,
+                             'Samples called the same way are grouped, the largest group first and the '
+                             'failed samples last.'))
     out.append('<div class="panel"><h4>Reviewed by</h4><div class="sign">'
                '<div class="line"></div><div class="line"></div><div class="line"></div>'
-               '<div>Name</div><div>Date</div><div>Signature</div></div></div>')
+               '<div class="what">Name</div><div class="what">Date</div><div class="what">Signature</div>'
+               '</div></div>')
     return out
 
 
 def warnings_section(results):
     """Every warning and error of the run, one row each."""
-    rows = [([sample, state, text], state if state != OK else '')
+    rows = [([sample, Raw(pill(state, state)), text], state if state != OK else '')
             for sample, state, text in warnings(results)]
-    out = ['<h2 id="warnings">Notes, warnings and errors</h2>']
+    out = [heading(2, 'Notes, warnings and errors', 'warnings')]
     if not rows:
         out.append('<p>None: every sample was identified and typed without a note.</p>')
         return out
@@ -282,9 +410,9 @@ def warnings_section(results):
     return out
 
 
-def identification_block(result, references):
-    """Every distance MASH measured for one sample, not only the winning one."""
-    out = ['<h4>Identification: the MASH distances</h4>']
+def identification_facts(result):
+    """What the closest reference was, and how close."""
+    out = ['<h4>Identification: the MASH distance</h4>']
     if result.identification is None:
         out.append('<p>MASH did not run for this sample.</p>')
         return out
@@ -298,20 +426,31 @@ def identification_block(result, references):
         ('Estimated identity', '{:.3f}%'.format(best.identity)),
         ('Shared min-hashes', '{}/{} (at least {} required)'.format(
             best.shared_hashes, best.total_hashes, result.identification.min_hashes)),
-        ('p-value', '{:.3g}'.format(best.p_value)),
     ]))
+    return out
+
+
+def identification_table(result, references):
+    """The closest reference genomes, and how many were left out of the list."""
+    if result.identification is None:
+        return []
+    best = result.identification.best
+    out = []
+    shown, hidden = top_hits(close_hits(result, references))
     rows = []
-    for hit, reference, close in close_hits(result, references):
+    for hit, reference, close in shown:
         row_class = 'best' if hit is best else ('close' if close else '')
         rows.append(([hit.reference, reference.species if reference else '(not in the reference table)',
-                      reference.biovar if reference else '', reference.strain if reference else '',
+                      reference.strain if reference else '',
                       '{:.6f}'.format(hit.distance), '{:.3f}'.format(hit.identity),
                       '{}/{}'.format(hit.shared_hashes, hit.total_hashes), '{:.3g}'.format(hit.p_value)],
                      row_class))
-    out.append(table(['Reference genome', 'Species', 'Biovar', 'Strain', 'Distance', 'Identity %',
-                      'Shared hashes', 'p-value'], rows, numeric=(4, 5, 6, 7),
-                     caption='Closest first. The closest is highlighted; a shaded row is near enough to the '
-                             'closest that the distance alone does not separate the two.'))
+    caption = 'Closest first. A shaded row is too close to the first to be separated by distance alone.'
+    if hidden:
+        caption += ' The other {} reference(s) are further away; brucellaid_mash.tsv has every ' \
+                   'distance.'.format(hidden)
+    out.append(table(['Reference genome', 'Species', 'Strain', 'Distance', 'Identity %', 'Shared hashes',
+                      'p-value'], rows, numeric=(3, 4, 5, 6), caption=caption))
     return out
 
 
@@ -325,24 +464,22 @@ def decision_block(result):
     entry = call.entry
     out.append(facts([
         ('Species reported', call.species),
-        ('Biovar', '{} (of {}, the closest reference of that species)'.format(call.biovar, call.reference.strain)
-         if call.biovar and call.reference else call.biovar),
         ('Decided by', call.source),
         ('Species within reach of the closest', ', '.join(call.candidates) if len(call.candidates) > 1
          else (call.candidates[0] if call.candidates else '')),
         ('Sequence type', call.st),
         ('What that ST is, in the isolate database', entry.evidence if entry else ''),
-        ('Biovars recorded for it', entry.biovars.replace(';', ', ') if entry and entry.biovars else ''),
+        ('Biovars of its isolates', entry.biovars.replace(';', ', ') if entry and entry.biovars else ''),
         ('Why the ST was not used', call.st_reason),
     ]))
     if call.verdict:
-        out.append('<p>{} {}</p>'.format(tag(call.verdict, 'decided'), escape(VERDICTS[call.verdict])))
+        out.append('<p>{} {}</p>'.format(pill(call.verdict, 'decided'), escape(VERDICTS[call.verdict])))
     return out
 
 
-def mlst_block(result):
-    """The nine allele calls, each with the allele it beat and by how much."""
-    out = ['<h4>MLST: the nine allele calls</h4>']
+def mlst_facts(result):
+    """The sequence type and what it was called from."""
+    out = ['<h4>MLST: the sequence type</h4>']
     if result.mlst is None:
         out.append('<p>The MLST was not run for this sample.</p>')
         return out
@@ -355,17 +492,26 @@ def mlst_block(result):
         ('Reads matching an allele', '{:,}'.format(mlst.assigned_reads)),
         ('About the ST', mlst.note),
     ]))
+    return out
+
+
+def mlst_table(result):
+    """The nine allele calls, each with the allele it beat and by how much."""
+    if result.mlst is None:
+        return []
+    mlst, out = result.mlst, []
     rows = []
     for call in mlst.calls:
         ahead, ratio = margin(call)
-        rows.append([call.locus, call.allele or UNKNOWN, call.reads or '',
-                     '{}_{}'.format(call.locus, call.runner_up) if call.runner_up else '',
-                     call.runner_up_reads or '', '' if ahead is None else ahead,
+        runner_up = '{}_{} ({})'.format(call.locus, call.runner_up, call.runner_up_reads) \
+            if call.runner_up else ''
+        rows.append([call.locus, call.allele or UNKNOWN, call.reads or '', runner_up,
+                     '' if ahead is None else ahead,
                      '' if ratio is None else '{:.2f}'.format(ratio), call.note])
-    out.append(table(['Locus', 'Allele', 'Reads', 'Runner-up', 'Its reads', 'Ahead by', 'Ratio', 'Note'],
-                     rows, numeric=(2, 4, 5, 6),
-                     caption='"Ahead by" and "Ratio" are the margin the call had over the next allele of the '
-                             'locus. A ratio near 1.00 is the call to check first.'))
+    out.append(table(['Locus', 'Allele', 'Reads', 'Runner-up (its reads)', 'Ahead by', 'Ratio', 'Note'],
+                     rows, numeric=(2, 4, 5),
+                     caption='The margin each call had over the next allele of its locus; a ratio near 1.00 '
+                             'is the one to check.'))
     return out
 
 
@@ -375,11 +521,13 @@ def inputs_block(files):
     if not files:
         out.append('<p>The input files could not be read when the report was written.</p>')
         return out
+    links = any(item.target for item in files)
+    headers = ['File', 'Size', 'Modified', 'MD5'] + (['Symbolic link to'] if links else [])
     rows = []
     for item in files:
-        rows.append([item.name, item.size_text, item.modified, item.md5 or 'not computed (--no-md5)',
-                     item.target])
-    out.append(table(['File', 'Size', 'Modified', 'MD5', 'Symbolic link to'], rows, numeric=(1,)))
+        row = [item.name, item.size_text, item.modified, item.md5 or 'not computed (--no-md5)']
+        rows.append(row + [item.target] if links else row)
+    out.append(table(headers, rows, numeric=(1,), nowrap=(1, 2)))
     out.append('<p class="mono wrap" style="color:var(--muted)">{}</p>'.format(
         escape(' '.join(item.path for item in files))))
     return out
@@ -387,21 +535,31 @@ def inputs_block(files):
 
 def samples_section(results, references, inputs):
     """One block per sample, in the order of the summary."""
-    out = ['<h2 id="samples">Samples</h2>']
+    out = [heading(3, 'Samples', 'samples')]
     for _, members in groups(results):
         for result in members:
             state = status(result)
-            out.append('<section class="sample" id="{}">'.format(anchor(result.sample)))
-            out.append('<h3>{} {} {}</h3>'.format(
-                escape(result.sample), tag(state, state),
-                tag('{} ST {}'.format(result.species or UNKNOWN, result.sequence_type), 'decided')))
+            out.append('<section class="sample {}" id="{}">'.format(state, anchor(result.sample)))
+            out.append('<h3><span class="name">{}</span> {} {}</h3>'.format(
+                escape(result.sample), pill(state, state),
+                pill('{} ST {}'.format(result.species or UNKNOWN, result.sequence_type), 'decided')))
             if result.error:
                 out.append('<div class="panel"><b>This sample failed.</b><p class="wrap">{}</p></div>'.format(
                     escape(result.error)))
-            out.extend(identification_block(result, references))
+            # The fact lists go side by side and the tables across the page: that is what keeps a
+            # sample on one printed page, which is how a reviewer reads them
+            out.append('<div class="cols"><div>')
+            out.extend(identification_facts(result))
+            out.append('</div><div>')
             out.extend(decision_block(result))
-            out.extend(mlst_block(result))
+            out.append('</div></div>')
+            out.extend(identification_table(result, references))
+            out.append('<div class="cols"><div>')
+            out.extend(mlst_facts(result))
+            out.append('</div><div>')
             out.extend(inputs_block(inputs.get(result.sample, [])))
+            out.append('</div></div>')
+            out.extend(mlst_table(result))
             if result.notes:
                 out.append('<h4>Notes</h4><ul>')
                 out.extend('<li class="wrap">{}</li>'.format(escape(note)) for note in result.notes if note)
@@ -411,6 +569,10 @@ def samples_section(results, references, inputs):
 
 
 METHODS = [
+    ('The references listed for each sample',
+     'A sample block lists the five closest reference genomes, and any other near enough to the closest '
+     'that the distance does not separate them, which is the evidence the species call rests on. '
+     'brucellaid_mash.tsv holds the distance to every reference of the sketch.'),
     ('The species, from a MASH distance',
      'The reads of a sample are reduced to the 1000 smallest hashes of their 21-mers, ignoring the k-mers '
      'seen once, and that sketch is compared with the sketch of each reference genome. The distance is an '
@@ -418,11 +580,17 @@ METHODS = [
      'reference names the species, provided the reads share at least the required number of its 1000 '
      'min-hashes; below that the sample is reported as ND, because the closest of sixteen genomes is not an '
      'answer.'),
-    ('Why the biovar is not a biovar call',
-     'The biovar in this report is the biovar of the closest reference genome of the species reported. The '
-     'Brucella biovar references differ by very little, so the distance table in each sample block is the '
-     'thing to read before quoting a biovar. For a biovar, use classical biotyping or an in silico '
-     'Bruce-ladder.'),
+    ('Why there is no biovar in this report',
+     'BrucellaID does not report a biovar, because it cannot measure one. Three things stand in the way. '
+     'The sketch holds a reference for B. abortus biovars 1 and 3 only, so 43% of the biovar-labelled '
+     'B. abortus isolates of the PubMLST isolate database are of a biovar it has no reference for. The '
+     'distance cannot separate the biovars it does hold: the two B. melitensis biovar 1 references are '
+     '0.000756 apart, which is further apart than the biovar 2 and biovar 3 references are from each '
+     'other. And a biovar is a phenotype that genome clustering does not track -- the best any rule from '
+     'sequence type to biovar could manage over the isolate database is 66% for B. abortus and 63% for '
+     'B. melitensis, because one ST spans several biovars. The biovars recorded for the ST are shown above '
+     'for what they are worth. For a biovar, use classical biotyping, or brucetyper, which reads the '
+     'Bruce-ladder and Suis-ladder assays in silico.'),
     ('The sequence type, from the alleles',
      'The same reads are given to Seal with the alleles of the nine loci as references, counting each read '
      'for every allele it shares the highest number of 25-mers with and for no other. The allele the sample '
@@ -461,15 +629,15 @@ REFERENCES_CITED = [
 
 
 def methods_section():
-    out = ['<h2 id="methods">Definitions and methods</h2>']
-    for heading, text in METHODS:
-        out.append('<h3>{}</h3><p>{}</p>'.format(escape(heading), escape(text)))
+    out = [heading(4, 'Definitions and methods', 'methods')]
+    for title, text in METHODS:
+        out.append('<h3>{}</h3><p>{}</p>'.format(escape(title), escape(text)))
     return out
 
 
 def run_section(run, data):
     """The run itself: who, where, with what, against which reference data."""
-    out = ['<h2 id="run">Run information</h2>']
+    out = [heading(5, 'Run information', 'run')]
     software = run.get('software', {})
     out.append(facts([('Operator', run.get('operator', '')),
                       ('User account', run.get('user', '')),

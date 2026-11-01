@@ -24,7 +24,7 @@ JSON_FILE = 'brucellaid.json'
 MQC_FILE = 'brucellaid_mqc.json'
 PDF_FILE = 'brucellaid_report.pdf'
 
-MAIN_HEADER = ['Sample', 'Species', 'Biovar', 'SpeciesSource', 'ClosestReference', 'MashDistance',
+MAIN_HEADER = ['Sample', 'Species', 'SpeciesSource', 'ClosestReference', 'MashDistance',
                'SharedHashes', 'SequenceType', 'AlleleProfile', 'STSpecies', 'Reads', 'Notes', 'Error']
 MLST_HEADER = ['Sample', 'Locus', 'Allele', 'Reads', 'RunnerUp', 'RunnerUpReads', 'Note']
 MASH_HEADER = ['Sample', 'Reference', 'Species', 'Biovar', 'MashDistance', 'PValue', 'SharedHashes', 'TotalHashes']
@@ -65,7 +65,6 @@ def main_row(result):
     call = result.call
     return [result.sample,
             result.species,
-            result.biovar,
             species_source(call),
             result.closest_reference,
             '{:.6f}'.format(best.distance) if best else '',
@@ -131,7 +130,6 @@ def json_report(results, references, run=None, inputs=None):
             'sample': result.sample,
             'files': result.files,
             'species': result.species,
-            'biovar': result.biovar,
             'species_code': result.code,
             'identified': result.identified,
             'species_call': None if result.call is None else {
@@ -198,7 +196,7 @@ def write_json(results, references, path, run=None, inputs=None):
         f.write('\n')
 
 
-MQC_COLUMNS = ('Species', 'Biovar', 'SpeciesSource', 'STSpecies', 'SequenceType', 'SharedHashes',
+MQC_COLUMNS = ('Species', 'SpeciesSource', 'STSpecies', 'SequenceType', 'SharedHashes',
                'ClosestReference', 'Status')
 
 
@@ -212,7 +210,7 @@ def write_multiqc(results, path):
     """
     data = {}
     for result in results:
-        values = (result.species, result.biovar, species_source(result.call),
+        values = (result.species, species_source(result.call),
                   result.call.st_species if result.call else '', result.sequence_type,
                   '{}/{}'.format(result.identification.best.shared_hashes,
                                  result.identification.best.total_hashes) if result.identification else '',

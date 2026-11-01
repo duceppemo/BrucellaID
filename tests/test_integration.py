@@ -39,7 +39,7 @@ def test_one_sample_identified_and_typed(tmp_path, st_reads, sketch, genome, gen
     row = rows[0]
     assert row['Sample'] == 'sample'
     assert row['Species'] == 'Brucella testii'
-    assert row['Biovar'] == '9'
+    assert 'Biovar' not in row  # BrucellaID does not claim a biovar for a sample
     assert row['ClosestReference'] == 'test_genome.fasta'
     assert row['SequenceType'] == '1'
     assert row['AlleleProfile'] == '2-1-1-2-1-3-1-1-1'

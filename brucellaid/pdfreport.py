@@ -15,7 +15,18 @@ from . import __version__
 from .errors import BrucellaIDError
 from .htmlreport import HEADING, METHODS, REFERENCES_CITED, VERDICTS
 from .mlst import UNKNOWN
-from .qa import FAILED, OK, WARNING, close_hits, counted, groups, margin, status, warnings
+from .qa import (
+    FAILED,
+    OK,
+    WARNING,
+    close_hits,
+    counted,
+    groups,
+    margin,
+    status,
+    top_hits,
+    warnings,
+)
 from .references import data_path
 
 TITLE = 'BrucellaID quality assurance report'
@@ -216,13 +227,13 @@ class Report:
             self.rich(label, 'h4')
             rows = []
             for result in members:
-                rows.append([result.sample, result.species or UNKNOWN, result.biovar,
+                rows.append([result.sample, result.species or UNKNOWN,
                              result.call.source if result.call else '',
                              result.call.verdict if result.call and result.call.verdict else '',
                              result.sequence_type, result.mlst.profile if result.mlst else '',
-                             status(result)])
-            self.table(['Sample', 'Species', 'Biovar', 'From', 'Decision', 'ST', 'Allele profile', 'Status'],
-                       rows, widths=(15, 16, 8, 10, 12, 5, 21, 13),
+                             result.closest_reference, status(result)])
+            self.table(['Sample', 'Species', 'From', 'Decision', 'ST', 'Allele profile',
+                        'Closest reference', 'Status'], rows, widths=(13, 15, 9, 11, 5, 18, 20, 9),
                        highlight={i: ACCENT_SOFT for i, r in enumerate(members) if status(r) != OK})
         self.sign_off()
 
@@ -261,17 +272,21 @@ class Report:
                 ('Shared min-hashes', '{}/{} (at least {} required)'.format(
                     best.shared_hashes, best.total_hashes, result.identification.min_hashes)),
             ])
+            shown, hidden = top_hits(close_hits(result, references))
             rows, highlight = [], {}
-            for index, (hit, reference, close) in enumerate(close_hits(result, references)):
+            for index, (hit, reference, close) in enumerate(shown):
                 if hit is best or close:
                     highlight[index] = ACCENT_SOFT if hit is best else PANEL
                 rows.append([hit.reference, reference.species if reference else '(not in the table)',
-                             reference.biovar if reference else '',
+                             reference.strain if reference else '',
                              '{:.6f}'.format(hit.distance), '{:.3f}'.format(hit.identity),
                              '{}/{}'.format(hit.shared_hashes, hit.total_hashes)])
-            self.table(['Reference genome', 'Species', 'Biovar', 'Distance', 'Identity %', 'Shared hashes'],
-                       rows, widths=(31, 23, 8, 13, 12, 13), numeric=(3, 4, 5), highlight=highlight,
+            self.table(['Reference genome', 'Species', 'Strain', 'Distance', 'Identity %', 'Shared hashes'],
+                       rows, widths=(29, 21, 14, 12, 11, 13), numeric=(3, 4, 5), highlight=highlight,
                        keep=False)
+            if hidden:
+                self.rich('The other {} reference(s) are further away; brucellaid_mash.tsv has every '
+                          'distance.'.format(hidden), 'cell')
 
         self.para('The species call', 'h4')
         call = result.call
@@ -280,12 +295,12 @@ class Report:
         else:
             self.facts([
                 ('Species reported', call.species),
-                ('Biovar', '{} (of {}, the closest reference of that species)'.format(
-                    call.biovar, call.reference.strain) if call.biovar and call.reference else call.biovar),
                 ('Decided by', call.source),
                 ('Species within reach', ', '.join(call.candidates)),
                 ('Sequence type', call.st),
                 ('What that ST is', call.entry.evidence if call.entry else ''),
+                ('Biovars of its isolates', call.entry.biovars.replace(';', ', ')
+                 if call.entry and call.entry.biovars else ''),
                 ('Why the ST was not used', call.st_reason),
             ])
             if call.verdict:
@@ -305,13 +320,13 @@ class Report:
             rows = []
             for locus_call in mlst.calls:
                 ahead, ratio = margin(locus_call)
+                runner_up = '{}_{} ({})'.format(locus_call.locus, locus_call.runner_up,
+                                                locus_call.runner_up_reads) if locus_call.runner_up else ''
                 rows.append([locus_call.locus, locus_call.allele or UNKNOWN, locus_call.reads or '',
-                             '{}_{}'.format(locus_call.locus, locus_call.runner_up)
-                             if locus_call.runner_up else '', locus_call.runner_up_reads or '',
-                             '' if ahead is None else ahead,
+                             runner_up, '' if ahead is None else ahead,
                              '' if ratio is None else '{:.2f}'.format(ratio), locus_call.note])
-            self.table(['Locus', 'Allele', 'Reads', 'Runner-up', 'Its reads', 'Ahead', 'Ratio', 'Note'],
-                       rows, widths=(11, 8, 8, 14, 9, 8, 8, 34), numeric=(2, 4, 5, 6), keep=False)
+            self.table(['Locus', 'Allele', 'Reads', 'Runner-up (its reads)', 'Ahead', 'Ratio', 'Note'],
+                       rows, widths=(11, 8, 8, 20, 8, 8, 37), numeric=(2, 4, 5), keep=False)
 
         self.para('Input files', 'h4')
         files = inputs.get(result.sample, [])

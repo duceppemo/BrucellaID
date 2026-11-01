@@ -134,13 +134,32 @@ def test_html_report_needs_no_network():
     assert 'href="http' not in markup
 
 
-def test_html_report_holds_every_distance_not_only_the_winner():
+def test_html_report_holds_the_closest_references_and_says_how_many_it_left_out():
     markup = htmlreport.build([good('canis', hits=CANIS_HITS, st='20')], REFERENCES, RUN)
     for reference in ('NC_010103-NC_010104.fasta', 'B-REF-BS4-40.fasta', 'NC_006932-NC_006933.fasta'):
         assert reference in markup
     assert 'class="best"' in markup  # The closest reference
     assert 'class="close"' in markup  # The one near enough that the distance does not separate them
     assert '0.000420' in markup
+    assert 'are further away' not in markup  # Only three references here, so nothing was left out
+
+
+def test_html_report_lists_five_references_and_says_what_it_left_out():
+    hits = ''.join('REF{:02d}.fasta\tq\t0.00{}\t0\t{}/1000\n'.format(i, i + 1, 900 - i * 10)
+                   for i in range(9))
+    markup = htmlreport.build([good('many', hits=hits)], REFERENCES, RUN)
+    assert markup.count('REF0') + markup.count('REF1') >= 5
+    assert 'REF08.fasta' not in markup  # The ninth is past the five closest
+    assert 'The other 4 reference(s) are further away' in markup
+
+
+def test_html_report_keeps_a_close_match_that_falls_past_the_fifth_row():
+    """The ambiguity evidence is never truncated, wherever it ranks."""
+    rows = [('hit{}'.format(i), None, i == 7) for i in range(12)]
+    from brucellaid.qa import top_hits
+    shown, hidden = top_hits(rows)
+    assert [row[0] for row in shown] == ['hit0', 'hit1', 'hit2', 'hit3', 'hit4', 'hit7']
+    assert hidden == 6
 
 
 def test_html_report_explains_how_the_species_was_decided():
@@ -238,9 +257,9 @@ def test_html_table_helper_aligns_numbers_and_takes_a_caption():
     assert '<tr class="best">' in markup
 
 
-def test_html_tag_helper():
-    assert htmlreport.tag('ok', 'ok') == '<span class="tag ok">ok</span>'
-    assert htmlreport.tag('plain') == '<span class="tag">plain</span>'
+def test_html_pill_helper():
+    assert htmlreport.pill('ok', 'ok') == '<span class="pill ok">ok</span>'
+    assert htmlreport.pill('plain') == '<span class="pill plain">plain</span>'
 
 
 # -- MultiQC --------------------------------------------------------------------------------------------
@@ -252,7 +271,7 @@ def test_multiqc_file(tmp_path):
     assert content['id'] == 'brucellaid'
     assert content['plot_type'] == 'table'
     assert set(content['data']) == {'ab1', 'canis', 'bad'}
-    assert content['data']['ab1'] == {'Species': 'Brucella abortus', 'Biovar': '1',
+    assert content['data']['ab1'] == {'Species': 'Brucella abortus',
                                       'SpeciesSource': 'MASH+ST (agree)', 'STSpecies': 'Brucella abortus',
                                       'SequenceType': '1', 'SharedHashes': '950/1000',
                                       'ClosestReference': 'NC_006932-NC_006933.fasta', 'Status': 'ok'}
@@ -305,6 +324,20 @@ def test_pdf_report_without_the_logo(monkeypatch, tmp_path):
     reader, text = read_pdf(path)
     assert list(reader.pages[0].images) == []
     assert 'Quality assurance report' in text
+
+
+def test_pdf_report_with_a_note_and_more_references_than_it_shows(tmp_path):
+    """The note at the top, and the line saying how many references were left out."""
+    pytest.importorskip('reportlab')
+    from brucellaid import pdfreport
+    hits = ''.join('REF{:02d}.fasta\tq\t0.00{}\t0\t{}/1000\n'.format(i, i + 1, 900 - i * 10)
+                   for i in range(9))
+    path = pdfreport.write([good('many', hits=hits)], REFERENCES, RUN, tmp_path / 'r.pdf',
+                           note='This is an example report.')
+    _, text = read_pdf(path)
+    assert 'This is an example report.' in text
+    assert 'The other 4 reference(s) are further away' in text
+    assert 'REF08.fasta' not in text
 
 
 def test_pdf_escape():

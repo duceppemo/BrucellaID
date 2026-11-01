@@ -43,11 +43,6 @@ class SampleResult:
         return self.reference.reference if self.reference else self.identification.best.reference
 
     @property
-    def biovar(self):
-        """The biovar of the closest reference genome of the species reported, when it has one."""
-        return self.call.biovar if self.call else ''
-
-    @property
     def code(self):
         """The vSNP species code, written to the "species" column of the legacy xlsx report."""
         return self.call.code if self.call else UNKNOWN

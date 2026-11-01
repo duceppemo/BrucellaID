@@ -1,6 +1,38 @@
 # Changelog
 
 ## Unreleased
+**The biovar column is gone.** It never was a biovar call — it held the biovar of the closest
+reference genome — and it was read as one. Three things rule out a real biovar from this data, and
+none of them is a matter of trying harder:
+
+* **Coverage.** The sketch holds *B. abortus* biovars 1 and 3 and no others, so **43%** of the
+  biovar-labelled *B. abortus* isolates of the PubMLST isolate database are of a biovar it has no
+  reference for. *B. suis* bv 5 is missing too.
+* **Resolution.** The two *B. melitensis* **biovar 1** references of the sketch are **0.000756** apart,
+  *further* than the biovar 2 and biovar 3 references are from each other (0.000706). Two genomes of one
+  biovar are further apart than genomes of two biovars, so the ranking carries no biovar signal.
+* **Biology.** A biovar is a phenotype and is not monophyletic: the best any rule from sequence type to
+  biovar could manage is **66%** for *B. abortus* and **63%** for *B. melitensis*. ST 8 alone is biovar 3
+  in 47 isolates, biovar 1 in 34 and biovar 2 in 22. Only *B. suis* is tidy, at 96%.
+
+So `Biovar` is out of `brucellaid.tsv`, out of the MultiQC table, out of `brucellaid.json` and out of the
+reports. What stays, because it is a fact about a reference rather than a claim about a sample: the biovar
+of each reference genome in `brucellaid_mash.tsv`, and the biovars recorded for the sample's sequence type,
+with their counts, in the quality assurance report. For a biovar, use classical biotyping or
+[brucetyper](https://github.com/duceppemo/brucetyper). See [How it works](How-it-works#no-biovar).
+
+**The report is easier to read.**
+
+* A sample block lists the **five closest** reference genomes, plus any other near enough to the closest
+  that the distance cannot separate them, instead of all sixteen. `brucellaid_mash.tsv` still holds every
+  distance, and the report says how many it left out.
+* **One sample to a printed page.** The fact lists are laid out in two columns and the tables across the
+  page, which is what makes a sample fit.
+* The summary is one table with a labelled row per group rather than one table per group, statuses are
+  shown as coloured pills, sections are numbered, and the type, spacing and tables were reworked in both
+  the light and the dark theme.
+* The allele table merges the runner-up and its read count into one column.
+
 **A quality assurance report.** Every run now writes `brucellaid_report.html`: one self-contained file —
 no script, no stylesheet, no font, nothing fetched from anywhere — holding what a result rests on rather
 than only the result.

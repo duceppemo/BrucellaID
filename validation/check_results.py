@@ -72,8 +72,8 @@ def main():
     expected = {row['sample']: row for row in read_table(args.genomes)}
     called = {row['Sample']: row for row in read_table(pathlib.Path(args.results) / 'brucellaid.tsv')}
 
-    header = ['sample', 'species', 'biovar', 'reference', 'hashes', 'ST called', 'ST in the genome',
-              'species from', 'result']
+    header = ['sample', 'species', 'biovar of the genome', 'reference', 'hashes', 'ST called',
+              'ST in the genome', 'species from', 'result']
     rows, failures = [], []
     for sample, row in expected.items():
         if sample not in called:
@@ -81,7 +81,9 @@ def main():
             continue
         result = called[sample]
         problems = []
-        for column, key in (('Species', 'species'), ('Biovar', 'biovar'), ('ClosestReference', 'reference')):
+        # The biovar of genomes.tsv is checked through the reference: BrucellaID reports no biovar of
+        # its own, and the closest reference being right is what the biovar column used to stand for.
+        for column, key in (('Species', 'species'), ('ClosestReference', 'reference')):
             want = row[key]
             if want == UNCHECKED:
                 continue
@@ -106,7 +108,7 @@ def main():
         if row['species'] != UNCHECKED and not st.startswith('ND') and result['SequenceType'] != st:
             problems.append('ST is "{}", and the genome carries ST {}'.format(result['SequenceType'], st))
 
-        rows.append([sample, result['Species'] or 'ND', result['Biovar'], result['ClosestReference'],
+        rows.append([sample, result['Species'] or 'ND', row['biovar'], result['ClosestReference'],
                      result['SharedHashes'], result['SequenceType'], st, result['SpeciesSource'],
                      'ok' if not problems else 'FAILED'])
         failures += ['{}: {}'.format(sample, problem) for problem in problems]

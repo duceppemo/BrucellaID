@@ -26,10 +26,29 @@ not, but the closest of 16 genomes is not an answer. The first version of Brucel
 threshold.
 
 **What this tells you, and what it does not.** The *Brucella* species are extraordinarily close — they are
-over 99% identical — so a MASH distance separates them by a small margin, and the biovar references by a
-smaller one still. Read the species as the answer and **the biovar as the nearest reference, not as a
-biovar call**: `brucellaid_mash.tsv` lists every distance, and a note on the sample says when another
-reference was nearly as close. For a biovar, use the classical biotyping, or
+over 99% identical — so a MASH distance separates them by a small margin. Read the species as the answer.
+`brucellaid_mash.tsv` lists every distance, and a note on the sample says when another reference was
+nearly as close.
+
+<a name="no-biovar"></a>
+
+### There is no biovar
+
+BrucellaID reports a species and a sequence type. It does not report a biovar, and version 1.1 removed the
+column that used to hold the biovar of the closest reference genome, because readers took it for a call.
+Three things rule a biovar out, and none of them is fixable by trying harder:
+
+| | |
+| --- | --- |
+| **Coverage** | The sketch holds *B. abortus* biovars 1 and 3 and no others. Of the biovar-labelled *B. abortus* isolates in the PubMLST isolate database, **43%** are of a biovar there is no reference for (bv 6, 2, 5, 4, 9, 7); for those, the nearest reference can only ever name the wrong one. *B. suis* bv 5 is missing too |
+| **Resolution** | The two *B. melitensis* **biovar 1** references of the sketch are **0.000756** apart — *further* than the biovar 2 and biovar 3 references are from each other (0.000706). Two genomes of the same biovar are further apart than genomes of different biovars, so ranking by distance carries no biovar signal |
+| **Biology** | A biovar is a phenotype (CO<sub>2</sub>, H<sub>2</sub>S, dye sensitivity, A/M sera, phage lysis) and is not monophyletic. Over the isolate database, the best any ST → biovar rule could manage is **66%** for *B. abortus* and **63%** for *B. melitensis*: ST 8 alone is biovar 3 in 47 isolates, biovar 1 in 34 and biovar 2 in 22. Only *B. suis* is tidy, at 96% |
+
+What is still reported, because it is a fact rather than a call: `brucellaid_mash.tsv` gives the biovar of
+each *reference genome*, and the quality assurance report shows the biovars recorded for the sample's ST,
+with their counts, so you can see for yourself how little they settle.
+
+**For a biovar**, use classical biotyping, or
 [brucetyper](https://github.com/duceppemo/brucetyper), which reads the Bruce-ladder and Suis-ladder assays
 *in silico*.
 

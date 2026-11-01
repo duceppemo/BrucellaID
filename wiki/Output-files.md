@@ -10,7 +10,6 @@ Also printed to standard output.
 | --- | --- |
 | `Sample` | The sample name |
 | `Species` | The species, or `ND`. Usually the closest reference genome's; see `SpeciesSource` |
-| `Biovar` | The biovar of the closest reference **of that species**, when it has one |
 | `SpeciesSource` | What the species rests on: `MASH`, `MASH+ST (agree)`, `MASH+ST (arbitrated)`, `ST (arbitrated)`, `MASH (unresolved)` or `MASH (conflict)`. See [How it works](How-it-works) |
 | `ClosestReference` | The reference genome the reads are closest to, whichever species is reported |
 | `MashDistance` | The MASH distance to it: roughly the fraction of positions that differ |
@@ -23,18 +22,22 @@ Also printed to standard output.
 | `Error` | Why the sample failed, when it did. The other samples are still reported |
 
 ```
-Sample  Species           Biovar  SpeciesSource    ClosestReference           MashDistance  SharedHashes  SequenceType  AlleleProfile      STSpecies         Reads   Notes  Error
-ab1     Brucella abortus  1       MASH+ST (agree)  NC_006932-NC_006933.fasta  0.000024      999/1000      1             2-1-1-2-1-3-1-1-1  Brucella abortus  438192
+Sample  Species           SpeciesSource    ClosestReference           MashDistance  SharedHashes  SequenceType  AlleleProfile      STSpecies         Reads   Notes  Error
+ab1     Brucella abortus  MASH+ST (agree)  NC_006932-NC_006933.fasta  0.000024      999/1000      1             2-1-1-2-1-3-1-1-1  Brucella abortus  438192
 ```
 
 A *B. canis* sample, where the distance alone cannot choose and the ST does, with the note it carries:
 
 ```
-canis   Brucella canis            MASH+ST (arbitrated)  NC_010103-NC_010104.fasta  0.000000  1000/1000  20  1-6-4-1-5-3-5-4-6  Brucella canis  66251
+canis   Brucella canis  MASH+ST (arbitrated)  NC_010103-NC_010104.fasta  0.000000  1000/1000  20  1-6-4-1-5-3-5-4-6  Brucella canis  66251
         nearly as close: B-REF-BS4-40.fasta (Brucella suis bv. 4, 990/1000 hashes); MASH cannot separate
         Brucella canis and Brucella suis: ST 20 is Brucella canis in 70 of 70 isolate(s), which agrees with
         the closest reference
 ```
+
+**There is no biovar column.** BrucellaID reports the species and the sequence type, and does not claim a
+biovar: see [How it works](How-it-works#no-biovar). `brucellaid_mash.tsv` gives the biovar of each
+*reference genome*, which is a fact about the reference and not about the sample.
 
 ## `brucellaid_mlst.tsv` — one row per sample and locus
 What each allele call rests on.
@@ -67,7 +70,6 @@ every allele call, the input files with their checksums, the status and the erro
     {
       "sample": "ab1",
       "species": "Brucella abortus",
-      "biovar": "1",
       "species_code": "ab1",
       "identified": true,
       "species_call": {"species": "Brucella abortus", "source": "MASH+ST", "verdict": "agree",
@@ -97,12 +99,13 @@ than the conclusion:
    name, a date and a signature.
 2. **Notes, warnings and errors**: one row per note, errors first. A note on a sample whose status is `ok`
    is a remark, not a problem.
-3. **Samples**, one block each: the identification with **every** distance MASH measured and not only the
-   winning one (the closest row highlighted, and the rows near enough that the distance does not separate
-   them shaded); how the species was decided, including what the ST contributed and, when it was left out,
-   why; the nine allele calls with the allele each one had to beat and the margin it had; and the input
-   files with their size, date and MD5.
-4. **Definitions and methods**: what a MASH distance is, why the biovar is not a biovar call, how Seal
+3. **Samples**, one block each, **one to a printed page**: the identification with the five closest
+   reference genomes and any other near enough that the distance cannot separate them (the closest row
+   highlighted, the near ones shaded) — `brucellaid_mash.tsv` has the remaining distances; how the
+   species was decided, including what the ST contributed and, when it was left out, why; the nine allele
+   calls with the allele each one had to beat and the margin it had; and the input files with their size,
+   date and MD5.
+4. **Definitions and methods**: what a MASH distance is, why there is no biovar, how Seal
    counts, what `new` and `ND` mean, how the species is decided when two are equally close, and what the
    report does *not* establish.
 5. **Run information**: operator, user account, computer, operating system, working directory, start and
@@ -129,7 +132,7 @@ samples, 12 pages.
 
 ## `brucellaid_mqc.json` — for MultiQC
 A [MultiQC custom content](https://docs.seqera.io/multiqc/custom_content) file. Run `multiqc` on the output
-folder and the run appears as a **BrucellaID** section: one row per sample with the species, biovar,
+folder and the run appears as a **BrucellaID** section: one row per sample with the species,
 `SpeciesSource`, `STSpecies`, sequence type, shared hashes, closest reference and status.
 
 ```bash

@@ -25,9 +25,9 @@ reference genomes, and type it with the nine-locus
 
 ```
 $ brucellaid -r1 sample_R1.fastq.gz -r2 sample_R2.fastq.gz -o results/
-Sample  Species           Biovar  SpeciesSource         ClosestReference           SharedHashes  SequenceType  STSpecies
-sample  Brucella abortus  1       MASH+ST (agree)       NC_006932-NC_006933.fasta  999/1000      1             Brucella abortus
-canis   Brucella canis            MASH+ST (arbitrated)  NC_010103-NC_010104.fasta  1000/1000     20            Brucella canis
+Sample  Species           SpeciesSource         ClosestReference           SharedHashes  SequenceType  STSpecies
+sample  Brucella abortus  MASH+ST (agree)       NC_006932-NC_006933.fasta  999/1000      1             Brucella abortus
+canis   Brucella canis    MASH+ST (arbitrated)  NC_010103-NC_010104.fasta  1000/1000     20            Brucella canis
 ```
 
 Both the reference sketch and the MLST database come with the package: nothing to download, index or
@@ -47,11 +47,12 @@ configure.
   runner-up that call had to beat, a note when a second reference was nearly as close, and a tie reported as
   a tie rather than broken by a coin toss.
 * **A quality assurance report you can sign**: every run writes `brucellaid_report.html`, one
-  self-contained file — no script, no stylesheet, nothing fetched from anywhere — holding every distance
-  MASH measured and not only the winning one, how the species was decided, every allele call with the
+  self-contained file — no script, no stylesheet, nothing fetched from anywhere — holding the closest
+  reference genomes and not only the winning one, how the species was decided, every allele call with the
   margin it had, the input files with their MD5, the exact command, and **the checksum of every reference
   data file the run measured against**, so two runs a year apart can be shown to have used the same data.
-  With a box for a reviewer's name, date and signature. `--pdf` writes the same thing as a PDF.
+  One sample to a printed page, with a box for a reviewer's name, date and signature. `--pdf` writes the
+  same thing as a PDF.
   **[See an example report](https://duceppemo.github.io/BrucellaID/example_report.html)**, or [the same thing as a PDF](https://duceppemo.github.io/BrucellaID/example_report.pdf).
 * **Fits your pipeline**: a JSON report with everything in it, and a
   [MultiQC](https://docs.seqera.io/multiqc/custom_content) file, so `multiqc results/` folds the run into
@@ -67,7 +68,7 @@ configure.
   `stat_alignment_summary_<date>.xlsx` of the first version.
 * **Nothing to configure**: only the Python standard library, plus MASH and BBTools. The two optional
   output formats, xlsx and PDF, are the only things that want a package, and neither is needed.
-* **Tested**: 303 tests, 100% coverage, end to end on a synthetic genome and on reads tiled over the real
+* **Tested**: 310 tests, 100% coverage, end to end on a synthetic genome and on reads tiled over the real
   MLST alleles.
 * **Validated** on 16 genomes with a known answer: every species, biovar and closest reference right, and
   all 14 sequence types the one the genome carries — read off the assembly by exact match, which shares no
@@ -99,10 +100,11 @@ the evidence behind every call and a box to sign. To see it work on data with a 
 
 **What the two answers mean**: the species is the species of the closest reference genome, except where a
 reference of another species is just as close and the sequence type chooses between the two — the
-`SpeciesSource` column says which happened. The biovar is that reference's biovar, which is not the same as
-a biovar call: the *Brucella* biovar references differ by very little. The sequence type is `new` when the
-nine alleles are called but the combination is not in the table, and `ND` when a locus could not be called.
-See [How it works](https://github.com/duceppemo/BrucellaID/wiki/How-it-works).
+`SpeciesSource` column says which happened. The sequence type is `new` when the nine alleles are called but
+the combination is not in the table, and `ND` when a locus could not be called. **There is no biovar**:
+BrucellaID cannot measure one, and
+[says why](https://github.com/duceppemo/BrucellaID/wiki/How-it-works#no-biovar) rather than guessing. See
+[How it works](https://github.com/duceppemo/BrucellaID/wiki/How-it-works).
 
 ## Documentation
 The **[wiki](https://github.com/duceppemo/BrucellaID/wiki)** covers

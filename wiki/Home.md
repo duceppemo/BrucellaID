@@ -22,9 +22,9 @@ configure. Where two species are too close for a sketch to choose between them â
 
 ```
 $ brucellaid -r1 sample_R1.fastq.gz -r2 sample_R2.fastq.gz -o results/
-Sample  Species            Biovar  SpeciesSource         ClosestReference           SharedHashes  SequenceType  STSpecies
-sample  Brucella abortus   1       MASH+ST (agree)       NC_006932-NC_006933.fasta  999/1000      1             Brucella abortus
-canis   Brucella canis             MASH+ST (arbitrated)  NC_010103-NC_010104.fasta  1000/1000     20            Brucella canis
+Sample  Species             SpeciesSource         ClosestReference           SharedHashes  SequenceType  STSpecies
+sample  Brucella abortus    MASH+ST (agree)       NC_006932-NC_006933.fasta  999/1000      1             Brucella abortus
+canis   Brucella canis      MASH+ST (arbitrated)  NC_010103-NC_010104.fasta  1000/1000     20            Brucella canis
 ```
 
 ## Start here

@@ -58,7 +58,7 @@ def test_species_notes_of_a_reference_that_is_not_in_the_table():
 def test_sample_result_without_any_result():
     result = SampleResult('s', ['s_R1.fastq.gz'])
     assert not result.identified
-    assert (result.species, result.biovar, result.code) == (UNKNOWN, '', UNKNOWN)
+    assert (result.species, result.code) == (UNKNOWN, UNKNOWN)
     assert result.sequence_type == UNKNOWN
     assert result.closest_reference == ''
     assert result.note == ''
@@ -94,7 +94,6 @@ def test_analyse_sample(monkeypatch):
     fake_tools(monkeypatch)
     result = analyse_sample(Sample('s', ['s_R1.fastq.gz']), references=REFERENCES)
     assert result.species == 'Brucella abortus'
-    assert result.biovar == '1'
     assert result.code == 'ab1'
     assert result.sequence_type == '1'
     assert result.error is None
@@ -130,7 +129,7 @@ def test_analyse_sample_keeps_the_species_when_the_typing_fails(monkeypatch):
     monkeypatch.setattr(pipeline, 'run_mlst', lambda files, **options: _raise(BrucellaIDError('Seal failed')))
     result = analyse_sample(Sample('s', ['s_R1.fastq.gz']), references=REFERENCES)
     assert result.error == 'Seal failed'
-    assert (result.species, result.biovar, result.code) == ('Brucella abortus', '1', 'ab1')
+    assert (result.species, result.code) == ('Brucella abortus', 'ab1')
     assert result.mlst is None
 
 

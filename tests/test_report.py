@@ -60,10 +60,10 @@ def test_main_table():
     assert rows[0] == MAIN_HEADER
     good = dict(zip(MAIN_HEADER, rows[1], strict=True))
     assert good['Species'] == 'Brucella abortus'
+    assert 'Biovar' not in good
     # ST 1 is B. abortus in the isolate database too, and MASH had no second species to choose from
     assert good['SpeciesSource'] == 'MASH+ST (agree)'
     assert good['STSpecies'] == 'Brucella abortus'
-    assert good['Biovar'] == '1'
     assert good['ClosestReference'] == 'NC_006932-NC_006933.fasta'
     assert good['MashDistance'] == '0.001234'
     assert good['SharedHashes'] == '950/1000'

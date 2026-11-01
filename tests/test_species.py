@@ -145,8 +145,8 @@ def test_the_st_chooses_between_the_species_mash_cannot_separate():
     call = call_species(found, REFERENCES, mlst=MlstResult(st='16'), table=TABLE)
     assert (call.species, call.source, call.verdict) == ('Brucella suis', FROM_ST, ARBITRATED)
     assert call.candidates == ('Brucella canis', 'Brucella suis')
-    # The biovar follows the species the ST chose, not the genome MASH happened to land on
-    assert (call.biovar, call.code) == ('4', 'suis4')
+    # The vSNP code follows the species the ST chose, not the genome MASH happened to land on
+    assert call.code == 'suis4'
     assert 'cannot separate Brucella canis and Brucella suis' in call.notes[0]
     assert 'ST 16 is Brucella suis in 15 of 15 isolate(s)' in call.notes[0]
 
@@ -155,21 +155,21 @@ def test_the_st_confirms_the_species_mash_could_not_separate():
     found = identification((CANIS, 0.000239, 990), (SUIS4, 0.000420, 980))
     call = call_species(found, REFERENCES, mlst=MlstResult(st='20'), table=TABLE)
     assert (call.species, call.source, call.verdict) == ('Brucella canis', FROM_BOTH, ARBITRATED)
-    assert (call.biovar, call.code) == ('', 'canis')
+    assert call.code == 'canis'
     assert 'agrees with the closest reference' in call.notes[0]
 
 
 def test_an_unambiguous_species_the_st_agrees_with_is_reported_without_a_note():
     call = call_species(identification((ABORTUS, 0.0012, 950)), REFERENCES, mlst=MlstResult(st='1'), table=TABLE)
     assert (call.species, call.source, call.verdict) == ('Brucella abortus', FROM_BOTH, AGREE)
-    assert (call.biovar, call.st_species, call.notes) == ('1', 'Brucella abortus', ())
+    assert (call.code, call.st_species, call.notes) == ('ab1', 'Brucella abortus', ())
 
 
 def test_an_st_that_contradicts_an_unambiguous_species_is_reported_but_not_obeyed():
     """ST 20 is B. canis, and B. canis is nowhere near the closest reference: the MASH call stands."""
     call = call_species(identification((ABORTUS, 0.0012, 950)), REFERENCES, mlst=MlstResult(st='20'), table=TABLE)
     assert (call.species, call.source, call.verdict) == ('Brucella abortus', FROM_MASH, CONFLICT)
-    assert call.biovar == '1'
+    assert call.code == 'ab1'
     assert 'the ST disagrees' in call.notes[0]
     assert 'check the sample' in call.notes[0]
 
@@ -200,7 +200,7 @@ def test_a_reference_the_table_does_not_name_leaves_the_species_to_the_st():
     found = identification(('something_else.fasta', 0.0005, 900))
     call = call_species(found, REFERENCES, mlst=MlstResult(st='20'), table=TABLE)
     assert (call.species, call.source, call.verdict) == ('Brucella canis', FROM_ST, ARBITRATED)
-    assert (call.biovar, call.code) == ('', UNKNOWN)  # No genome of that species in the sketch
+    assert call.code == UNKNOWN  # No genome of that species in the sketch
     assert 'has no species in the reference table' in call.notes[0]
     # With nothing from either side there is no species to report
     assert call_species(found, REFERENCES, mlst=MlstResult(st='17'), table=TABLE).species == UNKNOWN

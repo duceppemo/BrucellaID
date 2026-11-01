@@ -30,6 +30,10 @@ OK = 'ok'
 WARNING = 'warning'
 FAILED = 'failed'
 
+# How many reference genomes a sample block of a report lists before it stops: enough to show the call
+# and what it beat, few enough that a sample stays on one page.
+TOP_HITS = 5
+
 
 def file_md5(path):
     """
@@ -229,6 +233,22 @@ def close_hits(result, references):
         reference = references.get(hit.reference) or references.get(os.path.basename(hit.reference))
         rows.append((hit, reference, id(hit) in close))
     return rows
+
+
+def top_hits(rows, top=TOP_HITS):
+    """
+    The hits a report shows: the closest few, and any other that is near enough to be in the running.
+
+    A report that lists all sixteen references pushes a sample over a page for rows that say the sample is
+    not Brucella ovis. The ones that matter are the closest handful and anything inside the close-match
+    margin, which is the evidence for the species call; the rest are in brucellaid_mash.tsv, which holds
+    every distance.
+
+    :param rows: [(hit, reference, is_close)] from close_hits()
+    :return: (rows to show, how many were left out)
+    """
+    shown = [row for index, row in enumerate(rows) if index < top or row[2]]
+    return shown, len(rows) - len(shown)
 
 
 def warnings(results):

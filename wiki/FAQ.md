@@ -35,10 +35,18 @@ is inside the variation within either species: in a dereplicated 389-genome *Bru
 pair of *canis* and *suis* genomes is 0.000194 apart. More references move the boundary around; they do not
 create one. The MLST loci do separate the two, which is why the ST is what settles it.
 
-### Is the biovar reliable?
-It is the biovar of the closest reference genome, which is not the same thing as a biovar call. The
-*Brucella* biovar references differ by very little; `brucellaid_mash.tsv` shows the margin, and a note says
-when another reference was nearly as close. The species is the solid part of that answer.
+### Where did the biovar column go?
+It was removed in 1.1, because it was never a biovar call and was read as one. It held the biovar of the
+closest reference genome. Three things make a real biovar call impossible here: the sketch has references
+for only *B. abortus* biovars 1 and 3, so 43% of biovar-labelled *B. abortus* isolates in PubMLST are of a
+biovar it cannot name; the two *B. melitensis* biovar 1 references are further apart (0.000756) than the
+biovar 2 and 3 references are from each other (0.000706), so the distance carries no biovar signal; and a
+biovar is a phenotype that is not monophyletic — the best possible ST → biovar rule reaches 66% for
+*B. abortus* and 63% for *B. melitensis*. See [How it works](How-it-works#no-biovar).
+
+What is still there: `brucellaid_mash.tsv` gives the biovar of each *reference genome*, and the quality
+assurance report shows the biovars recorded for the sample's ST with their counts. For a biovar, use
+classical biotyping or [brucetyper](https://github.com/duceppemo/brucetyper).
 
 ### Why 150 shared hashes?
 It is the threshold the first version of BrucellaID used, and it separates "this read set is *Brucella*"
