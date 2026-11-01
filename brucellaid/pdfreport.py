@@ -4,8 +4,13 @@ The same quality assurance report as a PDF: a file that can be signed, filed and
 The HTML report is the full one and needs nothing installed. This is the version for the places that want a
 PDF -- an accreditation file, an attachment to a case record, a paper copy with a signature on it -- and it
 holds the same evidence laid out for a page: the summary with the samples grouped and a box to sign, the
-warnings, a block per sample with every distance MASH measured and every allele call with its margin, what
+warnings, a block per sample with the closest reference genomes and every allele call with its margin, what
 the numbers mean, and the run with the checksum of each reference data file.
+
+It is laid out to look like the HTML report rather than merely to contain the same words: the same palette,
+the same numbered sections, the same grouped summary, the same two columns of facts above each table, and
+one sample to a page. A laboratory that reads one on screen and files the other should not have to work out
+twice where to look.
 
 reportlab is an optional dependency ("pip install brucellaid[pdf]"), the way xlsxwriter is for --xlsx, so
 that BrucellaID itself still installs with nothing but the standard library.
@@ -31,17 +36,19 @@ from .references import data_path
 
 TITLE = 'BrucellaID quality assurance report'
 LOGO_FILE = 'logo.png'
-LOGO_WIDTH = 72  # Millimetres; the logo is 607 by 122 user units, so about 14.5 mm tall
+LOGO_WIDTH = 62  # Millimetres; the logo is 607 by 122 user units, so about 12.5 mm tall
 LOGO_ASPECT = 122 / 607
-# Grey for the rules and the header rows, blue for the row a reader should land on first, and the three
-# status colours of the HTML report, so that the two look like the same document.
-INK = '#16191d'
-MUTED = '#5c6670'
-LINE = '#c9ced5'
-PANEL = '#eef0f3'
-ACCENT = '#1a6ab3'
-ACCENT_SOFT = '#e8f1fa'
-STATUS_COLOURS = {OK: '#1a7f44', WARNING: '#9a5b00', FAILED: '#ad2525'}
+
+# The palette of the HTML report, so that the two are recognisably one document.
+INK = '#14171a'
+SOFT_INK = '#3d454d'
+MUTED = '#6b747d'
+LINE = '#c2c8ce'
+HAIR = '#e2e6ea'
+PANEL = '#f4f5f7'
+ACCENT = '#15639f'
+ACCENT_SOFT = '#eaf2fa'
+STATUS_COLOURS = {OK: '#16723c', WARNING: '#8a5000', FAILED: '#a51f1f'}
 
 
 def _modules():
@@ -52,7 +59,6 @@ def _modules():
     reportlab installed.
     """
     try:
-        from reportlab.lib import colors
         from reportlab.lib.enums import TA_LEFT
         from reportlab.lib.pagesizes import A4
         from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
@@ -72,7 +78,7 @@ def _modules():
             '--pdf needs the reportlab package: install it with "pip install reportlab" (or "pip install '
             'brucellaid[pdf]"). The HTML report holds the same information and needs nothing '
             'installed.') from None
-    return {'colors': colors, 'TA_LEFT': TA_LEFT, 'A4': A4, 'ParagraphStyle': ParagraphStyle,
+    return {'TA_LEFT': TA_LEFT, 'A4': A4, 'ParagraphStyle': ParagraphStyle,
             'getSampleStyleSheet': getSampleStyleSheet, 'mm': mm, 'KeepTogether': KeepTogether,
             'PageBreak': PageBreak, 'Paragraph': Paragraph, 'SimpleDocTemplate': SimpleDocTemplate,
             'Spacer': Spacer, 'Table': Table, 'TableStyle': TableStyle, 'Image': Image}
@@ -82,6 +88,16 @@ def escape(value):
     """A value as reportlab paragraph text: its mini-XML needs the three XML entities escaped."""
     text = '' if value is None else str(value)
     return text.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+
+
+class Rich(str):
+    """A cell value that is paragraph markup already, such as a coloured status, and must not be escaped."""
+
+
+def coloured(text, colour, bold=True):
+    """Text in one of the status colours, for a cell that has to stand out of a quiet table."""
+    markup = '<font color="{}">{}</font>'.format(colour, escape(text))
+    return Rich('<b>{}</b>'.format(markup) if bold else markup)
 
 
 class Report:
@@ -94,29 +110,39 @@ class Report:
         mm = rl['mm']
         style = rl['ParagraphStyle']
         self.s = {
-            'title': style('t', parent=base['Title'], fontName='Helvetica-Bold', fontSize=16, leading=19,
-                           alignment=rl['TA_LEFT'], textColor=INK, spaceAfter=2),
-            'sub': style('sub', parent=base['Normal'], fontSize=8.5, leading=11, textColor=MUTED,
-                         spaceAfter=8),
-            'h2': style('h2', parent=base['Normal'], fontName='Helvetica-Bold', fontSize=12.5, leading=15,
-                        textColor=INK, spaceBefore=10, spaceAfter=4),
-            'h3': style('h3', parent=base['Normal'], fontName='Helvetica-Bold', fontSize=10, leading=12.5,
-                        textColor=INK, spaceBefore=8, spaceAfter=2),
-            'h4': style('h4', parent=base['Normal'], fontName='Helvetica-Bold', fontSize=8, leading=10,
+            'title': style('t', parent=base['Title'], fontName='Helvetica-Bold', fontSize=15.5, leading=18,
+                           alignment=rl['TA_LEFT'], textColor=INK, spaceAfter=1),
+            'sub': style('sub', parent=base['Normal'], fontSize=8.4, leading=11, textColor=MUTED,
+                         spaceAfter=7),
+            'h2': style('h2', parent=base['Normal'], fontName='Helvetica-Bold', fontSize=12, leading=15,
+                        textColor=INK, spaceBefore=2, spaceAfter=5),
+            'h3': style('h3', parent=base['Normal'], fontName='Helvetica-Bold', fontSize=9.6, leading=12,
+                        textColor=INK, spaceBefore=9, spaceAfter=2),
+            'h4': style('h4', parent=base['Normal'], fontName='Helvetica-Bold', fontSize=6.8, leading=9,
                         textColor=MUTED, spaceBefore=7, spaceAfter=1),
-            'body': style('body', parent=base['Normal'], fontSize=8.5, leading=11, textColor=INK,
+            'body': style('body', parent=base['Normal'], fontSize=8.4, leading=11, textColor=SOFT_INK,
                           spaceAfter=3),
-            'cell': style('cell', parent=base['Normal'], fontSize=7.2, leading=8.8, textColor=INK),
-            'cellb': style('cellb', parent=base['Normal'], fontName='Helvetica-Bold', fontSize=7.2,
-                           leading=8.8, textColor=INK),
-            'mono': style('mono', parent=base['Normal'], fontName='Courier', fontSize=6.8, leading=8.4,
+            'name': style('name', parent=base['Normal'], fontName='Helvetica-Bold', fontSize=11.5,
+                          leading=14, textColor=INK, spaceBefore=4, spaceAfter=3),
+            'th': style('th', parent=base['Normal'], fontName='Helvetica-Bold', fontSize=6.4, leading=8,
+                        textColor=MUTED),
+            'cell': style('cell', parent=base['Normal'], fontSize=7.3, leading=9, textColor=SOFT_INK),
+            'cellink': style('cellink', parent=base['Normal'], fontSize=7.3, leading=9, textColor=INK),
+            'term': style('term', parent=base['Normal'], fontSize=7.3, leading=9.4, textColor=MUTED),
+            'value': style('value', parent=base['Normal'], fontSize=7.3, leading=9.4, textColor=INK),
+            'group': style('group', parent=base['Normal'], fontName='Helvetica-Bold', fontSize=7.6,
+                           leading=9.5, textColor=INK),
+            'mono': style('mono', parent=base['Normal'], fontName='Courier', fontSize=6.4, leading=8,
                           textColor=MUTED),
         }
         self.width = rl['A4'][0] - 24 * mm  # The frame of the document, less its margins
 
     # -- pieces -------------------------------------------------------------------------------------
     def para(self, text, style='body'):
-        self.story.append(self.rl['Paragraph'](escape(text), self.s[style]))
+        # reportlab has no text-transform, so the small headings are upper-cased here, as the stylesheet
+        # of the HTML report does with CSS
+        self.story.append(self.rl['Paragraph'](escape(text.upper() if style == 'h4' else text),
+                                               self.s[style]))
 
     def rich(self, text, style='body'):
         """A paragraph whose markup is already written (a <b> or a <font color>)."""
@@ -125,52 +151,105 @@ class Report:
     def space(self, points=4):
         self.story.append(self.rl['Spacer'](1, points))
 
-    def facts(self, pairs, widths=(46, 54)):
-        """A two column table of (term, value): the PDF form of the HTML definition lists."""
-        rows = [[self.rl['Paragraph'](escape(term), self.s['cell']),
-                 self.rl['Paragraph'](escape(value), self.s['cell'])]
+    def section(self, number, title):
+        """A numbered section heading, the number in the accent colour as the HTML report has it."""
+        self.rich('<font color="{}">{}</font>   {}'.format(ACCENT, number, escape(title)), 'h2')
+        self.rule()
+
+    def rule(self, colour=LINE, thickness=0.7, below=5):
+        """A hairline across the frame, under a heading."""
+        rl = self.rl
+        line = rl['Table']([['']], colWidths=[self.width], rowHeights=[0.1])
+        line.setStyle(rl['TableStyle']([('LINEBELOW', (0, 0), (-1, -1), thickness, colour),
+                                        ('TOPPADDING', (0, 0), (-1, -1), 0),
+                                        ('BOTTOMPADDING', (0, 0), (-1, -1), 0)]))
+        self.story.append(line)
+        self.space(below)
+
+    def capture(self, build):
+        """The flowables one block produces, instead of adding them to the story: for the two columns."""
+        saved, self.story = self.story, []
+        build()
+        captured, self.story = self.story, saved
+        return captured
+
+    def columns(self, left, right, gap=9):
+        """Two blocks side by side, which is what keeps a sample on one page."""
+        rl = self.rl
+        half = self.width / 2.0
+        table = rl['Table']([[left, right]], colWidths=[half, half])
+        table.setStyle(rl['TableStyle']([
+            ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+            ('LEFTPADDING', (0, 0), (0, 0), 0), ('RIGHTPADDING', (0, 0), (0, 0), gap),
+            ('LEFTPADDING', (1, 0), (1, 0), gap), ('RIGHTPADDING', (1, 0), (1, 0), 0),
+            ('TOPPADDING', (0, 0), (-1, -1), 0), ('BOTTOMPADDING', (0, 0), (-1, -1), 0),
+        ]))
+        self.story.append(table)
+
+    def facts(self, pairs, width=None):
+        """A two column list of (term, value): the PDF form of the HTML definition lists."""
+        rows = [[self.rl['Paragraph'](escape(term), self.s['term']),
+                 self.rl['Paragraph'](escape(value), self.s['value'])]
                 for term, value in pairs if value not in (None, '', ())]
         if not rows:
             return
-        total = self.width
-        table = self.rl['Table'](rows, colWidths=[total * widths[0] / 100.0, total * widths[1] / 100.0])
+        total = width or self.width
+        table = self.rl['Table'](rows, colWidths=[total * 0.42, total * 0.58])
         table.setStyle(self.rl['TableStyle']([
             ('VALIGN', (0, 0), (-1, -1), 'TOP'),
-            ('TEXTCOLOR', (0, 0), (0, -1), MUTED),
-            ('LINEBELOW', (0, 0), (-1, -2), 0.25, LINE),
-            ('TOPPADDING', (0, 0), (-1, -1), 2),
-            ('BOTTOMPADDING', (0, 0), (-1, -1), 2),
-            ('LEFTPADDING', (0, 0), (-1, -1), 0),
+            ('TOPPADDING', (0, 0), (-1, -1), 1.2), ('BOTTOMPADDING', (0, 0), (-1, -1), 1.2),
+            ('LEFTPADDING', (0, 0), (-1, -1), 0), ('RIGHTPADDING', (0, 0), (-1, -1), 2),
         ]))
         self.story.append(table)
-        self.space(3)
+        self.space(2)
 
-    def table(self, headers, rows, widths=None, numeric=(), highlight=None, keep=True):
+    def cells(self, values, header=False):
+        """One row of a table as paragraphs, leaving markup that is already written alone."""
+        style = self.s['th'] if header else self.s['cell']
+        return [value if isinstance(value, self.rl['Paragraph'])
+                else self.rl['Paragraph'](value if isinstance(value, Rich) else escape(value), style)
+                for value in values]
+
+    def table(self, headers, rows, widths=None, numeric=(), highlight=None, keep=True, width=None,
+              groups_at=()):
         """
-        A table of values, the header row shaded and repeated on every page it continues onto.
+        A quiet table: no grid, a rule under the header and a hairline between the rows.
 
-        :param rows: list of rows of values
+        :param rows: list of rows of values; a Rich value is written as markup
         :param widths: column widths as percentages of the frame
         :param highlight: {row index: colour} for the rows a reader should land on
+        :param groups_at: {row index: label} rows that name a group and span the table
         """
         rl = self.rl
-        data = [[rl['Paragraph'](escape(h), self.s['cellb']) for h in headers]]
-        for row in rows:
-            data.append([rl['Paragraph'](escape(v), self.s['cell']) for v in row])
-        total = self.width
+        data = [self.cells([h.upper() for h in headers], header=True)]
+        for index, row in enumerate(rows):
+            if index in (groups_at or {}):
+                data.append([rl['Paragraph'](escape(groups_at[index]), self.s['group'])]
+                            + [''] * (len(headers) - 1))
+            data.append(self.cells(row))
+        total = width or self.width
         columns = [total * w / 100.0 for w in widths] if widths else [total / len(headers)] * len(headers)
         table = rl['Table'](data, colWidths=columns, repeatRows=1)
         commands = [
-            ('BACKGROUND', (0, 0), (-1, 0), PANEL),
-            ('GRID', (0, 0), (-1, -1), 0.25, LINE),
+            ('LINEBELOW', (0, 0), (-1, 0), 0.7, LINE),
+            ('LINEBELOW', (0, 1), (-1, -2), 0.25, HAIR),
             ('VALIGN', (0, 0), (-1, -1), 'TOP'),
-            ('TOPPADDING', (0, 0), (-1, -1), 2.5),
-            ('BOTTOMPADDING', (0, 0), (-1, -1), 2.5),
+            ('TOPPADDING', (0, 0), (-1, -1), 2.4), ('BOTTOMPADDING', (0, 0), (-1, -1), 2.4),
+            ('LEFTPADDING', (0, 0), (-1, -1), 3), ('RIGHTPADDING', (0, 0), (-1, -1), 3),
         ]
         for column in numeric:
             commands.append(('ALIGN', (column, 1), (column, -1), 'RIGHT'))
-        for index, colour in (highlight or {}).items():
-            commands.append(('BACKGROUND', (0, index + 1), (-1, index + 1), colour))
+        # The group rows, and the highlighted rows, in the data's own numbering
+        offset = 1
+        for index in range(len(rows)):
+            if index in (groups_at or {}):
+                commands += [('SPAN', (0, offset), (-1, offset)),
+                             ('BACKGROUND', (0, offset), (-1, offset), PANEL),
+                             ('LINEBELOW', (0, offset), (-1, offset), 0.25, LINE)]
+                offset += 1
+            if index in (highlight or {}):
+                commands.append(('BACKGROUND', (0, offset), (-1, offset), highlight[index]))
+            offset += 1
         table.setStyle(rl['TableStyle'](commands))
         self.story.append(rl['KeepTogether'](table) if keep else table)
         self.space(3)
@@ -178,36 +257,42 @@ class Report:
     def sign_off(self):
         """A box for the reviewer: name, date and signature, with room to write."""
         rl = self.rl
-        third = self.width / 3.0
+        # The panel adds 9 points of padding on each side, so the lines inside it are that much
+        # narrower; without this they run past the edge of the box they sit in
+        inner = self.width - 20
+        third = inner / 3.0
         rows = [['', '', ''],
-                [rl['Paragraph']('Name', self.s['cell']), rl['Paragraph']('Date', self.s['cell']),
-                 rl['Paragraph']('Signature', self.s['cell'])]]
+                [rl['Paragraph']('Name', self.s['term']), rl['Paragraph']('Date', self.s['term']),
+                 rl['Paragraph']('Signature', self.s['term'])]]
         table = rl['Table'](rows, colWidths=[third] * 3, rowHeights=[13 * rl['mm'], None])
         table.setStyle(rl['TableStyle']([
-            ('LINEBELOW', (0, 0), (-1, 0), 0.5, INK),
-            ('TEXTCOLOR', (0, 1), (-1, 1), MUTED),
+            ('LINEBELOW', (0, 0), (-1, 0), 0.6, SOFT_INK),
             ('VALIGN', (0, 0), (-1, -1), 'BOTTOM'),
-            ('LEFTPADDING', (0, 0), (-1, -1), 0),
+            ('LEFTPADDING', (0, 0), (-1, -1), 0), ('RIGHTPADDING', (0, 0), (-1, -1), 10),
         ]))
-        self.para('Reviewed by', 'h4')
-        self.story.append(rl['KeepTogether'](table))
+        heading = rl['Paragraph']('REVIEWED BY', self.s['h4'])
+        panel = rl['Table']([[heading], [table]], colWidths=[inner + 20])
+        panel.setStyle(rl['TableStyle']([
+            ('BACKGROUND', (0, 0), (-1, -1), PANEL),
+            ('BOX', (0, 0), (-1, -1), 0.5, LINE),
+            ('LEFTPADDING', (0, 0), (-1, -1), 9), ('RIGHTPADDING', (0, 0), (-1, -1), 9),
+            ('TOPPADDING', (0, 0), (-1, 0), 7), ('BOTTOMPADDING', (0, -1), (-1, -1), 7),
+        ]))
+        self.story.append(rl['KeepTogether'](panel))
 
     # -- sections -----------------------------------------------------------------------------------
-    def logo(self):
-        """The logo at the top of the first page, when the package has it."""
+    def masthead(self, results, run, note=''):
+        """The logo, the title and what the run came to."""
         try:
             path = data_path(LOGO_FILE)
         except BrucellaIDError:
-            return  # A package without the image still writes the report
-        mm = self.rl['mm']
-        image = self.rl['Image'](path, width=LOGO_WIDTH * mm, height=LOGO_WIDTH * LOGO_ASPECT * mm,
-                                 hAlign='LEFT')
-        self.story.append(image)
-        self.space(4)
-
-    def summary(self, results, run, note=''):
+            path = None  # A package without the image still writes the report
+        if path:
+            mm = self.rl['mm']
+            self.story.append(self.rl['Image'](path, width=LOGO_WIDTH * mm,
+                                               height=LOGO_WIDTH * LOGO_ASPECT * mm, hAlign='LEFT'))
+            self.space(5)
         counts = counted(results)
-        self.logo()
         self.para(HEADING, 'title')
         self.para('{} sample(s): {} ok, {} with a warning, {} failed. BrucellaID {}, run on {}.'.format(
             len(results), counts[OK], counts[WARNING], counts[FAILED], __version__,
@@ -215,147 +300,187 @@ class Report:
         if note:
             self.rich('<b>{}</b>'.format(escape(note)))
             self.space(4)
-        self.para('Summary', 'h2')
+
+    def summary(self, results, run):
+        """One table, the samples grouped by what they were called, and a box to sign."""
+        self.section(1, 'Summary')
         self.facts([('Run started', run.get('started', '')), ('Run finished', run.get('finished', '')),
                     ('Operator', run.get('operator', '')), ('Command', run.get('command', ''))])
+        self.space(4)
+        rows, labels, highlight = [], {}, {}
         for (species, st), members in groups(results):
-            label = '<b>{}</b> &mdash; ST {} &mdash; {} sample(s)'.format(
-                escape(species), escape(st), len(members)) if species else \
-                '<font color="{}"><b>Failed</b></font> &mdash; {} sample(s)'.format(FAILED and
-                                                                                    STATUS_COLOURS[FAILED],
-                                                                                    len(members))
-            self.rich(label, 'h4')
-            rows = []
+            labels[len(rows)] = '{} · ST {}   ({} sample(s))'.format(species, st, len(members)) \
+                if species else 'Failed   ({} sample(s))'.format(len(members))
             for result in members:
+                state = status(result)
+                if state != OK:
+                    highlight[len(rows)] = ACCENT_SOFT
                 rows.append([result.sample, result.species or UNKNOWN,
                              result.call.source if result.call else '',
                              result.call.verdict if result.call and result.call.verdict else '',
                              result.sequence_type, result.mlst.profile if result.mlst else '',
-                             result.closest_reference, status(result)])
-            self.table(['Sample', 'Species', 'From', 'Decision', 'ST', 'Allele profile',
-                        'Closest reference', 'Status'], rows, widths=(13, 15, 9, 11, 5, 18, 20, 9),
-                       highlight={i: ACCENT_SOFT for i, r in enumerate(members) if status(r) != OK})
+                             result.closest_reference, coloured(state, STATUS_COLOURS[state])])
+        self.table(['Sample', 'Species', 'From', 'Decision', 'ST', 'Allele profile', 'Closest reference',
+                    'Status'], rows, widths=(12, 14, 9, 10, 5, 17, 24, 9), groups_at=labels,
+                   highlight=highlight, keep=False)
+        self.space(6)
         self.sign_off()
 
     def warnings(self, results):
         self.story.append(self.rl['PageBreak']())
-        self.para('Notes, warnings and errors', 'h2')
-        rows = [[sample, state, text] for sample, state, text in warnings(results)]
+        self.section(2, 'Notes, warnings and errors')
+        rows = [[sample, coloured(state, STATUS_COLOURS[state]), text]
+                for sample, state, text in warnings(results)]
         if not rows:
             self.para('None: every sample was identified and typed without a note.')
             return
         self.table(['Sample', 'Status', 'What it says'], rows, widths=(16, 10, 74), keep=False)
 
-    def sample(self, result, references, inputs):
-        self.story.append(self.rl['PageBreak']())
-        state = status(result)
-        self.rich('{} &nbsp;<font size="8" color="{}">{}</font> &nbsp;<font size="8" color="{}">{} '
-                  'ST {}</font>'.format(escape(result.sample), STATUS_COLOURS[state], state, ACCENT,
-                                        escape(result.species or UNKNOWN), escape(result.sequence_type)),
-                  'h2')
-        if result.error:
-            self.rich('<b>This sample failed.</b> {}'.format(escape(result.error)))
-
-        self.para('Identification: the MASH distances', 'h4')
+    # -- one sample ---------------------------------------------------------------------------------
+    def identification_facts(self, result, width):
+        self.para('Identification: the MASH distance', 'h4')
         if result.identification is None:
             self.para('MASH did not run for this sample.')
-        else:
-            best = result.identification.best
-            self.facts([
-                ('Closest reference', result.closest_reference),
-                ('What it is', result.reference.description if result.reference
-                 else 'not in the reference table'),
-                ('NCBI accessions', result.reference.accessions.replace(';', ', ')
-                 if result.reference and result.reference.accessions else ''),
-                ('MASH distance', '{:.6f}'.format(best.distance)),
-                ('Estimated identity', '{:.3f}%'.format(best.identity)),
-                ('Shared min-hashes', '{}/{} (at least {} required)'.format(
-                    best.shared_hashes, best.total_hashes, result.identification.min_hashes)),
-            ])
-            shown, hidden = top_hits(close_hits(result, references))
-            rows, highlight = [], {}
-            for index, (hit, reference, close) in enumerate(shown):
-                if hit is best or close:
-                    highlight[index] = ACCENT_SOFT if hit is best else PANEL
-                rows.append([hit.reference, reference.species if reference else '(not in the table)',
-                             reference.strain if reference else '',
-                             '{:.6f}'.format(hit.distance), '{:.3f}'.format(hit.identity),
-                             '{}/{}'.format(hit.shared_hashes, hit.total_hashes)])
-            self.table(['Reference genome', 'Species', 'Strain', 'Distance', 'Identity %', 'Shared hashes'],
-                       rows, widths=(29, 21, 14, 12, 11, 13), numeric=(3, 4, 5), highlight=highlight,
-                       keep=False)
-            if hidden:
-                self.rich('The other {} reference(s) are further away; brucellaid_mash.tsv has every '
-                          'distance.'.format(hidden), 'cell')
+            return
+        best = result.identification.best
+        self.facts([
+            ('Closest reference', result.closest_reference),
+            ('What it is', result.reference.description if result.reference
+             else 'not in the reference table'),
+            ('NCBI accessions', result.reference.accessions.replace(';', ', ')
+             if result.reference and result.reference.accessions else ''),
+            ('MASH distance', '{:.6f}'.format(best.distance)),
+            ('Estimated identity', '{:.3f}%'.format(best.identity)),
+            ('Shared min-hashes', '{}/{} (at least {} required)'.format(
+                best.shared_hashes, best.total_hashes, result.identification.min_hashes)),
+        ], width=width)
 
+    def species_call(self, result, width):
         self.para('The species call', 'h4')
         call = result.call
         if call is None:
             self.para('No species was called for this sample.')
-        else:
-            self.facts([
-                ('Species reported', call.species),
-                ('Decided by', call.source),
-                ('Species within reach', ', '.join(call.candidates)),
-                ('Sequence type', call.st),
-                ('What that ST is', call.entry.evidence if call.entry else ''),
-                ('Biovars of its isolates', call.entry.biovars.replace(';', ', ')
-                 if call.entry and call.entry.biovars else ''),
-                ('Why the ST was not used', call.st_reason),
-            ])
-            if call.verdict:
-                self.rich('<b>{}</b>: {}'.format(escape(call.verdict), escape(VERDICTS[call.verdict])))
+            return
+        self.facts([
+            ('Species reported', call.species),
+            ('Decided by', call.source),
+            ('Species within reach', ', '.join(call.candidates)),
+            ('Sequence type', call.st),
+            ('What that ST is', call.entry.evidence if call.entry else ''),
+            ('Biovars of its isolates', call.entry.biovars.replace(';', ', ')
+             if call.entry and call.entry.biovars else ''),
+            ('Why the ST was not used', call.st_reason),
+        ], width=width)
+        if call.verdict:
+            self.rich('<font color="{}"><b>{}</b></font>  {}'.format(
+                ACCENT, escape(call.verdict), escape(VERDICTS[call.verdict])), 'cell')
 
-        self.para('MLST: the nine allele calls', 'h4')
+    def identification_table(self, result, references):
+        if result.identification is None:
+            return
+        best = result.identification.best
+        shown, hidden = top_hits(close_hits(result, references))
+        rows, highlight = [], {}
+        for index, (hit, reference, close) in enumerate(shown):
+            if hit is best or close:
+                highlight[index] = ACCENT_SOFT if hit is best else PANEL
+            rows.append([hit.reference, reference.species if reference else '(not in the table)',
+                         reference.strain if reference else '',
+                         '{:.6f}'.format(hit.distance), '{:.3f}'.format(hit.identity),
+                         '{}/{}'.format(hit.shared_hashes, hit.total_hashes)])
+        caption = 'Closest first. A shaded row is too close to the first to be separated by distance alone.'
+        if hidden:
+            caption += ' The other {} reference(s) are further away; brucellaid_mash.tsv has every ' \
+                       'distance.'.format(hidden)
+        self.para(caption, 'cell')
+        self.table(['Reference genome', 'Species', 'Strain', 'Distance', 'Identity %', 'Shared hashes'],
+                   rows, widths=(29, 21, 14, 12, 11, 13), numeric=(3, 4, 5), highlight=highlight,
+                   keep=False)
+
+    def mlst_facts(self, result, width):
+        self.para('MLST: the sequence type', 'h4')
         if result.mlst is None:
             self.para('The MLST was not run for this sample.')
-        else:
-            mlst = result.mlst
-            self.facts([('Sequence type', mlst.st), ('Allele profile', mlst.profile),
-                        ('Every locus called', 'yes' if mlst.complete else 'no'),
-                        ('Reads in the input', '{:,}'.format(mlst.total_reads)
-                         if mlst.total_reads is not None else ''),
-                        ('Reads matching an allele', '{:,}'.format(mlst.assigned_reads)),
-                        ('About the ST', mlst.note)])
-            rows = []
-            for locus_call in mlst.calls:
-                ahead, ratio = margin(locus_call)
-                runner_up = '{}_{} ({})'.format(locus_call.locus, locus_call.runner_up,
-                                                locus_call.runner_up_reads) if locus_call.runner_up else ''
-                rows.append([locus_call.locus, locus_call.allele or UNKNOWN, locus_call.reads or '',
-                             runner_up, '' if ahead is None else ahead,
-                             '' if ratio is None else '{:.2f}'.format(ratio), locus_call.note])
-            self.table(['Locus', 'Allele', 'Reads', 'Runner-up (its reads)', 'Ahead', 'Ratio', 'Note'],
-                       rows, widths=(11, 8, 8, 20, 8, 8, 37), numeric=(2, 4, 5), keep=False)
+            return
+        mlst = result.mlst
+        self.facts([('Sequence type', mlst.st), ('Allele profile', mlst.profile),
+                    ('Every locus called', 'yes' if mlst.complete else 'no'),
+                    ('Reads in the input', '{:,}'.format(mlst.total_reads)
+                     if mlst.total_reads is not None else ''),
+                    ('Reads matching an allele', '{:,}'.format(mlst.assigned_reads)),
+                    ('About the ST', mlst.note)], width=width)
 
+    def mlst_table(self, result):
+        if result.mlst is None:
+            return
+        rows = []
+        for call in result.mlst.calls:
+            ahead, ratio = margin(call)
+            runner_up = '{}_{} ({})'.format(call.locus, call.runner_up, call.runner_up_reads) \
+                if call.runner_up else ''
+            rows.append([call.locus, call.allele or UNKNOWN, call.reads or '', runner_up,
+                         '' if ahead is None else ahead,
+                         '' if ratio is None else '{:.2f}'.format(ratio), call.note])
+        self.para('The margin each call had over the next allele of its locus; a ratio near 1.00 is the one '
+                  'to check.', 'cell')
+        self.table(['Locus', 'Allele', 'Reads', 'Runner-up (its reads)', 'Ahead', 'Ratio', 'Note'],
+                   rows, widths=(11, 8, 8, 20, 8, 8, 37), numeric=(2, 4, 5), keep=False)
+
+    def inputs(self, files, width):
         self.para('Input files', 'h4')
-        files = inputs.get(result.sample, [])
         if not files:
             self.para('The input files could not be read when the report was written.')
-        else:
-            self.table(['File', 'Size', 'Modified', 'MD5'],
-                       [[f.name, f.size_text, f.modified, f.md5 or 'not computed (--no-md5)'] for f in files],
-                       widths=(32, 10, 26, 32), numeric=(1,), keep=False)
-            for item in files:
-                self.rich(escape(item.path) + (' -> {}'.format(escape(item.target))
-                                                               if item.target else ''), 'mono')
+            return
+        # Half the frame cannot hold a checksum column as well, so the checksum and the path go on the
+        # lines below, where a long value has the width to be read: file, then what it really is.
+        rows = [[item.name, item.size_text, item.modified] for item in files]
+        self.table(['File', 'Size', 'Modified'], rows, widths=(44, 14, 42), numeric=(1,), keep=False,
+                   width=width)
+        for item in files:
+            self.rich(escape(item.path) + (' -&gt; {}'.format(escape(item.target)) if item.target else ''),
+                      'mono')
+            self.rich('MD5 {}'.format(escape(item.md5 or 'not computed (--no-md5)')), 'mono')
 
+    def sample(self, result, references, inputs, first=False):
+        # The first sample follows the section heading on the same page; the rest each start one
+        if not first:
+            self.story.append(self.rl['PageBreak']())
+        state = status(result)
+        self.rich('{}  <font size="7.5" color="{}"><b>{}</b></font>  <font size="7.5" color="{}"><b>{} '
+                  'ST {}</b></font>'.format(escape(result.sample), STATUS_COLOURS[state], state, ACCENT,
+                                            escape(result.species or UNKNOWN),
+                                            escape(result.sequence_type)), 'name')
+        self.rule(colour=HAIR, thickness=0.5, below=3)
+        if result.error:
+            self.rich('<b>This sample failed.</b> {}'.format(escape(result.error)))
+
+        half = self.width / 2.0 - 9
+        self.columns(self.capture(lambda: self.identification_facts(result, half)),
+                     self.capture(lambda: self.species_call(result, half)))
+        self.space(5)
+        self.identification_table(result, references)
+        self.space(3)
+        self.columns(self.capture(lambda: self.mlst_facts(result, half)),
+                     self.capture(lambda: self.inputs(inputs.get(result.sample, []), half)))
+        self.space(5)
+        self.mlst_table(result)
         if result.notes:
             self.para('Notes', 'h4')
             for note in result.notes:
                 if note:
                     self.rich('- {}'.format(escape(note)), 'cell')
 
+    # -- the rest -----------------------------------------------------------------------------------
     def methods(self):
         self.story.append(self.rl['PageBreak']())
-        self.para('Definitions and methods', 'h2')
-        for heading, text in METHODS:
-            self.para(heading, 'h3')
+        self.section(4, 'Definitions and methods')
+        for title, text in METHODS:
+            self.para(title, 'h3')
             self.para(text)
 
     def run_information(self, run, data):
         self.story.append(self.rl['PageBreak']())
-        self.para('Run information', 'h2')
+        self.section(5, 'Run information')
         self.facts([('Operator', run.get('operator', '')), ('User account', run.get('user', '')),
                     ('Computer', run.get('host', '')), ('Operating system', run.get('system', '')),
                     ('Working directory', run.get('working_directory', '')),
@@ -411,7 +536,10 @@ def numbered_canvas(run, margin, baseline):
             for state in self._pages:
                 self.__dict__.update(state)
                 self.saveState()
-                self.setFont('Helvetica', 6.5)
+                self.setStrokeColor(HAIR)
+                self.setLineWidth(0.5)
+                self.line(margin, baseline + 7, self._pagesize[0] - margin, baseline + 7)
+                self.setFont('Helvetica', 6.3)
                 self.setFillColor(MUTED)
                 self.drawString(margin, baseline, left)
                 self.drawRightString(self._pagesize[0] - margin, baseline,
@@ -433,16 +561,19 @@ def write(results, references, run, path, inputs=None, data=None, note=''):
     inputs = inputs or {}
     mm = rl['mm']
     document = rl['SimpleDocTemplate'](
-        str(path), pagesize=rl['A4'], leftMargin=12 * mm, rightMargin=12 * mm, topMargin=14 * mm,
-        bottomMargin=16 * mm, title=TITLE, author=run.get('operator', ''), subject='BrucellaID run',
+        str(path), pagesize=rl['A4'], leftMargin=12 * mm, rightMargin=12 * mm, topMargin=13 * mm,
+        bottomMargin=15 * mm, title=TITLE, author=run.get('operator', ''), subject='BrucellaID run',
         creator='BrucellaID {}'.format(__version__))
     report = Report(rl)
-    report.summary(results, run, note=note)
+    report.masthead(results, run, note=note)
+    report.summary(results, run)
     report.warnings(results)
-    for _, members in groups(results):
-        for result in members:
-            report.sample(result, references, inputs)
+    report.story.append(rl['PageBreak']())
+    report.section(3, 'Samples')
+    ordered = [result for _, members in groups(results) for result in members]
+    for index, result in enumerate(ordered):
+        report.sample(result, references, inputs, first=index == 0)
     report.methods()
     report.run_information(run, data)
-    document.build(report.story, canvasmaker=numbered_canvas(run, 12 * mm, 10 * mm))
+    document.build(report.story, canvasmaker=numbered_canvas(run, 12 * mm, 9 * mm))
     return path

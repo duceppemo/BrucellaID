@@ -372,7 +372,7 @@ def test_pdf_report(tmp_path):
     assert len(reader.pages) > 4
     assert reader.metadata['/Title'] == pdfreport.TITLE
     assert reader.metadata['/Author'] == 'A Reviewer'
-    for expected in ('Quality assurance report', 'Summary', 'Reviewed by', 'Signature',
+    for expected in ('Quality assurance report', 'Summary', 'REVIEWED BY', 'Signature',
                      'Notes, warnings and errors', 'Definitions and methods', 'Run information',
                      'ST 20 is Brucella canis', 'B-REF-BS4-40.fasta', 'Seal failed',
                      'MASH did not run for this sample.', 'abc123', 'doi:10.1186/1471-2180-7-34'):

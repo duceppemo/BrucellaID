@@ -32,6 +32,10 @@ with their counts, in the quality assurance report. For a biovar, use classical 
   shown as coloured pills, sections are numbered, and the type, spacing and tables were reworked in both
   the light and the dark theme.
 * The allele table merges the runner-up and its read count into one column.
+* **The PDF was rebuilt to match**, rather than merely holding the same words: the same palette,
+  numbered sections, one grouped summary table with coloured statuses, two columns of facts above each
+  table, quieter tables with a rule under the header instead of a grid, a tinted box to sign, a rule
+  above the footer, and one sample to a page there too.
 
 **A quality assurance report.** Every run now writes `brucellaid_report.html`: one self-contained file —
 no script, no stylesheet, no font, nothing fetched from anywhere — holding what a result rests on rather
