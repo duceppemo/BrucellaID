@@ -28,7 +28,8 @@ body {
 }
 main { max-width: 760px; margin: 0 auto; }
 header { padding: 48px 0 8px; }
-h1 { font-size: 1.9rem; margin: 0 0 6px; letter-spacing: -0.01em; }
+h1 { margin: 0 0 10px; font-size: 1.9rem; letter-spacing: -0.01em; }
+h1 img.logo { width: 420px; max-width: 100%; height: auto; display: block; }
 h2 { font-size: 1.15rem; margin: 36px 0 8px; }
 p { margin: 10px 0; }
 a { color: var(--accent); }
@@ -51,7 +52,13 @@ code { font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace; 
 <body>
 <main>
 <header>
-  <h1>BrucellaID</h1>
+  <!-- The wordmark is the heading: the alt text is what a reader without the image gets -->
+  <h1>
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/duceppemo/BrucellaID/main/assets/logo_dark.svg">
+      <img class="logo" src="https://raw.githubusercontent.com/duceppemo/BrucellaID/main/assets/logo.svg" width="420" alt="BrucellaID: Brucella species identification and MLST from reads">
+    </picture>
+  </h1>
   <p class="lead">Identify the <i>Brucella</i> species of a fastq sample by its MASH distance to 16
   reference genomes, and type it with the nine-locus Whatmore MLST scheme.</p>
 </header>
@@ -68,8 +75,8 @@ rendering it, and the quality assurance report is easier to judge by looking at 
 
 <a class="card" href="example_report.pdf">
   <b>The same report as a PDF &rarr;</b>
-  <span>What <code>--pdf</code> writes: the same evidence laid out for paper, 12 pages, with the page
-  number in every footer so a loose sheet can be placed. Twelve pages for four samples.</span>
+  <span>What <code>--pdf</code> writes: the same evidence laid out for paper, twelve pages for the four
+  samples, with the page number in every footer so a loose sheet can be placed.</span>
 </a>
 
 <h2>Everything else</h2>
