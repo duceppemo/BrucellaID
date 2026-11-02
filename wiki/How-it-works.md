@@ -26,8 +26,8 @@ hashes the two share.
 * The k-mer size and the sketch size are inherited from the reference sketch, which is why a custom sketch
   has to keep MASH's defaults.
 
-The closest reference names the species, and the reference table also gives its biovar, strain and NCBI
-accessions. A reference is only reported when the reads share at least **150 of its 1000 hashes**
+The closest reference names the species, and the reference table also gives that genome's own biovar,
+strain and NCBI accessions — facts about the reference, not calls about the sample. A reference is only reported when the reads share at least **150 of its 1000 hashes**
 (`--min-hashes`). Below that the sample is reported as `ND`: there is some *Brucella* in it, or there is
 not, but the closest of 16 genomes is not an answer. The first version of BrucellaID used the same
 threshold.
@@ -132,7 +132,7 @@ The result is in the `SpeciesSource` column:
 | `MASH` | One species was within reach, and no usable ST. The species is the closest reference's |
 | `MASH+ST (agree)` | One species was within reach, and the ST says the same thing |
 | `MASH+ST (arbitrated)` | Two species were within reach, and the ST confirms the closest one |
-| `ST (arbitrated)` | Two species were within reach, and the ST names the other one. **The species reported is the ST's**, and so are the biovar and the vSNP code, which are taken from the closest reference of that species |
+| `ST (arbitrated)` | Two species were within reach, and the ST names the other one. **The species reported is the ST's**, and so is the vSNP code, which is taken from the closest reference of that species |
 | `MASH (unresolved)` | Two species were within reach and the ST could not choose. The species is the closest reference's, and the note says why the ST was no help |
 | `MASH (conflict)` | The ST names a species that was not within reach at all. **The MASH call stands** — a thousand min-hashes against nine loci — and the note says to check the sample |
 

@@ -16,6 +16,8 @@ reportlab is an optional dependency ("pip install brucellaid[pdf]"), the way xls
 that BrucellaID itself still installs with nothing but the standard library.
 """
 
+import re
+
 from . import __version__
 from .errors import BrucellaIDError
 from .htmlreport import HEADING, METHODS, REFERENCES_CITED, VERDICTS
@@ -64,6 +66,7 @@ def _modules():
         from reportlab.lib.pagesizes import A4
         from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
         from reportlab.lib.units import mm
+        from reportlab.pdfbase.pdfmetrics import stringWidth
         from reportlab.platypus import (
             Image,
             KeepTogether,
@@ -82,13 +85,31 @@ def _modules():
     return {'TA_LEFT': TA_LEFT, 'A4': A4, 'ParagraphStyle': ParagraphStyle,
             'getSampleStyleSheet': getSampleStyleSheet, 'mm': mm, 'KeepTogether': KeepTogether,
             'PageBreak': PageBreak, 'Paragraph': Paragraph, 'SimpleDocTemplate': SimpleDocTemplate,
-            'Spacer': Spacer, 'Table': Table, 'TableStyle': TableStyle, 'Image': Image}
+            'Spacer': Spacer, 'Table': Table, 'TableStyle': TableStyle, 'Image': Image,
+            'stringWidth': stringWidth}
 
 
 def escape(value):
     """A value as reportlab paragraph text: its mini-XML needs the three XML entities escaped."""
     text = '' if value is None else str(value)
     return text.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+
+
+def fitted_widths(natural, total):
+    """
+    The width of each column: what its longest line asks for when that all fits the frame, and otherwise
+    the widest columns capped at the largest value that does, so that only the columns with the most to
+    say wrap. A table is never stretched to the frame, and a narrow column always keeps its natural
+    width: spreading the spare space over every column alike is what pushes a value away from the next.
+    """
+    if sum(natural) <= total:
+        return list(natural)
+    remaining, count = total, len(natural)
+    for width in sorted(natural):
+        if width * count < remaining:   # Fits whole under any cap that spends the rest: keep it
+            remaining -= width
+            count -= 1
+    return [min(width, remaining / count) for width in natural]
 
 
 class Rich(str):
@@ -211,13 +232,34 @@ class Report:
                 else self.rl['Paragraph'](value if isinstance(value, Rich) else escape(value), style)
                 for value in values]
 
-    def table(self, headers, rows, widths=None, numeric=(), highlight=None, keep=True, width=None,
-              groups_at=()):
+    def cell_text(self, value):
+        """The text a cell will show, for measuring it: markup stripped and the XML entities restored."""
+        if isinstance(value, self.rl['Paragraph']):
+            return value.getPlainText()
+        text = str(value)
+        if isinstance(value, Rich):
+            text = re.sub(r'<[^>]+>', '', text)
+            text = text.replace('&lt;', '<').replace('&gt;', '>').replace('&amp;', '&')
+        return text
+
+    def natural_widths(self, headers, rows):
+        """What each column asks for: its longest value on one line, plus padding and room for bold."""
+        measure = self.rl['stringWidth']
+        widths = [measure(header.upper(), self.s['th'].fontName, self.s['th'].fontSize)
+                  for header in headers]
+        for row in rows:
+            for column, value in enumerate(row):
+                widths[column] = max(widths[column], measure(self.cell_text(value),
+                                                             self.s['cell'].fontName,
+                                                             self.s['cell'].fontSize))
+        return [width + 8 for width in widths]
+
+    def table(self, headers, rows, highlight=None, keep=True, width=None, groups_at=()):
         """
-        A quiet table: no grid, a rule under the header and a hairline between the rows.
+        A quiet table: no grid, a rule under the header and a hairline between the rows. Each column is
+        as wide as its content, capped by fitted_widths() when the whole does not fit the frame.
 
         :param rows: list of rows of values; a Rich value is written as markup
-        :param widths: column widths as percentages of the frame
         :param highlight: {row index: colour} for the rows a reader should land on
         :param groups_at: {row index: label} rows that name a group and span the table
         """
@@ -228,9 +270,8 @@ class Report:
                 data.append([rl['Paragraph'](escape(groups_at[index]), self.s['group'])]
                             + [''] * (len(headers) - 1))
             data.append(self.cells(row))
-        total = width or self.width
-        columns = [total * w / 100.0 for w in widths] if widths else [total / len(headers)] * len(headers)
-        table = rl['Table'](data, colWidths=columns, repeatRows=1)
+        columns = fitted_widths(self.natural_widths(headers, rows), width or self.width)
+        table = rl['Table'](data, colWidths=columns, repeatRows=1, hAlign='LEFT')
         commands = [
             ('LINEBELOW', (0, 0), (-1, 0), 0.7, LINE),
             ('LINEBELOW', (0, 1), (-1, -2), 0.25, HAIR),
@@ -238,8 +279,6 @@ class Report:
             ('TOPPADDING', (0, 0), (-1, -1), 2.4), ('BOTTOMPADDING', (0, 0), (-1, -1), 2.4),
             ('LEFTPADDING', (0, 0), (-1, -1), 3), ('RIGHTPADDING', (0, 0), (-1, -1), 3),
         ]
-        for column in numeric:
-            commands.append(('ALIGN', (column, 1), (column, -1), 'RIGHT'))
         # The group rows, and the highlighted rows, in the data's own numbering
         offset = 1
         for index in range(len(rows)):
@@ -322,7 +361,7 @@ class Report:
                              result.sequence_type, result.mlst.profile if result.mlst else '',
                              result.closest_reference, coloured(state, STATUS_COLOURS[state])])
         self.table(['Sample', 'Species', 'From', 'Decision', 'ST', 'Allele profile', 'Closest reference',
-                    'Status'], rows, widths=(12, 14, 9, 10, 5, 17, 24, 9), groups_at=labels,
+                    'Status'], rows, groups_at=labels,
                    highlight=highlight, keep=False)
         self.space(6)
         self.sign_off()
@@ -335,7 +374,7 @@ class Report:
         if not rows:
             self.para('None: every sample was identified and typed without a note.')
             return
-        self.table(['Sample', 'Status', 'What it says'], rows, widths=(16, 10, 74), keep=False)
+        self.table(['Sample', 'Status', 'What it says'], rows, keep=False)
 
     # -- one sample ---------------------------------------------------------------------------------
     def identification_facts(self, result, width):
@@ -396,8 +435,7 @@ class Report:
                        'distance.'.format(hidden)
         self.para(caption, 'cell')
         self.table(['Reference genome', 'Species', 'Strain', 'Distance', 'Identity %', 'Shared hashes'],
-                   rows, widths=(29, 21, 14, 12, 11, 13), numeric=(3, 4, 5), highlight=highlight,
-                   keep=False)
+                   rows, highlight=highlight, keep=False)
 
     def mlst_facts(self, result, width):
         self.para('MLST: the sequence type', 'h4')
@@ -426,7 +464,7 @@ class Report:
         self.para('The margin each call had over the next allele of its locus; a ratio near 1.00 is the one '
                   'to check.', 'cell')
         self.table(['Locus', 'Allele', 'Reads', 'Runner-up (its reads)', 'Ahead', 'Ratio', 'Note'],
-                   rows, widths=(11, 8, 8, 20, 8, 8, 37), numeric=(2, 4, 5), keep=False)
+                   rows, keep=False)
 
     def inputs(self, files, width):
         self.para('Input files', 'h4')
@@ -436,8 +474,7 @@ class Report:
         # Half the frame cannot hold a checksum column as well, so the checksum and the path go on the
         # lines below, where a long value has the width to be read: file, then what it really is.
         rows = [[item.name, item.size_text, item.modified] for item in files]
-        self.table(['File', 'Size', 'Modified'], rows, widths=(44, 14, 42), numeric=(1,), keep=False,
-                   width=width)
+        self.table(['File', 'Size', 'Modified'], rows, keep=False, width=width)
         for item in files:
             self.rich(escape(item.path) + (' -&gt; {}'.format(escape(item.target)) if item.target else ''),
                       'mono')
@@ -489,19 +526,19 @@ class Report:
                     ('Started', run.get('started', '')), ('Finished', run.get('finished', '')),
                     ('Command', run.get('command', ''))])
         self.para('Software', 'h3')
-        self.table(['Program', 'Version'], [[name, value] for name, value in run.get('software', {}).items()],
-                   widths=(28, 72))
+        self.table(['Program', 'Version'],
+                   [[name, value] for name, value in run.get('software', {}).items()])
         self.para('Parameters', 'h3')
         self.table(['Parameter', 'Value'],
                    [[name, '' if value is None else value] for name, value in run.get('parameters', {}).items()],
-                   widths=(34, 66), keep=False)
+                   keep=False)
         self.para('Reference data', 'h3')
         if data:
             self.table(['Data', 'What it holds', 'Source', 'MD5'],
                        [[item['name'], item['detail'],
                          'the package\'s' if item['packaged'] else 'given with an option',
                          item['md5'] or 'not computed'] for item in data],
-                       widths=(18, 36, 18, 28), keep=False)
+                       keep=False)
             for item in data:
                 self.rich(escape(item['path']), 'mono')
         else:

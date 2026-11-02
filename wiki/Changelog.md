@@ -1,8 +1,12 @@
 # Changelog
 
 ## Unreleased
+* **Report tables are only as wide as their content**, in the HTML and the PDF alike, and every column is
+  left-aligned. A table stretched to the full page put unrelated amounts of air between its columns, and a
+  right-aligned number sat away from its label. In the PDF, a column now gets the width its longest value
+  asks for, and when a table is wider than the page only the columns with the most to say wrap.
 * The `About ... coverage: sketching the k-mers seen at least N time(s)` log line now begins with the name
-  of the sample it describes. With `--parallel`, two samples identify at once and the lines interleaved
+  of the sample it describes. With `--parallel`, two samples identify at once and their lines interleave
   with no way to tell whose coverage was whose.
 * 335 tests. 1.2.0 claimed 100% coverage while four lines of the depth change had none; three tests close
   that, and the number is true again.

@@ -6,7 +6,7 @@ from html.parser import HTMLParser
 
 import pytest
 
-from brucellaid import htmlreport, qa, report
+from brucellaid import htmlreport, pdfreport, qa, report
 from brucellaid.errors import BrucellaIDError
 from brucellaid.mash import Identification, parse_dist
 from brucellaid.mlst import UNKNOWN, AlleleCall, MlstResult
@@ -249,12 +249,31 @@ def test_html_report_is_written_to_a_file(tmp_path):
     assert path.read_text(encoding='utf-8').startswith('<!doctype html>')
 
 
-def test_html_table_helper_aligns_numbers_and_takes_a_caption():
-    markup = htmlreport.table(['A', 'N'], [['x', 1], (['y', 2], 'best')], caption='Why', numeric=(1,))
+def test_html_table_helper_takes_a_caption_and_marks_the_rows():
+    markup = htmlreport.table(['A', 'N'], [['x', 1], (['y', 2], 'best')], caption='Why', nowrap=(0,))
     assert '<caption>Why</caption>' in markup
-    assert '<th class="num">N</th>' in markup
-    assert '<td class="num">1</td>' in markup
+    assert '<th>N</th>' in markup and 'class="num"' not in markup
+    assert '<td class="nw">x</td>' in markup and '<td>1</td>' in markup
     assert '<tr class="best">' in markup
+
+
+def test_fitted_widths_keeps_the_natural_widths_when_they_fit():
+    assert pdfreport.fitted_widths([50, 100], 400) == [50, 100]
+
+
+def test_natural_widths_measures_a_prebuilt_paragraph_cell():
+    rl = pdfreport._modules()
+    report = pdfreport.Report(rl)
+    paragraph = rl['Paragraph']('a value wider than its header', report.s['cell'])
+    narrow, wide = report.natural_widths(['H', 'H'], [['x', paragraph]])
+    assert wide > narrow   # Measured by its text, not treated as an opaque object
+
+
+def test_fitted_widths_caps_only_the_widest_columns():
+    widths = pdfreport.fitted_widths([30, 60, 400], 300)
+    assert widths[0] == 30 and widths[1] == 60   # A narrow column is never squeezed
+    assert widths[2] == pytest.approx(210)       # The one with the most to say wraps
+    assert sum(widths) == pytest.approx(300)
 
 
 def test_html_pill_helper():

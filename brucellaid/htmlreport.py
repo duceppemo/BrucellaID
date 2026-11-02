@@ -131,7 +131,7 @@ code, .mono { font-family: var(--mono); font-size: 0.86em; }
 .pill.decided { background: var(--accent-soft); border-color: transparent; color: var(--accent); }
 .pill.plain::before { display: none; }
 
-table { border-collapse: collapse; width: 100%; margin: 8px 0 2px; font-size: 0.86rem; }
+table { border-collapse: collapse; margin: 8px 0 2px; font-size: 0.86rem; }
 caption { text-align: left; color: var(--muted); font-size: 0.82rem; padding: 0 0 7px; line-height: 1.45; }
 th {
   text-align: left; padding: 7px 10px; background: transparent; color: var(--muted); font-weight: 650;
@@ -140,7 +140,6 @@ th {
 }
 td { padding: 7px 10px; border-bottom: 1px solid var(--hair); vertical-align: top; color: var(--soft-ink); }
 td:first-child { color: var(--ink); }
-td.num, th.num { text-align: right; }
 td.nw { white-space: nowrap; }
 tr.best td { background: var(--accent-soft); color: var(--ink); }
 tr.best td:first-child { box-shadow: inset 3px 0 0 var(--accent); font-weight: 600; }
@@ -281,10 +280,9 @@ class Raw(str):
     """A cell value that is markup already, such as a pill, and must not be escaped again."""
 
 
-def cell(value, numeric=False, nowrap=False):
+def cell(value, nowrap=False):
     text = value if isinstance(value, Raw) else escape(value)
-    classes = ' '.join(name for name, on in (('num', numeric), ('nw', nowrap)) if on)
-    return '<td class="{}">{}</td>'.format(classes, text) if classes else '<td>{}</td>'.format(text)
+    return '<td class="nw">{}</td>'.format(text) if nowrap else '<td>{}</td>'.format(text)
 
 
 def grouped_table(headers, sections, caption):
@@ -311,25 +309,23 @@ def grouped_table(headers, sections, caption):
     return '\n'.join(out)
 
 
-def table(headers, rows, caption='', numeric=(), classes=(), nowrap=()):
+def table(headers, rows, caption='', classes=(), nowrap=()):
     """
     A table from already escaped-on-write values.
 
     :param headers: column titles
     :param rows: list of rows of values, or (values, row class) pairs when a row is highlighted
-    :param numeric: indexes of the columns to align right
     :param nowrap: indexes of the columns that must stay on one line, such as a date
     """
     out = ['<table class="{}">'.format(' '.join(classes)) if classes else '<table>']
     if caption:
         out.append('<caption>{}</caption>'.format(escape(caption)))
-    head = ''.join('<th class="num">{}</th>'.format(escape(h)) if i in numeric else
-                   '<th>{}</th>'.format(escape(h)) for i, h in enumerate(headers))
-    out.append('<thead><tr>{}</tr></thead>'.format(head))
+    out.append('<thead><tr>{}</tr></thead>'.format(
+        ''.join('<th>{}</th>'.format(escape(h)) for h in headers)))
     out.append('<tbody>')
     for row in rows:
         values, row_class = row if isinstance(row, tuple) else (row, '')
-        cells = ''.join(cell(v, i in numeric, i in nowrap) for i, v in enumerate(values))
+        cells = ''.join(cell(v, i in nowrap) for i, v in enumerate(values))
         out.append('<tr class="{}">{}</tr>'.format(escape(row_class), cells) if row_class
                    else '<tr>{}</tr>'.format(cells))
     out.append('</tbody></table>')
@@ -452,7 +448,7 @@ def identification_table(result, references):
         caption += ' The other {} reference(s) are further away; brucellaid_mash.tsv has every ' \
                    'distance.'.format(hidden)
     out.append(table(['Reference genome', 'Species', 'Strain', 'Distance', 'Identity %', 'Shared hashes',
-                      'p-value'], rows, numeric=(3, 4, 5, 6), caption=caption))
+                      'p-value'], rows, caption=caption))
     return out
 
 
@@ -511,7 +507,7 @@ def mlst_table(result):
                      '' if ahead is None else ahead,
                      '' if ratio is None else '{:.2f}'.format(ratio), call.note])
     out.append(table(['Locus', 'Allele', 'Reads', 'Runner-up (its reads)', 'Ahead by', 'Ratio', 'Note'],
-                     rows, numeric=(2, 4, 5),
+                     rows,
                      caption='The margin each call had over the next allele of its locus; a ratio near 1.00 '
                              'is the one to check.'))
     return out
@@ -529,7 +525,7 @@ def inputs_block(files):
     for item in files:
         row = [item.name, item.size_text, item.modified, item.md5 or 'not computed (--no-md5)']
         rows.append(row + [item.target] if links else row)
-    out.append(table(headers, rows, numeric=(1,), nowrap=(1, 2)))
+    out.append(table(headers, rows, nowrap=(1, 2)))
     out.append('<p class="mono wrap" style="color:var(--muted)">{}</p>'.format(
         escape(' '.join(item.path for item in files))))
     return out
