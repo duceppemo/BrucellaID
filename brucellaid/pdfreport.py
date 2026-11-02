@@ -256,7 +256,8 @@ class Report:
 
     def table(self, headers, rows, highlight=None, keep=True, width=None, groups_at=()):
         """
-        A quiet table: no grid, a rule under the header and a hairline between the rows. Each column is
+        A quiet table: no grid, a rule above and below the table and under the header, and a hairline
+        between the rows. Each column is
         as wide as its content, capped by fitted_widths() when the whole does not fit the frame.
 
         :param rows: list of rows of values; a Rich value is written as markup
@@ -273,8 +274,10 @@ class Report:
         columns = fitted_widths(self.natural_widths(headers, rows), width or self.width)
         table = rl['Table'](data, colWidths=columns, repeatRows=1, hAlign='LEFT')
         commands = [
+            ('LINEABOVE', (0, 0), (-1, 0), 0.7, LINE),
             ('LINEBELOW', (0, 0), (-1, 0), 0.7, LINE),
             ('LINEBELOW', (0, 1), (-1, -2), 0.25, HAIR),
+            ('LINEBELOW', (0, -1), (-1, -1), 0.7, LINE),
             ('VALIGN', (0, 0), (-1, -1), 'TOP'),
             ('TOPPADDING', (0, 0), (-1, -1), 2.4), ('BOTTOMPADDING', (0, 0), (-1, -1), 2.4),
             ('LEFTPADDING', (0, 0), (-1, -1), 3), ('RIGHTPADDING', (0, 0), (-1, -1), 3),

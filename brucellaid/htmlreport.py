@@ -131,7 +131,7 @@ code, .mono { font-family: var(--mono); font-size: 0.86em; }
 .pill.decided { background: var(--accent-soft); border-color: transparent; color: var(--accent); }
 .pill.plain::before { display: none; }
 
-table { border-collapse: collapse; margin: 8px 0 2px; font-size: 0.86rem; }
+table { border-collapse: collapse; margin: 8px 0 2px; font-size: 0.86rem; border-top: 1px solid var(--line); }
 caption { text-align: left; color: var(--muted); font-size: 0.82rem; padding: 0 0 7px; line-height: 1.45; }
 th {
   text-align: left; padding: 7px 10px; background: transparent; color: var(--muted); font-weight: 650;
@@ -139,6 +139,8 @@ th {
   border-bottom: 1px solid var(--line);
 }
 td { padding: 7px 10px; border-bottom: 1px solid var(--hair); vertical-align: top; color: var(--soft-ink); }
+/* The closing rule: the last row's own border, because at equal width a cell border wins the collapse */
+tbody tr:last-child td { border-bottom: 1px solid var(--line); }
 td:first-child { color: var(--ink); }
 td.nw { white-space: nowrap; }
 tr.best td { background: var(--accent-soft); color: var(--ink); }

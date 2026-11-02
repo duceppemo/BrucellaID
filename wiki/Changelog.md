@@ -13,10 +13,11 @@
   the run while its content was being sniffed for Seal.
 * A coverage below 10x is written with one decimal, and a trace of reads reads "under 0.1x" -- never
   "roughly 0x coverage" beside a real base count.
-* **Report tables are only as wide as their content**, in the HTML and the PDF alike, and every column is
-  left-aligned. A table stretched to the full page put unrelated amounts of air between its columns, and a
-  right-aligned number sat away from its label. In the PDF, a column now gets the width its longest value
-  asks for, and when a table is wider than the page only the columns with the most to say wrap.
+* **Report tables are only as wide as their content**, in the HTML and the PDF alike, every column is
+  left-aligned, and a rule opens and closes each table. A table stretched to the full page put unrelated
+  amounts of air between its columns, and a right-aligned number sat away from its label. In the PDF, a
+  column now gets the width its longest value asks for, and when a table is wider than the page only the
+  columns with the most to say wrap.
 * The `About ... coverage: sketching the k-mers seen at least N time(s)` log line now begins with the name
   of the sample it describes. With `--parallel`, two samples identify at once and their lines interleave
   with no way to tell whose coverage was whose.
