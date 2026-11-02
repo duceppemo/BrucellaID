@@ -11,7 +11,7 @@ pip install brucellaid
 brucellaid --version
 ```
 ```
-brucellaid 1.1.0
+brucellaid 1.2.0
 ```
 One `conda install brucellaid` will do all of it once the
 [bioconda recipe](https://github.com/bioconda/bioconda-recipes/pull/71040) is merged. See
@@ -53,20 +53,25 @@ brucellaid -i reads -o results -t 8 -p 2
 4 sample(s) found in reads
 4 sample(s), 2 at a time, 4 thread(s) each
 ERR2136546: identifying the species with MASH (2 file(s))
+ERR3454415: identifying the species with MASH (2 file(s))
+About 230,479,484 bases, roughly 70x coverage: sketching the k-mers seen at least 3 time(s)
+About 153,926,473 bases, roughly 47x coverage: sketching the k-mers seen at least 2 time(s)
 ERR2136546: Brucella canis str. ATCC 23365 (NC_010103-NC_010104.fasta, MASH distance 0.00652, 773/1000 hashes)
 ERR2136546: calling the MLST alleles with Seal
 ERR2136546: ST 20 (profile 1-6-4-1-5-3-5-4-6)
 ERR2136546: Brucella canis (MASH+ST, arbitrated)
-ERR3454415: Brucella abortus bv. 1 str. 9-941 (NC_006932-NC_006933.fasta, MASH distance 0.00455, 833/1000 hashes)
+ERR3454415: Brucella abortus bv. 1 str. 9-941 (NC_006932-NC_006933.fasta, MASH distance 0.00066, 973/1000 hashes)
 ERR3454415: ST 1 (profile 2-1-1-2-1-3-1-1-1)
-SRR19520329: Brucella melitensis bv. 3 str. Ether (NZ_CP007760-NZ_CP007761.fasta, MASH distance 0.00329, 875/1000 hashes)
+SRR19520329: Brucella melitensis bv. 3 str. Ether (NZ_CP007760-NZ_CP007761.fasta, MASH distance 0.00058, 976/1000 hashes)
 SRR19520329: ST 11 (profile 3-2-3-2-1-5-3-2-10)
-SRR8550484: Brucella suis bv. 2 str. ATCC 23445 (NC_010169-NC_010167.fasta, MASH distance 0.02484, 422/1000 hashes)
+SRR8550484: Brucella suis bv. 2 str. ATCC 23445 (NC_010169-NC_010167.fasta, MASH distance 0.00645, 775/1000 hashes)
 SRR8550484: ST 15 (profile 1-2-7-1-3-3-5-3-2)
-Done in 30s
+Done in 34s
 ```
-30 seconds on 8 threads, for 4.6 million read pairs. `-p 2` runs two samples at a time and gives each of
-them four of the eight threads.
+34 seconds on 8 threads, for 4.6 million read pairs. `-p 2` runs two samples at a time and gives each of
+them four of the eight threads. The `About ... coverage` lines are the k-mer copy threshold being derived
+from each sample’s depth — 3 copies for the ~70x libraries, 2 for the 47x one — which is what keeps a deep
+read set’s sequencing errors out of the sketch. Section 6 shows what that is worth.
 
 ## 4. Read the main table
 `results/brucellaid.tsv`, also printed to the terminal:
@@ -74,12 +79,12 @@ them four of the eight threads.
 ```
 Sample       Species              SpeciesSource         ClosestReference               SharedHashes  SequenceType  AlleleProfile       STSpecies            Reads
 ERR2136546   Brucella canis       MASH+ST (arbitrated)  NC_010103-NC_010104.fasta      773/1000      20            1-6-4-1-5-3-5-4-6   Brucella canis       625576
-ERR3454415   Brucella abortus     MASH+ST (agree)       NC_006932-NC_006933.fasta      833/1000      1             2-1-1-2-1-3-1-1-1   Brucella abortus     1175082
-SRR19520329  Brucella melitensis  MASH+ST (agree)       NZ_CP007760-NZ_CP007761.fasta  875/1000      11            3-2-3-2-1-5-3-2-10  Brucella melitensis  1136924
-SRR8550484   Brucella suis        MASH+ST (agree)       NC_010169-NC_010167.fasta      422/1000      15            1-2-7-1-3-3-5-3-2   Brucella suis        1693672
+ERR3454415   Brucella abortus     MASH+ST (agree)       NC_006932-NC_006933.fasta      973/1000      1             2-1-1-2-1-3-1-1-1   Brucella abortus     1175082
+SRR19520329  Brucella melitensis  MASH+ST (agree)       NZ_CP007760-NZ_CP007761.fasta  976/1000      11            3-2-3-2-1-5-3-2-10  Brucella melitensis  1136924
+SRR8550484   Brucella suis        MASH+ST (agree)       NC_010169-NC_010167.fasta      775/1000      15            1-2-7-1-3-3-5-3-2   Brucella suis        1693672
 ```
 Four species, four sequence types, and each species is the one the submitter labelled the run with.
-`MashDistance`, left out above to fit, reads 0.006524, 0.004549, 0.003285 and 0.024841. There is no biovar
+`MashDistance`, left out above to fit, reads 0.006524, 0.000656, 0.000582 and 0.006455. There is no biovar
 column: see [How it works](How-it-works#no-biovar).
 
 **The first sample is the interesting one.** Its `SpeciesSource` says `arbitrated`, and the `Notes` column,
@@ -125,16 +130,19 @@ ERR3454415  omp25    1       292    12        186
 Each allele was the best match for more reads than any other allele of its locus, by about 100 reads. That
 is what a solid call looks like; a call one or two reads ahead of its runner-up is one to look at twice.
 
-## 6. One sample that is worth a second look
-`SRR8550484` is identified as *B. suis* and typed as ST 15, with all nine loci called and every one of them
-ahead of its runner-up by a comfortable margin. But its MASH distance is 0.0248 where the other three are
-between 0.0033 and 0.0065, and it shares 422 of 1000 hashes where they share 773 to 875. Something in that read set is not *Brucella*, or not clean: at 1.7 million
-read pairs, sequencing errors are deep enough to survive MASH's `-m 2` filter and fill the sketch with
-k-mers no reference has.
+## 6. One sample that shows what the depth handling is worth
+`SRR8550484` is the deepest library here: 1.7 million read pairs, about 69x. At that depth, sequencing
+errors turn up often enough to pass a fixed two-copy filter, and BrucellaID 1.1.0 reported this very sample
+at a MASH distance of 0.0248, sharing 422 of 1000 hashes — a number that measured how deep the library was,
+not how far the genome is. Requiring three copies, as the estimated 69x asks, gives 775 of 1000 at
+0.006455.
 
-It is still typed, and the MLST is unbothered — the allele calls only use the reads that match an allele —
-but it is the kind of number worth carrying into the report. BrucellaID prints it rather than rounding it
-away.
+The distance that remains is real. It is ten times that of the *B. abortus* and *B. melitensis* samples
+because this isolate genuinely sits that far from the *B. suis* bv. 2 ATCC 23445 reference — just as the
+*B. canis* sample does from its own closest reference, at nearly the same distance. The identification and
+ST 15 would have been the same either way; what changed is that the number on the report is now a property
+of the sample rather than of how deeply it happened to be sequenced. The report says which threshold each
+sample got and the coverage it came from, and `--min-kmer-copies 2` reproduces an old report exactly.
 
 ## 7. The quality assurance report
 `results/brucellaid_report.html` is the run with its evidence attached: open it in a browser, or print it
@@ -170,7 +178,7 @@ gives a MultiQC report with a **BrucellaID** table of the four samples.
 
 ```json
 "software": {
-  "brucellaid": "1.1.0",
+  "brucellaid": "1.2.0",
   "Python": "3.12.16",
   "MASH": "2.3",
   "BBTools": "40.05",
