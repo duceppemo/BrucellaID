@@ -37,7 +37,7 @@ cd BrucellaID
 conda env create -f environment.yml
 conda activate brucellaid
 pip install --no-deps -e .
-pytest            # optional: 310 tests
+pytest            # optional: 331 tests
 ```
 `python -m brucellaid` works too, and takes the same arguments as the `brucellaid` command.
 

@@ -68,7 +68,7 @@ configure.
   `stat_alignment_summary_<date>.xlsx` of the first version.
 * **Nothing to configure**: only the Python standard library, plus MASH and BBTools. The two optional
   output formats, xlsx and PDF, are the only things that want a package, and neither is needed.
-* **Tested**: 310 tests, 100% coverage, end to end on a synthetic genome and on reads tiled over the real
+* **Tested**: 331 tests, 100% coverage, end to end on a synthetic genome and on reads tiled over the real
   MLST alleles.
 * **Validated** on 16 genomes with a known answer: every species, biovar and closest reference right, and
   all 14 sequence types the one the genome carries — read off the assembly by exact match, which shares no

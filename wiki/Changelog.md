@@ -1,5 +1,44 @@
 # Changelog
 
+## 1.2.0 (2026-11-02)
+**The k-mer copy threshold rises with the sequencing depth.** `mash dist -m 2` keeps every k-mer the read
+set holds at least twice, and an error k-mer turns up about depth × error rate times, so past roughly 50x
+the errors reach two copies on their own and crowd the true k-mers out of the bottom-1000 sketch. The
+distance then grows with the depth instead of with the genetic distance: on 244 real libraries, the median
+distance to the correct reference was 0.0219 at 100–150x where the assembly says 0.0001, and above about
+240x the shared hashes fell under the 150 that `--min-hashes` asks for and the sample got **no call at
+all**. The threshold is now derived from each sample — one more required copy per 20x of coverage, never
+below 2, never above 20 — with the coverage estimated from the read files in a tenth of a second, without
+decompressing them (the gzip trailer gives the size, the first thousand records give the bases per byte).
+
+* Below about 50x the derived threshold is the same 2 as before and **nothing changes**, which is what the
+  low end needs: a flat 10 would destroy a 5x sketch.
+* At depth, everything does: on real libraries the medians moved from 666/1000 shared hashes at distance
+  0.010637 to 966/1000 at 0.000843, and the 0.0005 close-match margin — which the sequence-type
+  arbitration sits inside — means something again. The verdict changed on 14 of the 244 libraries, 6 of
+  which had been reporting close matches off a margin of exactly zero.
+* The reports say which threshold was used and the coverage it came from, and `brucellaid.json` carries
+  `min_kmer_copies` and `estimated_coverage` under `closest_reference`.
+* `--min-kmer-copies N` pins any fixed value, including the old 2.
+
+**The validation covers depth now, and real reads.** Everything it simulated was 20x, where the derived
+threshold returns the same 2 the old fixed value gave: the bug above would have sailed through it. Two
+genomes are now simulated deep — *B. melitensis* 16M at 150x and *B. suis* 1330 at 250x — where the
+derived threshold keeps 1000/1000 sketch hashes and the fixed 2 kept 860–902 and 728–748 in a six-sample
+sweep, so `check_results.py` holds a floor of 950 and also checks the estimated coverage against the depth
+the reads were simulated at and the threshold against the coverage. And the four public ENA libraries of
+the [Tutorial](Tutorial) run next to the simulated samples: each must give the species its submitter gave
+it, the reference and sequence type it is known to give, and the same species and reference as the
+simulated sample of its own reference genome. All 22 samples pass, and the fix shows on real data:
+SRR8550484 (~69x) moved from 422/1000 hashes at distance 0.0248 to 775/1000 at 0.0065, while ERR2136546
+(47x) stayed exactly where it was. See [Validation](Validation).
+
+**Upgrading:** no report or table changed shape. Results change only on read sets above about 50x, where
+they were the ones being distorted: distances shrink toward what an assembly would give, shared hashes
+rise, and a sample deep enough to have been `ND` can get its call back.
+
+* 331 tests, 100% statement and branch coverage.
+
 ## 1.1.0 (2026-10-31)
 **The biovar column is gone.** It never was a biovar call — it held the biovar of the closest
 reference genome — and it was read as one. Three things rule out a real biovar from this data, and
