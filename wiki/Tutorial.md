@@ -54,8 +54,8 @@ brucellaid -i reads -o results -t 8 -p 2
 4 sample(s), 2 at a time, 4 thread(s) each
 ERR2136546: identifying the species with MASH (2 file(s))
 ERR3454415: identifying the species with MASH (2 file(s))
-About 230,479,484 bases, roughly 70x coverage: sketching the k-mers seen at least 3 time(s)
-About 153,926,473 bases, roughly 47x coverage: sketching the k-mers seen at least 2 time(s)
+ERR3454415: about 230,479,484 bases, roughly 70x coverage: sketching the k-mers seen at least 3 time(s)
+ERR2136546: about 153,926,473 bases, roughly 47x coverage: sketching the k-mers seen at least 2 time(s)
 ERR2136546: Brucella canis str. ATCC 23365 (NC_010103-NC_010104.fasta, MASH distance 0.00652, 773/1000 hashes)
 ERR2136546: calling the MLST alleles with Seal
 ERR2136546: ST 20 (profile 1-6-4-1-5-3-5-4-6)
@@ -66,10 +66,10 @@ SRR19520329: Brucella melitensis bv. 3 str. Ether (NZ_CP007760-NZ_CP007761.fasta
 SRR19520329: ST 11 (profile 3-2-3-2-1-5-3-2-10)
 SRR8550484: Brucella suis bv. 2 str. ATCC 23445 (NC_010169-NC_010167.fasta, MASH distance 0.00645, 775/1000 hashes)
 SRR8550484: ST 15 (profile 1-2-7-1-3-3-5-3-2)
-Done in 34s
+Done in 35s
 ```
-34 seconds on 8 threads, for 4.6 million read pairs. `-p 2` runs two samples at a time and gives each of
-them four of the eight threads. The `About ... coverage` lines are the k-mer copy threshold being derived
+35 seconds on 8 threads, for 4.6 million read pairs. `-p 2` runs two samples at a time and gives each of
+them four of the eight threads. The `about ... coverage` line of each sample is the k-mer copy threshold being derived
 from each sample’s depth — 3 copies for the ~70x libraries, 2 for the 47x one — which is what keeps a deep
 read set’s sequencing errors out of the sketch. Section 6 shows what that is worth.
 

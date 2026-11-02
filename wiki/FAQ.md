@@ -83,8 +83,8 @@ prints to clean pages. `--pdf` writes the same report as a PDF, which needs repo
 
 ### Can I get the results into MultiQC?
 Yes, with nothing to configure: every run writes `brucellaid_mqc.json`, so `multiqc results/` shows a
-**BrucellaID** table with the species, biovar, what decided the species, the sequence type, the shared
-hashes and the status of each sample.
+**BrucellaID** table with the species, what decided it, the sequence type and its species, the shared
+hashes, the closest reference and the status of each sample.
 
 ### Does it detect mixed samples?
 Not as such. A mixture shows up as a lower share of hashes, a close second reference, or ties in the allele
