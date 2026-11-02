@@ -1,6 +1,7 @@
 """The MASH identification: the command, its output, and what is made of it."""
 
 import gzip
+import logging
 
 import pytest
 
@@ -14,6 +15,7 @@ from brucellaid.mash import (
     MIN_KMER_COPIES,
     Identification,
     check_mash,
+    compression_ratio,
     estimate_bases,
     executable,
     fastq_bases_per_byte,
@@ -252,6 +254,16 @@ def test_fastq_bases_per_byte_of_a_truncated_file(tmp_path):
     assert uncompressed_size(broken) >= 0
 
 
+def test_compression_ratio_of_an_empty_file(tmp_path):
+    empty = tmp_path / 'empty.fastq.gz'
+    empty.write_bytes(b'')
+    assert compression_ratio(empty) == 0.0
+
+
+def test_uncompressed_size_of_a_file_that_is_not_there(tmp_path):
+    assert uncompressed_size(tmp_path / 'missing.fastq.gz') == 0
+
+
 def test_uncompressed_size_reads_the_gzip_trailer(tmp_path):
     reads = [('r{}'.format(i), 'ACGT' * 40) for i in range(300)]
     path = write_fastq(tmp_path / 'r.fastq.gz', reads)
@@ -274,6 +286,19 @@ def test_identify_derives_the_threshold_from_the_sample(tmp_path, sketch):
     identification = identify([path], msh)
     assert identification.min_copies == MIN_KMER_COPIES   # A tiny file is shallow
     assert identification.coverage is not None
+
+
+@requires_mash
+def test_identify_names_the_sample_in_the_coverage_log(tmp_path, sketch, caplog):
+    msh, _ = sketch
+    reads = [('r{}'.format(i), 'ACGT' * 40) for i in range(100)]
+    path = write_fastq(tmp_path / 'r.fastq.gz', reads)
+    with caplog.at_level(logging.INFO, logger='brucellaid.mash'):
+        identify([path], msh, sample='s1')
+        identify([path], msh)
+    lines = [r.getMessage() for r in caplog.records if 'coverage' in r.getMessage()]
+    assert lines[0].startswith('s1: about ')
+    assert lines[1].startswith('About ')   # No sample given: the line of a lone read set stays as it was
 
 
 @requires_mash

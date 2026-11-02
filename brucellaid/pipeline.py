@@ -112,7 +112,7 @@ def analyse_sample(sample, sketch=None, references=None, min_hashes=DEFAULT_MIN_
     log.info('%s: identifying the species with MASH (%d file(s))', sample.name, len(sample.files))
     try:
         result.identification = identify(sample.files, sketch, min_hashes=min_hashes, threads=threads,
-                                         min_copies=min_copies)
+                                         min_copies=min_copies, sample=sample.name)
         result.reference, result.notes = species_notes(result.identification, references)
         best = result.identification.best
         if result.identified:

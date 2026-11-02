@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+* The `About ... coverage: sketching the k-mers seen at least N time(s)` log line now begins with the name
+  of the sample it describes. With `--parallel`, two samples identify at once and the lines interleaved
+  with no way to tell whose coverage was whose.
+* 335 tests. 1.2.0 claimed 100% coverage while four lines of the depth change had none; three tests close
+  that, and the number is true again.
+
 ## 1.2.0 (2026-11-02)
 **The k-mer copy threshold rises with the sequencing depth.** `mash dist -m 2` keeps every k-mer the read
 set holds at least twice, and an error k-mer turns up about depth × error rate times, so past roughly 50x

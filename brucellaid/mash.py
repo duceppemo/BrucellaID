@@ -351,12 +351,14 @@ def kmer_copies_note(identification):
                                                              identification.coverage)
 
 
-def identify(files, sketch, min_hashes=DEFAULT_MIN_HASHES, threads=1, min_copies=KMER_COPIES_AUTO):
+def identify(files, sketch, min_hashes=DEFAULT_MIN_HASHES, threads=1, min_copies=KMER_COPIES_AUTO,
+             sample=None):
     """
     Compare one sample to the reference genomes.
 
     :param min_copies: k-mer copies the read set must hold for a k-mer to be sketched. The default,
                        KMER_COPIES_AUTO, derives it from the coverage of the sample: see min_kmer_copies().
+    :param sample: name to prefix the coverage log line with, so that parallel samples stay apart
     :return: Identification
     """
     coverage = None
@@ -364,7 +366,8 @@ def identify(files, sketch, min_hashes=DEFAULT_MIN_HASHES, threads=1, min_copies
         bases = estimate_bases(files)
         coverage = bases / BRUCELLA_GENOME_SIZE if bases else None
         min_copies = min_kmer_copies(bases)
-        log.info('About %s bases, roughly %s coverage: sketching the k-mers seen at least %d time(s)',
+        log.info('%s %s bases, roughly %s coverage: sketching the k-mers seen at least %d time(s)',
+                 '{}: about'.format(sample) if sample else 'About',
                  '{:,}'.format(bases) if bases else 'an unknown number of',
                  '{:.0f}x'.format(coverage) if coverage else 'unknown',
                  min_copies)
