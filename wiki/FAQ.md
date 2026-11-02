@@ -31,10 +31,20 @@ nine loci. `--no-st-species` leaves the ST out of it entirely. See
 [How it works](How-it-works).
 
 ### Why not just add more reference genomes instead?
-Because the problem is not the number of references. *B. canis* and *B. suis* bv. 4 are 0.00024 apart, which
-is inside the variation within either species: in a dereplicated 389-genome *Brucella* database the nearest
-pair of *canis* and *suis* genomes is 0.000194 apart. More references move the boundary around; they do not
-create one. The MLST loci do separate the two, which is why the ST is what settles it.
+More references fix a different problem than the one the ST fixes. *B. canis* and *B. suis* bv. 4 are
+0.00024 apart, which is inside the variation within either species: in a dereplicated 429-genome *Brucella*
+database the nearest pair of *canis* and *suis* genomes is 0.000194 apart. More references move that
+boundary around; they do not create one, and the MLST loci, which do separate the two, are what settles it.
+What more references *do* fix is coverage: the 16 genomes carry 8 species, and a sample of any other —
+*B. pinnipedialis*, the whole former *Ochrobactrum* clade — can only land on a wrong neighbour or on `ND`.
+That is what `--reference-set extended` is for.
+
+### What is the extended reference set?
+429 curated genomes covering all 29 named species of the *Brucella* clade (the 2020 taxonomy moved
+*Ochrobactrum* into it) plus the lineages that have no name yet, selected with `--reference-set extended`.
+[How it works](How-it-works#the-extended-reference-set) says where it comes from and
+[Validation](Validation#at-scale-the-extended-reference-set) what it does on simulated reads of 2,022
+assemblies. The 16 vSNP genomes stay the default.
 
 ### Where did the biovar column go?
 It was removed in 1.1, because it was never a biovar call and was read as one. It held the biovar of the

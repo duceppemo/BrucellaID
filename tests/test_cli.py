@@ -203,3 +203,25 @@ def test_setup_logging_does_not_add_a_handler_twice():
 
 def test_sample_fixture_names_the_sample_from_the_file_name():
     assert Sample('a', ['a_R1.fastq.gz']).paired is False
+
+
+def test_main_with_the_extended_reference_set(tmp_path, monkeypatch):
+    fake_run(monkeypatch)
+    reads = write_fastq(tmp_path / 'a_R1.fastq.gz', [('r', 'ACGT')])
+    cli.main(['-r1', str(reads), '-o', str(tmp_path / 'out'), '--reference-set', 'extended'])
+    report = json.loads((tmp_path / 'out' / 'brucellaid.json').read_text())
+    paths = {item['name']: item['path'] for item in report['reference_data']}
+    assert paths['MASH sketch'].endswith('references_extended.msh')
+    assert paths['Reference table'].endswith('references_extended.tsv')
+    assert '429 genome(s)' in next(item['detail'] for item in report['reference_data']
+                                   if item['name'] == 'Reference table')
+
+
+@pytest.mark.parametrize('extra', [['--sketch', 'mine.msh'], ['--references', 'mine.tsv']])
+def test_main_rejects_the_extended_set_next_to_a_custom_file(tmp_path, monkeypatch, capsys, extra):
+    fake_run(monkeypatch)
+    reads = write_fastq(tmp_path / 'a_R1.fastq.gz', [('r', 'ACGT')])
+    with pytest.raises(SystemExit) as exit_info:
+        cli.main(['-r1', str(reads), '-o', str(tmp_path / 'out'), '--reference-set', 'extended', *extra])
+    assert exit_info.value.code == 1
+    assert 'cannot be combined' in capsys.readouterr().err

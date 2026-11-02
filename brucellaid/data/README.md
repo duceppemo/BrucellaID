@@ -1,12 +1,15 @@
 # Reference data
 
-Seven files, about 350 kB. `brucellaid --sketch/--references/--alleles/--profiles/--st-species` take
-files of your own instead of the first five; the logo is only used by the reports.
+Nine files, about 4 MB — 3.5 MB of it the extended sketch. `brucellaid --sketch/--references/--alleles/
+--profiles/--st-species` take files of your own instead of the first five, and `--reference-set extended`
+switches to the extended pair; the logo is only used by the reports.
 
 | File | What it is | Where it comes from |
 | --- | --- | --- |
 | `references.msh` | MASH sketch of 16 *Brucella* reference genomes (k = 21, 1000 hashes) | The *Brucella* part of [vSNP](https://github.com/USDA-VS/vsnp)'s reference set, as `vsnp_reference.msh` |
 | `references.tsv` | What each genome of the sketch is: vSNP species code, species, biovar, strain, NCBI accessions | Written for BrucellaID, from the sketch and vSNP's `species_accessions.csv` |
+| `references_extended.msh` | MASH sketch of 429 curated genomes covering the whole *Brucella* clade (k = 21, 1000 hashes), used by `--reference-set extended` | The assemblies behind the [mashID *Brucella* pack](https://doi.org/10.6084/m9.figshare.33970168), dereplicated at 0.0003 and curated: `scripts/extended_references_curation.tsv` logs every decision |
+| `references_extended.tsv` | What each genome of the extended sketch is. The code is the species epithet (plus the biovar when NCBI records one); only 7 genomes have a biovar and 349 a strain, because the NCBI records of the rest carry none | Generated from the NCBI assembly data report of the 429 accessions |
 | `mlst_alleles.fasta` | 309 alleles of the nine MLST loci | [PubMLST](https://pubmlst.org/organisms/brucella-spp), "MLST (9 locus)", downloaded 2026-10-31 |
 | `mlst_profiles.tsv` | 122 sequence types | The same scheme, the same day |
 | `mlst_st_species.tsv` | The species of each of 118 of those STs, with how consistently its isolates carry it | The [PubMLST *Brucella* isolate database](https://pubmlst.org/organisms/brucella-spp), 3426 isolates, read 2026-10-31 |
@@ -27,6 +30,7 @@ bv. 4 strain 40), are distributed by vSNP under its own names rather than as acc
 ```bash
 python3 scripts/make_mlst_data.py                                   # the two MLST files, from PubMLST
 python3 scripts/make_reference_data.py --genomes /tmp/refs --out /tmp/references.msh   # the sketch
+python3 scripts/make_extended_references.py --genomes /tmp/extended_refs   # the extended sketch
 python3 scripts/make_st_species.py                                  # the ST to species table
 ```
 PubMLST serves the data submitted up to a cut-off date unless you authenticate; the script prints the date

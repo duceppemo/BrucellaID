@@ -3,8 +3,11 @@
 import pytest
 
 from brucellaid.errors import BrucellaIDError
+from brucellaid.mash import sketch_references
 from brucellaid.references import (
     COLUMNS,
+    EXTENDED_REFERENCES_FILE,
+    EXTENDED_SKETCH_FILE,
     Reference,
     compare_with_sketch,
     data_path,
@@ -91,3 +94,24 @@ def test_compare_with_sketch():
     assert len(messages) == 2
     assert 'not in the reference table' in messages[0] and 'c.fasta' in messages[0]
     assert 'not in the MASH sketch' in messages[1] and 'b.fasta' in messages[1]
+
+
+def test_the_extended_table_of_the_package():
+    references = load_references(data_path(EXTENDED_REFERENCES_FILE))
+    assert len(references) == 429
+    assert all(r.code and r.species for r in references.values())
+    species = {r.species for r in references.values()}
+    assert len(species) == 30  # 29 named species, and "Brucella sp." for the unnamed lineages
+    assert 'Brucella sp.' in species
+    assert 'Brucella anthropi' in species  # The clade formerly known as Ochrobactrum
+    abortus5 = references['GCA_000163115.1_ASM16311v1_genomic.fna.gz']
+    assert abortus5.label == 'Brucella abortus bv. 5'
+    assert abortus5.description == 'Brucella abortus bv. 5 str. B3196'
+    assert abortus5.accessions == 'GCA_000163115.1'
+
+
+def test_the_extended_sketch_matches_the_extended_table():
+    ids = sketch_references(reference_sketch(data_path(EXTENDED_SKETCH_FILE)))
+    assert len(ids) == 429
+    references = load_references(data_path(EXTENDED_REFERENCES_FILE))
+    assert compare_with_sketch(ids, references) == []

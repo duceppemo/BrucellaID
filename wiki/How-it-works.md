@@ -162,6 +162,35 @@ it is worth looking into.
 The MLST scheme itself is [Whatmore, Perrett and MacMillan (2007)](https://doi.org/10.1186/1471-2180-7-34):
 nine loci, 4,396 bp in all.
 
+## The extended reference set
+
+The 16 genomes of the default set cover 8 species — the classical six plus *B. microti* and *B. neotomae*.
+The 2020 taxonomy moved the genus *Ochrobactrum* into *Brucella*, and sequencing keeps finding isolates of
+the atypical lineages, so the package also ships a second set: 429 curated genomes covering all 29 named
+species of the clade, selected with
+
+```bash
+brucellaid -i reads/ -o results/ --reference-set extended
+```
+
+With it, a *B. anthropi* or *B. intermedia* sample is named instead of coming back `ND`, a marine-mammal
+or vole-adjacent species lands on its own references instead of the nearest classical one, and an isolate
+of a lineage that has no name yet is reported as *Brucella sp.* — an honest "inside the clade, outside the
+named species" — rather than forced onto the closest named species. What does **not** change: the species
+is still the species of the closest genome, the ST still arbitrates where two species are within reach
+(*B. canis* sits inside *B. suis* whichever set measures it), and there is still
+[no biovar](How-it-works#no-biovar).
+
+The set is derived from the 2,022 *Brucella* (NCBI taxon 234) assemblies behind the
+[mashID *Brucella* pack](https://doi.org/10.6084/m9.figshare.33970168), dereplicated at a MASH distance of
+0.0003 and then curated: genomes whose NCBI label their own sequence contradicts were dropped, unlabelled
+twins of named species were dropped, and one cluster got the label its neighbours agree on. Every decision,
+with its reason, is
+[`scripts/extended_references_curation.tsv`](https://github.com/duceppemo/BrucellaID/blob/main/scripts/extended_references_curation.tsv),
+and [Validation](Validation#at-scale-the-extended-reference-set) shows what the set does on simulated
+reads of all 2,022 assemblies. The default set remains the default: it is vSNP's, every answer in the
+field so far was measured against it, and the extended set is one release old.
+
 ## Why not an assembly?
 
 Both steps count reads. MASH sketches a read set and filters the k-mers seen fewer times than the copy

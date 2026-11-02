@@ -64,12 +64,18 @@ configure.
   species of 118 of them counted over PubMLST's isolate database — all rebuilt by scripts in the
   repository. The sketch is vSNP's 16 *Brucella* genomes, with the species, biovar, strain and accession of
   each.
+* **The whole clade when you need it**: `--reference-set extended` measures against 429 curated genomes
+  covering all 29 named species — the former *Ochrobactrum* included — plus the unnamed lineages, so an
+  atypical isolate is reported as *Brucella sp.* rather than forced onto the nearest classical species.
+  [Validated](https://github.com/duceppemo/BrucellaID/wiki/Validation) on simulated reads of 2,022 NCBI
+  assemblies: every held-out sample of a named species right, once six genomes mislabelled in NCBI — which
+  the curation itself caught — are accounted for.
 * **Backwards compatible where it counts**: the MASH identification is vSNP's, down to the threshold of
   150 shared hashes (`--no-st-species` reports it alone), and `--xlsx` still writes the
   `stat_alignment_summary_<date>.xlsx` of the first version.
 * **Nothing to configure**: only the Python standard library, plus MASH and BBTools. The two optional
   output formats, xlsx and PDF, are the only things that want a package, and neither is needed.
-* **Tested**: 345 tests, 100% coverage, end to end on a synthetic genome and on reads tiled over the real
+* **Tested**: 351 tests, 100% coverage, end to end on a synthetic genome and on reads tiled over the real
   MLST alleles.
 * **Validated** on 16 genomes with a known answer: every species and closest reference right, and
   all 14 sequence types the one the genome carries — read off the assembly by exact match, which shares no

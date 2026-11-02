@@ -15,7 +15,15 @@ from .errors import BrucellaIDError
 from .mash import DEFAULT_MIN_HASHES, KMER_COPIES_AUTO, check_mash, sketch_references
 from .mlst import DEFAULT_MIN_READS, PROFILES_FILE, alleles_fasta, load_profiles
 from .pipeline import analyse_samples
-from .references import REFERENCES_FILE, compare_with_sketch, data_path, load_references, reference_sketch
+from .references import (
+    EXTENDED_REFERENCES_FILE,
+    EXTENDED_SKETCH_FILE,
+    REFERENCES_FILE,
+    compare_with_sketch,
+    data_path,
+    load_references,
+    reference_sketch,
+)
 from .report import print_table, run_info, write_reports
 from .samples import find_samples, single_sample
 from .seal import DEFAULT_KMER_SIZE, DEFAULT_MISMATCHES, auto_memory, check_seal
@@ -146,6 +154,10 @@ def build_parser():
                               .format(DEFAULT_MISMATCHES))
 
     data = parser.add_argument_group('reference data (the package ships all of it)')
+    data.add_argument('--reference-set', choices=('default', 'extended'), default='default', dest='reference_set',
+                      help='Which packaged reference set to identify against. "default" is the 16 genomes of '
+                           'vSNP, 8 species; "extended" is 429 curated genomes covering the whole Brucella '
+                           'clade, 29 named species plus unnamed lineages. Default: default.')
     data.add_argument('--sketch', metavar='FILE',
                       help='MASH sketch of the reference genomes, instead of the one of the package.')
     data.add_argument('--references', metavar='FILE', dest='references',
@@ -242,6 +254,12 @@ def main(argv=None):
         check_mash()
         if mlst:
             check_seal()
+        if args.reference_set == 'extended':
+            if args.sketch or args.references:
+                raise BrucellaIDError('--reference-set extended names the packaged extended sketch and reference '
+                                      'table: it cannot be combined with --sketch or --references.')
+            args.sketch = data_path(EXTENDED_SKETCH_FILE)
+            args.references = data_path(EXTENDED_REFERENCES_FILE)
         sketch = reference_sketch(args.sketch)
         references = load_references(args.references)
         alleles = alleles_fasta(args.alleles)

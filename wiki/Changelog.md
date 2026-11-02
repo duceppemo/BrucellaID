@@ -1,5 +1,18 @@
 # Changelog
 
+## Unreleased
+* **The extended reference set.** `--reference-set extended` identifies against 429 curated genomes
+  covering the whole *Brucella* clade -- all 29 named species, the former *Ochrobactrum* included, plus the
+  lineages with no name yet, which are reported honestly as *Brucella sp.*. Derived from the 2,022
+  assemblies behind the mashID *Brucella* pack and curated genome by genome
+  (`scripts/extended_references_curation.tsv` logs every exclusion and why); validated on simulated reads
+  of all 2,022: every held-out sample of a named species right, once six genomes mislabelled in NCBI --
+  caught by the curation itself -- are accounted for. The 16 vSNP genomes remain the default, and
+  `scripts/make_extended_references.py` rebuilds the extended sketch from NCBI.
+* A nearly-as-close reference of the **same species** as the closest one is counted, not listed: "nearly as
+  close: 4 other Brucella melitensis genome(s)" instead of four file names that change nothing about the
+  call. A reference of another species is still named in full, with its shared hashes.
+
 ## 1.2.1 (2026-11-02)
 * **Concatenated gzip files are sized honestly.** The coverage estimate read the gzip trailer, which names
   only the *last* member of a file, so lane files joined with `cat` and the 64 KB blocks `bgzip` writes

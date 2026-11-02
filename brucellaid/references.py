@@ -12,6 +12,8 @@ log = logging.getLogger(__name__)
 
 REFERENCES_FILE = 'references.tsv'
 SKETCH_FILE = 'references.msh'
+EXTENDED_REFERENCES_FILE = 'references_extended.tsv'
+EXTENDED_SKETCH_FILE = 'references_extended.msh'
 COLUMNS = ('reference', 'code', 'species', 'biovar', 'strain', 'accessions')
 
 
