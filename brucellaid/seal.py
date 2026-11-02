@@ -9,6 +9,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import zlib
 from dataclasses import dataclass, field
 from functools import cache
 from pathlib import Path
@@ -115,7 +116,7 @@ def content_extension(path):
     try:
         with (gzip.open(path, 'rt') if gzipped else open(path)) as f:
             first = next((line for line in f if line.strip()), '>')[0]
-    except (OSError, EOFError, UnicodeDecodeError):
+    except (OSError, EOFError, UnicodeDecodeError, zlib.error):
         first = '>'  # A broken stream: keep the compression, so that Seal reports the real error
     return ('.fastq' if first == '@' else '.fasta') + ('.gz' if gzipped else '')
 

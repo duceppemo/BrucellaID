@@ -84,7 +84,7 @@ def main_table(results):
 
 def write_table(rows, path, command=None):
     """Write a table, tab separated, with the command line as a first comment line."""
-    with open(path, 'w') as f:
+    with open(path, 'w', encoding='utf-8') as f:
         if command:
             f.write('#{}\n'.format(command))
         for row in rows:
@@ -193,7 +193,7 @@ def json_report(results, references, run=None, inputs=None):
 
 
 def write_json(results, references, path, run=None, inputs=None):
-    with open(path, 'w') as f:
+    with open(path, 'w', encoding='utf-8') as f:
         json.dump(json_report(results, references, run=run, inputs=inputs), f, indent=2, sort_keys=False)
         f.write('\n')
 
@@ -230,7 +230,7 @@ def write_multiqc(results, path):
         'headers': {column: {'title': column, 'scale': False} for column in MQC_COLUMNS},
         'data': data,
     }
-    with open(path, 'w') as f:
+    with open(path, 'w', encoding='utf-8') as f:
         json.dump(content, f, indent=2)
         f.write('\n')
     return path

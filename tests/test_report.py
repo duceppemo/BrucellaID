@@ -1,6 +1,9 @@
 """The reports: the tables, the JSON report and the legacy xlsx report."""
 
 import json
+import os
+import subprocess
+import sys
 from datetime import datetime
 
 import pytest
@@ -130,6 +133,18 @@ def test_write_reports_of_a_run_without_mlst(tmp_path):
     _, paths = write_reports([result], REFERENCES, tmp_path / 'out', STARTED)
     assert [path.name for path in paths] == [report.MAIN_FILE, report.MASH_FILE, report.JSON_FILE,
                                             report.MQC_FILE, htmlreport.REPORT_FILE]
+
+
+def test_write_table_is_utf8_whatever_the_locale(tmp_path):
+    """A sample name with an accent must not lose the reports of a finished run under LC_ALL=C."""
+    out = tmp_path / 'r.tsv'
+    code = ("from brucellaid.report import write_table; "
+            "write_table([['Sample'], ['\\u00e9chantillon']], {!r})".format(str(out)))
+    env = {**os.environ, 'LC_ALL': 'C', 'PYTHONCOERCECLOCALE': '0', 'PYTHONUTF8': '0'}
+    env.pop('PYTHONIOENCODING', None)
+    done = subprocess.run([sys.executable, '-c', code], env=env, capture_output=True, text=True)
+    assert done.returncode == 0, done.stderr
+    assert '\u00e9chantillon' in out.read_bytes().decode('utf-8')
 
 
 def test_run_info():

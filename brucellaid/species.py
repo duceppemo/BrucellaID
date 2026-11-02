@@ -28,7 +28,7 @@ from dataclasses import dataclass
 from functools import cache
 
 from .errors import BrucellaIDError
-from .mlst import UNKNOWN
+from .mlst import NEW_PROFILE, UNKNOWN
 from .references import data_path, lookup
 
 log = logging.getLogger(__name__)
@@ -226,7 +226,7 @@ def st_evidence(mlst, table, min_purity=DEFAULT_MIN_PURITY, min_isolates=DEFAULT
         return None, 'the sample has no ST'
     entry = table.get(mlst.st)
     if entry is None:
-        reason = ('this allele profile has no ST yet' if mlst.st == 'new'
+        reason = ('this allele profile has no ST yet' if mlst.st == NEW_PROFILE
                   else 'no isolate of ST {} has a species in the table'.format(mlst.st))
         return None, reason
     if entry.species == UNNAMED:

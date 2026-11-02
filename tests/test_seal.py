@@ -80,6 +80,12 @@ def test_content_extension(tmp_path):
     assert content_extension(tmp_path / 'missing.dat') == '.fastq'
 
 
+def test_content_extension_of_a_corrupt_gzip_stream(tmp_path):
+    broken = tmp_path / 'dataset_1.dat'   # A valid gzip header over a corrupt deflate stream
+    broken.write_bytes(b'\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\x03' + b'\xff\x00\xff corrupt')
+    assert content_extension(broken) == '.fasta.gz'   # Compression kept, so Seal reports the real error
+
+
 def test_safe_paths_links_what_seal_cannot_read(tmp_path):
     folder = tmp_path / 'tmp'
     folder.mkdir()

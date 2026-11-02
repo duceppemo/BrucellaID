@@ -21,7 +21,7 @@ from datetime import datetime
 from pathlib import Path
 
 from .mlst import NEW_PROFILE, UNKNOWN
-from .references import SKETCH_FILE, data_path
+from .references import SKETCH_FILE, data_path, lookup
 from .species import CONFLICT, UNRESOLVED
 
 BLOCK = 1 << 20  # Read a file for its checksum a megabyte at a time: an input file can be gigabytes
@@ -230,7 +230,7 @@ def close_hits(result, references):
     close = {id(hit) for hit in result.identification.close_matches}
     rows = []
     for hit in result.identification.hits:
-        reference = references.get(hit.reference) or references.get(os.path.basename(hit.reference))
+        reference = lookup(references, hit.reference)
         rows.append((hit, reference, id(hit) in close))
     return rows
 
