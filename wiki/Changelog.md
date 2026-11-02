@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.2.1 (2026-11-02)
 * **Concatenated gzip files are sized honestly.** The coverage estimate read the gzip trailer, which names
   only the *last* member of a file, so lane files joined with `cat` and the 64 KB blocks `bgzip` writes
   were estimated at a fraction of their size -- a deep bgzipped library could read as under 1x, keep the

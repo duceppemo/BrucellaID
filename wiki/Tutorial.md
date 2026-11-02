@@ -11,7 +11,7 @@ pip install brucellaid
 brucellaid --version
 ```
 ```
-brucellaid 1.2.0
+brucellaid 1.2.1
 ```
 One `conda install brucellaid` will do all of it once the
 [bioconda recipe](https://github.com/bioconda/bioconda-recipes/pull/71040) is merged. See
@@ -178,7 +178,7 @@ gives a MultiQC report with a **BrucellaID** table of the four samples.
 
 ```json
 "software": {
-  "brucellaid": "1.2.0",
+  "brucellaid": "1.2.1",
   "Python": "3.12.16",
   "MASH": "2.3",
   "BBTools": "40.05",
