@@ -1,0 +1,11 @@
+# Real read sets, downloaded from the ENA and run next to the simulated ones.
+# species: what the submitter labelled the run, which owes nothing to BrucellaID.
+# reference, st: the closest reference and the sequence type these very reads once gave, pinned. That is a
+# regression check rather than an independent truth: the library must keep giving the answer it gave.
+# Each run is also compared with the simulated sample whose expected reference is the same one: real reads
+# and simulated reads of the same reference genome must agree on the species and on the reference.
+sample	species	reference	st	note
+SRR19520329	Brucella melitensis	NZ_CP007760-NZ_CP007761.fasta	11	labelled B. melitensis by the submitter
+ERR3454415	Brucella abortus	NC_006932-NC_006933.fasta	1	labelled B. abortus by the submitter
+SRR8550484	Brucella suis	NC_010169-NC_010167.fasta	15	labelled B. suis by the submitter
+ERR2136546	Brucella canis	NC_010103-NC_010104.fasta	20	labelled B. canis by the submitter
