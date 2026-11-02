@@ -28,14 +28,30 @@ def test_species_notes_of_a_clear_match():
     assert notes == []
 
 
-def test_species_notes_of_two_nearly_identical_references():
+def test_species_notes_count_a_nearly_as_close_genome_of_the_same_species():
     found = identification('NC_006932-NC_006933.fasta\tq\t0.00100\t0\t950/1000\n',
                            'NZ_CP007682-NZ_CP007683.fasta\tq\t0.00110\t0\t940/1000\n')
     reference, notes = species_notes(found, REFERENCES)
     assert reference.code == 'ab1'
-    assert len(notes) == 1
-    assert 'nearly as close' in notes[0]
-    assert 'Brucella abortus bv. 3' in notes[0]
+    assert notes == ['nearly as close: 1 other Brucella abortus genome(s)']
+
+
+def test_species_notes_list_another_species_but_count_the_same_one():
+    references = parse_references([
+        '\t'.join(COLUMNS) + '\n',
+        'NC_006932-NC_006933.fasta\tab1\tBrucella abortus\t1\t9-941\tNC_006932.1\n',
+        'NZ_CP007682-NZ_CP007683.fasta\tab3\tBrucella abortus\t3\tBER\tNZ_CP007682.1\n',
+        'NC_010169-NC_010167.fasta\tsuis2\tBrucella suis\t2\tATCC 23445\tNC_010169.1\n',
+    ])
+    found = identification('NC_006932-NC_006933.fasta\tq\t0.00100\t0\t950/1000\n',
+                           'NC_010169-NC_010167.fasta\tq\t0.00105\t0\t945/1000\n',
+                           'NZ_CP007682-NZ_CP007683.fasta\tq\t0.00110\t0\t940/1000\n',
+                           'mystery.fasta\tq\t0.00115\t0\t938/1000\n')
+    reference, notes = species_notes(found, references)
+    assert reference.code == 'ab1'
+    assert notes == ['nearly as close: NC_010169-NC_010167.fasta (Brucella suis bv. 2, 945/1000 hashes), '
+                     'mystery.fasta (not in the reference table, 938/1000 hashes), '
+                     '1 other Brucella abortus genome(s)']
 
 
 def test_species_notes_below_the_threshold():

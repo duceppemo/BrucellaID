@@ -67,6 +67,9 @@ def species_notes(identification, references):
     What is worth saying about an identification: a read set that is not Brucella, and the references that are
     nearly as close as the closest one.
 
+    Nearly as close references of the same species as the closest one are counted rather than listed: they
+    change nothing about the call, and a dense reference set can have half a dozen of them.
+
     :return: (Reference of the closest genome or None, list of notes)
     """
     best = identification.best
@@ -83,9 +86,17 @@ def species_notes(identification, references):
                      'reported'.format(best.reference))
     close = identification.close_matches
     if close:
-        notes.append('nearly as close: {}'.format(', '.join(
-            '{} ({}, {}/{} hashes)'.format(hit.reference, close_label(references, hit),
-                                           hit.shared_hashes, hit.total_hashes) for hit in close)))
+        parts, same_species = [], 0
+        for hit in close:
+            other = lookup(references, hit.reference)
+            if reference is not None and other is not None and other.species == reference.species:
+                same_species += 1
+            else:
+                parts.append('{} ({}, {}/{} hashes)'.format(hit.reference, close_label(references, hit),
+                                                            hit.shared_hashes, hit.total_hashes))
+        if same_species:
+            parts.append('{} other {} genome(s)'.format(same_species, reference.species))
+        notes.append('nearly as close: {}'.format(', '.join(parts)))
     return reference, notes
 
 
