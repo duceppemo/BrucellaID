@@ -1,6 +1,18 @@
 # Changelog
 
 ## Unreleased
+* **Concatenated gzip files are sized honestly.** The coverage estimate read the gzip trailer, which names
+  only the *last* member of a file, so lane files joined with `cat` and the 64 KB blocks `bgzip` writes
+  were estimated at a fraction of their size -- a deep bgzipped library could read as under 1x, keep the
+  k-mer copy threshold at 2, and let the error k-mers back into the sketch. The head of the file is now
+  decompressed member by member: several members mean the trailer is ignored outright, and a trailer that
+  contradicts the measured compression ratio is ignored too.
+* The reports are written in UTF-8 whatever the locale: a sample name with an accent no longer loses the
+  reports of a finished run under `LC_ALL=C`.
+* A gzip file with a corrupt stream inside makes the sample fail with the real error instead of crashing
+  the run while its content was being sniffed for Seal.
+* A coverage below 10x is written with one decimal, and a trace of reads reads "under 0.1x" -- never
+  "roughly 0x coverage" beside a real base count.
 * **Report tables are only as wide as their content**, in the HTML and the PDF alike, and every column is
   left-aligned. A table stretched to the full page put unrelated amounts of air between its columns, and a
   right-aligned number sat away from its label. In the PDF, a column now gets the width its longest value

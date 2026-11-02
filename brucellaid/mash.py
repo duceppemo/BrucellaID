@@ -210,21 +210,37 @@ def fastq_bases_per_byte(path, records=BASE_FRACTION_RECORDS):
     return bases / total if total else 0.0
 
 
-def compression_ratio(path, sample=RATIO_SAMPLE):
+def gzip_sample(path, sample=RATIO_SAMPLE):
     """
-    Uncompressed bytes per compressed byte, measured on the head of a gzipped file.
+    (uncompressed bytes per compressed byte, gzip members seen) on the head of a gzipped file.
 
-    :return: the ratio, or 0.0 when the file cannot be read
+    A .gz file may be several gzip members concatenated -- lane files cat'ed together, or the 64 KB blocks
+    bgzip writes -- so the sample is decompressed member by member: a ratio taken on the first member alone
+    would say nothing about the rest, and the member count tells the caller whether the file's own trailer
+    can be trusted at all.
+
+    :return: (ratio, members); (0.0, 0) when the file cannot be read or holds no gzip stream
     """
     try:
         with open(path, 'rb') as f:
             chunk = f.read(sample)
-        if not chunk:
-            return 0.0
-        out = zlib.decompressobj(47).decompress(chunk)   # 47: gzip or zlib, whichever the file is
-    except (OSError, zlib.error):
-        return 0.0
-    return len(out) / len(chunk) if chunk else 0.0
+    except OSError:
+        return 0.0, 0
+    if not chunk:
+        return 0.0, 0
+    out, members, data = 0, 0, chunk
+    try:
+        while data:
+            decompressor = zlib.decompressobj(47)   # 47: gzip or zlib, whichever the member is
+            out += len(decompressor.decompress(data))
+            members += 1
+            if not decompressor.eof:   # The sample ends inside this member
+                break
+            data = decompressor.unused_data
+    except zlib.error:
+        if not out:   # Nothing decompressed at all: not a gzip stream after all
+            return 0.0, 0
+    return out / len(chunk), members
 
 
 def uncompressed_size(path):
@@ -232,9 +248,11 @@ def uncompressed_size(path):
     Size the file would have uncompressed, without decompressing it.
 
     A gzip member ends with the uncompressed size of that member modulo 4 GiB, which is exact for the files
-    most samples are made of. For a bigger file, or one that is several members concatenated, the trailer
-    alone is ambiguous, so the file's own compression ratio says how many times it wrapped. That falls back
-    to the plain ratio estimate when the trailer is of no help, which is what we want.
+    most samples are made of. But the trailer describes only the LAST member, so for a file of several
+    members -- cat'ed lane files, or bgzip's 64 KB blocks -- and for a member past 4 GiB, the file's own
+    measured compression ratio decides instead: outright when the head sample saw more than one member, and
+    as the arbiter whenever the trailer disagrees with it by more than the head of a file can drift from
+    the rest.
 
     :return: number of bytes, 0 when the file cannot be read
     """
@@ -251,11 +269,17 @@ def uncompressed_size(path):
             trailer = int.from_bytes(f.read(4), 'little')
     except OSError:
         return 0
-    ratio = compression_ratio(path)
+    ratio, members = gzip_sample(path)
     if ratio <= 0:
         return trailer
+    estimate = round(size * ratio)
+    if members > 1:
+        return estimate   # Concatenated members: the trailer describes only the last one
     wraps = round((size * ratio - trailer) / 2 ** 32)
-    return trailer + max(0, wraps) * 2 ** 32
+    exact = trailer + max(0, wraps) * 2 ** 32
+    if not 0.7 * estimate <= exact <= 1.4 * estimate:
+        return estimate   # A trailer the measured ratio contradicts: members the sample never reached
+    return exact
 
 
 def estimate_bases(files):
@@ -343,12 +367,21 @@ class Identification:
         return [hit for hit in self.hits[1:] if hit.distance - self.best.distance <= CLOSE_MATCH_MARGIN]
 
 
+def coverage_text(coverage):
+    """The estimated coverage as the log and the reports write it: never a "0x" next to a real base count."""
+    if coverage >= 10:
+        return '{:.0f}x'.format(coverage)
+    if coverage >= 0.1:
+        return '{:.1f}x'.format(coverage)
+    return 'under 0.1x'
+
+
 def kmer_copies_note(identification):
     """How the k-mer copy threshold of one identification was arrived at, for the reports."""
     if identification.coverage is None:
         return '{} (given)'.format(identification.min_copies)
-    return '{} (from the estimated {:.0f}x coverage)'.format(identification.min_copies,
-                                                             identification.coverage)
+    return '{} (from the estimated {} coverage)'.format(identification.min_copies,
+                                                        coverage_text(identification.coverage))
 
 
 def identify(files, sketch, min_hashes=DEFAULT_MIN_HASHES, threads=1, min_copies=KMER_COPIES_AUTO,
@@ -369,7 +402,7 @@ def identify(files, sketch, min_hashes=DEFAULT_MIN_HASHES, threads=1, min_copies
         log.info('%s %s bases, roughly %s coverage: sketching the k-mers seen at least %d time(s)',
                  '{}: about'.format(sample) if sample else 'About',
                  '{:,}'.format(bases) if bases else 'an unknown number of',
-                 '{:.0f}x'.format(coverage) if coverage else 'unknown',
+                 coverage_text(coverage) if coverage else 'unknown',
                  min_copies)
     return Identification(run_dist(files, sketch, threads=threads, min_copies=min_copies),
                           min_hashes=min_hashes, min_copies=min_copies, coverage=coverage)

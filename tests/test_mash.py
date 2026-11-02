@@ -2,6 +2,7 @@
 
 import gzip
 import logging
+import os
 
 import pytest
 
@@ -15,10 +16,11 @@ from brucellaid.mash import (
     MIN_KMER_COPIES,
     Identification,
     check_mash,
-    compression_ratio,
+    coverage_text,
     estimate_bases,
     executable,
     fastq_bases_per_byte,
+    gzip_sample,
     identify,
     kmer_copies_note,
     min_kmer_copies,
@@ -254,14 +256,57 @@ def test_fastq_bases_per_byte_of_a_truncated_file(tmp_path):
     assert uncompressed_size(broken) >= 0
 
 
-def test_compression_ratio_of_an_empty_file(tmp_path):
+def test_gzip_sample_of_missing_and_empty_files(tmp_path):
+    assert gzip_sample(tmp_path / 'missing.fastq.gz') == (0.0, 0)
     empty = tmp_path / 'empty.fastq.gz'
     empty.write_bytes(b'')
-    assert compression_ratio(empty) == 0.0
+    assert gzip_sample(empty) == (0.0, 0)
+
+
+def test_gzip_sample_stops_at_the_sample_inside_one_member(tmp_path):
+    path = write_fastq(tmp_path / 'r.fastq.gz', [('r{}'.format(i), 'ACGT' * 40) for i in range(200)])
+    ratio, members = gzip_sample(path, sample=100)   # A sample that ends inside the first member
+    assert members == 1
+    assert ratio > 0
+
+
+def test_gzip_sample_keeps_what_it_read_of_a_corrupt_tail(tmp_path):
+    good = write_fastq(tmp_path / 'good.fastq.gz', [('r', 'ACGT' * 40)])
+    hybrid = tmp_path / 'hybrid.fastq.gz'
+    hybrid.write_bytes(good.read_bytes() + b'\x1f\x8b not a second member')
+    ratio, members = gzip_sample(hybrid)
+    assert ratio > 0 and members == 1
 
 
 def test_uncompressed_size_of_a_file_that_is_not_there(tmp_path):
     assert uncompressed_size(tmp_path / 'missing.fastq.gz') == 0
+
+
+def test_uncompressed_size_of_concatenated_gzip_members(tmp_path):
+    """cat'ed lane files, or bgzip blocks: the trailer names only the last member and must not be used."""
+    reads = [('r{}'.format(i), 'ACGT' * 40) for i in range(200)]
+    member = write_fastq(tmp_path / 'one.fastq.gz', reads).read_bytes()
+    plain = write_fastq(tmp_path / 'plain.fastq', reads, gzipped=False)
+    merged = tmp_path / 'merged.fastq.gz'
+    merged.write_bytes(member * 3)
+    assert uncompressed_size(merged) == 3 * plain.stat().st_size
+
+
+def test_uncompressed_size_distrusts_a_trailer_the_ratio_contradicts(tmp_path):
+    """Two members with the first one bigger than the head sample: the trailer says 4,000 of 5 MB."""
+    first = gzip.compress(os.urandom(5 * 1024 * 1024))   # Incompressible, so the member outgrows the sample
+    second = gzip.compress(b'ACGT' * 1000)
+    merged = tmp_path / 'merged.fastq.gz'
+    merged.write_bytes(first + second)
+    total = 5 * 1024 * 1024 + 4000
+    assert abs(uncompressed_size(merged) - total) / total < 0.05
+
+
+def test_coverage_text_is_never_a_bare_zero():
+    assert coverage_text(151.3) == '151x'
+    assert coverage_text(7.46) == '7.5x'
+    assert coverage_text(0.5) == '0.5x'
+    assert coverage_text(0.005) == 'under 0.1x'   # 16,000 bases is not "0x coverage"
 
 
 def test_uncompressed_size_reads_the_gzip_trailer(tmp_path):
@@ -297,6 +342,7 @@ def test_identify_names_the_sample_in_the_coverage_log(tmp_path, sketch, caplog)
         identify([path], msh, sample='s1')
         identify([path], msh)
     lines = [r.getMessage() for r in caplog.records if 'coverage' in r.getMessage()]
+    assert len(lines) == 2
     assert lines[0].startswith('s1: about ')
     assert lines[1].startswith('About ')   # No sample given: the line of a lone read set stays as it was
 
