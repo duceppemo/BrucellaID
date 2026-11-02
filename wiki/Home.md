@@ -10,7 +10,7 @@
 BrucellaID reads a *Brucella* fastq sample and answers two questions:
 
 * **Which species is it?** The reads are compared with [MASH](https://github.com/marbl/mash) to 16 *Brucella*
-  reference genomes, and the closest one names the species, its biovar and the reference itself.
+  reference genomes, and the closest one names the species and the reference itself.
 * **Which sequence type is it?** The nine alleles of the
   [Whatmore MLST-9 scheme](https://doi.org/10.1186/1471-2180-7-34) are called from the reads with
   [Seal](https://sourceforge.net/projects/bbmap/) from BBTools, and looked up in the
@@ -26,6 +26,7 @@ Sample  Species             SpeciesSource         ClosestReference           Sha
 sample  Brucella abortus    MASH+ST (agree)       NC_006932-NC_006933.fasta  999/1000      1             Brucella abortus
 canis   Brucella canis      MASH+ST (arbitrated)  NC_010103-NC_010104.fasta  1000/1000     20            Brucella canis
 ```
+(Columns elided to fit; `brucellaid.tsv` also holds `MashDistance`, `AlleleProfile`, `Reads` and `Notes`.)
 
 ## Start here
 * [Installation](Installation) — conda, pip, or a clone

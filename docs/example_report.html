@@ -92,7 +92,7 @@ code, .mono { font-family: var(--mono); font-size: 0.86em; }
 .pill.decided { background: var(--accent-soft); border-color: transparent; color: var(--accent); }
 .pill.plain::before { display: none; }
 
-table { border-collapse: collapse; margin: 8px 0 2px; font-size: 0.86rem; }
+table { border-collapse: collapse; margin: 8px 0 2px; font-size: 0.86rem; border-top: 1px solid var(--line); }
 caption { text-align: left; color: var(--muted); font-size: 0.82rem; padding: 0 0 7px; line-height: 1.45; }
 th {
   text-align: left; padding: 7px 10px; background: transparent; color: var(--muted); font-weight: 650;
@@ -100,6 +100,8 @@ th {
   border-bottom: 1px solid var(--line);
 }
 td { padding: 7px 10px; border-bottom: 1px solid var(--hair); vertical-align: top; color: var(--soft-ink); }
+/* The closing rule: the last row's own border, because at equal width a cell border wins the collapse */
+tbody tr:last-child td { border-bottom: 1px solid var(--line); }
 td:first-child { color: var(--ink); }
 td.nw { white-space: nowrap; }
 tr.best td { background: var(--accent-soft); color: var(--ink); }
@@ -232,14 +234,14 @@ footer {
 </svg>
 </div>
 <h1>Quality assurance report</h1>
-<p class="sub">4 sample(s): 4 ok, 0 with a warning, 0 failed. BrucellaID 1.2.0, run on 2026-11-02T01:01:20-05:00.</p>
+<p class="sub">4 sample(s): 4 ok, 0 with a warning, 0 failed. BrucellaID 1.2.0, run on 2026-11-02T01:10:00-05:00.</p>
 <div class="panel" style="border-color:var(--accent);background:var(--accent-soft)">This is an example report: a real run of the four public read sets of the BrucellaID tutorial, produced by scripts/make_example_report.py, which leaves out the computer it ran on. The user account, the host name, the operating system and the working directory read [removed], and the input and reference files are named without the folder they were in. Everything else is as BrucellaID wrote it. A report of your own names them all, which is what makes it worth signing.</div>
 <nav class="toc"><b>Contents</b><ol><li><a href="#summary">Summary</a></li><li><a href="#warnings">Notes, warnings and errors</a></li><li><a href="#samples">Samples</a></li><li><a href="#methods">Definitions and methods</a></li><li><a href="#run">Run information</a></li></ol></nav>
 <h2 id="summary" class="first"><span class="n">1</span> Summary</h2>
 <div class="chips"><span class="chip"><b>4</b> sample(s)</span><span class="chip ok"><b>4</b> ok</span></div>
 <dl class="facts">
-<dt>Run started</dt><dd class="wrap">2026-11-02T01:01:20-05:00</dd>
-<dt>Run finished</dt><dd class="wrap">2026-11-02T01:01:54-05:00</dd>
+<dt>Run started</dt><dd class="wrap">2026-11-02T01:10:00-05:00</dd>
+<dt>Run finished</dt><dd class="wrap">2026-11-02T01:10:33-05:00</dd>
 <dt>Operator</dt><dd class="wrap">M-O Duceppe</dd>
 <dt>Command</dt><dd class="wrap">python3 scripts/make_example_report.py reads</dd>
 </dl>
@@ -547,7 +549,7 @@ footer {
 </section>
 <h2 id="methods"><span class="n">4</span> Definitions and methods</h2>
 <h3>The references listed for each sample</h3><p>A sample block lists the five closest reference genomes, and any other near enough to the closest that the distance does not separate them, which is the evidence the species call rests on. brucellaid_mash.tsv holds the distance to every reference of the sketch.</p>
-<h3>The species, from a MASH distance</h3><p>The reads of a sample are reduced to the 1000 smallest hashes of their 21-mers, ignoring the k-mers seen once, and that sketch is compared with the sketch of each reference genome. The distance is an estimate of the fraction of positions that differ, so 0.000024 is about 99.998% identity. The closest reference names the species, provided the reads share at least the required number of its 1000 min-hashes; below that the sample is reported as ND, because the closest of sixteen genomes is not an answer.</p>
+<h3>The species, from a MASH distance</h3><p>The reads of a sample are reduced to the 1000 smallest hashes of their 21-mers, ignoring the k-mers seen fewer times than the copy threshold derived from the coverage, and that sketch is compared with the sketch of each reference genome. The distance is an estimate of the fraction of positions that differ, so 0.000024 is about 99.998% identity. The closest reference names the species, provided the reads share at least the required number of its 1000 min-hashes; below that the sample is reported as ND, because the closest of sixteen genomes is not an answer.</p>
 <h3>Why there is no biovar in this report</h3><p>BrucellaID does not report a biovar, because it cannot measure one. Three things stand in the way. The sketch holds a reference for B. abortus biovars 1 and 3 only, so 43% of the biovar-labelled B. abortus isolates of the PubMLST isolate database are of a biovar it has no reference for. The distance cannot separate the biovars it does hold: the two B. melitensis biovar 1 references are 0.000756 apart, which is further apart than the biovar 2 and biovar 3 references are from each other. And a biovar is a phenotype that genome clustering does not track -- the best any rule from sequence type to biovar could manage over the isolate database is 66% for B. abortus and 63% for B. melitensis, because one ST spans several biovars. The biovars recorded for the ST are shown above for what they are worth. For a biovar, use classical biotyping, or brucetyper, which reads the Bruce-ladder and Suis-ladder assays in silico.</p>
 <h3>The sequence type, from the alleles</h3><p>The same reads are given to Seal with the alleles of the nine loci as references, counting each read for every allele it shares the highest number of 25-mers with and for no other. The allele the sample carries is therefore counted for every read of its locus, and a neighbouring allele only for the reads that fall where the two agree, so the allele with the most reads wins. No mismatch is allowed in a k-mer, because the alleles of a locus differ by as little as one base. Two alleles with the same count are reported as a tie rather than separated by a coin toss, and a locus below the minimum read count is not called.</p>
 <h3>What the ST values mean</h3><p>A number is a profile that is in the table. &quot;new&quot; means all nine alleles were called but the combination is not in the table, which is either a genuinely new ST or a novel allele called as its nearest neighbour. &quot;ND&quot; means at least one locus had no call; the note says which.</p>
@@ -560,8 +562,8 @@ footer {
 <dt>Computer</dt><dd class="wrap">[removed]</dd>
 <dt>Operating system</dt><dd class="wrap">[removed]</dd>
 <dt>Working directory</dt><dd class="wrap">[removed]</dd>
-<dt>Started</dt><dd class="wrap">2026-11-02T01:01:20-05:00</dd>
-<dt>Finished</dt><dd class="wrap">2026-11-02T01:01:54-05:00</dd>
+<dt>Started</dt><dd class="wrap">2026-11-02T01:10:00-05:00</dd>
+<dt>Finished</dt><dd class="wrap">2026-11-02T01:10:33-05:00</dd>
 <dt>Command</dt><dd class="wrap">python3 scripts/make_example_report.py reads</dd>
 </dl>
 <h3>Software</h3>
@@ -600,7 +602,7 @@ footer {
 <li class="wrap">Jolley KA, Bray JE, Maiden MCJ. Open-access bacterial population genomics: BIGSdb software, the PubMLST.org website and their applications. Wellcome Open Research 2018;3:124. doi:10.12688/wellcomeopenres.14826.1</li>
 <li class="wrap">Bushnell B. BBTools. https://sourceforge.net/projects/bbmap/</li>
 </ol>
-<footer>BrucellaID 1.2.0 &middot; 2026-11-02T01:01:20-05:00 &middot; [removed]@[removed] &middot; this report is self-contained: it needs no network to render.</footer>
+<footer>BrucellaID 1.2.0 &middot; 2026-11-02T01:10:00-05:00 &middot; [removed]@[removed] &middot; this report is self-contained: it needs no network to render.</footer>
 </main>
 </body>
 </html>

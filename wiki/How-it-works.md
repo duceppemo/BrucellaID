@@ -164,7 +164,8 @@ nine loci, 4,396 bp in all.
 
 ## Why not an assembly?
 
-Both steps count reads. MASH sketches a read set and filters the k-mers seen once, and the allele calling
+Both steps count reads. MASH sketches a read set and filters the k-mers seen fewer times than the copy
+threshold derived from the coverage, and the allele calling
 works because a locus is covered by many reads that each vote for an allele; a contig votes once, and a
 contig holding several loci would be assigned to one of them. A fasta file is refused rather than quietly
 mis-typed. For assemblies, [brucetyper](https://github.com/duceppemo/brucetyper) does *in silico* PCR

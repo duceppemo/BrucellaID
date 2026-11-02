@@ -28,12 +28,17 @@ Lint with `ruff check .`, or install the hook with `pre-commit install`. `ruff f
 | --- | --- |
 | `cli.py` | Arguments, logging, and the order of the run |
 | `samples.py` | Finds the fastq files of a folder and pairs R1 with R2 |
-| `mash.py` | Pipes the reads into `mash dist` and reads the distances back |
+| `mash.py` | Pipes the reads into `mash dist`, with a k-mer copy threshold derived from the coverage |
 | `references.py` | The reference table, and what a MASH sketch ID stands for |
 | `seal.py` | Runs `seal.sh`, including the paths it cannot be given as they are |
 | `mlst.py` | Turns Seal's per-allele counts into allele calls and a sequence type |
+| `species.py` | The species call: the species MASH left within reach, and whether the ST may decide |
 | `pipeline.py` | One sample, then all of them, with the errors kept per sample |
-| `report.py` | The four reports, and the legacy xlsx one |
+| `qa.py` | The status of each sample, and the facts the quality assurance report shows |
+| `report.py` | `brucellaid.tsv`, the MLST and MASH tables, the JSON, MultiQC and the legacy xlsx |
+| `htmlreport.py` | The quality assurance report, one self-contained HTML file |
+| `pdfreport.py` | The same report as a PDF, laid out to match |
+| `errors.py` | `BrucellaIDError`: an error the user can fix, reported without a traceback |
 
 Two rules the code follows throughout: anything the user can fix is a `BrucellaIDError`, reported without a
 traceback, and a sample that fails keeps its error in its own result instead of ending the run.

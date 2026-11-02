@@ -7,7 +7,8 @@ years and still render exactly as it did on the day it was written. It prints to
 
 What it holds, in the order a reviewer reads it: a summary of the run with the samples grouped by what they
 were called and a box to sign; every warning and error, one row each; then, per sample, the identification
-with *every* distance MASH measured rather than only the winning one, how the species was decided, the nine
+with the five closest reference genomes (and any other the distance cannot separate from the first), how
+the species was decided, the nine
 allele calls with the margin each one had, and the input files with their checksums; then what the numbers
 mean; and last, the run itself -- operator, machine, command, versions and the checksum of every reference
 data file it measured against.
@@ -575,7 +576,8 @@ METHODS = [
      'brucellaid_mash.tsv holds the distance to every reference of the sketch.'),
     ('The species, from a MASH distance',
      'The reads of a sample are reduced to the 1000 smallest hashes of their 21-mers, ignoring the k-mers '
-     'seen once, and that sketch is compared with the sketch of each reference genome. The distance is an '
+     'seen fewer times than the copy threshold derived from the coverage, and that sketch is compared with '
+     'the sketch of each reference genome. The distance is an '
      'estimate of the fraction of positions that differ, so 0.000024 is about 99.998% identity. The closest '
      'reference names the species, provided the reads share at least the required number of its 1000 '
      'min-hashes; below that the sample is reported as ND, because the closest of sixteen genomes is not an '

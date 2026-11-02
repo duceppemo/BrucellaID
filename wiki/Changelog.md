@@ -21,7 +21,7 @@
 * The `About ... coverage: sketching the k-mers seen at least N time(s)` log line now begins with the name
   of the sample it describes. With `--parallel`, two samples identify at once and their lines interleave
   with no way to tell whose coverage was whose.
-* 335 tests. 1.2.0 claimed 100% coverage while four lines of the depth change had none; three tests close
+* 345 tests. 1.2.0 claimed 100% coverage while four lines of the depth change had none; three tests close
   that, and the number is true again.
 
 ## 1.2.0 (2026-11-02)
@@ -106,8 +106,9 @@ than only the result.
 
 * **`brucellaid_report.html`**, written on every run (`--no-html` skips it): a summary with the samples
   grouped by what they were called and a box for a reviewer's name, date and signature; the notes,
-  warnings and errors one row each; a block per sample with **every** distance MASH measured (the closest
-  highlighted, the ones near enough to it shaded), how the species was decided and what the sequence type
+  warnings and errors one row each; a block per sample with the five closest references, and any other
+  the distance cannot separate from the first (the closest highlighted, the near ones shaded;
+  `brucellaid_mash.tsv` holds every distance), how the species was decided and what the sequence type
   contributed, the nine allele calls with the margin each had over the allele it beat, and the input files
   with their size, date and MD5; what the numbers mean; and the run itself — operator, computer, command,
   versions, and **the MD5 of every reference data file**. It prints to clean pages as it stands.

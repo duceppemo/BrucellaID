@@ -71,8 +71,10 @@ one another, and the second line is often not far behind the first.
 ## `brucellaid.json` — everything, for a pipeline
 The command, the start and end times, who ran it and on what, the versions of BrucellaID, Python, MASH,
 BBTools and Java, the parameters, the reference table, the MD5 of every reference data file, and per
-sample: the species and what decided it, the closest reference with its accessions, the close matches,
-every allele call, the input files with their checksums, the status and the error, if any.
+sample: the species and what decided it, the closest reference with its accessions, the k-mer copy
+threshold the sample was sketched with and the coverage it was derived from (`min_kmer_copies`,
+`estimated_coverage`), the close matches, every allele call, the input files with their checksums, the
+status and the error, if any.
 
 ```json
 {
@@ -97,6 +99,9 @@ every allele call, the input files with their checksums, the status and the erro
 **[View an example report](https://duceppemo.github.io/BrucellaID/example_report.html)** — the four samples of the [Tutorial](Tutorial), with the machine it ran
 on removed. It is served from [GitHub Pages](https://duceppemo.github.io/BrucellaID/) because GitHub shows an HTML file in a repository as
 source rather than rendering it; [the file itself](https://github.com/duceppemo/BrucellaID/blob/main/docs/example_report.html) is in `docs/`.
+
+Each sample's identification facts include `K-mer copies required`: the threshold MASH sketched with, and
+the estimated coverage it was derived from.
 
 One self-contained HTML file: no stylesheet, no script, no font and no image is fetched from anywhere, so it
 renders the same on a machine with no network, in an email attachment or out of an archive in ten years. It
@@ -124,8 +129,8 @@ than the conclusion:
    Java, and **the MD5 of every reference data file the run measured against** — which is what lets two
    runs a year apart be shown to have used the same data, or not.
 
-Each sample has a `Status`: `ok`, `warning` (not identified, no ST, a `new` profile, or the two kinds of
-evidence disagreeing) or `failed`.
+Each sample has a `Status`: `ok`, `warning` (not identified, no ST, a `new` profile, two species the
+evidence could not separate, or the two kinds of evidence disagreeing) or `failed`.
 
 `--no-md5` skips the checksums of the input files, which cost a second or two per gigabyte. `--operator
 NAME` puts a name other than the user account on the report.

@@ -26,8 +26,9 @@ The reads share fewer than 150 of the reference's 1000 hashes. In order of likel
    neighbour, sits there.
 2. **There is too little of it**: a mixed sample, a low yield extraction, or a very shallow run. Check the
    `Reads` column. Below roughly 5x, both the sketch and the allele calls get thin.
-3. **The reads are of poor quality.** MASH drops the k-mers it sees once, so a read set full of errors
-   loses most of its k-mers. Trim the reads and run it again.
+3. **The reads are of poor quality.** MASH drops the k-mers seen fewer times than the copy threshold
+   (2 at low coverage, one more per 20x), so a read set full of errors loses most of its k-mers. Trim the
+   reads and run it again.
 4. **A sample is not what you think.** Check the `brucellaid_mash.tsv` rows: a sample that is *Brucella*
    but far from all 16 references is worth knowing about.
 
@@ -69,9 +70,11 @@ thousand min-hashes rather than nine loci, but the sample is worth a look:
 `--no-st-species` reports the MASH species without consulting the ST at all.
 
 ## The biovar is not the one the laboratory reported
-Read `Biovar` as the biovar of the closest reference genome, not as a biovar call. The *Brucella* biovar
-references differ by very little, and the note on the sample says when another was nearly as close. Use
-classical biotyping, or [brucetyper](https://github.com/duceppemo/brucetyper), for a real biovar.
+BrucellaID reports no biovar, and 1.1.0 removed the column that used to hold one: it was the biovar of the
+closest reference genome, and it was read as a call. The `Biovar` column of `brucellaid_mash.tsv` is still
+exactly that — a fact about each reference genome, not about the sample. See
+[How it works](How-it-works#no-biovar) for why no honest biovar can come from this data, and use classical
+biotyping, or [brucetyper](https://github.com/duceppemo/brucetyper), for a real one.
 
 ## `Seal failed: java.lang.OutOfMemoryError`
 Give Seal more memory with `--memory 4g`, or run fewer samples at a time (`-p`). The default heap is

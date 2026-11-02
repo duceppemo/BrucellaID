@@ -2,7 +2,8 @@
 
 ### Can it read assemblies?
 No, and it refuses them rather than typing them badly. Both steps count reads: MASH sketches a read set and
-drops the k-mers it sees once, and the allele calling works because a locus is covered by many reads that
+drops the k-mers seen fewer times than a depth-derived copy threshold, and the allele calling works because
+a locus is covered by many reads that
 each vote. A contig votes once, and a contig holding several loci would be assigned to one of them. For an
 assembly, [brucetyper](https://github.com/duceppemo/brucetyper) does *in silico* PCR, and `mash dist`
 against `brucellaid/data/references.msh` identifies a genome directly.

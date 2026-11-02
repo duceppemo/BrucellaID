@@ -1,8 +1,9 @@
 # The genomes the validation runs on. Reads are simulated from each one and given to BrucellaID.
 # accessions: NCBI nucleotide accessions, chromosome 1 first, separated by ";".
-# reference, species, biovar: what the identification must return. "-" means "not checked": a genome that is
+# reference, species: what the identification must return. "-" means "not checked": a genome that is
 # not in the sketch is only expected to give the right species, and a genome that is not Brucella is expected
 # not to be identified at all (species ND).
+# biovar: the genome's own biovar, for the reader; BrucellaID reports none and check_results.py checks none.
 # coverage: the depth the reads are simulated at. "-" means the depth the run asked for (COVERAGE, 20 unless
 # set); a number is that depth no matter what the run asked for, and check_results.py then also checks that
 # the k-mer copy threshold rose with the depth and that the sketch stayed clean.

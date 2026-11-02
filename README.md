@@ -29,6 +29,7 @@ Sample  Species           SpeciesSource         ClosestReference           Share
 sample  Brucella abortus  MASH+ST (agree)       NC_006932-NC_006933.fasta  999/1000      1             Brucella abortus
 canis   Brucella canis    MASH+ST (arbitrated)  NC_010103-NC_010104.fasta  1000/1000     20            Brucella canis
 ```
+(Columns elided to fit; `brucellaid.tsv` also holds `MashDistance`, `AlleleProfile`, `Reads` and `Notes`.)
 
 Both the reference sketch and the MLST database come with the package: nothing to download, index or
 configure.
@@ -68,9 +69,9 @@ configure.
   `stat_alignment_summary_<date>.xlsx` of the first version.
 * **Nothing to configure**: only the Python standard library, plus MASH and BBTools. The two optional
   output formats, xlsx and PDF, are the only things that want a package, and neither is needed.
-* **Tested**: 331 tests, 100% coverage, end to end on a synthetic genome and on reads tiled over the real
+* **Tested**: 345 tests, 100% coverage, end to end on a synthetic genome and on reads tiled over the real
   MLST alleles.
-* **Validated** on 16 genomes with a known answer: every species, biovar and closest reference right, and
+* **Validated** on 16 genomes with a known answer: every species and closest reference right, and
   all 14 sequence types the one the genome carries — read off the assembly by exact match, which shares no
   code with the read-based caller. The *B. canis* genome is the one call the distance did not make on its
   own, and the ST made it; not one of the sixteen came back as a disagreement. The nearest neighbouring

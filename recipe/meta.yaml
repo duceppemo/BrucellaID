@@ -49,7 +49,8 @@ test:
     - python -c "from brucellaid.references import load_references; assert len(load_references()) == 16"
     - python -c "from brucellaid.mlst import load_profiles; assert len(load_profiles()[1]) == 122"
     # Two copies of one read that matches nothing, to run MASH, Seal and the reports end to end. Two,
-    # because MASH is run with -m 2 and would otherwise have no k-mer left to sketch
+    # because the derived k-mer copy threshold floors at 2, and one copy of each k-mer would leave
+    # nothing to sketch
     - python -c "s = ''.join('ACGT'[(i*i+3*i+1)%4] for i in range(150)); r = '@r\n' + s + '\n+\n' + 'I'*len(s) + '\n'; open('reads.fastq','w').write(r+r)"
     - brucellaid -r1 reads.fastq -o test_out -s test --pdf
     - test -s test_out/brucellaid.json
