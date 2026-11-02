@@ -7,16 +7,24 @@ import pytest
 from brucellaid import mash
 from brucellaid.errors import BrucellaIDError
 from brucellaid.mash import (
+    BRUCELLA_GENOME_SIZE,
     CLOSE_MATCH_MARGIN,
     DEFAULT_MIN_HASHES,
+    MAX_KMER_COPIES,
+    MIN_KMER_COPIES,
     Identification,
     check_mash,
+    estimate_bases,
     executable,
+    fastq_bases_per_byte,
     identify,
+    kmer_copies_note,
+    min_kmer_copies,
     parse_dist,
     parse_info,
     run_dist,
     sketch_references,
+    uncompressed_size,
     versions,
     write_reads,
 )
@@ -192,3 +200,87 @@ def test_run_dist_when_mash_compares_nothing(monkeypatch, sketch, genome_reads):
     monkeypatch.setattr(mash, 'parse_dist', lambda output: [])
     with pytest.raises(BrucellaIDError, match='the sketch .* is empty'):
         run_dist([genome_reads], msh)
+
+
+# --- the depth-aware k-mer copy threshold ---
+
+@pytest.mark.parametrize('depth, copies', [
+    (0, MIN_KMER_COPIES),      # Nothing readable: fall back to the floor
+    (5, 2), (30, 2), (50, 2),  # Shallow: a fixed 10 would destroy these sketches
+    (92, 5), (174, 9), (250, 12),
+    (380, 19), (536, MAX_KMER_COPIES), (1801, MAX_KMER_COPIES),  # The ceiling holds
+])
+def test_min_kmer_copies_follows_the_coverage(depth, copies):
+    assert min_kmer_copies(depth * BRUCELLA_GENOME_SIZE) == copies
+
+
+def test_min_kmer_copies_never_leaves_its_range():
+    for depth in range(0, 3000, 7):
+        assert MIN_KMER_COPIES <= min_kmer_copies(depth * BRUCELLA_GENOME_SIZE) <= MAX_KMER_COPIES
+
+
+def test_min_kmer_copies_of_an_unknown_genome_size():
+    assert min_kmer_copies(1_000_000, genome_size=0) == MIN_KMER_COPIES
+
+
+@pytest.mark.parametrize('gzipped', [False, True])
+def test_estimate_bases_without_reading_the_file_through(tmp_path, gzipped):
+    reads = [('r{}'.format(i), 'ACGT' * 40) for i in range(500)]
+    path = write_fastq(tmp_path / ('r.fastq.gz' if gzipped else 'r.fastq'), reads, gzipped=gzipped)
+    exact = sum(len(sequence) for _, sequence in reads)
+    assert estimate_bases([path]) == pytest.approx(exact, rel=0.05)
+
+
+def test_estimate_bases_adds_the_files_of_the_sample(tmp_path):
+    reads = [('r{}'.format(i), 'ACGT' * 40) for i in range(200)]
+    r1 = write_fastq(tmp_path / 'r_R1.fastq.gz', reads)
+    r2 = write_fastq(tmp_path / 'r_R2.fastq.gz', reads)
+    assert estimate_bases([r1, r2]) == pytest.approx(2 * estimate_bases([r1]), rel=0.01)
+
+
+def test_estimate_bases_of_files_that_cannot_be_read(tmp_path):
+    empty = tmp_path / 'empty.fastq.gz'
+    empty.write_bytes(b'')
+    assert estimate_bases([empty]) == 0
+    assert min_kmer_copies(estimate_bases([empty])) == MIN_KMER_COPIES
+
+
+def test_fastq_bases_per_byte_of_a_truncated_file(tmp_path):
+    broken = tmp_path / 'broken.fastq.gz'
+    broken.write_bytes(b'\x1f\x8b' + b'not a gzip stream')
+    assert fastq_bases_per_byte(broken) == 0.0
+    assert uncompressed_size(broken) >= 0
+
+
+def test_uncompressed_size_reads_the_gzip_trailer(tmp_path):
+    reads = [('r{}'.format(i), 'ACGT' * 40) for i in range(300)]
+    path = write_fastq(tmp_path / 'r.fastq.gz', reads)
+    plain = write_fastq(tmp_path / 'r.fastq', reads, gzipped=False)
+    assert uncompressed_size(path) == plain.stat().st_size
+
+
+def test_identification_records_the_threshold_it_used():
+    identification = Identification(parse_dist(DIST_OUTPUT), min_copies=7, coverage=140.0)
+    assert identification.min_copies == 7
+    assert '7' in kmer_copies_note(identification) and '140x' in kmer_copies_note(identification)
+    assert 'given' in kmer_copies_note(Identification(parse_dist(DIST_OUTPUT), min_copies=3))
+
+
+@requires_mash
+def test_identify_derives_the_threshold_from_the_sample(tmp_path, sketch):
+    msh, _ = sketch
+    reads = [('r{}'.format(i), 'ACGT' * 40) for i in range(100)]
+    path = write_fastq(tmp_path / 'r.fastq.gz', reads)
+    identification = identify([path], msh)
+    assert identification.min_copies == MIN_KMER_COPIES   # A tiny file is shallow
+    assert identification.coverage is not None
+
+
+@requires_mash
+def test_identify_honours_a_given_threshold(tmp_path, sketch):
+    msh, _ = sketch
+    reads = [('r{}'.format(i), 'ACGT' * 40) for i in range(100)]
+    path = write_fastq(tmp_path / 'r.fastq.gz', reads)
+    identification = identify([path], msh, min_copies=1)
+    assert identification.min_copies == 1
+    assert identification.coverage is None

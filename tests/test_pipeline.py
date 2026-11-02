@@ -77,7 +77,7 @@ def _raise(error):
 
 def fake_tools(monkeypatch, hits=None, mlst=None, error=None):
     """Replace MASH and Seal by what they would have returned."""
-    def fake_identify(files, sketch, min_hashes=150, threads=1):
+    def fake_identify(files, sketch, min_hashes=150, threads=1, min_copies=0):
         if error:
             raise BrucellaIDError(error)
         return identification(*(hits or ['NC_006932-NC_006933.fasta\tq\t0.001\t0\t950/1000\n']),

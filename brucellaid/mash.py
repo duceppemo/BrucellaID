@@ -23,7 +23,21 @@ DEFAULT_MIN_HASHES = 150
 # A second reference within this distance of the best one is reported as a close match: the Brucella genomes
 # differ by little, and the biovar references in particular are nearly identical.
 CLOSE_MATCH_MARGIN = 0.0005
-MIN_KMER_COPIES = 2  # Ignore the k-mers seen once in the read set: most of them are sequencing errors
+# How many copies of a k-mer the read set must hold before MASH sketches it. The point is to drop the
+# k-mers that only exist because of a sequencing error, and the right number depends on the coverage: an
+# error k-mer appears about depth * error_rate times, so at 30x a single copy is almost certainly an error
+# and two copies almost certainly real, while at 400x erroneous k-mers reach two copies routinely and flood
+# the sketch. Measured on 225 real runs plus one library strided from 5x to 92x, a fixed 2 starts losing the
+# true reference above about 240x (the shared hashes fall below the --min-hashes threshold and nothing is
+# reported) and a fixed 10 destroys a 5x sketch, so the value is derived from the coverage instead of being
+# a constant. One extra required copy per 20x fits every one of those measurements.
+MIN_KMER_COPIES = 2             # Floor, and the right value below about 50x
+MAX_KMER_COPIES = 20            # Ceiling: beyond about 400x the sketch is already stable
+DEPTH_PER_KMER_COPY = 20        # One more required copy per this much coverage
+KMER_COPIES_AUTO = 0            # "Derive it from the coverage", the default
+BRUCELLA_GENOME_SIZE = 3_300_000  # Used only to turn a number of bases into a coverage
+BASE_FRACTION_RECORDS = 1000    # Records read from the head of a file to measure its bases per byte
+RATIO_SAMPLE = 4 * 1024 * 1024  # Compressed bytes read to measure a file's compression ratio
 READ_CHUNK = 1024 * 1024
 
 
@@ -150,6 +164,15 @@ def parse_dist(output):
     return hits
 
 
+@contextlib.contextmanager
+def opened_reads(path):
+    """Open a read file for binary reading, decompressing it when it is gzipped."""
+    with open(path, 'rb') as f:
+        gzipped = f.read(2) == b'\x1f\x8b'
+    with (gzip.open(path, 'rb') if gzipped else open(path, 'rb')) as reads:
+        yield reads
+
+
 def write_reads(files, stream):
     """
     Copy the reads of one sample into stream, decompressing the gzipped files.
@@ -158,10 +181,106 @@ def write_reads(files, stream):
     the R1 and R2 files of a sample are one read set.
     """
     for path in files:
+        with opened_reads(path) as reads:
+            shutil.copyfileobj(reads, stream, READ_CHUNK)
+
+
+def fastq_bases_per_byte(path, records=BASE_FRACTION_RECORDS):
+    """
+    Bases per uncompressed byte of a FASTQ file, measured on its first records.
+
+    A FASTQ record spends its bytes on the sequence, an equally long quality string, two description lines
+    and four newlines, so the fraction is around 0.44 but depends on the read length and on how long the
+    descriptions are. Measuring it on the head of the file is exact enough to pick a k-mer copy threshold
+    and costs one short read.
+
+    :return: bases per byte, 0.0 when the file holds no readable record
+    """
+    bases = total = 0
+    try:
+        with opened_reads(path) as reads:
+            for number, line in enumerate(reads):
+                if number >= records * 4:
+                    break
+                total += len(line)
+                if number % 4 == 1:
+                    bases += len(line.rstrip(b'\r\n'))
+    except (OSError, EOFError, zlib.error):
+        return 0.0
+    return bases / total if total else 0.0
+
+
+def compression_ratio(path, sample=RATIO_SAMPLE):
+    """
+    Uncompressed bytes per compressed byte, measured on the head of a gzipped file.
+
+    :return: the ratio, or 0.0 when the file cannot be read
+    """
+    try:
+        with open(path, 'rb') as f:
+            chunk = f.read(sample)
+        if not chunk:
+            return 0.0
+        out = zlib.decompressobj(47).decompress(chunk)   # 47: gzip or zlib, whichever the file is
+    except (OSError, zlib.error):
+        return 0.0
+    return len(out) / len(chunk) if chunk else 0.0
+
+
+def uncompressed_size(path):
+    """
+    Size the file would have uncompressed, without decompressing it.
+
+    A gzip member ends with the uncompressed size of that member modulo 4 GiB, which is exact for the files
+    most samples are made of. For a bigger file, or one that is several members concatenated, the trailer
+    alone is ambiguous, so the file's own compression ratio says how many times it wrapped. That falls back
+    to the plain ratio estimate when the trailer is of no help, which is what we want.
+
+    :return: number of bytes, 0 when the file cannot be read
+    """
+    path = Path(path)
+    try:
+        size = path.stat().st_size
+        if size < 4:
+            return size
         with open(path, 'rb') as f:
             gzipped = f.read(2) == b'\x1f\x8b'
-        with (gzip.open(path, 'rb') if gzipped else open(path, 'rb')) as reads:
-            shutil.copyfileobj(reads, stream, READ_CHUNK)
+            if not gzipped:
+                return size
+            f.seek(-4, 2)
+            trailer = int.from_bytes(f.read(4), 'little')
+    except OSError:
+        return 0
+    ratio = compression_ratio(path)
+    if ratio <= 0:
+        return trailer
+    wraps = round((size * ratio - trailer) / 2 ** 32)
+    return trailer + max(0, wraps) * 2 ** 32
+
+
+def estimate_bases(files):
+    """
+    Number of bases in the read files of one sample, without reading them through.
+
+    :return: number of bases, 0 when none of the files can be read
+    """
+    total = 0.0
+    for path in files:
+        total += uncompressed_size(path) * fastq_bases_per_byte(path)
+    return int(total)
+
+
+def min_kmer_copies(bases, genome_size=BRUCELLA_GENOME_SIZE):
+    """
+    How many copies of a k-mer to require of a read set holding this many bases.
+
+    One more copy per DEPTH_PER_KMER_COPY of coverage, never below MIN_KMER_COPIES, never above
+    MAX_KMER_COPIES. See the comment on MIN_KMER_COPIES for where the numbers come from.
+    """
+    if not bases or genome_size <= 0:
+        return MIN_KMER_COPIES
+    depth = bases / genome_size
+    return int(min(MAX_KMER_COPIES, max(MIN_KMER_COPIES, round(depth / DEPTH_PER_KMER_COPY))))
 
 
 def run_dist(files, sketch, threads=1, min_copies=MIN_KMER_COPIES):
@@ -206,6 +325,8 @@ class Identification:
     """What MASH says about one sample."""
     hits: list  # list of MashHit, closest reference first
     min_hashes: int = DEFAULT_MIN_HASHES
+    min_copies: int = MIN_KMER_COPIES  # k-mer copies required of the read set, see min_kmer_copies()
+    coverage: float | None = None      # Estimated coverage the threshold was derived from, None when given
 
     @property
     def best(self):
@@ -222,10 +343,30 @@ class Identification:
         return [hit for hit in self.hits[1:] if hit.distance - self.best.distance <= CLOSE_MATCH_MARGIN]
 
 
-def identify(files, sketch, min_hashes=DEFAULT_MIN_HASHES, threads=1):
+def kmer_copies_note(identification):
+    """How the k-mer copy threshold of one identification was arrived at, for the reports."""
+    if identification.coverage is None:
+        return '{} (given)'.format(identification.min_copies)
+    return '{} (from the estimated {:.0f}x coverage)'.format(identification.min_copies,
+                                                             identification.coverage)
+
+
+def identify(files, sketch, min_hashes=DEFAULT_MIN_HASHES, threads=1, min_copies=KMER_COPIES_AUTO):
     """
     Compare one sample to the reference genomes.
 
+    :param min_copies: k-mer copies the read set must hold for a k-mer to be sketched. The default,
+                       KMER_COPIES_AUTO, derives it from the coverage of the sample: see min_kmer_copies().
     :return: Identification
     """
-    return Identification(run_dist(files, sketch, threads=threads), min_hashes=min_hashes)
+    coverage = None
+    if not min_copies:
+        bases = estimate_bases(files)
+        coverage = bases / BRUCELLA_GENOME_SIZE if bases else None
+        min_copies = min_kmer_copies(bases)
+        log.info('About %s bases, roughly %s coverage: sketching the k-mers seen at least %d time(s)',
+                 '{:,}'.format(bases) if bases else 'an unknown number of',
+                 '{:.0f}x'.format(coverage) if coverage else 'unknown',
+                 min_copies)
+    return Identification(run_dist(files, sketch, threads=threads, min_copies=min_copies),
+                          min_hashes=min_hashes, min_copies=min_copies, coverage=coverage)

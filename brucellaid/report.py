@@ -154,6 +154,8 @@ def json_report(results, references, run=None, inputs=None):
                 'shared_hashes': best.shared_hashes,
                 'total_hashes': best.total_hashes,
                 'identity_percent': best.identity,
+                'min_kmer_copies': result.identification.min_copies,
+                'estimated_coverage': result.identification.coverage,
             },
             'close_matches': [] if result.identification is None else [
                 {'reference': hit.reference,

@@ -19,6 +19,7 @@ that BrucellaID itself still installs with nothing but the standard library.
 from . import __version__
 from .errors import BrucellaIDError
 from .htmlreport import HEADING, METHODS, REFERENCES_CITED, VERDICTS
+from .mash import kmer_copies_note
 from .mlst import UNKNOWN
 from .qa import (
     FAILED,
@@ -353,6 +354,7 @@ class Report:
             ('Estimated identity', '{:.3f}%'.format(best.identity)),
             ('Shared min-hashes', '{}/{} (at least {} required)'.format(
                 best.shared_hashes, best.total_hashes, result.identification.min_hashes)),
+            ('K-mer copies required', kmer_copies_note(result.identification)),
         ], width=width)
 
     def species_call(self, result, width):

@@ -20,6 +20,7 @@ from html import escape as _escape
 
 from . import __version__
 from .errors import BrucellaIDError
+from .mash import kmer_copies_note
 from .mlst import UNKNOWN
 from .qa import (
     FAILED,
@@ -426,6 +427,7 @@ def identification_facts(result):
         ('Estimated identity', '{:.3f}%'.format(best.identity)),
         ('Shared min-hashes', '{}/{} (at least {} required)'.format(
             best.shared_hashes, best.total_hashes, result.identification.min_hashes)),
+        ('K-mer copies required', kmer_copies_note(result.identification)),
     ]))
     return out
 

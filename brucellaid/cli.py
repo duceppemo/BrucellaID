@@ -12,7 +12,7 @@ from pathlib import Path
 
 from . import __version__, qa
 from .errors import BrucellaIDError
-from .mash import DEFAULT_MIN_HASHES, check_mash, sketch_references
+from .mash import DEFAULT_MIN_HASHES, KMER_COPIES_AUTO, check_mash, sketch_references
 from .mlst import DEFAULT_MIN_READS, PROFILES_FILE, alleles_fasta, load_profiles
 from .pipeline import analyse_samples
 from .references import REFERENCES_FILE, compare_with_sketch, data_path, load_references, reference_sketch
@@ -118,6 +118,11 @@ def build_parser():
     calling.add_argument('--min-hashes', metavar='N', type=int, default=DEFAULT_MIN_HASHES,
                          help='Minimum number of the reference\'s 1000 min-hashes the reads must share for a '
                               'species to be reported. Default: {}.'.format(DEFAULT_MIN_HASHES))
+    calling.add_argument('--min-kmer-copies', metavar='N', type=int, default=KMER_COPIES_AUTO,
+                         help='Number of copies of a k-mer the reads must hold for MASH to sketch it, which '
+                              'is how the sequencing errors are kept out of the identification. The right '
+                              'value rises with the coverage: the default, 0, derives it from the number of '
+                              'bases in the files (one more copy per 20x, from 2 to 20).')
     calling.add_argument('--min-reads', metavar='N', type=int, default=DEFAULT_MIN_READS,
                          help='Minimum number of reads assigned to an MLST allele for the allele to be called. '
                               'Default: {}.'.format(DEFAULT_MIN_READS))
@@ -171,6 +176,8 @@ def check_arguments(parser, args):
         parser.error('-r2 and --sample are only used with -r1')
     if args.r1 and args.parallel > 1:
         parser.error('--parallel is only used with -i')
+    if args.min_kmer_copies < 0:
+        parser.error('--min-kmer-copies cannot be negative (0 derives it from the coverage)')
     if args.min_hashes < 1:
         parser.error('--min-hashes must be >= 1')
     if args.min_reads < 1:
@@ -256,7 +263,8 @@ def main(argv=None):
         jobs = min(args.parallel, len(samples))
         memory = args.memory or auto_memory(file_bases(alleles), jobs=jobs)
         results = analyse_samples(samples, jobs=jobs, threads=args.threads, sketch=sketch, references=references,
-                                  min_hashes=args.min_hashes, min_reads=args.min_reads, kmer_size=args.kmer_size,
+                                  min_hashes=args.min_hashes, min_copies=args.min_kmer_copies,
+                                  min_reads=args.min_reads, kmer_size=args.kmer_size,
                                   mismatch=args.mismatch, memory=memory, alleles=args.alleles,
                                   profiles=args.profiles, mlst=mlst, st_table=st_table,
                                   use_st_species=not args.no_st_species, min_st_purity=args.min_st_purity,
@@ -266,6 +274,8 @@ def main(argv=None):
                                  'Reference sketch': os.path.abspath(sketch),
                                  'MLST alleles': os.path.abspath(alleles) if mlst else None,
                                  'Minimum shared hashes': args.min_hashes,
+                                 'Minimum k-mer copies': (args.min_kmer_copies or
+                                                          'from the coverage of each sample'),
                                  'Minimum reads per allele': args.min_reads if mlst else None,
                                  'ST to species table': None if st_table is None else len(st_table),
                                  'Minimum ST purity': None if st_table is None else args.min_st_purity,

@@ -48,6 +48,7 @@ Run `multiqc results/` on the output folder to fold the run into a MultiQC repor
 | Option | Default | What it does |
 | --- | --- | --- |
 | `--min-hashes N` | 150 | Of the reference's 1000 min-hashes, how many the reads must share for a species to be reported |
+| `--min-kmer-copies N` | from the coverage | Copies of a k-mer the reads must hold for MASH to sketch it. The default derives it from the number of bases in the files: one more copy per 20x, from 2 to 20 |
 | `--min-reads N` | 5 | Reads behind an allele call for it to be kept |
 | `--no-mlst` | off | Identify the species only. The ST then takes no part in the species call either |
 | `--no-st-species` | off | Do not let the ST take part in the species call: report the closest reference's species, whatever else was just as close |
@@ -68,6 +69,12 @@ behaviour of version 1.0.0, where the closest reference decided alone. See
 Lowering `--min-hashes` reports a species for a sample that holds little *Brucella* (a mixed culture, a low
 yield extraction); the closest reference is then still the closest of the 16, which is not the same as the
 right one. The `brucellaid_mash.tsv` report shows what the call rests on.
+
+`--min-kmer-copies` is almost never worth setting by hand: the right value depends on the coverage, which
+is why it is derived from the input rather than fixed. Set it only to reproduce an older run
+(`--min-kmer-copies 2` is what versions up to 1.1.0 always used) or when the sample is not a single
+*Brucella* genome, so that coverage is not what the number of bases implies. See
+[How it works](How-it-works) for why the value has to move with the depth.
 
 ## Reference data
 The package ships all five files, and each can be replaced:

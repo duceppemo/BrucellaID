@@ -9,12 +9,19 @@ disagreement is the finding.
 ## 1. Which species: the MASH distance to 16 reference genomes
 
 The reads of a sample — R1 and R2 together, as one read set — are piped into
-`mash dist -r -m 2 references.msh -`. MASH reduces the read set to the 1000 smallest hashes of its 21-mers
+`mash dist -r -m N references.msh -`. MASH reduces the read set to the 1000 smallest hashes of its 21-mers
 and compares that sketch to the sketch of each reference genome, which gives a distance and the number of
 hashes the two share.
 
-* `-m 2` drops the k-mers seen once in the read set. Most of them are sequencing errors, and they would
-  otherwise fill the sketch with noise.
+* `-m N` drops the k-mers the read set holds fewer than N times. Most of those are sequencing errors, and
+  they would otherwise fill the sketch with noise. **N rises with the coverage** and BrucellaID derives it
+  from the size of the input: one more required copy per 20x, from 2 to 20
+  (`--min-kmer-copies` overrides it). An error k-mer turns up about `depth x error rate` times, so at 30x a
+  single copy is almost certainly an error and two copies almost certainly real, while at 400x erroneous
+  k-mers reach two copies routinely. A fixed `-m 2`, which versions up to 1.1.0 used, starts losing the
+  true reference above roughly 240x: the shared hashes fall under `--min-hashes` and nothing is reported,
+  on a sample that has more data than it needs. A fixed high value is no better, because it empties the
+  sketch of a shallow sample. The report says which value was used.
 * `-r` tells MASH the input is reads, so the genome size is estimated from k-mer multiplicity.
 * The k-mer size and the sketch size are inherited from the reference sketch, which is why a custom sketch
   has to keep MASH's defaults.

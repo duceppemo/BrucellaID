@@ -5,7 +5,7 @@ from concurrent import futures
 from dataclasses import dataclass, field
 
 from .errors import BrucellaIDError
-from .mash import DEFAULT_MIN_HASHES, identify
+from .mash import DEFAULT_MIN_HASHES, KMER_COPIES_AUTO, identify
 from .mlst import DEFAULT_MIN_READS, UNKNOWN, run_mlst
 from .references import load_references, lookup, reference_sketch
 from .seal import DEFAULT_KMER_SIZE, DEFAULT_MISMATCHES
@@ -90,6 +90,7 @@ def species_notes(identification, references):
 
 
 def analyse_sample(sample, sketch=None, references=None, min_hashes=DEFAULT_MIN_HASHES,
+                   min_copies=KMER_COPIES_AUTO,
                    min_reads=DEFAULT_MIN_READS, kmer_size=DEFAULT_KMER_SIZE, mismatch=DEFAULT_MISMATCHES,
                    threads=1, memory='1g', alleles=None, profiles=None, mlst=True, st_table=None,
                    use_st_species=True, min_st_purity=DEFAULT_MIN_PURITY,
@@ -110,7 +111,8 @@ def analyse_sample(sample, sketch=None, references=None, min_hashes=DEFAULT_MIN_
     result = SampleResult(sample.name, list(sample.files))
     log.info('%s: identifying the species with MASH (%d file(s))', sample.name, len(sample.files))
     try:
-        result.identification = identify(sample.files, sketch, min_hashes=min_hashes, threads=threads)
+        result.identification = identify(sample.files, sketch, min_hashes=min_hashes, threads=threads,
+                                         min_copies=min_copies)
         result.reference, result.notes = species_notes(result.identification, references)
         best = result.identification.best
         if result.identified:
