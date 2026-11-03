@@ -65,8 +65,9 @@ configure.
   repository. The sketch is vSNP's 16 *Brucella* genomes, with the species, biovar, strain and accession of
   each.
 * **The whole clade when you need it**: `--reference-set extended` measures against 429 curated genomes
-  covering all 29 named species — the former *Ochrobactrum* included — plus the unnamed lineages, so an
-  atypical isolate is reported as *Brucella sp.* rather than forced onto the nearest classical species.
+  covering 29 of the 30 named species — the former *Ochrobactrum* included — plus the unnamed lineages, so
+  an atypical isolate is reported as *Brucella sp.* rather than forced onto the nearest classical species.
+  The thirtieth, *B. papionis*, is not a gap anyone can close: no assembly of it exists in INSDC.
   [Validated](https://github.com/duceppemo/BrucellaID/wiki/Validation) on simulated reads of 2,022 NCBI
   assemblies: every held-out sample of a named species right, once six genomes mislabelled in NCBI — which
   the curation itself caught — are accounted for.

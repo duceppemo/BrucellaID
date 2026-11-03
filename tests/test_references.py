@@ -101,7 +101,9 @@ def test_the_extended_table_of_the_package():
     assert len(references) == 429
     assert all(r.code and r.species for r in references.values())
     species = {r.species for r in references.values()}
-    assert len(species) == 30  # 29 named species, and "Brucella sp." for the unnamed lineages
+    # 29 of the 30 named species, and "Brucella sp." for the unnamed lineages. The thirtieth,
+    # B. papionis, has no assembly in INSDC, so no sketch can hold it.
+    assert len(species) == 30
     assert 'Brucella sp.' in species
     assert 'Brucella anthropi' in species  # The clade formerly known as Ochrobactrum
     abortus5 = references['GCA_000163115.1_ASM16311v1_genomic.fna.gz']

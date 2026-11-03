@@ -157,7 +157,7 @@ def build_parser():
     data.add_argument('--reference-set', choices=('default', 'extended'), default='default', dest='reference_set',
                       help='Which packaged reference set to identify against. "default" is the 16 genomes of '
                            'vSNP, 8 species; "extended" is 429 curated genomes covering the whole Brucella '
-                           'clade, 29 named species plus unnamed lineages. Default: default.')
+                           'clade, 29 of the 30 named species plus unnamed lineages. Default: default.')
     data.add_argument('--sketch', metavar='FILE',
                       help='MASH sketch of the reference genomes, instead of the one of the package.')
     data.add_argument('--references', metavar='FILE', dest='references',

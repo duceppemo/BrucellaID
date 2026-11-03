@@ -40,8 +40,10 @@ What more references *do* fix is coverage: the 16 genomes carry 8 species, and a
 That is what `--reference-set extended` is for.
 
 ### What is the extended reference set?
-429 curated genomes covering all 29 named species of the *Brucella* clade (the 2020 taxonomy moved
+429 curated genomes covering 29 of the 30 named species of the *Brucella* clade (the 2020 taxonomy moved
 *Ochrobactrum* into it) plus the lineages that have no name yet, selected with `--reference-set extended`.
+The thirtieth is *B. papionis*, and no reference set can carry it: INSDC holds no assembly of that species
+at all, only a single read set, so there is no genome to sketch.
 [How it works](How-it-works#the-extended-reference-set) says where it comes from and
 [Validation](Validation#at-scale-the-extended-reference-set) what it does on simulated reads of 2,022
 assemblies. The 16 vSNP genomes stay the default.

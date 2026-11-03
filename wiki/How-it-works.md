@@ -166,8 +166,8 @@ nine loci, 4,396 bp in all.
 
 The 16 genomes of the default set cover 8 species — the classical six plus *B. microti* and *B. neotomae*.
 The 2020 taxonomy moved the genus *Ochrobactrum* into *Brucella*, and sequencing keeps finding isolates of
-the atypical lineages, so the package also ships a second set: 429 curated genomes covering all 29 named
-species of the clade, selected with
+the atypical lineages, so the package also ships a second set: 429 curated genomes covering 29 of the 30
+named species of the clade, selected with
 
 ```bash
 brucellaid -i reads/ -o results/ --reference-set extended
@@ -188,7 +188,14 @@ twins of named species were dropped, and one cluster got the label its neighbour
 with its reason, is
 [`scripts/extended_references_curation.tsv`](https://github.com/duceppemo/BrucellaID/blob/main/scripts/extended_references_curation.tsv),
 and [Validation](Validation#at-scale-the-extended-reference-set) shows what the set does on simulated
-reads of all 2,022 assemblies. The default set remains the default: it is vSNP's, every answer in the
+reads of all 2,022 assemblies.
+
+One named species is missing and cannot be added: *B. papionis*, described from baboons in 2014. INSDC
+holds no assembly of it — not at NCBI, not at ENA — only one public read set, so there is nothing to
+sketch. A *B. papionis* sample therefore lands on its nearest neighbour, which is roughly 0.003 away,
+far enough that the call comes with a note rather than passing silently.
+
+The default set remains the default: it is vSNP's, every answer in the
 field so far was measured against it, and the extended set is one release old.
 
 ## Why not an assembly?

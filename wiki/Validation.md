@@ -180,6 +180,12 @@ held-out named samples right**, including all 69 *B. canis*, all 24 *B. ceti* an
 were reported as *Brucella sp.*, 40 as the named species they sit next to (36 of them with a note saying
 how close the call was), and the two genomes that are nowhere near the clade came back `ND`.
 
+What the set cannot cover: *B. papionis*. It is the thirtieth named species of the clade and the only one
+with no assembly in INSDC — NCBI's assembly database holds none, ENA's holds none, and the species is
+represented in the public archives by a single read set. There was no genome to curate, so a
+*B. papionis* sample lands on its nearest neighbour at a distance of about 0.003, reported with a note
+rather than as a clean call.
+
 What this does not establish is the same as above, plus one thing: the reads were simulated from the very
 collection the set was curated from, so a lineage absent from GenBank in October 2026 is absent from both
 sides of the measurement. A validation on real public read sets is the next step before the extended set
