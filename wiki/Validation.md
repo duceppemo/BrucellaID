@@ -175,6 +175,11 @@ the "*B. abortus*" that is 0.0007 from *B. melitensis* and carries the melitensi
 "*B. abortus* bv. 1" BCB genomes, a submission batch whose *B. suis* and *B. inopinata* sequences are
 swapped (its "*B. suis* bv. 4 str. 40" is 0.022 from every *B. suis* and 0.0004 from *B. inopinata* BO1),
 and the "*B. cytisi*" WTB2 that is 0.0066 from *B. anthropi* and 0.038 from the *B. cytisi* type strain.
+Each of those records is tracked with its evidence in
+[`curation/mislabelled_records.md`](https://github.com/duceppemo/BrucellaID/blob/main/curation/mislabelled_records.md),
+together with the public read sets whose submitted species the distance and the sequence type both
+contradict, so they can be reported rather than only excluded.
+
 Scored against what those seven genomes demonstrably are, the extended set got **every one of the 1,544
 held-out named samples right**, including all 69 *B. canis*, all 24 *B. ceti* and all 8
 *B. pinnipedialis* — the boundaries the distance alone cannot draw. Of the 95 *Brucella sp.* samples, 53

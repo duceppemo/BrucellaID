@@ -4,6 +4,8 @@
 # Validated on simulated reads of all 2,022 assemblies: 1544/1544 held-out samples of a named species
 # right once the seven mislabelled truth genomes below are accounted for (wiki, Validation).
 # Every genome not listed here was kept as it was.
+# The records whose label the sequence contradicts are tracked, with the evidence for each, in
+# curation/mislabelled_records.md, so they can be reported to the submitters and to NCBI.
 action	accession	species	reason
 EXCLUDE	GCA_000292145.2	Brucella abortus	labelled abortus bv. 1 (BCB027); genome 0.0010 from an unnamed lineage, 0.0016 from abortus
 EXCLUDE	GCA_000292205.2	Brucella abortus	labelled abortus bv. 1 (BCB013); genome 0.0011 from suis, 0.0022 from abortus, ST 120
