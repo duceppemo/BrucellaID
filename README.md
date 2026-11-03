@@ -64,7 +64,7 @@ configure.
   species of 118 of them counted over PubMLST's isolate database — all rebuilt by scripts in the
   repository. The sketch is vSNP's 16 *Brucella* genomes, with the species, biovar, strain and accession of
   each.
-* **The whole clade when you need it**: `--reference-set extended` measures against 429 curated genomes
+* **The whole clade when you need it**: `--reference-set extended` measures against 428 curated genomes
   covering 29 of the 30 named species — the former *Ochrobactrum* included — plus the unnamed lineages, so
   an atypical isolate is reported as *Brucella sp.* rather than forced onto the nearest classical species.
   The thirtieth, *B. papionis*, is not a gap anyone can close: no assembly of it exists in INSDC.
