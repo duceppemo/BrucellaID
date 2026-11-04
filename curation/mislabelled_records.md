@@ -70,18 +70,20 @@ Kept here so they are not re-flagged by the next automated pass.
 
 ## Read sets: the submitted species is contradicted by two independent methods
 
-From the Phase 2 validation over public ENA read sets. For each of these the MASH identification and the
-nine-locus MLST — which share no code and no reference data — both point away from the submitted label and
-at the same species. Distances are to the closest genome of the extended set. The `PubMLST species` column
-gives the species that database records for the sequence type, with how consistently its isolates carry it.
+From the Phase 2 validation, which measured **all 3,992 usable public *Brucella* read sets in ENA** against
+both reference sets. For each of these the MASH identification and the nine-locus MLST — which share no
+code and no reference data — both point away from the submitted label and at the same species. Distances
+are to the closest genome of the extended set. The `PubMLST species` column gives the species that database
+records for the sequence type, with how consistently its isolates carry it.
 
-Grouped by study, because several come from a single submission and are better raised as one item with the
-submitter than as separate reports.
+Grouped by study, because most come from a handful of submissions and are far better raised as one item
+with each submitter than as twenty separate reports.
 
-### PRJEB30030 — seven read sets, one submitter
+### PRJEB30030 — eleven read sets, one submitter
 
-National Institute of Health Dr. Ricardo Jorge. Seven distinct BioSamples, each of which the sequence puts
-in a different species from its label.
+National Institute of Health Dr. Ricardo Jorge. Eleven distinct BioSamples, each of which the sequence
+puts in a different species from its label. This is the largest single cluster in the whole sweep and the
+first one to raise.
 
 | Run | BioSample | Submitted as | Both methods say | Distance | ST | PubMLST species of that ST |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -89,13 +91,29 @@ in a different species from its label.
 | `ERR2938669` | `SAMEA5145008` | *B. melitensis* | *B. suis* | 0.00181 | 15 | *B. suis*, 96.1% of 103 isolates |
 | `ERR2938678` | `SAMEA5145000` | *B. melitensis* | *B. abortus* | 0.00111 | 5 | *B. abortus*, 98.6% of 71 isolates |
 | `ERR2938687` | `SAMEA5145007` | *B. melitensis* | *B. suis* | 0.00591 | 15 | *B. suis*, 96.1% of 103 isolates |
+| `ERR2938695` | `SAMEA5145011` | *B. melitensis* | *B. suis* | 0.00244 | 15 | *B. suis*, 96.1% of 103 isolates |
 | `ERR2993134` | `SAMEA5176151` | *B. melitensis* | *B. pinnipedialis* | 0.00026 | 25 | *B. pinnipedialis*, 95.0% of 80 isolates |
+| `ERR2993138` | `SAMEA5176141` | *B. melitensis* | *B. suis* | 0.00014 | 19 | *B. suis*, 100% of 6 isolates |
+| `ERR2993140` | `SAMEA5176147` | *B. melitensis* | *B. neotomae* | 0.00012 | 22 | *B. neotomae*, 100% of 9 isolates |
+| `ERR2993145` | `SAMEA5176140` | *B. melitensis* | *B. suis* | 0.00007 | — | no ST; **both reference sets agree independently** |
 | `ERR2993152` | `SAMEA5176142` | *B. melitensis* | *B. abortus* | 0.00014 | 1 | *B. abortus*, 99.4% of 466 isolates |
 | `ERR2993155` | `SAMEA5176143` | *B. melitensis* | *B. suis* | 0.00014 | 14 | *B. suis*, 96.4% of 140 isolates |
 
-`ERR2993134` is the most clear-cut: a read set submitted as *B. melitensis* that is 0.00026 from
-*B. pinnipedialis* and carries ST 25, a marine-mammal sequence type. `ERR2938687` is the weakest, because
-its distance of 0.0059 is large enough that the species rests mainly on the ST.
+Several of these are 0.0001–0.0003 from the species the sequence says they are, which is as close as two
+genomes of one species ever get. `ERR2993134` is the most striking: submitted as *B. melitensis*, 0.00026
+from *B. pinnipedialis* and carrying ST 25, a marine-mammal sequence type. `ERR2938687` is the weakest of
+the eleven, because its distance of 0.0059 is large enough that the species rests mainly on the ST.
+
+### PRJEB4782 — three read sets, Wellcome Sanger Institute
+
+| Run | BioSample | Submitted as | Both methods say | Distance | ST | PubMLST species of that ST |
+| --- | --- | --- | --- | --- | --- | --- |
+| `ERR471314` | `SAMEA2266858` | *B. ceti* | *B. abortus* | 0.00017 | 5 | *B. abortus*, 98.6% of 71 isolates |
+| `ERR471315` | `SAMEA2266859` | *B. ceti* | *B. abortus* | 0.00017 | 5 | *B. abortus*, 98.6% of 71 isolates |
+| `ERR473742` | `SAMEA2266954` | *B. abortus* | *B. neotomae* | 0.00034 | 22 | *B. neotomae*, 100% of 9 isolates |
+
+The same study also contributed ten read sets that contain no *Brucella* sequence at all — see the section
+below. Both findings are worth raising together.
 
 ### PRJNA173595 and PRJNA173601 — Broad Institute reference strains
 
@@ -104,16 +122,9 @@ its distance of 0.0059 is large enough that the species rests mainly on the ST.
 | `SAMN00811170` | `SRR642185`, `SRR651210`, `SRR867710` | *B. abortus* 63/183 | *B. suis* | 0.0022–0.0023 | 14, 16 | *B. suis* (ST 16 is 100% of 15 isolates) |
 | `SAMN00811205` | `SRR867711` | *B. melitensis* 63/227 | *B. suis* | 0.00205 | 14 | *B. suis*, 96.4% of 140 isolates |
 
-The first row is **one BioSample sequenced in three runs**, not three records: all three runs agree, which
-is a consistency check rather than three independent findings. These two carry strain designations
-(63/183, 63/227), so a wrong label here would propagate further than an ordinary isolate's would.
-
-### PRJEB4782 — Wellcome Sanger Institute
-
-| Run | BioSample | Submitted as | Both methods say | Distance | ST | PubMLST species of that ST |
-| --- | --- | --- | --- | --- | --- | --- |
-| `ERR471314` | `SAMEA2266858` | *B. ceti* | *B. abortus* | 0.00017 | 5 | *B. abortus*, 98.6% of 71 isolates |
-| `ERR471315` | `SAMEA2266859` | *B. ceti* | *B. abortus* | 0.00017 | 5 | *B. abortus*, 98.6% of 71 isolates |
+The first row is **one BioSample sequenced in three runs**, not three records: all three agree, which is a
+consistency check rather than three independent findings. Both carry strain designations (63/183, 63/227),
+so a wrong label here travels further than an ordinary isolate's would.
 
 ### Single submissions
 
@@ -128,30 +139,61 @@ nine loci got no read at all. The distance evidence is decisive on its own — 0
 *B. anthropi* against 0.0381–0.0394 from the three deposits of the *cytisi* type strain, which rank 89th,
 90th and 91st of the 428 references. Every one of its top eight hits is *anthropi*. Status: to report.
 
+## Read sets that contain no *Brucella* sequence
+
+Twenty-one read sets carry a *Brucella* species on the label and share almost nothing with any genome of
+the clade. These are not identification failures — BrucellaID refused to name them, which is what the
+threshold of 150 shared hashes is for — but they are worth reporting, because a reader searching the
+archive for *B. abortus* reads will find them.
+
+A real *Brucella* read set at usable depth shares 900 or more of the 1000 hashes with its own species.
+
+| Study | Runs | Submitted as | Shared hashes |
+| --- | --- | --- | --- |
+| PRJEB4782 (Sanger) | `ERR471337`, `ERR473743`, `ERR554820`, `ERR775236`, `ERR775237`, `ERR775244`, `ERR775245`, `ERR775246`, `ERR775247`, `ERR775248` | *B. abortus* | 1–2 of 1000 |
+| PRJNA52097 (Broad) | `SRR825216`, `SRR825217`, `SRR825218` | *B. pinnipedialis* | **0 of 1000** |
+| PRJNA197004 (Broad) | `SRR886242`, `SRR886243` | *B. ceti* | 1 of 1000 |
+| PRJNA77813 (Broad) | `SRR848042` | *B. abortus* | **0 of 1000** |
+| PRJNA213741 (Broad) | `SRR952243` | *B. abortus* | 146 of 1000 — just under the threshold, the one borderline case |
+| PRJEB22377 (Sanger) | `ERR3218177` | *B. abortus* | 6 of 1000 |
+| PRJNA1290416 | `SRR35797377` | *B. melitensis* | 26 of 1000 |
+| PRJNA966239 | `SRR24420454` | *B. melitensis* | 105 of 1000 |
+| PRJNA945449 | `SRR25828922` | *B. pseudogrignonensis* | 5 of 1000 |
+
+The four runs sharing **zero** hashes are the clearest: whatever those files hold, it is not *Brucella*.
+`SRR952243` at 146 of 1000 is the only one near the line and deserves a second look before it is reported.
+
 ## Read sets: candidates
 
-| Run | BioSample | Submitted as | Closest | Distance | Why it is only a candidate |
-| --- | --- | --- | --- | --- | --- |
-| `SRR6003475` | `SAMN07581394` | *B. thiophenivorans* | *B. pituitosa* | 0.0029 | sister species with one reference genome each, no ST available, no type-strain anchor measured yet |
-| `SRR10948139` | `SAMN13812480` | *B. anthropi* | *B. intermedia* | 0.0087 | both species are diverse enough that 0.0087 is not conclusive, and no ST is available |
+Called a species other than the submitter's, but with only one line of evidence. All are former
+*Ochrobactrum* species, where the reference side is thin and the within-species spread is wide, so a
+distance of 0.005–0.02 is suggestive rather than conclusive.
+
+| Run | Submitted as | Closest | Distance | Shared hashes |
+| --- | --- | --- | --- | --- |
+| `ERR11807265` | *B. anthropi* | *B. intermedia* | 0.0056 | 801/1000 |
+| `SRR10948139` | *B. anthropi* | *B. intermedia* | 0.0087 | 713/1000 |
+| `SRR1798201` | *B. lupini* | *B. anthropi* | 0.0089 | 708/1000 |
+| `SRR6003475` | *B. thiophenivorans* | *B. pituitosa* | 0.0029 | 890/1000 |
 
 ## Read sets where the label looks right and our reference set is what is missing
 
 Kept here so they are not mistaken for mislabels. In each case the submitter is probably correct and
 BrucellaID could not place the sample because the extended set has no suitable reference.
 
-* `SRR4038994` (`SAMN05417907`, PRJNA251693), submitted as *B. papionis*, reported as
-  *B. pinnipedialis* at 0.0028 with an `unresolved` flag. The label is almost certainly right: the run
-  carries **ST 54, which PubMLST records as *B. papionis* in both of its isolates**, and the reason MASH
-  cannot confirm it is that *B. papionis* has no assembly anywhere in INSDC, so the extended set has no
-  genome of it to match. This is the one named species of the clade the set cannot cover, and this read
-  set is the only public sequence data for it.
-* `SRR12605656`, submitted as *B. haematophila*, reported as *Brucella* sp. at 0.0201. Only three
-  *haematophila* genomes exist to compare with, and one of them is itself a candidate mislabel, so the
-  reference side is too thin to call this either way.
-* `SRR31481153`, submitted as *B. inopinata*, reported as *Brucella* sp. at 0.00053 with a `new` sequence
-  type. It sits next to an unnamed lineage representative rather than to an *inopinata* genome, which may
-  say more about how few *inopinata* genomes exist than about the label.
+* `SRR4038994` (`SAMN05417907`, PRJNA251693), submitted as *B. papionis*, reported as *B. pinnipedialis*
+  at 0.0028 with an `unresolved` flag. The label is almost certainly right: the run carries **ST 54, which
+  PubMLST records as *B. papionis* in both of its isolates**, and the reason MASH cannot confirm it is that
+  *B. papionis* has no assembly anywhere in INSDC, so the extended set has no genome of it to match. This
+  is the one named species of the clade the set cannot cover, and this read set is the only public sequence
+  data for it.
+* `SRR12605656` (*B. haematophila*, 0.0201, 488/1000) and `SRR25828932`, `SRR25828924` (*B. anthropi*,
+  0.014 and 0.008) — reported as *Brucella* sp. because the nearest named genome is far away. With three
+  *haematophila* genomes in existence, one of them itself a candidate mislabel, the reference side is too
+  thin to call these either way.
+* `SRR31481153`, submitted as *B. inopinata*, reported as *Brucella* sp. at 0.00053 with 978 of 1000 hashes
+  and a `new` sequence type. It sits beside an unnamed lineage representative rather than an *inopinata*
+  genome, which probably says more about how few *inopinata* genomes exist than about the label.
 
 ## Reproducing the evidence
 
@@ -174,10 +216,13 @@ The curation decisions that excluded these genomes from the shipped set are in
 | --- | --- | --- | --- |
 | — | — | — | nothing sent yet |
 
-## Still to come
+## Scope
 
-Phase 2 is still running at the time of writing: the read-set tables above cover the first 2,929 of the
-4,044 runs and will grow. Re-run the extraction over the finished `results_default.tsv` and
-`results_extended.tsv` before anything is sent, so that one report covers the whole sweep, and group any
-new runs by study the way the tables above do -- six of the first seven findings came from one submission,
-and raising them together is both fairer to the submitter and harder to dismiss.
+The read-set tables cover the completed Phase 2 sweep: every usable paired Illumina WGS run under NCBI
+taxon 234 in ENA as of 2026-11-03, 3,992 of 4,044 analysed. The 52 that are missing failed to download
+rather than failing to analyse, and a retry pass is under way; if any of them turns up a finding it goes
+in the tables above before anything is sent.
+
+The assembly tables come from the curation of the extended reference set and cover the 454 dereplicated
+representatives of the mashID pack source collection, not all 2,022 assemblies, so the assembly side is
+less complete than the read side.
