@@ -68,36 +68,90 @@ Kept here so they are not re-flagged by the next automated pass.
   biology: *B. canis* sits inside the *B. suis* radius. Not a labelling error, and the reason BrucellaID
   uses the sequence type to separate those two species.
 
-## Read sets: the submitter's species is contradicted by two independent methods
+## Read sets: the submitted species is contradicted by two independent methods
 
 From the Phase 2 validation over public ENA read sets. For each of these the MASH identification and the
 nine-locus MLST — which share no code and no reference data — both point away from the submitted label and
-at the same species. Distances are to the closest genome of the extended set.
+at the same species. Distances are to the closest genome of the extended set. The `PubMLST species` column
+gives the species that database records for the sequence type, with how consistently its isolates carry it.
 
-| Run | Submitted as | Both methods say | MASH distance | ST | PubMLST species of that ST |
-| --- | --- | --- | --- | --- | --- |
-| `SRR31560207` | *B. abortus* | *B. melitensis* | 0.00056 | 7 | *B. melitensis* |
-| `SRR642185` | *B. abortus* | *B. suis* | 0.00233 | 14 | *B. suis* |
-| `SRR651210` | *B. abortus* | *B. suis* | 0.00224 | 14 | *B. suis* |
-| `SRR867710` | *B. abortus* | *B. suis* | 0.00227 | 16 | *B. suis* |
-| `ERR471314` | *B. ceti* | *B. abortus* | 0.00017 | 5 | *B. abortus* |
-| `ERR471315` | *B. ceti* | *B. abortus* | 0.00017 | 5 | *B. abortus* |
-| `ERR2938678` | *B. melitensis* | *B. abortus* | 0.00111 | 5 | *B. abortus* |
-| `ERR2993152` | *B. melitensis* | *B. abortus* | 0.00014 | 1 | *B. abortus* |
-| `ERR2993134` | *B. melitensis* | *B. pinnipedialis* | 0.00026 | 25 | *B. pinnipedialis* |
-| `SRR867711` | *B. melitensis* | *B. suis* | 0.00205 | 14 | *B. suis* |
+Grouped by study, because several come from a single submission and are better raised as one item with the
+submitter than as separate reports.
 
-`SRR31357708`, submitted as *B. cytisi*, belongs with these although no ST is available: the former
-*Ochrobactrum* species do not carry the classical MLST alleles, and six of the nine loci got no read at
-all. The distance evidence is decisive on its own — 0.0076 from the nearest *B. anthropi* against
-0.0381–0.0394 from the three deposits of the *cytisi* type strain, which rank 89th, 90th and 91st of the
-428 references. Every one of its top eight hits is *anthropi*. Status: to report.
+### PRJEB30030 — seven read sets, one submitter
+
+National Institute of Health Dr. Ricardo Jorge. Seven distinct BioSamples, each of which the sequence puts
+in a different species from its label.
+
+| Run | BioSample | Submitted as | Both methods say | Distance | ST | PubMLST species of that ST |
+| --- | --- | --- | --- | --- | --- | --- |
+| `ERR2938660` | `SAMEA5145035` | *B. ovis* | *B. suis* | 0.00081 | 15 | *B. suis*, 96.1% of 103 isolates |
+| `ERR2938669` | `SAMEA5145008` | *B. melitensis* | *B. suis* | 0.00181 | 15 | *B. suis*, 96.1% of 103 isolates |
+| `ERR2938678` | `SAMEA5145000` | *B. melitensis* | *B. abortus* | 0.00111 | 5 | *B. abortus*, 98.6% of 71 isolates |
+| `ERR2938687` | `SAMEA5145007` | *B. melitensis* | *B. suis* | 0.00591 | 15 | *B. suis*, 96.1% of 103 isolates |
+| `ERR2993134` | `SAMEA5176151` | *B. melitensis* | *B. pinnipedialis* | 0.00026 | 25 | *B. pinnipedialis*, 95.0% of 80 isolates |
+| `ERR2993152` | `SAMEA5176142` | *B. melitensis* | *B. abortus* | 0.00014 | 1 | *B. abortus*, 99.4% of 466 isolates |
+| `ERR2993155` | `SAMEA5176143` | *B. melitensis* | *B. suis* | 0.00014 | 14 | *B. suis*, 96.4% of 140 isolates |
+
+`ERR2993134` is the most clear-cut: a read set submitted as *B. melitensis* that is 0.00026 from
+*B. pinnipedialis* and carries ST 25, a marine-mammal sequence type. `ERR2938687` is the weakest, because
+its distance of 0.0059 is large enough that the species rests mainly on the ST.
+
+### PRJNA173595 and PRJNA173601 — Broad Institute reference strains
+
+| BioSample | Runs | Submitted as | Both methods say | Distance | ST | PubMLST species of that ST |
+| --- | --- | --- | --- | --- | --- | --- |
+| `SAMN00811170` | `SRR642185`, `SRR651210`, `SRR867710` | *B. abortus* 63/183 | *B. suis* | 0.0022–0.0023 | 14, 16 | *B. suis* (ST 16 is 100% of 15 isolates) |
+| `SAMN00811205` | `SRR867711` | *B. melitensis* 63/227 | *B. suis* | 0.00205 | 14 | *B. suis*, 96.4% of 140 isolates |
+
+The first row is **one BioSample sequenced in three runs**, not three records: all three runs agree, which
+is a consistency check rather than three independent findings. These two carry strain designations
+(63/183, 63/227), so a wrong label here would propagate further than an ordinary isolate's would.
+
+### PRJEB4782 — Wellcome Sanger Institute
+
+| Run | BioSample | Submitted as | Both methods say | Distance | ST | PubMLST species of that ST |
+| --- | --- | --- | --- | --- | --- | --- |
+| `ERR471314` | `SAMEA2266858` | *B. ceti* | *B. abortus* | 0.00017 | 5 | *B. abortus*, 98.6% of 71 isolates |
+| `ERR471315` | `SAMEA2266859` | *B. ceti* | *B. abortus* | 0.00017 | 5 | *B. abortus*, 98.6% of 71 isolates |
+
+### Single submissions
+
+| Run | BioSample | Study | Submitted as | Both methods say | Distance | ST | PubMLST species of that ST |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| `SRR31560207` | `SAMN15685105` | PRJNA649281 | *B. abortus* | *B. melitensis* | 0.00056 | 7 | *B. melitensis*, 98.6% of 72 isolates |
+| `SRR11526759` | `SAMN14309819` | PRJNA610713 | *B. abortus* | *B. melitensis* | 0.00098 | 8 | *B. melitensis*, 98.3% of 862 isolates |
+
+`SRR31357708` (`SAMN44729562`, PRJNA1183633), submitted as *B. cytisi*, belongs with these although no ST
+is available: the former *Ochrobactrum* species do not carry the classical MLST alleles, and six of the
+nine loci got no read at all. The distance evidence is decisive on its own — 0.0076 from the nearest
+*B. anthropi* against 0.0381–0.0394 from the three deposits of the *cytisi* type strain, which rank 89th,
+90th and 91st of the 428 references. Every one of its top eight hits is *anthropi*. Status: to report.
 
 ## Read sets: candidates
 
-| Run | Submitted as | Closest | Distance | Why it is only a candidate |
-| --- | --- | --- | --- | --- |
-| `SRR6003475` | *B. thiophenivorans* | *B. pituitosa* | 0.0029 | sister species with one reference genome each, no ST available, and no type-strain anchor measured yet |
+| Run | BioSample | Submitted as | Closest | Distance | Why it is only a candidate |
+| --- | --- | --- | --- | --- | --- |
+| `SRR6003475` | `SAMN07581394` | *B. thiophenivorans* | *B. pituitosa* | 0.0029 | sister species with one reference genome each, no ST available, no type-strain anchor measured yet |
+| `SRR10948139` | `SAMN13812480` | *B. anthropi* | *B. intermedia* | 0.0087 | both species are diverse enough that 0.0087 is not conclusive, and no ST is available |
+
+## Read sets where the label looks right and our reference set is what is missing
+
+Kept here so they are not mistaken for mislabels. In each case the submitter is probably correct and
+BrucellaID could not place the sample because the extended set has no suitable reference.
+
+* `SRR4038994` (`SAMN05417907`, PRJNA251693), submitted as *B. papionis*, reported as
+  *B. pinnipedialis* at 0.0028 with an `unresolved` flag. The label is almost certainly right: the run
+  carries **ST 54, which PubMLST records as *B. papionis* in both of its isolates**, and the reason MASH
+  cannot confirm it is that *B. papionis* has no assembly anywhere in INSDC, so the extended set has no
+  genome of it to match. This is the one named species of the clade the set cannot cover, and this read
+  set is the only public sequence data for it.
+* `SRR12605656`, submitted as *B. haematophila*, reported as *Brucella* sp. at 0.0201. Only three
+  *haematophila* genomes exist to compare with, and one of them is itself a candidate mislabel, so the
+  reference side is too thin to call this either way.
+* `SRR31481153`, submitted as *B. inopinata*, reported as *Brucella* sp. at 0.00053 with a `new` sequence
+  type. It sits next to an unnamed lineage representative rather than to an *inopinata* genome, which may
+  say more about how few *inopinata* genomes exist than about the label.
 
 ## Reproducing the evidence
 
@@ -122,6 +176,8 @@ The curation decisions that excluded these genomes from the shipped set are in
 
 ## Still to come
 
-Phase 2 is still running at the time of writing, so the read-set tables above cover only the runs analysed
-so far and will grow. Re-run the extraction over the finished `results_default.tsv` and
-`results_extended.tsv` before anything is sent, so that one report covers the whole sweep.
+Phase 2 is still running at the time of writing: the read-set tables above cover the first 2,929 of the
+4,044 runs and will grow. Re-run the extraction over the finished `results_default.tsv` and
+`results_extended.tsv` before anything is sent, so that one report covers the whole sweep, and group any
+new runs by study the way the tables above do -- six of the first seven findings came from one submission,
+and raising them together is both fairer to the submitter and harder to dismiss.
