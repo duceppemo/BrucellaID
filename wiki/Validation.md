@@ -194,5 +194,56 @@ rather than as a clean call.
 
 What this does not establish is the same as above, plus one thing: the reads were simulated from the very
 collection the set was curated from, so a lineage absent from GenBank in October 2026 is absent from both
-sides of the measurement. A validation on real public read sets is the next step before the extended set
-can become the default.
+sides of the measurement. That is what the next section is for.
+
+## On real public read sets: the whole archive
+
+Simulated reads cannot show how a reference set behaves on real libraries, so both sets were run over
+**every usable public *Brucella* read set in ENA**: each paired Illumina WGS run under NCBI taxon 234,
+filtered to a proper `_1`/`_2` pair between 10 MB and 6 GB — 4,044 runs, 1.6 TB of reads, of which 4,042
+were analysed. The two that are missing could not be downloaded after two passes; none failed to analyse.
+These are other people's samples with other people's labels, so a disagreement is a question rather than
+automatically an error.
+
+| Reference set | Matches the submitter | Does not |
+| --- | --- | --- |
+| Default (16 genomes, 8 species) | 3,890 (96.2%) | 152 |
+| Extended set (428 genomes) | 3,990 (98.7%) | 52 |
+
+The two sets disagree on 146 runs. **The extended set is right on 91 of them and the default set on none** —
+there is no run in the sweep where the sixteen genomes gave a better answer. Seventy-two of those are
+species the default set cannot name, which come back `ND` at 0.17–0.26: 35 *B. anthropi*, 15
+*B. intermedia*, and most of the rest of the former *Ochrobactrum* clade. Nineteen are wrong-species calls
+the extended set corrects, most of them marine: the default set scored **0 of 11** on *B. pinnipedialis*,
+sending six of them to *B. ceti*, where the extended set gets 8 of 11 with the other three not identified.
+
+What the extended set's 52 non-matches are, one by one:
+
+* **20 are mislabelled read sets.** For 19 of them the MASH distance and the sequence type — which share
+  no code and no reference data — both contradict the submitted species and agree with each other; for the
+  twentieth, both reference sets agree independently. Several sit 0.0001–0.0003 from the species the
+  sequence says they are, which is as close as two genomes of one species ever get. Eleven come from a
+  single submission.
+* **22 contain little or no *Brucella*.** They share 0 to 146 of 1000 hashes with every genome of the
+  clade, four of them exactly zero, against the 900 or more a real *Brucella* library shares with its own
+  species. BrucellaID named none of them, which is what the threshold of 150 shared hashes is for.
+* **10 are the honest limits of the set.** Eight are former *Ochrobactrum* species whose nearest reference
+  is 0.005–0.02 away, which is a thin reference side rather than a wrong answer; one is the
+  *B. papionis* read set with no genome in existence to match; one is an *inopinata*-adjacent lineage that
+  landed on an unnamed representative.
+
+**Not one of the 52 is a case where the set held the right reference and named the wrong species.** Scored
+against what the sequences demonstrably are, the extended set is right on 4,032 of 4,042. Every mislabelled
+record found on either side of this validation is listed with its evidence in
+[`curation/mislabelled_records.md`](https://github.com/duceppemo/BrucellaID/blob/main/curation/mislabelled_records.md).
+
+What this does establish is that the extended set costs nothing on the species the default set already
+covers: across 2,018 *B. melitensis* and 1,118 *B. abortus* runs — the bulk of real traffic — the two sets
+return the same answer, so the extra 412 genomes add coverage without disturbing the calls that matter most.
+
+What it does **not** establish, and what still stands in the way of making it the default: for the diverse
+part of the clade there is no distance-based warning. A sample 0.0089 from its nearest *B. anthropi* is
+reported as a plain `MASH` call, with the same confidence as one at 0.0003, even though that distance is
+thirty times a classical within-species distance. Only one of those ten limit cases carried a flag. A
+caution tied to the distance, not just to a second reference being close, is the piece to add before the
+sixteen genomes step aside.

@@ -7,8 +7,12 @@
   lineages with no name yet, which are reported honestly as *Brucella sp.*. Derived from the 2,022
   assemblies behind the mashID *Brucella* pack and curated genome by genome
   (`scripts/extended_references_curation.tsv` logs every exclusion and why); validated on simulated reads
-  of all 2,022: every held-out sample of a named species right, once six genomes mislabelled in NCBI --
-  caught by the curation itself -- are accounted for. The 16 vSNP genomes remain the default, and
+  of all 2,022, every held-out sample of a named species right once seven genomes mislabelled in NCBI --
+  caught by the curation itself -- are accounted for, and on all 4,042 usable public Brucella read sets in
+  ENA, where it matches the submitter on 98.7% against 96.2% and wins every disagreement that has a right
+  answer. Of its 52 non-matches, 20 are mislabelled records and 22 are read sets holding little or no
+  Brucella; none is a wrong species named off a reference that was there. The 16 vSNP genomes remain the
+  default, and
   `scripts/make_extended_references.py` rebuilds the extended sketch from NCBI.
 * A nearly-as-close reference of the **same species** as the closest one is counted, not listed: "nearly as
   close: 4 other Brucella melitensis genome(s)" instead of four file names that change nothing about the

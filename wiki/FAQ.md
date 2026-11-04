@@ -46,7 +46,8 @@ The thirtieth is *B. papionis*, and no reference set can carry it: INSDC holds n
 at all, only a single read set, so there is no genome to sketch.
 [How it works](How-it-works#the-extended-reference-set) says where it comes from and
 [Validation](Validation#at-scale-the-extended-reference-set) what it does on simulated reads of 2,022
-assemblies. The 16 vSNP genomes stay the default.
+assemblies and [on every public *Brucella* read set in ENA](Validation#on-real-public-read-sets-the-whole-archive).
+The 16 vSNP genomes stay the default.
 
 ### Where did the biovar column go?
 It was removed in 1.1, because it was never a biovar call and was read as one. It held the biovar of the

@@ -68,9 +68,11 @@ configure.
   covering 29 of the 30 named species — the former *Ochrobactrum* included — plus the unnamed lineages, so
   an atypical isolate is reported as *Brucella sp.* rather than forced onto the nearest classical species.
   The thirtieth, *B. papionis*, is not a gap anyone can close: no assembly of it exists in INSDC.
-  [Validated](https://github.com/duceppemo/BrucellaID/wiki/Validation) on simulated reads of 2,022 NCBI
-  assemblies: every held-out sample of a named species right, once six genomes mislabelled in NCBI — which
-  the curation itself caught — are accounted for.
+  [Validated](https://github.com/duceppemo/BrucellaID/wiki/Validation) twice: on simulated reads of 2,022
+  NCBI assemblies, every held-out sample of a named species right once seven genomes mislabelled in NCBI —
+  which the curation itself caught — are accounted for; and on **every usable public *Brucella* read set in
+  ENA**, 4,042 real libraries, where it matches the submitter on 98.7% against the default set's 96.2%, and
+  wins all 91 of the disagreements that have a right answer without losing one.
 * **Backwards compatible where it counts**: the MASH identification is vSNP's, down to the threshold of
   150 shared hashes (`--no-st-species` reports it alone), and `--xlsx` still writes the
   `stat_alignment_summary_<date>.xlsx` of the first version.

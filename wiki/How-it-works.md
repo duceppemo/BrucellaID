@@ -188,7 +188,7 @@ twins of named species were dropped, and one cluster got the label its neighbour
 with its reason, is
 [`scripts/extended_references_curation.tsv`](https://github.com/duceppemo/BrucellaID/blob/main/scripts/extended_references_curation.tsv),
 and [Validation](Validation#at-scale-the-extended-reference-set) shows what the set does on simulated
-reads of all 2,022 assemblies.
+reads of all 2,022 assemblies and on every usable public *Brucella* read set in ENA.
 
 One named species is missing and cannot be added: *B. papionis*, described from baboons in 2014. INSDC
 holds no assembly of it — not at NCBI, not at ENA — only one public read set, so there is nothing to

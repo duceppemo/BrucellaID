@@ -70,8 +70,8 @@ Kept here so they are not re-flagged by the next automated pass.
 
 ## Read sets: the submitted species is contradicted by two independent methods
 
-From the Phase 2 validation, which measured **all 3,992 usable public *Brucella* read sets in ENA** against
-both reference sets. For each of these the MASH identification and the nine-locus MLST — which share no
+From the Phase 2 validation, which measured **4,042 of the 4,044 usable public *Brucella* read sets in ENA**
+against both reference sets. For each of these the MASH identification and the nine-locus MLST — which share no
 code and no reference data — both point away from the submitted label and at the same species. Distances
 are to the closest genome of the extended set. The `PubMLST species` column gives the species that database
 records for the sequence type, with how consistently its isolates carry it.
@@ -141,7 +141,7 @@ nine loci got no read at all. The distance evidence is decisive on its own — 0
 
 ## Read sets that contain no *Brucella* sequence
 
-Twenty-one read sets carry a *Brucella* species on the label and share almost nothing with any genome of
+Twenty-two read sets carry a *Brucella* species on the label and share almost nothing with any genome of
 the clade. These are not identification failures — BrucellaID refused to name them, which is what the
 threshold of 150 shared hashes is for — but they are worth reporting, because a reader searching the
 archive for *B. abortus* reads will find them.
@@ -152,7 +152,7 @@ A real *Brucella* read set at usable depth shares 900 or more of the 1000 hashes
 | --- | --- | --- | --- |
 | PRJEB4782 (Sanger) | `ERR471337`, `ERR473743`, `ERR554820`, `ERR775236`, `ERR775237`, `ERR775244`, `ERR775245`, `ERR775246`, `ERR775247`, `ERR775248` | *B. abortus* | 1–2 of 1000 |
 | PRJNA52097 (Broad) | `SRR825216`, `SRR825217`, `SRR825218` | *B. pinnipedialis* | **0 of 1000** |
-| PRJNA197004 (Broad) | `SRR886242`, `SRR886243` | *B. ceti* | 1 of 1000 |
+| PRJNA197004 (Broad) | `SRR886241`, `SRR886242`, `SRR886243` | *B. ceti* | 1 of 1000 |
 | PRJNA77813 (Broad) | `SRR848042` | *B. abortus* | **0 of 1000** |
 | PRJNA213741 (Broad) | `SRR952243` | *B. abortus* | 146 of 1000 — just under the threshold, the one borderline case |
 | PRJEB22377 (Sanger) | `ERR3218177` | *B. abortus* | 6 of 1000 |
@@ -219,9 +219,10 @@ The curation decisions that excluded these genomes from the shipped set are in
 ## Scope
 
 The read-set tables cover the completed Phase 2 sweep: every usable paired Illumina WGS run under NCBI
-taxon 234 in ENA as of 2026-11-03, 3,992 of 4,044 analysed. The 52 that are missing failed to download
-rather than failing to analyse, and a retry pass is under way; if any of them turns up a finding it goes
-in the tables above before anything is sent.
+taxon 234 in ENA as of 2026-11-03, **4,042 of 4,044 analysed**. The two that are missing,
+`SRR9831875` and `SRR3096373`, could not be downloaded from ENA after two passes; neither failed to
+analyse. Fifty-two runs failed on the first pass and a retry recovered fifty of them, which added one
+finding: `SRR886241`, included above.
 
 The assembly tables come from the curation of the extended reference set and cover the 454 dereplicated
 representatives of the mashID pack source collection, not all 2,022 assemblies, so the assembly side is
