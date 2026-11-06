@@ -166,8 +166,8 @@ nine loci, 4,396 bp in all.
 
 The 16 genomes of the default set cover 8 species — the classical six plus *B. microti* and *B. neotomae*.
 The 2020 taxonomy moved the genus *Ochrobactrum* into *Brucella*, and sequencing keeps finding isolates of
-the atypical lineages, so the package also ships a second set: 428 curated genomes covering 29 of the 30
-named species of the clade, selected with
+the atypical lineages, so the package also ships a second set: 429 curated genomes covering all 30 named
+species of the clade, selected with
 
 ```bash
 brucellaid -i reads/ -o results/ --reference-set extended
@@ -190,10 +190,15 @@ with its reason, is
 and [Validation](Validation#at-scale-the-extended-reference-set) shows what the set does on simulated
 reads of all 2,022 assemblies and on every usable public *Brucella* read set in ENA.
 
-One named species is missing and cannot be added: *B. papionis*, described from baboons in 2014. INSDC
-holds no assembly of it — not at NCBI, not at ENA — only one public read set, so there is nothing to
-sketch. A *B. papionis* sample therefore lands on its nearest neighbour, which is roughly 0.003 away,
-far enough that the call comes with a note rather than passing silently.
+One of the thirty was nearly missed. Nothing in INSDC is labelled *B. papionis*, the species described
+from baboons in 2014: NCBI's assembly database answers nothing for it and so does ENA's. Its genome is
+nevertheless there, filed as "*Brucella* sp. NVSL 07-0026", and the first pass of the curation dropped it
+as a redundant unnamed twin of *B. microti* 0.0020 away — a species-level gap in the classical core, not
+a within-species one. It is now the species' reference, relabelled on its sequence type and its
+distances, which
+[`curation/papionis/README.md`](https://github.com/duceppemo/BrucellaID/blob/main/curation/papionis/README.md)
+lays out. Only one *B. papionis* strain has ever been sequenced, so the species is covered rather than
+tested.
 
 The default set remains the default: it is vSNP's, every answer in the
 field so far was measured against it, and the extended set is one release old.

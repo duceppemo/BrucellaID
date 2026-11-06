@@ -154,7 +154,7 @@ old 422.
 The [extended reference set](How-it-works#the-extended-reference-set) was validated separately, at a scale
 the repository's script is not meant for: 150 bp paired-end reads simulated at 20x (0.2% substitutions)
 from **all 2,022 *Brucella* assemblies** of the collection it was curated from, identified against three
-reference sets on the same machine. 428 of the samples are genomes of the extended set itself, so a
+reference sets on the same machine. 429 of the samples are genomes of the extended set itself, so a
 self-match tells us nothing; the numbers below are the 1,544 *held-out* samples that carry a named species.
 The other 95 samples are labelled *Brucella sp.* in NCBI and have no right answer to score.
 
@@ -162,7 +162,7 @@ The other 95 samples are labelled *Brucella sp.* in NCBI and have no right answe
 | --- | --- | --- | --- |
 | Default (16 genomes, 8 species) | 1,451 (94.0%) | 25 | 68 |
 | mashID pack as published (389 genomes) | 1,533 (99.3%) | 11 | 0 |
-| Extended set (428 genomes, curated) | 1,538 (99.61%) | 6 | 0 |
+| Extended set (429 genomes, curated) | 1,538 (99.61%) | 6 | 0 |
 
 The default set's misses are the species it does not carry — *B. pinnipedialis* and the porpoise lineage
 of *B. ceti* land on *B. ceti* or *B. microti*, the whole former *Ochrobactrum* clade comes back `ND` —
@@ -186,11 +186,12 @@ held-out named samples right**, including all 69 *B. canis*, all 24 *B. ceti* an
 were reported as *Brucella sp.*, 40 as the named species they sit next to (36 of them with a note saying
 how close the call was), and the two genomes that are nowhere near the clade came back `ND`.
 
-What the set cannot cover: *B. papionis*. It is the thirtieth named species of the clade and the only one
-with no assembly in INSDC — NCBI's assembly database holds none, ENA's holds none, and the species is
-represented in the public archives by a single read set. There was no genome to curate, so a
-*B. papionis* sample lands on its nearest neighbour at a distance of about 0.003, reported with a note
-rather than as a clean call.
+The *B. papionis* genome was added to the set after this was measured, and it changes none of it. Every
+one of the 2,022 assemblies was measured against that genome: exactly one is nearer to it than to the
+reference it had matched, and that one *is* it, now a self-match instead of a *B. pinnipedialis* call at
+0.00205. Its NCBI label is *Brucella* sp., so it was never in the named universe these numbers are scored
+on. The two neighbours with the least margin, a *B. microti* and a *B. pinnipedialis* read set, return the
+same species, the same closest reference and the same distance with it in the set as without.
 
 What this does not establish is the same as above, plus one thing: the reads were simulated from the very
 collection the set was curated from, so a lineage absent from GenBank in October 2026 is absent from both
@@ -208,7 +209,7 @@ automatically an error.
 | Reference set | Matches the submitter | Does not |
 | --- | --- | --- |
 | Default (16 genomes, 8 species) | 3,890 (96.2%) | 152 |
-| Extended set (428 genomes) | 3,990 (98.7%) | 52 |
+| Extended set (429 genomes) | 3,990 (98.7%) | 52 |
 
 The two sets disagree on 146 runs. **The extended set is right on 91 of them and the default set on none** —
 there is no run in the sweep where the sixteen genomes gave a better answer. Seventy-two of those are
@@ -229,8 +230,12 @@ What the extended set's 52 non-matches are, one by one:
   species. BrucellaID named none of them, which is what the threshold of 150 shared hashes is for.
 * **10 are the honest limits of the set.** Eight are former *Ochrobactrum* species whose nearest reference
   is 0.005–0.02 away, which is a thin reference side rather than a wrong answer; one is the
-  *B. papionis* read set with no genome in existence to match; one is an *inopinata*-adjacent lineage that
-  landed on an unnamed representative.
+  *B. papionis* read set, which had no reference to match at the time; one is an *inopinata*-adjacent
+  lineage that landed on an unnamed representative.
+
+The sweep ran before the *B. papionis* genome was added. Re-running that one read set with it in the set
+reports *B. papionis* at 0.00083, which would make the extended figure 3,991 of 4,042; the other runs were
+not re-measured, so the table above is what was actually measured.
 
 **Not one of the 52 is a case where the set held the right reference and named the wrong species.** Scored
 against what the sequences demonstrably are, the extended set is right on 4,032 of 4,042. Every mislabelled

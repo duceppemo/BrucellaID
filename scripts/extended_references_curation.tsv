@@ -1,4 +1,4 @@
-# How the 428 genomes of the extended reference set were chosen, from the 454 dereplicated
+# How the 429 genomes of the extended reference set were chosen, from the 454 dereplicated
 # representatives of the mashID Brucella pack's source collection (figshare article 33970168, version 4;
 # 2,022 NCBI taxon-234 assemblies, dereplicated at a MASH distance of 0.0003).
 # Validated on simulated reads of all 2,022 assemblies: 1544/1544 held-out samples of a named species
@@ -12,9 +12,9 @@ EXCLUDE	GCA_000292205.2	Brucella abortus	labelled abortus bv. 1 (BCB013); genome
 EXCLUDE	GCA_036881765.1	Brucella abortus	labelled abortus; genome 0.0007 from melitensis (0.0016 from abortus) and ST 8 is melitensis
 EXCLUDE	GCA_000662015.2	Brucella canis	labelled inopinata BO1 (type); genome 0.0011 from suis/canis — same batch swap
 EXCLUDE	GCA_059995225.1	Brucella cytisi	labelled cytisi (WTB2); genome 0.0066 from anthropi and 0.0395 from the nearest cytisi, and the cytisi type strain is 0.038 away -- an anthropi under a cytisi label
+RELABEL	GCA_000163135.1	Brucella sp -> Brucella papionis	labelled "Brucella sp. NVSL 07-0026"; carries ST 54, which PubMLST records as papionis, and the same nine alleles as an independent assembly of SRR4038994 (strain B07-0026) 0.00005 away; 0.0019-0.0028 from microti, pinnipedialis and ceti, so a species of its own and the only B. papionis genome in INSDC
 RELABEL	GCA_049065255.1	Brucella ciceri -> Brucella intermedia	labelled ciceri (SA289) but 0.0066 from the ciceri type strain DSM 22292 and identical to the SA148/IR068 cluster, which NCBI labels intermedia 12 times out of 14
 DROP-SP	GCA_000158995.1	Brucella sp	0.00047 from Brucella ceti: covered by its own representatives
-DROP-SP	GCA_000163135.1	Brucella sp	0.00200 from Brucella microti: covered by its own representatives
 DROP-SP	GCA_000367105.1	Brucella sp	0.00004 from Brucella pinnipedialis: covered by its own representatives
 DROP-SP	GCA_000370925.1	Brucella sp	0.00004 from Brucella pinnipedialis: covered by its own representatives
 DROP-SP	GCA_000370945.1	Brucella sp	0.00167 from Brucella pinnipedialis: covered by its own representatives

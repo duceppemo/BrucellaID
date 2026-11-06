@@ -23,7 +23,7 @@ two genomes of the same classical *Brucella* species are typically 0.0001–0.00
 ## Assemblies: the label is contradicted by the sequence
 
 Each of these rests on two independent lines of evidence, or on type-strain geometry with a margin wide
-enough that one line is decisive. All five are also in the figshare pack, so the pack carries the same
+enough that one line is decisive. All six are also in the figshare pack, so the pack carries the same
 labels.
 
 | Accession | Label in NCBI | The sequence is | Evidence | Status |
@@ -32,6 +32,7 @@ labels.
 | `GCA_000662015.2` | *B. inopinata* BO1, **flagged as type material** | a *suis*/*canis* cluster genome | 0.00114 from *B. suis* `GCA_000741995.1` and 0.00118 from *B. canis* `GCA_000530495.1`, but **0.0237 from the other assembly of BO1**. It cannot be the same strain as the genome it claims to be. | to report |
 | `GCA_000661995.2` | *B. suis* bv. 4 str. 40 | *B. inopinata* (BO1) | 0.00044 from the BO1 type assembly `GCA_000182725.1` and 0.00203 from a second *inopinata*, against 0.022 from every genome labelled *suis*. Its three nearest neighbours are all *inopinata*. | to report |
 | `GCA_049065255.1` | *B. ciceri* (SA289) | *B. intermedia* | 0.00004 from `GCA_001917355.1`, which NCBI labels *intermedia*; 0.0066 from the nearest other *ciceri* and from the *ciceri* type strain DSM 22292. The SA148/IR068 cluster it sits in is labelled *intermedia* in 12 of 14 NCBI records. | to report |
+| `GCA_000163135.1` | *Brucella* sp. NVSL 07-0026 | *B. papionis* | Carries ST 54, which PubMLST records as *B. papionis*; the same nine alleles, by exact match, as an independent assembly of `SRR4038994` (strain B07-0026, submitted as *B. papionis*) sitting 0.000048 away. 0.0019–0.0020 from *pinnipedialis*, *microti* and *ceti*, so a species of its own. **This is the only *B. papionis* genome in INSDC and nothing there is labelled with that species.** | to report |
 | `GCA_059995225.1` | *B. cytisi* (WTB2) | *B. anthropi* | 0.0066 from *anthropi* against 0.0395 from the nearest other *cytisi*. All three deposits of the *cytisi* type strain (ESC1, LMG 22713, DSM 19778) agree with each other to 0.0012–0.0026 and sit 0.0381–0.0394 away, so the type cluster is tight and this genome is not in it. | to report |
 
 `GCA_000662015.2` and `GCA_000661995.2` are **a swapped pair**: each one's sequence matches the other's
@@ -137,7 +138,7 @@ so a wrong label here travels further than an ordinary isolate's would.
 is available: the former *Ochrobactrum* species do not carry the classical MLST alleles, and six of the
 nine loci got no read at all. The distance evidence is decisive on its own — 0.0076 from the nearest
 *B. anthropi* against 0.0381–0.0394 from the three deposits of the *cytisi* type strain, which rank 89th,
-90th and 91st of the 428 references. Every one of its top eight hits is *anthropi*. Status: to report.
+90th and 91st of the 429 references. Every one of its top eight hits is *anthropi*. Status: to report.
 
 ## Read sets that contain no *Brucella* sequence
 
@@ -181,12 +182,10 @@ distance of 0.005–0.02 is suggestive rather than conclusive.
 Kept here so they are not mistaken for mislabels. In each case the submitter is probably correct and
 BrucellaID could not place the sample because the extended set has no suitable reference.
 
-* `SRR4038994` (`SAMN05417907`, PRJNA251693), submitted as *B. papionis*, reported as *B. pinnipedialis*
-  at 0.0028 with an `unresolved` flag. The label is almost certainly right: the run carries **ST 54, which
-  PubMLST records as *B. papionis* in both of its isolates**, and the reason MASH cannot confirm it is that
-  *B. papionis* has no assembly anywhere in INSDC, so the extended set has no genome of it to match. This
-  is the one named species of the clade the set cannot cover, and this read set is the only public sequence
-  data for it.
+* `SRR4038994` (`SAMN05417907`, PRJNA251693), submitted as *B. papionis* — **resolved.** The submitter was
+  right, and chasing this run is what turned up `GCA_000163135.1` above: the species' genome was in NCBI
+  under *Brucella* sp. all along. With that genome relabelled and added, the run now reports *B. papionis*
+  at 0.00083. See [`papionis/README.md`](papionis/README.md).
 * `SRR12605656` (*B. haematophila*, 0.0201, 488/1000) and `SRR25828932`, `SRR25828924` (*B. anthropi*,
   0.014 and 0.008) — reported as *Brucella* sp. because the nearest named genome is far away. With three
   *haematophila* genomes in existence, one of them itself a candidate mislabel, the reference side is too
@@ -203,7 +202,7 @@ mash dist curation.msh curation.msh > allvsall.tsv
 
 # a read set against the extended reference set, keeping every per-reference distance
 brucellaid -r1 RUN_1.fastq.gz -r2 RUN_2.fastq.gz -o out --reference-set extended
-#   out/brucellaid_mash.tsv holds the distance to all 428 references, ranked
+#   out/brucellaid_mash.tsv holds the distance to all 429 references, ranked
 #   out/brucellaid_mlst.tsv holds every allele call with the margin it had
 ```
 
@@ -215,6 +214,30 @@ The curation decisions that excluded these genomes from the shipped set are in
 | Record | Reported to | Date | Outcome |
 | --- | --- | --- | --- |
 | — | — | — | nothing sent yet |
+
+## A note on our own cutoffs
+
+Two of the findings above were missed by the first pass of the curation, both for the same reason, and it
+is worth writing down because it will bite again. The rules used **absolute** distance thresholds: a
+genome was an intruder if another species was nearer *and* within 0.004, and an unnamed genome was a
+redundant twin if a named species was within 0.004.
+
+Those numbers were calibrated on the classical species, which are clonal — two *B. abortus* genomes are
+0.0001–0.002 apart. They do not transfer:
+
+* In the former *Ochrobactrum* species the within-species spread is enormous — up to 0.21 inside
+  *B. anthropi* — so a mislabel sitting 0.0066 from another species slips past an 0.004 intruder rule.
+  That is how `GCA_059995225.1` kept a *cytisi* label while being an *anthropi*.
+* In the classical core 0.0020 is a *species-level* gap, not a within-species one, so the twin rule threw
+  away a genome that was the sole representative of its species. That is how `GCA_000163135.1`, the only
+  *B. papionis* genome anywhere, was dropped as a redundant *B. microti*.
+
+A relative criterion catches both: compare a genome's distance to another species against its distance to
+its own, rather than against a fixed number. Eight more genomes dropped by the twin rule sit 0.0014–0.0028
+from their nearest named species and have not been re-examined: `GCA_030157885.1` and `GCA_000370945.1`
+in the classical core, and `GCA_040368495.1`, `GCA_045032515.1`, `GCA_058796175.1`, `GCA_047708795.1`,
+`GCA_040366835.1` among the ex-*Ochrobactrum*, where the wide spread means 0.0028 may well be genuine
+within-species variation. They are the obvious next thing to check.
 
 ## Scope
 

@@ -32,7 +32,7 @@ nine loci. `--no-st-species` leaves the ST out of it entirely. See
 
 ### Why not just add more reference genomes instead?
 More references fix a different problem than the one the ST fixes. *B. canis* and *B. suis* bv. 4 are
-0.00024 apart, which is inside the variation within either species: in a dereplicated 428-genome *Brucella*
+0.00024 apart, which is inside the variation within either species: in a dereplicated 429-genome *Brucella*
 database the nearest pair of *canis* and *suis* genomes is 0.000194 apart. More references move that
 boundary around; they do not create one, and the MLST loci, which do separate the two, are what settles it.
 What more references *do* fix is coverage: the 16 genomes carry 8 species, and a sample of any other —
@@ -40,10 +40,12 @@ What more references *do* fix is coverage: the 16 genomes carry 8 species, and a
 That is what `--reference-set extended` is for.
 
 ### What is the extended reference set?
-428 curated genomes covering 29 of the 30 named species of the *Brucella* clade (the 2020 taxonomy moved
+429 curated genomes covering all 30 named species of the *Brucella* clade (the 2020 taxonomy moved
 *Ochrobactrum* into it) plus the lineages that have no name yet, selected with `--reference-set extended`.
-The thirtieth is *B. papionis*, and no reference set can carry it: INSDC holds no assembly of that species
-at all, only a single read set, so there is no genome to sketch.
+One of the 30 took some finding. Nothing in INSDC is labelled *B. papionis*, so it looked as though no
+set could carry it — but the genome is there under *Brucella* sp., and
+[`curation/papionis/README.md`](https://github.com/duceppemo/BrucellaID/blob/main/curation/papionis/README.md)
+records how it was identified and relabelled.
 [How it works](How-it-works#the-extended-reference-set) says where it comes from and
 [Validation](Validation#at-scale-the-extended-reference-set) what it does on simulated reads of 2,022
 assemblies and [on every public *Brucella* read set in ENA](Validation#on-real-public-read-sets-the-whole-archive).
