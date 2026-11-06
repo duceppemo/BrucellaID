@@ -233,11 +233,36 @@ Those numbers were calibrated on the classical species, which are clonal — two
   *B. papionis* genome anywhere, was dropped as a redundant *B. microti*.
 
 A relative criterion catches both: compare a genome's distance to another species against its distance to
-its own, rather than against a fixed number. Eight more genomes dropped by the twin rule sit 0.0014–0.0028
-from their nearest named species and have not been re-examined: `GCA_030157885.1` and `GCA_000370945.1`
-in the classical core, and `GCA_040368495.1`, `GCA_045032515.1`, `GCA_058796175.1`, `GCA_047708795.1`,
-`GCA_040366835.1` among the ex-*Ochrobactrum*, where the wide spread means 0.0028 may well be genuine
-within-species variation. They are the obvious next thing to check.
+its own, rather than against a fixed number.
+
+The other seven genomes the twin rule dropped at 0.0014–0.0028 have now been re-examined on that
+criterion — their distance to the nearest member of the species they were called a twin of, against how
+far that species spreads internally.
+
+**Five were dropped correctly.** `GCA_040368495.1` (*pseudogrignonensis*), `GCA_045032515.1`
+(*intermedia*), `GCA_058796175.1`, `GCA_047708795.1` and `GCA_040366835.1` (*anthropi*) sit 0.0014–0.0028
+from a member of those species, far inside their internal spread, whose median runs 0.021–0.024. For these
+species 0.0028 really is within-species variation, so they are redundant twins.
+
+**Two were not twins at all**, and both are in the classical core, where the spread is a hundred times
+tighter:
+
+| Genome | NCBI label | Distance | Why it is not a twin | What it is |
+| --- | --- | --- | --- | --- |
+| `GCA_030157885.1` | *Brucella* sp. bbatCR03, complete genome, 3.28 Mb | 0.00211 to the one *B. microti* genome, 0.00221 to *B. pinnipedialis* | near-equidistant from two species, which is what a species of its own looks like — the *B. papionis* signature | a novel lineage: its MLST profile `26-2-41-2-22-3-23-?-33` matches **no known ST**, and a second assembly, `GCA_002994775.1`, sits 0.00019 from it |
+| `GCA_000370945.1` | *Brucella* sp. 63/311, scaffold, 3.35 Mb | 0.00167 to *B. pinnipedialis* | **further than any two *pinnipedialis* genomes are from each other** (maximum 0.00121) | an unnamed lineage both databases agree on: ST 47, which PubMLST also records as *Brucella* sp. |
+
+Unlike *B. papionis*, neither is a named species hiding under an unnamed label — they are genuinely
+nameless lineages. Which is precisely what the curation policy says to keep, so that an atypical sample
+lands on *Brucella* sp. instead of a confident wrong name. Dropping them worked against that intent: in
+the simulated-read validation both were reported as a named species, *B. microti* and *B. pinnipedialis*,
+each with a `MASH (unresolved)` flag, rather than as *Brucella* sp.
+
+Putting them back is safe and gains a little honesty. Measured against all 2,022 assemblies, exactly three
+samples would change, every one of them labelled *Brucella* sp. in NCBI: the two genomes themselves, and
+`GCA_002994775.1`, which stops being called *B. microti* at 0.00224 and matches the bbatCR03 lineage at
+0.00019 — reported as *Brucella* sp., which is the honest answer. **No sample of a named species moves
+at all.** This has not been done yet.
 
 ## Scope
 
