@@ -15,6 +15,13 @@
   Brucella; none is a wrong species named off a reference that was there. The 16 vSNP genomes remain the
   default, and
   `scripts/make_extended_references.py` rebuilds the extended sketch from NCBI.
+* **A loose match is now said to be loose.** When the closest reference is further than
+  `--loose-distance` (0.005 by default), the call carries a note giving the distance and the shared hashes.
+  It does not change the species: a sample can be the right species and still match loosely, because the
+  library holds more than *Brucella* or because its lineage has no near relative in the sketch. The
+  threshold comes from every public *Brucella* read set in ENA, where nineteen in twenty calls that agreed
+  with the submitter sat within 0.005, and all 185 agreeing calls beyond it shared fewer than 900 of the
+  1000 hashes.
 * A nearly-as-close reference of the **same species** as the closest one is counted, not listed: "nearly as
   close: 4 other Brucella melitensis genome(s)" instead of four file names that change nothing about the
   call. A reference of another species is still named in full, with its shared hashes.

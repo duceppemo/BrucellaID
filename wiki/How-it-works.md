@@ -37,6 +37,15 @@ over 99% identical — so a MASH distance separates them by a small margin. Read
 `brucellaid_mash.tsv` lists every distance, and a note on the sample says when another reference was
 nearly as close.
 
+A second note says when the closest reference is **not close at all**. Being the nearest of several
+hundred genomes is not the same as being a good match, and the distance says which: past
+`--loose-distance`, 0.005 by default, the call carries a note with the distance and the shared hashes.
+It does not change the species, because a loose match is usually not a wrong species — over every public
+*Brucella* read set in ENA, 185 of the 195 calls past 0.005 agreed with the submitter anyway, and every
+one of those 185 shared fewer than 900 of the 1000 hashes, median 696. What a loose match means is that
+the reads hold more than *Brucella*, or that the sample belongs to a lineage with no near relative in the
+sketch. Either is worth knowing, and neither is visible from the species name alone.
+
 <a name="no-biovar"></a>
 
 ### There is no biovar

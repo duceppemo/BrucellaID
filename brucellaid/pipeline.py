@@ -5,7 +5,7 @@ from concurrent import futures
 from dataclasses import dataclass, field
 
 from .errors import BrucellaIDError
-from .mash import DEFAULT_MIN_HASHES, KMER_COPIES_AUTO, identify
+from .mash import DEFAULT_MIN_HASHES, KMER_COPIES_AUTO, LOOSE_MATCH_DISTANCE, identify
 from .mlst import DEFAULT_MIN_READS, UNKNOWN, run_mlst
 from .references import load_references, lookup, reference_sketch
 from .seal import DEFAULT_KMER_SIZE, DEFAULT_MISMATCHES
@@ -62,10 +62,10 @@ def close_label(references, hit):
     return reference.label if reference else 'not in the reference table'
 
 
-def species_notes(identification, references):
+def species_notes(identification, references, loose_distance=LOOSE_MATCH_DISTANCE):
     """
-    What is worth saying about an identification: a read set that is not Brucella, and the references that are
-    nearly as close as the closest one.
+    What is worth saying about an identification: a read set that is not Brucella, a closest reference that is
+    not close at all, and the references that are nearly as close as the closest one.
 
     Nearly as close references of the same species as the closest one are counted rather than listed: they
     change nothing about the call, and a dense reference set can have half a dozen of them.
@@ -84,6 +84,12 @@ def species_notes(identification, references):
     if reference is None:
         notes.append('the closest reference ({}) is not in the reference table, so no species is '
                      'reported'.format(best.reference))
+    if best.distance > loose_distance:
+        notes.append('loose match: the closest reference is {:.5f} away and shares {}/{} hashes, where a read '
+                     'set of a species the sketch holds usually matches within {:g}. The reads may hold more '
+                     'than Brucella, or this lineage may have no near relative in the sketch; the species named '
+                     'is still the closest one'
+                     .format(best.distance, best.shared_hashes, best.total_hashes, loose_distance))
     close = identification.close_matches
     if close:
         parts, same_species = [], 0
@@ -101,7 +107,7 @@ def species_notes(identification, references):
 
 
 def analyse_sample(sample, sketch=None, references=None, min_hashes=DEFAULT_MIN_HASHES,
-                   min_copies=KMER_COPIES_AUTO,
+                   loose_distance=LOOSE_MATCH_DISTANCE, min_copies=KMER_COPIES_AUTO,
                    min_reads=DEFAULT_MIN_READS, kmer_size=DEFAULT_KMER_SIZE, mismatch=DEFAULT_MISMATCHES,
                    threads=1, memory='1g', alleles=None, profiles=None, mlst=True, st_table=None,
                    use_st_species=True, min_st_purity=DEFAULT_MIN_PURITY,
@@ -124,7 +130,7 @@ def analyse_sample(sample, sketch=None, references=None, min_hashes=DEFAULT_MIN_
     try:
         result.identification = identify(sample.files, sketch, min_hashes=min_hashes, threads=threads,
                                          min_copies=min_copies, sample=sample.name)
-        result.reference, result.notes = species_notes(result.identification, references)
+        result.reference, result.notes = species_notes(result.identification, references, loose_distance)
         best = result.identification.best
         if result.identified:
             log.info('%s: %s (%s, MASH distance %.5f, %d/%d hashes)', sample.name,

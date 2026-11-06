@@ -28,6 +28,33 @@ def test_species_notes_of_a_clear_match():
     assert notes == []
 
 
+def test_species_notes_call_a_distant_closest_reference_a_loose_match():
+    found = identification('NC_006932-NC_006933.fasta\tq\t0.00900\t0\t700/1000\n')
+    reference, notes = species_notes(found, REFERENCES)
+    assert reference.code == 'ab1'
+    assert len(notes) == 1
+    assert notes[0].startswith('loose match: the closest reference is 0.00900 away and shares 700/1000 hashes')
+    assert 'the species named is still the closest one' in notes[0]
+
+
+def test_species_notes_say_nothing_about_a_distance_just_inside_the_threshold():
+    found = identification('NC_006932-NC_006933.fasta\tq\t0.00500\t0\t870/1000\n')
+    assert species_notes(found, REFERENCES)[1] == []
+
+
+def test_species_notes_take_a_loose_distance_of_their_own():
+    found = identification('NC_006932-NC_006933.fasta\tq\t0.00100\t0\t950/1000\n')
+    assert species_notes(found, REFERENCES, loose_distance=0.0005)[1][0].startswith('loose match:')
+    assert species_notes(found, REFERENCES, loose_distance=0.01)[1] == []
+
+
+def test_species_notes_of_a_sample_that_is_not_brucella_do_not_mention_a_loose_match():
+    found = identification('NC_006932-NC_006933.fasta\tq\t0.30000\t0\t3/1000\n')
+    notes = species_notes(found, REFERENCES)[1]
+    assert len(notes) == 1
+    assert notes[0].startswith('not identified:')
+
+
 def test_species_notes_count_a_nearly_as_close_genome_of_the_same_species():
     found = identification('NC_006932-NC_006933.fasta\tq\t0.00100\t0\t950/1000\n',
                            'NZ_CP007682-NZ_CP007683.fasta\tq\t0.00110\t0\t940/1000\n')

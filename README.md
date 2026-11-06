@@ -45,8 +45,8 @@ configure.
   PubMLST isolates. A `SpeciesSource` column says what each call rested on, and an ST that contradicts a
   species MASH picked cleanly is reported, never obeyed.
 * **Nothing is hidden**: the distance to every reference, the reads behind every allele call and the
-  runner-up that call had to beat, a note when a second reference was nearly as close, and a tie reported as
-  a tie rather than broken by a coin toss.
+  runner-up that call had to beat, a note when a second reference was nearly as close, a note when the
+  closest one is not close at all, and a tie reported as a tie rather than broken by a coin toss.
 * **A quality assurance report you can sign**: every run writes `brucellaid_report.html`, one
   self-contained file — no script, no stylesheet, nothing fetched from anywhere — holding the closest
   reference genomes and not only the winning one, how the species was decided, every allele call with the

@@ -27,6 +27,7 @@ def test_version_and_help(capsys):
     (['-i', 'reads', '-o', 'out', '-s', 'name'], 'only used with -r1'),
     (['-r1', 'a.fastq', '-o', 'out', '-p', '2'], '--parallel is only used with -i'),
     (['-r1', 'a.fastq', '-o', 'out', '--min-hashes', '0'], '--min-hashes must be >= 1'),
+    (['-r1', 'a.fastq', '-o', 'out', '--loose-distance', '0'], '--loose-distance must be greater than 0'),
     (['-r1', 'a.fastq', '-o', 'out', '--min-kmer-copies', '-1'], '--min-kmer-copies cannot be negative'),
     (['-r1', 'a.fastq', '-o', 'out', '--min-reads', '0'], '--min-reads must be >= 1'),
     (['-r1', 'a.fastq', '-o', 'out', '-m', '-1'], 'cannot be negative'),

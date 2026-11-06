@@ -23,6 +23,14 @@ DEFAULT_MIN_HASHES = 150
 # A second reference within this distance of the best one is reported as a close match: the Brucella genomes
 # differ by little, and the biovar references in particular are nearly identical.
 CLOSE_MATCH_MARGIN = 0.0005
+# Beyond this distance the closest reference is reported as a loose match. It says nothing about which species
+# is right: it says the reads are not close to anything in the sketch, which happens when the library holds
+# more than one organism and when the sample belongs to a lineage the sketch has no near relative for. Measured
+# over every public Brucella read set in ENA: nine in ten calls that agreed with the submitter sat within
+# 0.002 and nineteen in twenty within 0.005, and of the 185 agreeing calls beyond 0.005, every single one
+# shared fewer than 900 of the 1000 hashes, median 695. So past 0.005 something is worth saying, whether or
+# not the species turns out to be right.
+LOOSE_MATCH_DISTANCE = 0.005
 # How many copies of a k-mer the read set must hold before MASH sketches it. The point is to drop the
 # k-mers that only exist because of a sequencing error, and the right number depends on the coverage: an
 # error k-mer appears about depth * error_rate times, so at 30x a single copy is almost certainly an error

@@ -249,9 +249,20 @@ What this does establish is that the extended set costs nothing on the species t
 covers: across 2,018 *B. melitensis* and 1,118 *B. abortus* runs — the bulk of real traffic — the two sets
 return the same answer, so the extra 412 genomes add coverage without disturbing the calls that matter most.
 
-What it does **not** establish, and what still stands in the way of making it the default: for the diverse
-part of the clade there is no distance-based warning. A sample 0.0089 from its nearest *B. anthropi* is
-reported as a plain `MASH` call, with the same confidence as one at 0.0003, even though that distance is
-thirty times a classical within-species distance. Only one of those ten limit cases carried a flag. A
-caution tied to the distance, not just to a second reference being close, is the piece to add before the
-sixteen genomes step aside.
+This sweep also found the gap it needed to: for the diverse part of the clade there was no distance-based
+caution at all. A sample 0.0089 from its nearest *B. anthropi* was reported as a plain `MASH` call with the
+same confidence as one at 0.0003, and only one of those ten limit cases carried any flag. That is now
+fixed. Past `--loose-distance`, 0.005 by default, the call carries a note giving the distance and the
+shared hashes, which takes the ten limit cases from one flagged to eight.
+
+The threshold came out of this sweep rather than out of a guess. Of the 4,020 identified runs, 195 sit past
+0.005 — 4.9%, so the note stays rare — and 185 of those 195 agreed with the submitter anyway, which is why
+the note does not touch the species call. What those 185 had in common is the useful part: **every one of
+them shared fewer than 900 of the 1000 hashes**, median 696, against the 900-plus a clean library shares.
+A loose match is usually a diluted library rather than a wrong species, and saying so is more useful than
+either hiding it or acting on it.
+
+What this still does not establish: the sweep scores agreement with submitters, not truth, and the
+20 mislabelled read sets it found are a reminder that the denominator has errors in it too. Every one is
+listed with its evidence in
+[`curation/mislabelled_records.md`](https://github.com/duceppemo/BrucellaID/blob/main/curation/mislabelled_records.md).

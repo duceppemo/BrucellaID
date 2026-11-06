@@ -18,7 +18,7 @@ Also printed to standard output.
 | `AlleleProfile` | The nine allele numbers in the order of the loci, `-` for a locus not called |
 | `STSpecies` | The species the isolates of that ST carry, empty when the ST could not be used (the note says why) |
 | `Reads` | Reads in the input |
-| `Notes` | Close matches, loci without a call, and why a sample was not identified |
+| `Notes` | Close matches, a closest reference that is not close, loci without a call, and why a sample was not identified |
 | `Error` | Why the sample failed, when it did. The other samples are still reported |
 
 ```

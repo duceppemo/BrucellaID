@@ -64,6 +64,15 @@ What is still there: `brucellaid_mash.tsv` gives the biovar of each *reference g
 assurance report shows the biovars recorded for the sample's ST with their counts. For a biovar, use
 classical biotyping or [brucetyper](https://github.com/duceppemo/brucetyper).
 
+### What does "loose match" in the notes mean?
+That the closest reference is further than `--loose-distance` (0.005 by default) — the sample matched
+something, but not closely. It is **not** a claim that the species is wrong, and BrucellaID does not change
+the call: over every public *Brucella* read set in ENA, 185 of the 195 calls past 0.005 agreed with the
+submitter anyway. What they had in common was a diluted sketch — every one of those 185 shared fewer than
+900 of the 1000 hashes, against the 900-plus a clean library shares. So a loose match usually means the
+reads hold more than *Brucella*, and sometimes means the sample is a lineage with no near relative in the
+reference set. Read the note's distance and shared hashes, and `brucellaid_mash.tsv` for the runners-up.
+
 ### Why 150 shared hashes?
 It is the threshold the first version of BrucellaID used, and it separates "this read set is *Brucella*"
 from "the closest of 16 genomes happens to be this one" with room to spare: a real *Brucella* sample at 20x

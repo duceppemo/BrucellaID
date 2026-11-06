@@ -12,7 +12,7 @@ from pathlib import Path
 
 from . import __version__, qa
 from .errors import BrucellaIDError
-from .mash import DEFAULT_MIN_HASHES, KMER_COPIES_AUTO, check_mash, sketch_references
+from .mash import DEFAULT_MIN_HASHES, KMER_COPIES_AUTO, LOOSE_MATCH_DISTANCE, check_mash, sketch_references
 from .mlst import DEFAULT_MIN_READS, PROFILES_FILE, alleles_fasta, load_profiles
 from .pipeline import analyse_samples
 from .references import (
@@ -126,6 +126,11 @@ def build_parser():
     calling.add_argument('--min-hashes', metavar='N', type=int, default=DEFAULT_MIN_HASHES,
                          help='Minimum number of the reference\'s 1000 min-hashes the reads must share for a '
                               'species to be reported. Default: {}.'.format(DEFAULT_MIN_HASHES))
+    calling.add_argument('--loose-distance', metavar='D', type=float, default=LOOSE_MATCH_DISTANCE,
+                         dest='loose_distance',
+                         help='MASH distance beyond which the closest reference is reported as a loose match, '
+                              'in a note. It does not change the species called. Default: {}.'
+                              .format(LOOSE_MATCH_DISTANCE))
     calling.add_argument('--min-kmer-copies', metavar='N', type=int, default=KMER_COPIES_AUTO,
                          help='Number of copies of a k-mer the reads must hold for MASH to sketch it, which '
                               'is how the sequencing errors are kept out of the identification. The right '
@@ -192,6 +197,8 @@ def check_arguments(parser, args):
         parser.error('--min-kmer-copies cannot be negative (0 derives it from the coverage)')
     if args.min_hashes < 1:
         parser.error('--min-hashes must be >= 1')
+    if args.loose_distance <= 0:
+        parser.error('--loose-distance must be greater than 0')
     if args.min_reads < 1:
         parser.error('--min-reads must be >= 1')
     if args.mismatch < 0:
@@ -281,7 +288,8 @@ def main(argv=None):
         jobs = min(args.parallel, len(samples))
         memory = args.memory or auto_memory(file_bases(alleles), jobs=jobs)
         results = analyse_samples(samples, jobs=jobs, threads=args.threads, sketch=sketch, references=references,
-                                  min_hashes=args.min_hashes, min_copies=args.min_kmer_copies,
+                                  min_hashes=args.min_hashes, loose_distance=args.loose_distance,
+                                  min_copies=args.min_kmer_copies,
                                   min_reads=args.min_reads, kmer_size=args.kmer_size,
                                   mismatch=args.mismatch, memory=memory, alleles=args.alleles,
                                   profiles=args.profiles, mlst=mlst, st_table=st_table,
@@ -292,6 +300,7 @@ def main(argv=None):
                                  'Reference sketch': os.path.abspath(sketch),
                                  'MLST alleles': os.path.abspath(alleles) if mlst else None,
                                  'Minimum shared hashes': args.min_hashes,
+                                 'Loose match beyond': args.loose_distance,
                                  'Minimum k-mer copies': (args.min_kmer_copies or
                                                           'from the coverage of each sample'),
                                  'Minimum reads per allele': args.min_reads if mlst else None,
