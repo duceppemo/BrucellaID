@@ -1,7 +1,7 @@
 # Changelog
 
 ## Unreleased
-* **The extended reference set.** `--reference-set extended` identifies against 429 curated genomes
+* **The extended reference set.** `--reference-set extended` identifies against 431 curated genomes
   covering the whole *Brucella* clade -- all 30 named species, the former *Ochrobactrum* included
   (*B. papionis* is labelled nowhere in INSDC: its genome was found under "Brucella sp." and relabelled on
   sequence-type and distance evidence, see curation/papionis/README.md), plus the

@@ -81,7 +81,7 @@ The package ships all five files, and each can be replaced:
 
 | Option | What it takes |
 | --- | --- |
-| `--reference-set NAME` | Which packaged reference set to identify against: `default` (the 16 genomes of vSNP, 8 species) or `extended` (429 curated genomes, the whole *Brucella* clade — see [How it works](How-it-works#the-extended-reference-set)) |
+| `--reference-set NAME` | Which packaged reference set to identify against: `default` (the 16 genomes of vSNP, 8 species) or `extended` (431 curated genomes, the whole *Brucella* clade — see [How it works](How-it-works#the-extended-reference-set)) |
 | `--sketch FILE` | A MASH sketch of reference genomes. Keep MASH's defaults (k = 21, 1000 hashes) |
 | `--references FILE` | The table saying what each genome of the sketch is |
 | `--alleles FILE` | A fasta file of MLST alleles, named `<locus>_<number>` |

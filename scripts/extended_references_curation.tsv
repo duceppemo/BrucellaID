@@ -1,9 +1,14 @@
-# How the 429 genomes of the extended reference set were chosen, from the 454 dereplicated
+# How the 431 genomes of the extended reference set were chosen, from the 454 dereplicated
 # representatives of the mashID Brucella pack's source collection (figshare article 33970168, version 4;
 # 2,022 NCBI taxon-234 assemblies, dereplicated at a MASH distance of 0.0003).
 # Validated on simulated reads of all 2,022 assemblies: 1544/1544 held-out samples of a named species
 # right once the seven mislabelled truth genomes below are accounted for (wiki, Validation).
 # Every genome not listed here was kept as it was.
+# The DROP-SP cutoff of 0.004 was set on the classical species and does not transfer: it dropped three
+# genomes that are not twins at all. GCA_000163135.1 is B. papionis (now a RELABEL), and
+# GCA_030157885.1 and GCA_000370945.1 are distinct unnamed lineages, outside the diversity of the
+# species they were said to duplicate, so both are kept. curation/mislabelled_records.md shows the
+# measurements. A genome is a twin here only when it sits inside its neighbour species' own spread.
 # The records whose label the sequence contradicts are tracked, with the evidence for each, in
 # curation/mislabelled_records.md, so they can be reported to the submitters and to NCBI.
 action	accession	species	reason
@@ -17,7 +22,6 @@ RELABEL	GCA_049065255.1	Brucella ciceri -> Brucella intermedia	labelled ciceri (
 DROP-SP	GCA_000158995.1	Brucella sp	0.00047 from Brucella ceti: covered by its own representatives
 DROP-SP	GCA_000367105.1	Brucella sp	0.00004 from Brucella pinnipedialis: covered by its own representatives
 DROP-SP	GCA_000370925.1	Brucella sp	0.00004 from Brucella pinnipedialis: covered by its own representatives
-DROP-SP	GCA_000370945.1	Brucella sp	0.00167 from Brucella pinnipedialis: covered by its own representatives
 DROP-SP	GCA_000370985.1	Brucella sp	0.00001 from Brucella ceti: covered by its own representatives
 DROP-SP	GCA_000371005.1	Brucella sp	0.00002 from Brucella pinnipedialis: covered by its own representatives
 DROP-SP	GCA_000371025.1	Brucella sp	0.00009 from Brucella ceti: covered by its own representatives
@@ -25,7 +29,6 @@ DROP-SP	GCA_000480195.1	Brucella sp	0.00051 from Brucella suis: covered by its o
 DROP-SP	GCA_001715385.1	Brucella sp	0.00000 from Brucella abortus: covered by its own representatives
 DROP-SP	GCA_001937915.1	Brucella sp	0.00014 from Brucella melitensis: covered by its own representatives
 EXCLUDE	GCA_025846885.2	Brucella sp	>=0.09 from the entire clade: no reference value
-DROP-SP	GCA_030157885.1	Brucella sp	0.00211 from Brucella microti: covered by its own representatives
 EXCLUDE	GCA_039545455.1	Brucella sp	>=0.19 from the entire clade (Dyp-BE17): no reference value
 DROP-SP	GCA_040366835.1	Brucella sp	0.00143 from Brucella anthropi: covered by its own representatives
 DROP-SP	GCA_040368495.1	Brucella sp	0.00281 from Brucella pseudogrignonensis: covered by its own representatives
