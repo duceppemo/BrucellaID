@@ -86,7 +86,10 @@ def write_table(rows, path, command=None):
     """Write a table, tab separated, with the command line as a first comment line."""
     with open(path, 'w', encoding='utf-8') as f:
         if command:
-            f.write('#{}\n'.format(command))
+            # one_cell() as well, not only the data rows: shlex.join quotes a path holding a newline but
+            # does not escape it, and a raw CR or LF here splits the comment line in two and truncates
+            # the record of what produced the file.
+            f.write('#{}\n'.format(one_cell(command)))
         for row in rows:
             f.write('\t'.join(row) + '\n')
     return rows
@@ -252,7 +255,10 @@ def write_legacy_xlsx(results, path, started):
         raise BrucellaIDError('--xlsx needs the xlsxwriter package: install it with "pip install xlsxwriter" '
                               '(or "pip install brucellaid[xlsx]").') from None
     stamp = '{:%Y-%m-%d_%H-%M-%S}'.format(started)
-    workbook = xlsxwriter.Workbook(str(path))
+    # strings_to_formulas off: xlsxwriter sends any value starting with "=" to write_formula(), so a
+    # sample named "=HYPERLINK(...)" became a live formula and the cell showed its result instead of the
+    # sample. Every value here is text.
+    workbook = xlsxwriter.Workbook(str(path), {'strings_to_formulas': False})
     try:
         worksheet = workbook.add_worksheet()
         bold = workbook.add_format({'bold': True, 'font_name': 'Courier New', 'font_size': 10})

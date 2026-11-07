@@ -174,6 +174,25 @@ def test_legacy_xlsx(tmp_path):
     assert values[2] == ['2026-10-31_09-15-00', 'failed', UNKNOWN, UNKNOWN]
 
 
+def test_legacy_xlsx_never_writes_a_formula(tmp_path):
+    """
+    xlsxwriter sends any value starting with "=" to write_formula().
+
+    A sample named "=HYPERLINK(...)" became a live formula, and the cell displayed the formula's result
+    instead of the sample it belongs to -- in the one file some pipelines still read.
+    """
+    import dataclasses
+    import zipfile
+    pytest.importorskip('xlsxwriter')
+    openpyxl = pytest.importorskip('openpyxl', reason='openpyxl reads the report back')
+    hostile = '=HYPERLINK("http:..evil","CLICK")'
+    path = write_legacy_xlsx([dataclasses.replace(good_sample(), sample=hostile)],
+                             tmp_path / legacy_filename(STARTED), STARTED)
+    sheet = zipfile.ZipFile(path).read('xl/worksheets/sheet1.xml').decode()
+    assert '<f>' not in sheet
+    assert openpyxl.load_workbook(path).active['B2'].value == hostile
+
+
 def test_legacy_xlsx_without_xlsxwriter(tmp_path, monkeypatch):
     monkeypatch.setitem(__import__('sys').modules, 'xlsxwriter', None)
     with pytest.raises(BrucellaIDError, match='needs the xlsxwriter package'):

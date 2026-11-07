@@ -258,9 +258,18 @@ def logo():
     return re.sub(r'\s+(width|height)="[^"]*"', '', markup, count=2)
 
 
+# Bidirectional and C0/C1 control characters. They are not markup, so html.escape() lets them through,
+# but they reorder or hide what is displayed: a sample named "inv\u202egpj.exe" renders as
+# "invexe.jpg", a name that appears nowhere in the TSV, the JSON or the MultiQC file. A signed report
+# has to show the name the other files hold, so they are replaced by U+FFFD, which is what the PDF
+# already does by drawing a box.
+CONTROLS = re.compile('[\x00-\x08\x0b-\x1f\x7f-\x9f\u200e\u200f\u202a-\u202e\u2066-\u2069]')
+
+
 def escape(value):
     """A value as HTML text. Everything that reaches the report goes through this."""
-    return _escape('' if value is None else str(value), quote=True)
+    text = '' if value is None else str(value)
+    return _escape(CONTROLS.sub('\ufffd', text), quote=True)
 
 
 def anchor(name):

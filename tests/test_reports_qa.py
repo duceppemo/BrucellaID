@@ -186,11 +186,20 @@ def test_hits_caption_does_not_claim_a_ranking_the_distances_do_not_support():
     assert ranked.startswith('Closest first.')
     assert 'The other 1 reference(s) are further away' in ranked
 
-    # Nothing hidden: no pointer at the full table, and no tie wording for a single reference
-    assert hits_caption(rows(0.001, 0.002), 0) == (
-        'Closest first. A shaded row is too close to the first to be separated by distance alone.')
-    assert hits_caption(rows(1.0), 0).startswith('Closest first.')
-    assert hits_caption([], 0).startswith('Closest first.')
+    # Nothing hidden and no row flagged close: the shading sentence would be describing nothing
+    assert hits_caption(rows(0.001, 0.002), 0) == 'Closest first.'
+    assert hits_caption(rows(1.0), 0) == 'Closest first.'
+    assert hits_caption([], 0) == 'Closest first.'
+
+    # A partial tie that fits on the page is a true ranking of everything else
+    partial = hits_caption(rows(0.001, 0.001, 0.002, 0.003, 0.004, 0.01), 1)
+    assert partial.startswith('Closest first.')
+    assert 'The other 1 reference(s) are further away' in partial
+
+    # More tie at the top than the table shows: the hidden ones are not "further away"
+    deep = hits_caption(rows(*([0.001] * 9), 0.5), 5)
+    assert '9 of these reference genomes are the same distance' in deep
+    assert 'further away' not in deep
 
 
 def test_both_reports_say_a_tie_is_a_tie(tmp_path):

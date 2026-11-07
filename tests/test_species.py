@@ -140,6 +140,49 @@ def test_candidates_are_the_species_mash_leaves_within_reach():
     assert closest_of(found, REFERENCES, 'Brucella ovis') is None
 
 
+def coarse_tie(count=50, min_hashes=1):
+    """
+    An identification where so many references tie that the margin is measuring nothing.
+
+    mash derives the distance from the shared-hash count, so every reference sharing the same few hashes
+    gets the same distance. The closest row is then first by an accident of ordering.
+    """
+    hits = [(CANIS, 0.2, 4), (SUIS4, 0.2, 4), (ABORTUS, 0.2, 4)]
+    hits += [('filler{}.fasta'.format(i), 0.2, 4) for i in range(count)]
+    return identification(*hits, min_hashes=min_hashes)
+
+
+def test_an_undiscriminating_distance_is_never_reported_as_agreeing_with_the_st():
+    """
+    The bug this guards: withholding the close matches made the call read "MASH+ST (agree)".
+
+    That is the verdict of a clean 950/1000 match. Here the distance separated nothing, so the agreement
+    it would be claiming was never expressed.
+    """
+    found = coarse_tie()
+    assert found.identified and found.undiscriminating == 52
+    assert found.close_matches == []        # withheld, so the note can count instead of listing
+    # A tie is ordered by name, so B-REF-BS4-40.fasta leads it and ST 16, B. suis, agrees with that
+    call = call_species(found, REFERENCES, mlst=MlstResult(st='16'), table=TABLE)
+    assert (call.species, call.source, call.verdict) == ('Brucella suis', FROM_BOTH, ARBITRATED)
+    assert 'cannot separate 52 of the references' in call.notes[0]
+    assert 'the ST agrees with the closest of them' in call.notes[0]
+
+
+def test_an_undiscriminating_distance_gives_the_species_to_a_disagreeing_st():
+    found = coarse_tie()
+    call = call_species(found, REFERENCES, mlst=MlstResult(st='20'), table=TABLE)
+    assert (call.species, call.source, call.verdict) == ('Brucella canis', FROM_ST, ARBITRATED)
+    assert "the species is the ST's" in call.notes[0]
+
+
+def test_an_undiscriminating_distance_with_no_st_is_unresolved():
+    found = coarse_tie()
+    call = call_species(found, REFERENCES, mlst=None, table=TABLE)
+    assert (call.species, call.source, call.verdict) == ('Brucella suis', FROM_MASH, UNRESOLVED)
+    assert 'the ST cannot choose because the MLST was not run' in call.notes[0]
+
+
 def test_the_st_chooses_between_the_species_mash_cannot_separate():
     """The canis/suis case: MASH lands on canis, and ST 16 says B. suis."""
     found = identification((CANIS, 0.000239, 990), (SUIS4, 0.000420, 980))

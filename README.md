@@ -24,12 +24,14 @@ reference genomes, and type it with the nine-locus
 [Seal](https://sourceforge.net/projects/bbmap/) from BBTools. Point it at a sample, or a folder of samples.
 
 ```
-$ brucellaid -r1 sample_R1.fastq.gz -r2 sample_R2.fastq.gz -o results/
-Sample  Species           SpeciesSource         ClosestReference           SharedHashes  SequenceType  STSpecies
-sample  Brucella abortus  MASH+ST (agree)       NC_006932-NC_006933.fasta  999/1000      1             Brucella abortus
-canis   Brucella canis    MASH+ST (arbitrated)  NC_010103-NC_010104.fasta  1000/1000     20            Brucella canis
+$ brucellaid -i reads/ -o results/
+Sample      Species           SpeciesSource         ClosestReference                           SharedHashes  SequenceType  STSpecies
+ERR2136546  Brucella canis    MASH+ST (arbitrated)  GCA_000530495.1_Oliveri_genomic.fna.gz     773/1000      20            Brucella canis
+ERR3454415  Brucella abortus  MASH+ST (agree)       GCA_000742195.1_ASM74219v1_genomic.fna.gz  972/1000      1             Brucella abortus
 ```
-(Columns elided to fit; `brucellaid.tsv` also holds `MashDistance`, `AlleleProfile`, `Reads` and `Notes`.)
+(Two of the four [tutorial](https://github.com/duceppemo/BrucellaID/wiki/Tutorial) read sets, against the
+432-genome default set. Columns elided to fit; `brucellaid.tsv` also holds `MashDistance`,
+`AlleleProfile`, `Reads` and `Notes`.)
 
 Both the reference sketch and the MLST database come with the package: nothing to download, index or
 configure.
@@ -81,7 +83,7 @@ configure.
   `stat_alignment_summary_<date>.xlsx` of the first version.
 * **Nothing to configure**: only the Python standard library, plus MASH and BBTools. The two optional
   output formats, xlsx and PDF, are the only things that want a package, and neither is needed.
-* **Tested**: 377 tests, 100% coverage, end to end on a synthetic genome and on reads tiled over the real
+* **Tested**: 386 tests, 100% coverage, end to end on a synthetic genome and on reads tiled over the real
   MLST alleles.
 * **Validated** against the vSNP reference set, genome for genome (`--reference-set vsnp`): reads
   simulated from 13 of its 16 genomes, 7 of its 8 species, with every species and closest reference right

@@ -50,6 +50,33 @@ def test_find_samples_pairs_and_singles(tmp_path):
     assert [f.endswith('A_R1.fastq.gz') for f in samples[0].files] == [True, False]
 
 
+def test_find_samples_skips_what_is_not_a_regular_file(tmp_path, caplog):
+    """
+    A FIFO blocks the run forever on open(), and a link to a device reads without end.
+
+    single_sample() has always refused anything that is not a regular file; a folder of samples did not,
+    so one such file in a folder took the whole run down or hung it, losing every other sample.
+    """
+    import os
+    reads = touch(tmp_path / 'reads', 'A_R1.fastq.gz')
+    os.mkfifo(reads / 'pipe_R1.fastq')
+    (reads / 'dir_R1.fastq').mkdir()
+    with caplog.at_level('WARNING'):
+        samples = find_samples(reads)
+    assert [s.name for s in samples] == ['A']
+    assert 'not a regular file, skipped' in caplog.text
+    assert 'pipe_R1.fastq' in caplog.text
+
+
+@pytest.mark.parametrize(('filename', 'expected'), [
+    ('   _R1.fastq.gz', '_R1.fastq.gz'),   # Nothing but spaces is not a name
+    (' spaced _R1.fastq.gz', 'spaced'),    # Surrounding spaces would differ between the TSV and the JSON
+])
+def test_find_samples_never_names_a_sample_blank(tmp_path, filename, expected):
+    reads = touch(tmp_path / 'reads', filename)
+    assert [s.name for s in find_samples(reads)] == [expected]
+
+
 def test_find_samples_skips_hidden_and_excluded(tmp_path):
     reads = touch(tmp_path / 'reads', 'A_R1.fastq.gz', '.hidden.fastq')
     touch(reads / '.git', 'B_R1.fastq')

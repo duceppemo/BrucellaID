@@ -134,6 +134,29 @@ def test_status(kwargs, expected):
     assert qa.status(sample(**kwargs)) == expected
 
 
+def test_status_of_a_species_that_rests_on_the_st_alone():
+    """
+    Half the evidence is missing, so the sample needs a look even though no verdict is in conflict.
+
+    It happens when the sketch and the reference table do not match -- a 1.x command line passing one
+    packaged file -- and when the distance could not separate the references. Either way the report used
+    to count the sample as "ok" while showing no reference behind the species.
+    """
+    import dataclasses
+
+    from brucellaid.species import ARBITRATED, FROM_ST, SpeciesCall
+    result = sample()
+    assert qa.status(result) == qa.OK
+    alone = dataclasses.replace(
+        result, call=SpeciesCall(species='Brucella abortus', source=FROM_ST, verdict=ARBITRATED, st='1'))
+    assert alone.call.reference is None
+    assert qa.status(alone) == qa.WARNING
+    # The ordinary arbitration, where MASH did name a reference, is not a warning
+    named = REFERENCES['NC_006932-NC_006933.fasta']
+    arbitrated = dataclasses.replace(result, call=dataclasses.replace(alone.call, reference=named))
+    assert qa.status(arbitrated) == qa.OK
+
+
 def test_status_of_a_sample_whose_st_was_not_asked_for():
     """--no-mlst leaves the ST at ND, which is not a warning: nobody asked for it."""
     result = sample(st=None)

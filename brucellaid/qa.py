@@ -23,7 +23,7 @@ from pathlib import Path
 from .errors import BrucellaIDError
 from .mlst import NEW_PROFILE, UNKNOWN
 from .references import EXTENDED_SKETCH_FILE, data_path, lookup
-from .species import CONFLICT, UNRESOLVED
+from .species import CONFLICT, FROM_ST, UNRESOLVED
 
 BLOCK = 1 << 20  # Read a file for its checksum a megabyte at a time: an input file can be gigabytes
 
@@ -167,9 +167,10 @@ def status(result):
     Whether a sample needs a second look: "ok", "warning" or "failed".
 
     A warning is for the things a reviewer has to resolve, not for every note: a read set that was not
-    identified, a sequence type that could not be called or is not in the table, and a species the two kinds
-    of evidence disagree about. A sample whose second reference was nearly as close is normal, and says so
-    in its notes without being flagged.
+    identified, a sequence type that could not be called or is not in the table, a species the two kinds
+    of evidence disagree about, and a species that rests on the sequence type alone because the distance
+    had none to offer. A sample whose second reference was nearly as close is normal, and says so in its
+    notes without being flagged.
     """
     if result.error:
         return FAILED
@@ -178,6 +179,12 @@ def status(result):
     if result.mlst is not None and result.sequence_type in (UNKNOWN, NEW_PROFILE):
         return WARNING
     if result.call is not None and result.call.verdict in (CONFLICT, UNRESOLVED):
+        return WARNING
+    # Only one of the two kinds of evidence spoke. A species from the ST while MASH still named a
+    # reference is the ordinary arbitration and stays "ok"; a species from the ST with no reference behind
+    # it means the sketch and the table do not match, or the distance separated nothing, and half the
+    # evidence this report exists to show is missing.
+    if result.call is not None and result.call.source == FROM_ST and result.call.reference is None:
         return WARNING
     return OK
 
@@ -246,19 +253,27 @@ def hits_caption(rows, hidden):
     """
     What to say under the table of closest reference genomes.
 
-    "Closest first", and "the rest are further away", are both untrue when every hit is the same distance
-    away, which is what a read set that shares no hashes with anything gives: all 432 references of the
-    default set sit at distance 1, so the handful shown is an arbitrary slice of a tie and the ones left
-    out are not further away at all. Saying so is the point of the table.
+    "Closest first", and "the rest are further away", are untrue whenever more references tie at the best
+    distance than the table has room for. That happens two ways, both of them from a coarse distance: a
+    read set sharing no hashes sits at distance 1 from all 432 of the default set, and one sharing a few
+    hashes ties every reference that shares the same few. Either way the rows shown are an arbitrary slice
+    of the tie, and the ones left out are not further away. Saying so is the point of the table.
 
     :param rows: every row from close_hits(), not only the ones being shown
     :param hidden: how many top_hits() left out
     """
-    if len(rows) > 1 and len({hit.distance for hit, _, _ in rows}) == 1:
-        caption = ('Every one of these {} reference genomes is the same distance from the reads, so the '
-                   'rows below are an arbitrary few of a tie rather than the closest.'.format(len(rows)))
+    if not rows:
+        return 'Closest first.'
+    tied = sum(1 for hit, _, _ in rows if hit.distance == rows[0][0].distance)
+    if tied > len(rows) - hidden:
+        lead = ('Every one of these {} reference genomes is'.format(len(rows)) if tied == len(rows)
+                else '{} of these reference genomes are'.format(tied))
+        caption = ('{} the same distance from the reads, so the rows below are an arbitrary few of a tie '
+                   'rather than the closest.'.format(lead))
         return caption + ' brucellaid_mash.tsv has every distance.' if hidden else caption
-    caption = 'Closest first. A shaded row is too close to the first to be separated by distance alone.'
+    caption = 'Closest first.'
+    if any(close for _, _, close in rows):
+        caption += ' A shaded row is too close to the first to be separated by distance alone.'
     if hidden:
         caption += (' The other {} reference(s) are further away; brucellaid_mash.tsv has every '
                     'distance.'.format(hidden))

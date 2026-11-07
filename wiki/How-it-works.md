@@ -168,7 +168,8 @@ it is worth looking into.
 
 | File | Source |
 | --- | --- |
-| `references.msh`, `references.tsv` | The *Brucella* part of [vSNP](https://github.com/USDA-VS/vsnp)'s reference set, 16 genomes |
+| `references_extended.msh`, `references_extended.tsv` | 432 curated genomes of the whole clade, the set a run uses by default from 2.0: dereplicated representatives of the assemblies behind the [mashID *Brucella* pack](https://doi.org/10.6084/m9.figshare.33970168), rebuilt with `scripts/make_extended_references.py` |
+| `references.msh`, `references.tsv` | The *Brucella* part of [vSNP](https://github.com/USDA-VS/vsnp)'s reference set, 16 genomes, reached with `--reference-set vsnp` and rebuilt with `scripts/make_reference_data.py` |
 | `mlst_alleles.fasta`, `mlst_profiles.tsv` | The MLST (9 locus) scheme of [PubMLST](https://pubmlst.org/organisms/brucella-spp), downloaded with `scripts/make_mlst_data.py` |
 | `mlst_st_species.tsv` | The species of each ST, counted over the 3,403 isolates of the PubMLST *Brucella* isolate database that carry an ST, with `scripts/make_st_species.py` |
 

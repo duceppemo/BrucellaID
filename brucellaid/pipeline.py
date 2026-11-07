@@ -172,9 +172,17 @@ def analyse_sample(sample, sketch=None, references=None, min_hashes=DEFAULT_MIN_
         if result.call.verdict:
             log.info('%s: %s (%s, %s)', sample.name, result.call.species, result.call.source,
                      result.call.verdict)
-    except BrucellaIDError as e:
-        log.error('%s: %s', sample.name, e)
-        result.error = str(e)
+    except Exception as e:  # noqa: BLE001 - one sample must never take the others down with it
+        # analyse_samples() maps this over a thread pool, so anything that escapes here ends the run
+        # before any report is written and loses every other sample's result. A MemoryError from a
+        # pathological input file did exactly that. An unexpected error is reported with its type, so a
+        # bug still reads as a bug rather than as a bad read set.
+        if isinstance(e, BrucellaIDError):
+            log.error('%s: %s', sample.name, e)
+            result.error = str(e)
+        else:
+            log.error('%s: %s: %s', sample.name, type(e).__name__, e, exc_info=True)
+            result.error = '{}: {}'.format(type(e).__name__, e)
         if result.call is None and result.identification is not None:
             # MASH had already answered when the typing failed: report the species it gave.
             result.call = call_species(result.identification, references)

@@ -23,12 +23,13 @@ configure. Where two species are too close for a sketch to choose between them �
 *B. suis* bv. 4 are 0.00024 apart — the sequence type chooses, and the `SpeciesSource` column says so.
 
 ```
-$ brucellaid -r1 sample_R1.fastq.gz -r2 sample_R2.fastq.gz -o results/
-Sample  Species             SpeciesSource         ClosestReference           SharedHashes  SequenceType  STSpecies
-sample  Brucella abortus    MASH+ST (agree)       NC_006932-NC_006933.fasta  999/1000      1             Brucella abortus
-canis   Brucella canis      MASH+ST (arbitrated)  NC_010103-NC_010104.fasta  1000/1000     20            Brucella canis
+$ brucellaid -i reads/ -o results/
+Sample      Species           SpeciesSource         ClosestReference                           SharedHashes  SequenceType  STSpecies
+ERR2136546  Brucella canis    MASH+ST (arbitrated)  GCA_000530495.1_Oliveri_genomic.fna.gz     773/1000      20            Brucella canis
+ERR3454415  Brucella abortus  MASH+ST (agree)       GCA_000742195.1_ASM74219v1_genomic.fna.gz  972/1000      1             Brucella abortus
 ```
-(Columns elided to fit; `brucellaid.tsv` also holds `MashDistance`, `AlleleProfile`, `Reads` and `Notes`.)
+(Two of the four [tutorial](Tutorial) read sets, against the 432-genome default set. Columns elided to
+fit; `brucellaid.tsv` also holds `MashDistance`, `AlleleProfile`, `Reads` and `Notes`.)
 
 ## Start here
 * [Installation](Installation) — conda, pip, or a clone

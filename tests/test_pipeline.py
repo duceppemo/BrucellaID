@@ -218,6 +218,28 @@ def test_analyse_sample_reads_the_reference_table_of_the_package(monkeypatch):
     assert result.code == 'abortus5'  # The extended set codes the epithet and the biovar, not vSNP's "ab5"
 
 
+def test_an_unexpected_error_is_reported_against_its_sample_and_not_raised(monkeypatch, caplog):
+    """
+    Anything escaping analyse_sample() ends the run before a single report is written.
+
+    analyse_samples() maps it over a thread pool, so a MemoryError from one pathological input file lost
+    every other sample's result. It is now that sample's error, with its type named so a bug still reads
+    as a bug.
+    """
+    fake_tools(monkeypatch)
+
+    def boom(*args, **options):
+        raise MemoryError('out of memory')
+
+    monkeypatch.setattr(pipeline, 'identify', boom)
+    samples = [Sample(name, ['{}_R1.fastq.gz'.format(name)]) for name in ('a', 'b')]
+    with caplog.at_level('ERROR'):
+        results = pipeline.analyse_samples(samples, jobs=2, threads=1, references=REFERENCES, mlst=False)
+    assert [r.sample for r in results] == ['a', 'b']
+    assert all(r.error == 'MemoryError: out of memory' for r in results)
+    assert 'MemoryError' in caplog.text
+
+
 def test_analyse_samples_keeps_the_order_of_the_samples(monkeypatch):
     fake_tools(monkeypatch)
     samples = [Sample(name, ['{}_R1.fastq.gz'.format(name)]) for name in ('c', 'a', 'b')]

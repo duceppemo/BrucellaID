@@ -51,7 +51,12 @@ def sample_name(path):
     if parsed is not None:
         name = parsed[0]
     name = READ_SUFFIX.sub('', name) or name
-    return re.sub(r'[\t\r\n]', '_', name)  # Tabs and line breaks would break the table
+    # Tabs and line breaks would break the table. Surrounding spaces are dropped because report.one_cell()
+    # strips the TSV cell while the JSON and the MultiQC file keep it, so the four output files would
+    # disagree about what the sample is called; a name that is nothing but whitespace is no name at all,
+    # and --sample already refuses one.
+    name = re.sub(r'[\t\r\n]', '_', name).strip()
+    return name or Path(path).name.strip()
 
 
 def find_samples(folder, exclude=()):
@@ -82,6 +87,12 @@ def find_samples(folder, exclude=()):
             if parsed is None or filename.startswith('.'):
                 continue
             stem, file_type = parsed
+            if not os.path.isfile(os.path.join(root, filename)):
+                # A FIFO blocks the whole run on open() with no writer, and a symbolic link to a device
+                # reads without end. single_sample() already refuses anything that is not a regular
+                # file; a folder of samples has to do the same, and name what it skipped.
+                log.warning('not a regular file, skipped: %s', os.path.join(root, filename))
+                continue
             if file_type == 'fasta':
                 assemblies.append(os.path.join(root, filename))
                 continue
@@ -89,7 +100,9 @@ def find_samples(folder, exclude=()):
             match = READ_SUFFIX.search(stem)
             if match and match.start() > 0:
                 mate, stem = int(match.group(1)), stem[:match.start()]
-            stem = re.sub(r'[\t\r\n]', '_', stem)  # Tabs and line breaks would break the table
+            stem = re.sub(r'[\t\r\n]', '_', stem).strip()  # See sample_name()
+            if not stem:
+                stem = filename.strip()
             found.setdefault(stem, []).append((mate, os.path.join(root, filename)))
 
     samples, errors = [], []

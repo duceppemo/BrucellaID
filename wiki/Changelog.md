@@ -11,15 +11,23 @@ so the change adds coverage without disturbing the calls the smaller set already
 
 What this means in practice:
 
-* `--reference-set default` **no longer exists**. The values are `extended` (the default) and `vsnp`.
-  A script passing `default` gets an argparse error naming the two valid choices, rather than silently
-  changing behaviour.
-* `--reference-set vsnp` reproduces 1.x exactly: the same 16 genomes, the same sketch, the same threshold.
+* **`--reference-set` takes `extended` (the default) or `vsnp`.** The option is new in 2.0 — 1.2.1 had no
+  `--reference-set` at all — and the development builds that carried it briefly used `default` for the 16
+  genomes. That value is gone: passing it gets an argparse error naming the two valid choices and exit 2,
+  rather than silently changing behaviour.
+* `--reference-set vsnp` gives back 1.x's reference data exactly: the same 16 genomes, the same sketch,
+  the same threshold, and therefore the same species, closest reference, distance, shared hashes and
+  sequence type. It is not a byte-for-byte 1.x run, because the 2.0 features that are independent of the
+  reference set still apply: a library past `--loose-distance` gains a loose-match note, which is inserted
+  first and so shifts the other notes down, and `Loose match beyond` is added to the run parameters.
 * **The `code` column changes with the set**, which matters for the legacy `--xlsx` report and for
   `species_code` in the JSON. With the extended set the codes are species epithets (`abortus5`,
-  `anthropi`); vSNP's own codes (`ab1`, `mel1`) exist only in the 16-genome table. A pipeline reading those
-  codes needs `--reference-set vsnp`, and `--xlsx` now warns when it is writing epithets instead, because
-  that report exists for the pipelines that read the old codes and nothing else.
+  `anthropi`). **The break is partial, which is worse than total:** 7 of vSNP's 16 codes — `canis`,
+  `microti`, `neotomae`, `ovis`, `suis1`, `suis2`, `suis3` — happen to spell the same thing in both
+  tables and keep matching, while the other 9 — `ab1`, `ab3`, `mel1`, `mel1b`, `mel2`, `mel3`, `ceti1`,
+  `ceti2`, `suis4` — silently stop. A code-to-species table will half work, per species. A pipeline
+  reading those codes needs `--reference-set vsnp`, and `--xlsx` now warns when it is writing epithets
+  instead, because that report exists for the pipelines that read the old codes and nothing else.
 * **`--no-mlst` and `--no-st-species` now flag many more samples than they did.** Neither is changed, but
   both switch off the arbitrator, and a second species falls inside the close-match margin for 38 of the
   432 genomes of the default set against essentially one pair of vSNP's 16. Those samples are reported
@@ -31,7 +39,10 @@ What this means in practice:
   ties with the best. A sample sharing 4 of 1000 hashes was seen to tie 127 references across twelve
   species, which put 10 kB of genome names in one `Notes` cell and 128 rows in the report. The note now
   gives the count and says the distance cannot separate them; the densest real case over the 432 packaged
-  genomes is 16, so nothing legitimate is suppressed.
+  genomes is 16, so nothing legitimate is suppressed. The species call says so too, rather than claiming
+  an agreement the distance never expressed: where the references cannot be separated the verdict is
+  `arbitrated` when the sequence type can name the species and `unresolved` when it cannot, never
+  `agree`, which is the verdict of a clean match.
 * **A sample that matches nothing no longer carries 431 close matches.** A read set that shares no hashes
   sits at distance 1 from every reference, so every one of them tied with the closest and was reported as
   nearly as close — with 16 genomes that was invisible, with 432 it put a whole reference table in the
@@ -44,8 +55,12 @@ What this means in practice:
   together, and a 1.x command line that passed only `--sketch` fell back on the 16-genome table, which
   matched it. It now falls back on the extended table, whose IDs are GCA file names, so nothing in such a
   sketch could be named and every sample came back `ND` from a run that exited 0. A sketch none of whose
-  genomes the reference table names is refused, by name, before any sample is read. A custom sketch that is
-  a subset of a packaged set still works on its own, as before.
+  genomes the reference table names is refused, by name, before any sample is read — but only when the
+  sequence type is switched off as well, because otherwise the ST can still name the species and a sketch
+  of your own genomes against the packaged ST table is a supported way to run. With the ST available the
+  run warns instead and carries on, and the sample is reported `ST (arbitrated)` with no reference behind
+  it, which now counts as a **warning** rather than `ok`: half the evidence the report exists to show is
+  missing. A custom sketch that is a subset of a packaged set still works on its own, as before.
 * **Callers of the library get the extended set too**, not just the command line: `reference_sketch()` and
   `load_references()` resolve to it when they are given no file, so a script that reaches
   `analyse_samples()` directly measures against the 432 genomes without having to know about
@@ -56,6 +71,32 @@ What this means in practice:
   *B. abortus* isolates of the PubMLST isolate database are of a biovar no reference has, against 42% for
   vSNP's 16. The resolution argument is unchanged in kind -- the two *B. suis* biovar 2 genomes are 0.00163
   apart, further than the biovar 3 genome is from one of them -- and the reports say so in those terms.
+* **The `Notes` column is now populated on nearly every sample**, where in 1.x it was usually empty: the
+  432-genome set almost always has other genomes of the same species inside the close-match margin, so
+  most samples carry a "nearly as close: N other Brucella x genome(s)" line. On the four tutorial read
+  sets it goes from 1 of 4 samples to 4 of 4, and the longest cell from 218 to 691 characters. No
+  column was added or removed anywhere, so a parser reading by position is unaffected — but a rule of
+  "a non-empty Notes means look at this one" now fires on everything and needs rewriting.
+* **The per-run output is bigger**, almost all of it `brucellaid_mash.tsv`, which holds every distance
+  and so grows with the reference set: for four samples it goes from 5 kB to 170 kB, and
+  `brucellaid.json` from 24 kB to 132 kB because its reference table has 432 entries instead of 16.
+  The HTML report barely moves, because it still shows the closest few.
+* A mismatch between a sketch and a reference table names the first eight genomes and counts the rest,
+  instead of listing all of them: against the 432-genome table that warning was a single 19 kB line.
+* **The legacy `--xlsx` report no longer writes a formula.** xlsxwriter sends any value starting with
+  `=` to `write_formula()`, so a sample named `=HYPERLINK(...)` became a live formula and the cell
+  displayed its result instead of the sample it belonged to. Every value is written as text now.
+* **One bad file in an input folder can no longer take the run down.** A named pipe blocked the run for
+  ever on `open()` and a link to a device read without end, because `-i` accepted anything the filename
+  pattern matched while `-r1` had always required a regular file; such a file is now skipped by name.
+  And an unexpected error in one sample is recorded against that sample, with its type named, instead of
+  escaping the thread pool and ending the run before any report was written.
+* **Smaller report fixes.** The `#` command line of each table goes through the same cell cleaning as the
+  data, so a path holding a line break no longer splits it in two; a sample name that is only whitespace
+  falls back to the file name, and surrounding spaces are dropped, so the TSV, JSON, MultiQC file and
+  report no longer disagree about what a sample is called; and the HTML report replaces bidirectional and
+  control characters, which `html.escape` passes through and which can make a name render as something
+  the machine-readable files do not contain.
 * Nothing about the MLST changes, the 150-shared-hash threshold is unchanged, and there is still no biovar.
 * `validation/run_validation.sh` pins `--reference-set vsnp`. It reads those 16 genomes genome for genome,
   so its expected answers are their sketch IDs, and its negative control is *B. anthropi* ATCC 49188, which

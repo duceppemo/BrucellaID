@@ -283,6 +283,27 @@ def call_species(identification, references, mlst=None, table=None, min_purity=D
                                       'is the ST\'s: {}'.format(entry.evidence),))
         return SpeciesCall(st=st, entry=entry, st_reason=why_not)
 
+    # The distance could not separate the references at all: mash.Identification.undiscriminating holds
+    # when so many sit inside the close-match margin that the margin is measuring nothing. The first row is
+    # then the closest only by an accident of ordering, so MASH has not chosen its species. Reporting
+    # "MASH+ST (agree)" here would claim an agreement the distance never expressed, which is what this
+    # branch exists to prevent; the close matches themselves are withheld so the note can give a count
+    # instead of listing a hundred genomes.
+    if identification.undiscriminating:
+        cannot = ('the distance cannot separate {} of the references and has not chosen between their '
+                  'species'.format(identification.undiscriminating))
+        if entry is None:
+            return SpeciesCall(species=mash_species, reference=best, source=FROM_MASH, verdict=UNRESOLVED,
+                               candidates=(mash_species,), st=st, st_reason=why_not,
+                               notes=('{}, and the ST cannot choose because {}'.format(cannot, why_not),))
+        if entry.species == mash_species:
+            return SpeciesCall(species=mash_species, reference=best, source=FROM_BOTH, verdict=ARBITRATED,
+                               candidates=(mash_species,), st=st, entry=entry,
+                               notes=('{}; the ST agrees with the closest of them: {}'
+                                      .format(cannot, entry.evidence),))
+        return SpeciesCall(species=entry.species, source=FROM_ST, verdict=ARBITRATED, st=st, entry=entry,
+                           notes=('{}, so the species is the ST\'s: {}'.format(cannot, entry.evidence),))
+
     if entry is None:
         # Nothing to arbitrate with. Worth saying so only when MASH actually needed it.
         if len(candidates) > 1:
