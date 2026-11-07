@@ -1,0 +1,11 @@
+run	assembly_bp	gc_pct	depth	group	identification	best_evidence
+ERR471337	4449368	-	-	Camelimonas fluminis	Camelimonas fluminis	fastANI 98.35% to the C. fluminis type strain; 16S 100% to the type strain; mashID 97.7% (progenomes4) and 97.8% (RefSeq derep)
+ERR554820	4503334	-	-	Camelimonas fluminis	Camelimonas fluminis	fastANI 98.35% to the C. fluminis type strain; 16S 100%; mashID both databases
+ERR775236	4423614	-	-	Camelimonas fluminis	Camelimonas fluminis	fastANI 98.39% to the C. fluminis type strain; 16S 100%; mashID both databases
+ERR473743	3953140	-	-	Camelimonas, unnamed species	Camelimonas sp.	fastANI 95.53% to Camelimonas sp. ID_303_24, only 89.56% to the C. fluminis type strain; 16S 100% to ID_303_24
+ERR775237	3954007	-	-	Camelimonas, unnamed species	Camelimonas sp.	fastANI 95.59% to Camelimonas sp. ID_303_24, only 89.56% to the C. fluminis type strain; 16S 100% to ID_303_24
+ERR775244	1913108	52.7	252x	Alcaligenaceae, unnamed genus	Alcaligenaceae	full-length 16S 94% to the Advenella kashmirensis type strain; no hit in progenomes4 or RefSeq derep
+ERR775245	1884007	52.7	263x	Alcaligenaceae, unnamed genus	Alcaligenaceae	partial 16S 93-94% to Advenella/Brackiella type strains; no genome-database hit
+ERR775246	1876705	52.7	267x	Alcaligenaceae, unnamed genus	Alcaligenaceae	partial 16S 97% to the Brackiella oedipodis type strain, 96% to Pollutimonas; no genome-database hit
+ERR775247	1883342	52.7	-	Alcaligenaceae, unnamed genus	Alcaligenaceae	partial 16S 93-94% to Advenella/Brackiella type strains; no genome-database hit
+ERR775248	1912218	52.7	-	Alcaligenaceae, unnamed genus	Alcaligenaceae	full-length 16S 94% to the Advenella kashmirensis type strain; no genome-database hit

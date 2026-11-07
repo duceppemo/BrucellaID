@@ -68,6 +68,32 @@ population looks like — but "mixed library" describes them better than "not *B
 every assay on both substrates, and Bruce-ladder is equally silent, because neither assay was designed for
 that half of the clade. Those records stand or fall on the distances alone.
 
+## What the non-*Brucella* read sets of PRJEB4782 actually hold
+
+The ten runs of that study which share one or two of 1000 hashes with the clade were identified, because
+"not *Brucella*" is less useful to a submitter than a name. `prjeb4782_unidentified_libraries.tsv` has the
+per-run detail. Four methods agree: mashID against proGenomes v4 and against a dereplicated RefSeq
+bacterial sketch, fastANI against every *Camelimonas* genome in NCBI, and 16S rRNA extracted with barrnap
+and compared with both the NCBI type-strain database and nt.
+
+| Runs | Identification | Evidence |
+| --- | --- | --- |
+| `ERR471337`, `ERR554820`, `ERR775236` | ***Camelimonas fluminis*** | 98.35–98.39% ANI to the type strain, 16S 100% |
+| `ERR473743`, `ERR775237` | ***Camelimonas***, unnamed species | 95.5% ANI to *Camelimonas* sp. ID_303_24, only 89.6% to the *C. fluminis* type strain |
+| `ERR775244`–`ERR775248` (5) | **Alcaligenaceae**, unnamed genus | full-length 16S 94% to the *Advenella kashmirensis* type strain; **no hit in either genome database** |
+
+*Camelimonas* explains the deposit rather than merely contradicting it: it sits in **Brucellaceae**, the
+same family as *Brucella*, it is a slow-growing oxidase-positive alphaproteobacterium, and the genus
+contains a *Camelimonas abortus*. An isolate typed biochemically in a brucellosis workup could reasonably
+have been recorded as *Brucella*. The reference the unnamed-species pair matches is itself a clinical
+isolate from human blood.
+
+The five 1.9 Mb libraries are one organism — 99.3–100% ANI to each other, all 52.7% GC, assembled at
+250–270×, so the genome is genuinely that small rather than half-covered. At 94% 16S identity to its
+nearest named relatives it falls below genus-level similarity, and it has no match at all in 32,887
+proGenomes representatives or in the RefSeq sketch. A reduced-genome member of a family whose relatives
+run 3.5–4.5 Mb, with no sequenced representative, is worth flagging to whoever holds the isolate.
+
 ## Two caveats worth passing on
 
 **Read mode used to lose targets silently; it no longer does.** The first pass of this analysis ran
