@@ -208,7 +208,7 @@ Each of those records is tracked with its evidence in
 together with the public read sets whose submitted species the distance and the sequence type both
 contradict, so they can be reported rather than only excluded.
 
-Scored against what those six genomes demonstrably are, the extended set got **every one of the 1,543
+Scored against what those five genomes demonstrably are, the extended set got **every one of the 1,543
 held-out named samples right**, including all 69 *B. canis*, all 24 *B. ceti* and all 8
 *B. pinnipedialis* — the boundaries the distance alone cannot draw. Of the 95 *Brucella sp.* samples, 53
 were reported as *Brucella sp.*, 40 as the named species they sit next to (36 of them with a note saying

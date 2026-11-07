@@ -69,12 +69,55 @@ def test_find_samples_skips_what_is_not_a_regular_file(tmp_path, caplog):
 
 
 @pytest.mark.parametrize(('filename', 'expected'), [
-    ('   _R1.fastq.gz', '_R1.fastq.gz'),   # Nothing but spaces is not a name
-    (' spaced _R1.fastq.gz', 'spaced'),    # Surrounding spaces would differ between the TSV and the JSON
+    ('   _R1.fastq.gz', 'reads'),           # Nothing but spaces is not a name: the folder stands in
+    (' spaced _R1.fastq.gz', 'spaced'),     # Surrounding spaces would differ between the TSV and the JSON
 ])
 def test_find_samples_never_names_a_sample_blank(tmp_path, filename, expected):
     reads = touch(tmp_path / 'reads', filename)
     assert [s.name for s in find_samples(reads)] == [expected]
+
+
+def test_find_samples_keeps_a_pair_together_when_its_stem_is_blank(tmp_path):
+    """
+    The fallback has to be the same for both mates, or the pair becomes two half-depth samples.
+
+    A fallback taken from the file name is not: the mate suffix is still in it, so R1 and R2 fall back to
+    different names and one library is reported as two.
+    """
+    reads = touch(tmp_path / 'reads', '  _R1.fastq.gz', '  _R2.fastq.gz')
+    samples = find_samples(reads)
+    assert [(s.name, s.paired) for s in samples] == [('reads', True)]
+    assert len(samples[0].files) == 2
+
+
+def test_find_samples_cleans_the_folder_it_falls_back_to(tmp_path):
+    """The fallback goes through the same cleaning as a stem, or it undoes its own purpose."""
+    reads = touch(tmp_path / 'we\tird', '  _R1.fastq.gz')
+    assert [s.name for s in find_samples(reads)] == ['we_ird']
+
+
+def test_find_samples_refuses_two_stems_that_would_answer_to_one_name(tmp_path):
+    """
+    Normalising the name must not merge files that the file names keep apart.
+
+    " dup _R1" and "dup_R2" are two unrelated libraries. Normalising before pairing made them one R1/R2
+    pair, which handed two different libraries to MASH as one sample and changed the result.
+    """
+    reads = touch(tmp_path / 'reads', ' dup _R1.fastq.gz', 'dup_R2.fastq.gz')
+    with pytest.raises(BrucellaIDError, match='Several files give the same sample name'):
+        find_samples(reads)
+
+
+def test_find_samples_reports_a_broken_link_as_a_sample_that_failed(tmp_path):
+    """
+    A dangling symbolic link is a missing input, not a strange kind of file.
+
+    Skipping it dropped a named sample out of every output file and left the run exiting 0, which is worse
+    than the hang the regular-file check was written to prevent.
+    """
+    reads = touch(tmp_path / 'reads', 'A_R1.fastq.gz')
+    (reads / 'B_R1.fastq.gz').symlink_to(tmp_path / 'gone' / 'missing.fastq.gz')
+    assert sorted(s.name for s in find_samples(reads)) == ['A', 'B']
 
 
 def test_find_samples_skips_hidden_and_excluded(tmp_path):

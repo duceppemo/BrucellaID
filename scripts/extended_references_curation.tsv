@@ -2,7 +2,9 @@
 # representatives of the mashID Brucella pack's source collection (figshare article 33970168, version 4;
 # 2,022 NCBI taxon-234 assemblies, dereplicated at a MASH distance of 0.0003).
 # Validated on simulated reads of all 2,022 assemblies: 1543/1543 held-out samples of a named species
-# right once the six mislabelled truth genomes below are accounted for (wiki, Validation).
+# right once the five mislabelled truth genomes below are accounted for -- the five EXCLUDE rows whose
+# reason is a contradicted label, not the two excluded for being too far from the clade to be a
+# reference at all (wiki, Validation).
 # Every genome not listed here was kept as it was.
 # The DROP-SP cutoff of 0.004 was set on the classical species and does not transfer: it dropped three
 # genomes that are not twins at all. GCA_000163135.1 is B. papionis (now a RELABEL), and
@@ -11,12 +13,17 @@
 # measurements. A genome is a twin here only when it sits inside its neighbour species' own spread.
 #
 # Species assignment in the former Ochrobactrum part of the clade is by ANI to the TYPE STRAIN of each
-# species, not by Mash distance to the nearest neighbouring genome. Anchoring on a neighbour produced a
-# wrong answer here once: GCA_049065255.1 sits 0.00004 from an intermedia-labelled genome and was
-# relabelled intermedia on that basis, but it is 99.09% ANI to the ciceri type strain against 98.35% to
-# the intermedia type, so its deposited name was right and the relabel has been withdrawn. For the same
-# reason the exclusion of GCA_059995225.1 has been withdrawn: at 95.65% ANI to the cytisi type strain its
-# deposited name is within the species boundary, and it is restored as cytisi.
+# species, not by Mash distance to the nearest neighbouring genome -- but a type-strain comparison does
+# not settle it on its own, because four pairs in this group are inseparable (below), and inside such a
+# pair the senior name has priority. Both of the records this bears on are relabelled, and both rest on
+# priority rather than on the nearest type strain:
+#   GCA_049065255.1 (SA289) is 99.09% ANI to the ciceri type strain and 98.35% to the intermedia type.
+#   Read as a type-strain comparison alone that looks like ciceri, but the two are one species by the
+#   95% criterion, intermedia (Velasco 1998) is senior to ciceri (Imran 2010), and 11 of the 12 genomes
+#   in its own cluster are deposited as intermedia. It is intermedia.
+#   GCA_059995225.1 (WTB2) is 99.11% to the lupini type, 96.87% to anthropi and 95.65% to cytisi -- all
+#   one species -- so it carries the senior name, anthropi (1988).
+# curation/mislabelled_records.md sets out both, and references_extended.tsv carries both labels.
 #
 # Four pairs of named species in this group have type strains at or above 95% ANI and so are not
 # separable by the standard criterion: intermedia/ciceri 98.26%, anthropi/lupini 97.14%, lupini/cytisi
@@ -35,6 +42,8 @@ RELABEL	GCA_000559065.1	Brucella rhizosphaerae -> Brucella pituitosa	97.96% ANI 
 RELABEL	GCA_024127925.1	Brucella intermedia -> Brucella pseudintermedia	98.85% ANI to the pseudintermedia type strain CCUG 34735 against 90.54% to the intermedia type CIP 105838
 RELABEL	GCA_002025625.1	Brucella pituitosa -> Brucella pseudogrignonensis	96.31% ANI to the pseudogrignonensis type strain CIP 109451 against 85.64% to the pituitosa type CCUG 50899
 RELABEL	GCA_028621035.1	Brucella gallinifaecis -> Brucella sp.	no type strain within 95% ANI; best is pseudogrignonensis at 87.34%. The two gallinifaecis type deposits (CCUG 48291, ISO 196) are 100% ANI to each other, so the species is well defined and this genome is not in it
+RELABEL	GCA_049065255.1	Brucella ciceri	Brucella intermedia	inseparable from intermedia (type strains 98.26% ANI); intermedia is the senior name and 11 of the 12 genomes of its cluster are deposited as intermedia
+RELABEL	GCA_059995225.1	Brucella cytisi	Brucella anthropi	99.11% ANI to the lupini type, 96.87% to anthropi, 95.65% to cytisi, all one species; anthropi (1988) is the senior name
 RELABEL	GCA_000163135.1	Brucella sp -> Brucella papionis	labelled "Brucella sp. NVSL 07-0026"; carries ST 54, which PubMLST records as papionis, and the same nine alleles as an independent assembly of SRR4038994 (strain B07-0026) 0.00005 away; 0.0019-0.0028 from microti, pinnipedialis and ceti, so a species of its own and the only B. papionis genome in INSDC
 DROP-SP	GCA_000158995.1	Brucella sp	0.00047 from Brucella ceti: covered by its own representatives
 DROP-SP	GCA_000367105.1	Brucella sp	0.00004 from Brucella pinnipedialis: covered by its own representatives

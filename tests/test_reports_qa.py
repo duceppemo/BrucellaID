@@ -201,6 +201,14 @@ def test_hits_caption_does_not_claim_a_ranking_the_distances_do_not_support():
     assert '9 of these reference genomes are the same distance' in deep
     assert 'further away' not in deep
 
+    # A whole list that ties and fits on the page. Testing only "more ties than are shown" misses this,
+    # because with nothing hidden every tied row is on display -- a custom sketch of a few genomes
+    # against a sample that matches none of them lands here.
+    small = hits_caption(rows(1.0, 1.0, 1.0, 1.0), 0)
+    assert 'Every one of these 4 reference genomes is the same distance' in small
+    assert 'arbitrary few of a tie' in small
+    assert 'brucellaid_mash.tsv' not in small    # nothing is hidden, so there is nothing to point at
+
 
 def test_both_reports_say_a_tie_is_a_tie(tmp_path):
     """The HTML and the PDF share the caption, so neither can drift from the other."""

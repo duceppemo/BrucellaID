@@ -87,27 +87,46 @@ def find_samples(folder, exclude=()):
             if parsed is None or filename.startswith('.'):
                 continue
             stem, file_type = parsed
-            if not os.path.isfile(os.path.join(root, filename)):
-                # A FIFO blocks the whole run on open() with no writer, and a symbolic link to a device
-                # reads without end. single_sample() already refuses anything that is not a regular
-                # file; a folder of samples has to do the same, and name what it skipped.
-                log.warning('not a regular file, skipped: %s', os.path.join(root, filename))
+            path = os.path.join(root, filename)
+            if os.path.exists(path) and not os.path.isfile(path):
+                # A FIFO blocks the whole run on open() with no writer, and a symbolic link to a
+                # device reads without end. single_sample() already refuses anything that is not a
+                # regular file; a folder of samples has to do the same, and name what it skipped.
+                # exists(), not isfile() alone: a broken symbolic link does not exist, and it is a
+                # missing input rather than a strange one, so it falls through to be reported as a
+                # sample that failed. Dropping it here lost a named sample from a signed report.
+                log.warning('not a regular file, skipped: %s', path)
                 continue
             if file_type == 'fasta':
-                assemblies.append(os.path.join(root, filename))
+                assemblies.append(path)
                 continue
             mate = None
             match = READ_SUFFIX.search(stem)
             if match and match.start() > 0:
                 mate, stem = int(match.group(1)), stem[:match.start()]
-            stem = re.sub(r'[\t\r\n]', '_', stem).strip()  # See sample_name()
-            if not stem:
-                stem = filename.strip()
-            found.setdefault(stem, []).append((mate, os.path.join(root, filename)))
+            # The key is the stem as the file names give it, with only tabs and line breaks taken
+            # out: it is what pairs R1 with R2, so two stems that differ must stay two keys. The
+            # display name is normalised below instead.
+            found.setdefault(re.sub(r'[\t\r\n]', '_', stem), []).append((mate, path))
+
+    # One display name per group of files, and two groups that would answer to the same name are a
+    # collision rather than a merge. Surrounding spaces go, because report.one_cell() strips the TSV
+    # cell while the JSON and the MultiQC file keep them, and a name of nothing but whitespace falls
+    # back to the folder, which is the same for both mates of a pair where the stem itself is not.
+    by_name = {}
+    for stem, files in sorted(found.items()):
+        # The folder name needs the same cleaning as the stem, or it reintroduces the disagreement
+        # between the TSV and the JSON that this fallback exists to prevent.
+        folder_name = re.sub(r'[\t\r\n]', '_', Path(files[0][1]).parent.name).strip()
+        name = stem.strip() or folder_name or 'sample'
+        by_name.setdefault(name, []).append(files)
 
     samples, errors = [], []
-    for name, files in sorted(found.items()):
-        if len(files) == 1:
+    for name, groups in sorted(by_name.items()):
+        files = [one for group in groups for one in group]
+        if len(groups) > 1:
+            errors.append('"{}": {}'.format(name, ', '.join(f[1] for f in files)))
+        elif len(files) == 1:
             mate, path = files[0]
             if mate == 2:
                 log.warning('%s: R2 file without R1, used as single-end reads: %s', name, path)

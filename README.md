@@ -18,8 +18,8 @@
   <a href="https://doi.org/10.5281/zenodo.23845956"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.23845956.svg" alt="DOI"></a>
 </p>
 
-Identify the *Brucella* species of a fastq sample by its [MASH](https://github.com/marbl/mash) distance to 16
-reference genomes, and type it with the nine-locus
+Identify the *Brucella* species of a fastq sample by its [MASH](https://github.com/marbl/mash) distance to
+432 curated reference genomes, covering all 30 named species of the clade, and type it with the nine-locus
 [Whatmore MLST scheme](https://doi.org/10.1186/1471-2180-7-34), whose alleles are called from the reads with
 [Seal](https://sourceforge.net/projects/bbmap/) from BBTools. Point it at a sample, or a folder of samples.
 
@@ -74,7 +74,7 @@ configure.
   Nothing in INSDC is *labelled* *B. papionis*, the thirtieth species — its genome sits there under
   *Brucella* sp., which is [how we found it](https://github.com/duceppemo/BrucellaID/blob/main/curation/papionis/README.md).
   [Validated](https://github.com/duceppemo/BrucellaID/wiki/Validation) twice: on simulated reads of 2,022
-  NCBI assemblies, every held-out sample of a named species right once six genomes mislabelled in NCBI —
+  NCBI assemblies, every held-out sample of a named species right once five genomes mislabelled in NCBI —
   which the curation itself caught — are accounted for; and on **every usable public *Brucella* read set in
   ENA**, 4,042 real libraries, where it matches the submitter on 98.7% against the vSNP set's 96.2%, and
   wins all 91 of the disagreements that have a right answer without losing one.
@@ -83,7 +83,7 @@ configure.
   `stat_alignment_summary_<date>.xlsx` of the first version.
 * **Nothing to configure**: only the Python standard library, plus MASH and BBTools. The two optional
   output formats, xlsx and PDF, are the only things that want a package, and neither is needed.
-* **Tested**: 386 tests, 100% coverage, end to end on a synthetic genome and on reads tiled over the real
+* **Tested**: 390 tests, 100% coverage, end to end on a synthetic genome and on reads tiled over the real
   MLST alleles.
 * **Validated** against the vSNP reference set, genome for genome (`--reference-set vsnp`): reads
   simulated from 13 of its 16 genomes, 7 of its 8 species, with every species and closest reference right

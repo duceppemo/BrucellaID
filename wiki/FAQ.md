@@ -22,10 +22,11 @@ shares most of its hashes with the right reference.
 ### What does `SpeciesSource` mean, and can the ST overrule MASH?
 It says what the species rests on. `MASH` is the distance alone, `MASH+ST (agree)` is both saying the same
 thing, and `(arbitrated)` means a reference of a second species was within 0.0005 of the closest one — so
-MASH had not really chosen — and the sequence type chose among those species. In vSNP's 16 genomes that
-happened for *B. canis* against *B. suis* bv. 4 and no other pair; the 432-genome default set has a second
-species inside the margin for 38 of its genomes, over 14 species pairs, *canis*/*suis*,
-*ceti*/*pinnipedialis* and the former *Ochrobactrum* ones among them.
+MASH had not really chosen — and the sequence type chose among those species. Comparing each packaged
+genome with all the others, a second species falls inside the margin for 38 of the 432 default references
+over 14 species pairs — *canis*/*suis*, *ceti*/*pinnipedialis* and the former *Ochrobactrum* ones among
+them — and for 7 of vSNP's 16 over 8 pairs. The classical *canis*/*suis* case is the one that comes up in
+practice, and it comes up the same way under either set.
 
 The ST cannot overrule a species MASH picked cleanly. An ST pointing at a species that was nowhere near the
 closest reference is reported as `MASH (conflict)`, with the MASH call kept: a thousand min-hashes against
@@ -100,9 +101,12 @@ genomes.
 All nine alleles were called, but their combination is not in the profile table. See
 [Troubleshooting](Troubleshooting).
 
-### Why is the species column of the xlsx report `ab1` and not *Brucella abortus*?
+### Why is the species column of the xlsx report a code and not *Brucella abortus*?
 Because that is what the first version wrote, and `--xlsx` exists for the pipelines that read it. The
-species name is in `brucellaid.tsv` and in the JSON report, with the vSNP code as `species_code`.
+species name is in `brucellaid.tsv` and in the JSON report, where the same code is `species_code`.
+Which code depends on the reference set: the default set spells the species epithet (`abortus`), and
+`--reference-set vsnp` gives vSNP's own `ab1`, which is what 1.x wrote. The run warns when it is writing
+epithets into that column — see [Output files](Output-files).
 
 ### What is the HTML report for, and can I send it to someone?
 It is the evidence behind a run, in one file: the closest reference genomes rather than the winning one

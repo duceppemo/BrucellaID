@@ -265,7 +265,9 @@ def hits_caption(rows, hidden):
     if not rows:
         return 'Closest first.'
     tied = sum(1 for hit, _, _ in rows if hit.distance == rows[0][0].distance)
-    if tied > len(rows) - hidden:
+    # Either the whole list ties, or more of it ties than the table has room for. The second test
+    # alone is never true when nothing is hidden, because then every tied row is on display.
+    if tied > 1 and (tied == len(rows) or tied > len(rows) - hidden):
         lead = ('Every one of these {} reference genomes is'.format(len(rows)) if tied == len(rows)
                 else '{} of these reference genomes are'.format(tied))
         caption = ('{} the same distance from the reads, so the rows below are an arbitrary few of a tie '

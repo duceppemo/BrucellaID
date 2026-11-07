@@ -28,18 +28,20 @@ What this means in practice:
   `ceti2`, `suis4` — silently stop. A code-to-species table will half work, per species. A pipeline
   reading those codes needs `--reference-set vsnp`, and `--xlsx` now warns when it is writing epithets
   instead, because that report exists for the pipelines that read the old codes and nothing else.
-* **`--no-mlst` and `--no-st-species` now flag many more samples than they did.** Neither is changed, but
-  both switch off the arbitrator, and a second species falls inside the close-match margin for 38 of the
-  432 genomes of the default set against essentially one pair of vSNP's 16. Those samples are reported
-  `MASH (unresolved)` with a warning rather than arbitrated, which is the same behaviour reaching a much
-  larger share of runs.
+* **Arbitration now spans more species pairs, but is not triggered more often.** Comparing each packaged
+  genome with all the others, a second species falls inside the close-match margin for 38 of the 432 and
+  across 14 species pairs, against 7 of 16 and 8 pairs for vSNP's set — the new pairs are mostly in the
+  former *Ochrobactrum* clade. The proportion is lower, not higher, because in a dense set a sample's
+  nearest neighbours are usually other genomes of its own species, and on the four tutorial read sets the
+  candidates and the verdict are identical under both sets. `--no-mlst` and `--no-st-species` switch the
+  arbitrator off and report such a sample `MASH (unresolved)` with a warning, as they always did.
 * **The distance no longer lists references it cannot separate.** Past 40 references inside the
   close-match margin the margin is measuring nothing: mash derives the distance from the shared-hash
   count, so at a low count every reference sharing the same few hashes gets exactly the same distance and
   ties with the best. A sample sharing 4 of 1000 hashes was seen to tie 127 references across twelve
   species, which put 10 kB of genome names in one `Notes` cell and 128 rows in the report. The note now
   gives the count and says the distance cannot separate them; the densest real case over the 432 packaged
-  genomes is 16, so nothing legitimate is suppressed. The species call says so too, rather than claiming
+  genomes is 15, so nothing legitimate is suppressed. The species call says so too, rather than claiming
   an agreement the distance never expressed: where the references cannot be separated the verdict is
   `arbitrated` when the sequence type can name the species and `unresolved` when it cannot, never
   `agree`, which is the verdict of a clean match.
@@ -51,7 +53,7 @@ What this means in practice:
   that table no longer claims a ranking the distances do not support either: where every reference is the
   same distance away it says so, instead of "closest first" over an arbitrary five of a 432-way tie and
   "the other 427 are further away" about references that are not.
-* **One half of a custom pair is now an error instead of a silent `ND`.** `--sketch` and `--references` go
+* **One half of a custom pair no longer passes in silence.** `--sketch` and `--references` go
   together, and a 1.x command line that passed only `--sketch` fell back on the 16-genome table, which
   matched it. It now falls back on the extended table, whose IDs are GCA file names, so nothing in such a
   sketch could be named and every sample came back `ND` from a run that exited 0. A sketch none of whose
@@ -67,8 +69,9 @@ What this means in practice:
   `--reference-set`. There is deliberately no constant meaning "whichever set is the default" --
   `EXTENDED_*` and `VSNP_*` are the only names, so code that cares which genomes it used has to say which.
 * **The no-biovar figures are now the default set's**, and they are starker: a biovar is recorded for only
-  7 of the 432 genomes, because the NCBI records of the rest carry none, so 93% of the biovar-labelled
-  *B. abortus* isolates of the PubMLST isolate database are of a biovar no reference has, against 42% for
+  7 of the 432 genomes, because the NCBI records of the rest carry none, so 93% of the 240 *B. abortus*
+  isolates of the PubMLST isolate database that have a numbered biovar are of a biovar no reference
+  has, against 42% for
   vSNP's 16. The resolution argument is unchanged in kind -- the two *B. suis* biovar 2 genomes are 0.00163
   apart, further than the biovar 3 genome is from one of them -- and the reports say so in those terms.
 * **The `Notes` column is now populated on nearly every sample**, where in 1.x it was usually empty: the
@@ -83,6 +86,15 @@ What this means in practice:
   The HTML report barely moves, because it still shows the closest few.
 * A mismatch between a sketch and a reference table names the first eight genomes and counts the rest,
   instead of listing all of them: against the 432-genome table that warning was a single 19 kB line.
+* Nothing about the MLST changes, the 150-shared-hash threshold is unchanged, and there is still no biovar.
+* `validation/run_validation.sh` pins `--reference-set vsnp`. It reads those 16 genomes genome for genome,
+  so its expected answers are their sketch IDs, and its negative control is *B. anthropi* ATCC 49188, which
+  comes back `ND` only because the vSNP set does not carry it. The default set's evidence is the two
+  at-scale validations instead.
+
+### Also fixed in 2.0
+None of these follows from the change of default; they were found reviewing it.
+
 * **The legacy `--xlsx` report no longer writes a formula.** xlsxwriter sends any value starting with
   `=` to `write_formula()`, so a sample named `=HYPERLINK(...)` became a live formula and the cell
   displayed its result instead of the sample it belonged to. Every value is written as text now.
@@ -93,26 +105,22 @@ What this means in practice:
   escaping the thread pool and ending the run before any report was written.
 * **Smaller report fixes.** The `#` command line of each table goes through the same cell cleaning as the
   data, so a path holding a line break no longer splits it in two; a sample name that is only whitespace
-  falls back to the file name, and surrounding spaces are dropped, so the TSV, JSON, MultiQC file and
-  report no longer disagree about what a sample is called; and the HTML report replaces bidirectional and
-  control characters, which `html.escape` passes through and which can make a name render as something
-  the machine-readable files do not contain.
-* Nothing about the MLST changes, the 150-shared-hash threshold is unchanged, and there is still no biovar.
-* `validation/run_validation.sh` pins `--reference-set vsnp`. It reads those 16 genomes genome for genome,
-  so its expected answers are their sketch IDs, and its negative control is *B. anthropi* ATCC 49188, which
-  comes back `ND` only because the vSNP set does not carry it. The default set's evidence is the two
-  at-scale validations instead.
+  falls back to the name of its folder, and surrounding spaces are dropped, so the TSV, JSON, MultiQC
+  file and report no longer disagree about what a sample is called — the files a name is built from still
+  decide which reads pair with which, so two file names that differ only in spacing are a collision and
+  not a merge; and the HTML report replaces bidirectional and control characters, which `html.escape`
+  passes through and which can make a name render as something the machine-readable files do not contain.
 
 ### Also new in 2.0
-* **The extended reference set**, which is what the paragraphs above are about. It identifies against 432
-  curated genomes
-  covering the whole *Brucella* clade -- all 30 named species, the former *Ochrobactrum* included
+* **The extended reference set**, which is what the paragraphs above are about. It identifies against
+  432 curated genomes covering the whole *Brucella* clade -- all 30 named species, the former
+  *Ochrobactrum* included
   (*B. papionis* is labelled nowhere in INSDC: its genome was found under "Brucella sp." and relabelled on
   sequence-type and distance evidence, see curation/papionis/README.md), plus the
   lineages with no name yet, which are reported honestly as *Brucella sp.*. Derived from the 2,022
   assemblies behind the mashID *Brucella* pack and curated genome by genome
   (`scripts/extended_references_curation.tsv` logs every exclusion and why); validated on simulated reads
-  of all 2,022, every held-out sample of a named species right once six genomes mislabelled in NCBI --
+  of all 2,022, every held-out sample of a named species right once five genomes mislabelled in NCBI --
   caught by the curation itself -- are accounted for, and on all 4,042 usable public Brucella read sets in
   ENA, where it matches the submitter on 98.7% against 96.2% and wins every disagreement that has a right
   answer. Of its 52 non-matches, 20 are mislabelled records and 22 are read sets holding little or no
@@ -121,7 +129,9 @@ What this means in practice:
 * **A loose match is now said to be loose.** When the closest reference is further than
   `--loose-distance` (0.005 by default), the call carries a note giving the distance and the shared hashes.
   It does not change the species: a sample can be the right species and still match loosely, because the
-  library holds more than *Brucella* or because its lineage has no near relative in the sketch. The
+  library holds more than *Brucella*, because its lineage has no near relative in the sketch, or because
+  the derived k-mer copy threshold is low for its depth — which is what two of the four tutorial
+  libraries turn out to be, see [Validation](Validation). The
   threshold comes from every public *Brucella* read set in ENA, where nineteen in twenty calls that agreed
   with the submitter sat within 0.005, and all 185 agreeing calls beyond it shared fewer than 900 of the
   1000 hashes.

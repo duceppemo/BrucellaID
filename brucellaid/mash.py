@@ -24,14 +24,14 @@ DEFAULT_MIN_HASHES = 150
 # differ by little, and the biovar references in particular are nearly identical.
 CLOSE_MATCH_MARGIN = 0.0005
 # More references than this within the margin means the margin is not separating anything: see
-# Identification.undiscriminating. The densest real case over the 432 packaged genomes is 16.
+# Identification.undiscriminating. The densest real case over the 432 packaged genomes is 15.
 MAX_CLOSE_MATCHES = 40
 # Beyond this distance the closest reference is reported as a loose match. It says nothing about which species
 # is right: it says the reads are not close to anything in the sketch, which happens when the library holds
 # more than one organism and when the sample belongs to a lineage the sketch has no near relative for. Measured
 # over every public Brucella read set in ENA: nine in ten calls that agreed with the submitter sat within
 # 0.002 and nineteen in twenty within 0.005, and of the 185 agreeing calls beyond 0.005, every single one
-# shared fewer than 900 of the 1000 hashes, median 695. So past 0.005 something is worth saying, whether or
+# shared fewer than 900 of the 1000 hashes, median 696. So past 0.005 something is worth saying, whether or
 # not the species turns out to be right.
 LOOSE_MATCH_DISTANCE = 0.005
 # How many copies of a k-mer the read set must hold before MASH sketches it. The point is to drop the
@@ -397,8 +397,9 @@ class Identification:
         candidates but an absence of measurement.
 
         The cap is set against the densest real case: over the 432 genomes of the default set, comparing
-        each with all the others, at most 16 ever fall within the margin of a genome's closest hit, and
-        the 99th percentile is 13. Anything past 40 is the degenerate kind.
+        each with all the others, at most 15 others ever fall within the margin of a genome's closest
+        hit, and the 99th percentile is 12. (Counting the closest hit itself gives 16 and 13; this
+        property counts the others, as within_margin does.) Anything past 40 is the degenerate kind.
         """
         count = len(self.within_margin)
         return count if count > MAX_CLOSE_MATCHES else 0

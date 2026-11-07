@@ -57,8 +57,8 @@ us once — see the note below the table.
 | `GCA_028621035.1` | *B. gallinifaecis* | — | nothing within 95%; best 87.34% | relabelled *Brucella* sp. |
 | `GCA_979502475.1` | *B. lupini* | **99.00%** (CB1) | 97.21% *B. anthropi* | **correct as deposited** |
 
-All six relabelled genomes are 6 to 11 ANI points closer to another species' type strain than to their
-own, so these are not borderline. `GCA_028621035.1` matches no named type strain: the two *gallinifaecis*
+Five of the six relabelled genomes are 4.7 to more than 13 ANI points closer to another species' type
+strain than to their own, so these are not borderline. `GCA_028621035.1` matches no named type strain: the two *gallinifaecis*
 type deposits (CCUG 48291 and ISO 196) are 100% ANI to each other, so that species is well defined and
 this genome is not in it.
 

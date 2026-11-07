@@ -62,10 +62,11 @@ Run `multiqc results/` on the output folder to fold the run into a MultiQC repor
 would match the called allele and its neighbours alike. Raising it makes the allele calls less, not more,
 reliable.
 
-The ST is only consulted where the MASH distance leaves two species within reach. In vSNP's 16 genomes
-that meant *B. canis* against *B. suis* bv. 4 and nothing else; in the 432-genome default set a second
-species falls within the margin for 38 of the 432 genomes, across 14 species pairs, so it comes up more
-often than it used to. `--no-st-species` restores the behaviour of version 1.0.0, where the closest
+The ST is only consulted where the MASH distance leaves two species within reach. Genome against genome
+that is a second species for 38 of the 432 default references across 14 species pairs, and for 7 of
+vSNP's 16 across 8, so the default set widens the pairs it can involve without making it more frequent:
+the four tutorial read sets arbitrate identically under either set. `--no-st-species` restores the
+behaviour of version 1.0.0, where the closest
 reference decided alone. See
 [How it works](How-it-works) for what the `SpeciesSource` column reports.
 

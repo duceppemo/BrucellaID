@@ -7,9 +7,10 @@ sketches of the package the closest pair of different species is a B. canis and 
 than two B. suis references are to each other: B. canis ATCC 23365 and B. suis bv. 4 strain 40 are 0.00024
 apart in vSNP's 16 genomes, and the nearest canis-suis pair of the 432-genome default set is 0.000264. Which
 of the two such a read set lands on first is noise. MASH decides most other pairs on its own, but not all
-of them: in the 432-genome set a reference of a second species falls within CLOSE_MATCH_MARGIN of the
-closest for 38 of the 432 genomes, across 14 species pairs, so arbitration is not a canis/suis special
-case any more.
+of them, and not only this one: comparing each packaged genome with all the others, a reference of a
+second species falls within CLOSE_MATCH_MARGIN of the closest for 38 of the 432 genomes across 14 species
+pairs, and for 7 of vSNP's 16 across 8. So arbitration has never been a canis/suis special case; the
+432-genome set widens the pairs it can involve without making it more frequent.
 
 The sequence type decides the pair MASH cannot. The nine-locus scheme gives B. canis ST 20, 21 and 106 and
 gives B. suis fourteen others, and not one ST is shared between them: an ST is a different kind of evidence,
@@ -160,9 +161,8 @@ def candidates_of(identification, references):
     close.
 
     More than one means MASH cannot choose. The genomes nearly as close are the ones within
-    mash.CLOSE_MATCH_MARGIN of the closest. In vSNP's 16 that reaches the canis/suis bv. 4 pair and
-    nothing else; in the 432-genome default set it reaches a second species for 38 of the genomes,
-    across 14 species pairs, so arbitration is no longer a one-pair special case.
+    mash.CLOSE_MATCH_MARGIN of the closest. Genome against genome, that reaches a second species for 38
+    of the 432 default references across 14 species pairs, and for 7 of vSNP's 16 across 8.
 
     :return: tuple of species, the closest first, without repetition
     """
