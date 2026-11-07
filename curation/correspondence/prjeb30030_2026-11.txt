@@ -71,6 +71,12 @@ WHAT WOULD HELP
 
 If you agree with the readings, updating the organism field on the ten BioSamples
 would correct them downstream - they are currently feeding reference databases, which
+ENA has no third-party route for metadata corrections, so if you would rather we
+raised it than you did, it goes through the support form at
+https://www.ebi.ac.uk/ena/browser/support or the ELIXIR Clearinghouse, which exists
+for third-party curation of records one did not submit. We are glad to do that with
+the evidence attached.
+
 is how we met them. If you disagree on any, I would genuinely like to know: the
 physical isolate outranks the sequence, and the sequence outranks our reading of it.
 

@@ -34,6 +34,11 @@ or a mixed library than a straightforward mislabel, so a note on the record may 
 a reader better than a relabel - and if the isolate is still held, it may be worth
 re-examining for purity.
 
+To correct the record: ENA has no third-party route for this, so it goes through the
+support form at https://www.ebi.ac.uk/ena/browser/support, or through the ELIXIR
+Clearinghouse, which exists for third-party curation of records one did not submit. We
+are glad to raise it there with the evidence attached if that is easier.
+
 If you disagree with the reading I would genuinely like to know.
 
 Every per-record verdict is public at https://github.com/duceppemo/BrucellaID under

@@ -109,6 +109,10 @@ that the library does not contain the deposited organism would stop the next per
 downloading them as Brucella; if the original files still exist somewhere, a check of
 what was uploaded against what was intended may be worth more.
 
+To correct the record: BioSample organism changes are handled by NCBI's help desk at
+biosamplehelp@ncbi.nlm.nih.gov, quoting the accession, the current name and the
+proposed one. We are glad to send the evidence to them directly if that is easier.
+
 If you disagree with any of these readings I would genuinely like to know. The
 physical isolate outranks the sequence, and the sequence outranks our reading of it.
 

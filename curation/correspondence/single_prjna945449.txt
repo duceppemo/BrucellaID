@@ -25,6 +25,10 @@ the wrong file went up, the right one may still exist; if the isolate was genuin
 this organism, the record's organism field is the thing to amend. Either way the
 record is currently discoverable as Brucella, which is how we came to download it.
 
+To correct the record: BioSample organism changes are handled by NCBI's help desk at
+biosamplehelp@ncbi.nlm.nih.gov, quoting the accession, the current name and the
+proposed one. We are glad to send the evidence to them directly if that is easier.
+
 If you disagree with the reading I would genuinely like to know.
 
 Every per-record verdict is public at https://github.com/duceppemo/BrucellaID under

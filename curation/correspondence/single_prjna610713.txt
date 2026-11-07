@@ -1,37 +1,49 @@
-Subject: SRR11526759 (PRJNA610713) types as Brucella melitensis rather than B. abortus
+Subject: SRR11526759 (PRJNA610713) - the run's organism field disagrees with your own
+         project title
 
 Dear colleagues,
 
 We have been validating a Brucella species-identification tool against every public
-Brucella read set in ENA, and one of your records came up.
+Brucella read set in ENA, and one of your records came up. This one should be an easy
+fix, because your own project title already has it right.
 
-    run          BioSample       deposited          the sequence says
-    SRR11526759  SAMN14309819    Brucella abortus   Brucella melitensis
+    what                                  says
+    PRJNA610713, your project title       Brucella melitensis strain 2308
+    SAMN14309819, the organism field      Brucella abortus
+    SRR11526759, the sequence itself      Brucella melitensis
 
-Three lines of evidence, from methods that share no code and no reference data:
+So the run-level organism field appears to be the only place the species is wrong.
+
+Our evidence, from methods that share no code and no reference data:
 
   - Mash distance 0.00098 to the nearest B. melitensis genome in a curated 431-genome
-    reference set covering all 30 named species of the clade. That is as close as two
-    genomes of one species normally get.
+    reference set covering all 30 named species of the clade, against 0.0016 or more
+    to any B. abortus.
   - MLST-9 (Whatmore et al.) sequence type 8, which the PubMLST isolate database
     records as B. melitensis in 98.3% of the 862 isolates carrying it.
   - The B. melitensis real-time assay of Hoover et al. 2026
     (doi:10.1128/spectrum.02974-25), run in silico, is held in full while the
-    B. abortus assay is absent. In silico Bruce-ladder independently gives a
-    melitensis pattern.
+    B. abortus assay is absent; in silico Bruce-ladder gives a melitensis pattern.
 
-The library itself is sound - it assembles to 3.28 Mb, the normal size for a Brucella
-genome - so this looks like a good genome with a different species name on it rather
-than a data problem.
+The library is sound - it assembles to 3.28 Mb, the normal size for a Brucella genome.
 
-If you agree, updating the organism field on the BioSample would correct it
-downstream; those records feed reference databases, which is how we met yours. If you
-disagree I would genuinely like to know: the physical isolate outranks the sequence,
-and the sequence outranks our reading of it.
+One further note you may want to check separately. Strain 2308 is conventionally
+B. abortus 2308, one of the most widely used reference strains, so "B. melitensis
+strain 2308" is an unusual combination. Our data speak only to the species, which
+reads clearly as melitensis; whether the strain designation is also wrong is something
+only your records can settle. If the isolate is still held it may be worth confirming
+which strain it is, because a 2308 designation attached to a melitensis genome could
+propagate.
+
+To correct the record: BioSample organism changes are made by NCBI's help desk at
+biosamplehelp@ncbi.nlm.nih.gov, quoting SAMN14309819, the current name and the
+proposed one. We are happy to send the evidence to them directly if that is easier.
+
+If you disagree with the reading I would genuinely like to know: the physical isolate
+outranks the sequence, and the sequence outranks our reading of it.
 
 Every per-record verdict is public at https://github.com/duceppemo/BrucellaID under
 curation/, including the errors we found in our own reference set in the same pass.
-Happy to send the assembly, the allele calls or the distance table.
 
 Marc-Olivier Duceppe
 Canadian Food Inspection Agency

@@ -1,43 +1,56 @@
-Subject: SRR31357708 (PRJNA1183633) types as Brucella anthropi rather than B. cytisi
+Subject: SRR31357708 (PRJNA1183633) - a Brucella cytisi isolate that types as
+         Brucella anthropi
 
 Dear colleagues,
 
-We have been validating a Brucella species-identification tool against every public
-Brucella read set in ENA, and one of your records came up.
+We maintain a species-identification tool for the Brucella clade and have been
+validating it against every public read set deposited under that genus in ENA. One
+record from your crop root genome resource came up. I appreciate this is a long way
+from the subject of your study, so the short version is that one isolate's species
+name looks wrong, and nothing about the sequencing does.
 
     run          BioSample       deposited         the sequence says
     SRR31357708  SAMN44729562    Brucella cytisi   Brucella anthropi
 
-This one rests on distance rather than on the usual two independent methods, so I
-want to be clear about what it does and does not establish. The former Ochrobactrum
-species do not carry the classical Brucella MLST alleles - six of the nine loci got no
-read at all - and neither the Bruce-ladder nor the real-time assays we use cover that
-half of the clade. So there is no second method available here.
+Some context on why this is awkward to call, and what it does and does not establish.
+The 2020 taxonomy moved the genus Ochrobactrum into Brucella, so B. cytisi and
+B. anthropi are the former Ochrobactrum cytisi and O. anthropi - plant- and
+soil-associated organisms rather than the classical pathogens the genus is named for.
+That half of the clade carries none of the classical Brucella MLST alleles, and
+neither the Bruce-ladder nor the real-time assays we use cover it, so distance is the
+only method available here.
 
 What the distances show, over a curated 431-genome reference set covering all 30 named
-species:
+species of the clade:
 
-  - 0.0076 from the nearest B. anthropi genome, and every one of the eight nearest
-    matches is B. anthropi.
+  - 0.0076 from the nearest B. anthropi genome, and all eight nearest matches are
+    B. anthropi.
   - 0.0381, 0.0383 and 0.0394 from the three deposited assemblies of the B. cytisi
     type strain (ESC1, LMG 22713, DSM 19778). Those three agree with each other to
-    0.0026, so they form a tight cluster that this read set is not in. They rank 89th,
-    90th and 91st of the 431 references.
+    0.0026, so they form a tight cluster your isolate is not in; they rank 89th, 90th
+    and 91st of the 431 references.
   - The library assembles to 4.84 Mb, which is the size range of the former
-    Ochrobactrum species rather than the 3.3 Mb of a classical Brucella genome, so it
-    is independently in the right part of the clade.
+    Ochrobactrum species, so the isolate is at least in the right part of the clade.
 
-The honest summary is that the B. cytisi label is hard to reconcile with the sequence,
-and B. anthropi is the best available reading. Within that group the within-species
-spread is very wide - inside deposited B. anthropi it reaches 0.21 - so I would not
-argue hard for anthropi over another neighbour on 0.0076 alone.
+The reliable conclusion is the negative one: the sequence is hard to reconcile with
+B. cytisi. B. anthropi is the best available reading, but within this group the
+within-species spread is very wide - inside deposited B. anthropi it reaches 0.21 -
+so I would not argue hard for anthropi over another neighbour on 0.0076 alone. If
+your pipeline assigned the name automatically, that may be the simplest explanation;
+these two species are close and the reference data for them is uneven, which is
+something we have been documenting.
 
-If you hold the isolate, that would settle it better than we can. If you disagree I
-would genuinely like to know: the physical isolate outranks the sequence, and the
-sequence outranks our reading of it.
+Nothing here affects the rest of your resource, and I am not suggesting any of it
+needs revisiting. If you would like the record corrected, BioSample organism changes
+are handled by NCBI at biosamplehelp@ncbi.nlm.nih.gov, quoting SAMN44729562; we are
+glad to send the evidence to them directly instead if that is easier.
+
+If you disagree with the reading I would genuinely like to know. The isolate outranks
+the sequence, and the sequence outranks our reading of it.
 
 Every per-record verdict is public at https://github.com/duceppemo/BrucellaID under
-curation/, including the errors we found in our own reference set in the same pass.
+curation/, including the mislabelled genomes we found in our own reference set in the
+same pass.
 
 Marc-Olivier Duceppe
 Canadian Food Inspection Agency

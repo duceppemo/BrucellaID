@@ -24,6 +24,10 @@ The library itself is sound - it assembles to 3.27 Mb, the normal size for a Bru
 genome - so this looks like a good genome with a different species name on it rather
 than a data problem.
 
+To correct the record: BioSample organism changes are handled by NCBI's help desk at
+biosamplehelp@ncbi.nlm.nih.gov, quoting the accession, the current name and the
+proposed one. We are glad to send the evidence to them directly if that is easier.
+
 If you agree, updating the organism field on the BioSample would correct it
 downstream; those records feed reference databases, which is how we met yours. If you
 disagree I would genuinely like to know: the physical isolate outranks the sequence,

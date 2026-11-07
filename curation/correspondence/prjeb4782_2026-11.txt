@@ -97,6 +97,12 @@ correct them downstream. For the ten in section 2, a check of what was uploaded
 against what was intended would be worth more than any change to the labels - if the
 wrong files went up, the right ones may still exist.
 
+ENA has no third-party route for metadata corrections, so if you would rather we
+raised it than you did, it goes through the support form at
+https://www.ebi.ac.uk/ena/browser/support or the ELIXIR Clearinghouse, which exists
+for third-party curation of records one did not submit. We are glad to do that with
+the evidence attached.
+
 If you disagree with any of the readings I would genuinely like to know. The physical
 isolate outranks the sequence, and the sequence outranks our reading of it.
 
