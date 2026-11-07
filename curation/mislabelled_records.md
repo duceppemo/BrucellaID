@@ -240,11 +240,16 @@ The curation decisions that excluded these genomes from the shipped set are in
 
 ## Reporting log
 
-Drafts live in [`correspondence/`](correspondence/).
+Drafts and sent messages live in [`correspondence/`](correspondence/), which splits them into two
+routes: the `archive_*` letters to the curation teams, which between them cover every record below, and
+the per-submitter letters. The archive route has been used; the submitter letters remain available for
+the records where a submitter is worth reaching directly.
 
 | Records | Reported to | Date | Outcome |
 | --- | --- | --- | --- |
 | 5 assemblies: `GCA_036881765.1`, `GCA_000661995.2`, `GCA_000163135.1`, `GCA_059995225.1`, `GCA_049065255.1` | GenBank | 2026-11-07 | **sent**, awaiting reply |
+| 13 BioSamples to change, 11 to annotate, 1 flagged as a mixture | the ENA curation team | 2026-11-07 | **sent**, awaiting reply |
+| 5 BioSamples to change, 10 to annotate, 3 marked as needing no action | the NCBI BioSample team | 2026-11-07 | **sent**, awaiting reply |
 | 11 BioSamples of PRJEB30030 | the study's submitters | — | drafted, not sent |
 | 3 BioSamples of PRJEB4782, plus 10 runs that hold no *Brucella* | the study's submitters | — | drafted, not sent |
 | `GCA_000662015.2` | GenBank | earlier, separately | already reported before this work; the 2026-11-07 message supplies its swap partner |

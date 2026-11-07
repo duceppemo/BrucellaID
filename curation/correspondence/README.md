@@ -9,10 +9,10 @@ consolidate every record in that archive into one request — use these if you w
 archive than chase individual submitters. The rest are addressed to the **submitters**, one per
 submitting group, and say "your records"; they are not interchangeable with the archive letters.
 
-| To the archives | Records | Send to |
+| To the archives | Records | Status |
 | --- | --- | --- |
-| `archive_ena_2026-11.txt` | 13 BioSamples to change, 11 to annotate, 1 flagged as a probable mixture | the [ENA support form](https://www.ebi.ac.uk/ena/browser/support) or the ELIXIR Clearinghouse |
-| `archive_ncbi_2026-11.txt` | 5 BioSamples to change, 10 to annotate, 3 explicitly needing no action | `biosamplehelp@ncbi.nlm.nih.gov` |
+| `archive_ena_2026-11.txt` | 13 BioSamples to change, 11 to annotate, 1 flagged as a probable mixture | **sent 2026-11-07** via the [ENA support form](https://www.ebi.ac.uk/ena/browser/support) |
+| `archive_ncbi_2026-11.txt` | 5 BioSamples to change, 10 to annotate, 3 explicitly needing no action | **sent 2026-11-07** to `biosamplehelp@ncbi.nlm.nih.gov` |
 
 | To the submitters | Records | Submitter | Status |
 | --- | --- | --- | --- |
