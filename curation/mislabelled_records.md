@@ -305,8 +305,8 @@ the records where a submitter is worth reaching directly.
 | 5 assemblies: `GCA_036881765.1`, `GCA_000661995.2`, `GCA_000163135.1`, `GCA_059995225.1`, `GCA_049065255.1` | GenBank | 2026-11-07 | **sent**, awaiting reply |
 | 13 BioSamples to change, 11 to annotate, 1 flagged as a mixture | the ENA curation team | 2026-11-07 | **sent**, awaiting reply |
 | 5 BioSamples to change, 10 to annotate, 3 marked as needing no action | the NCBI BioSample team | 2026-11-07 | **sent**, awaiting reply |
-| `SAMN07581394` and `SAMN13812480`, resolved by type-strain ANI after the first message | the NCBI BioSample team | — | drafted, not sent |
-| `SAMEA114240991`, same | the ENA curation team | — | drafted, not sent |
+| `SAMN07581394` and `SAMN13812480`, resolved by type-strain ANI after the first message | the NCBI BioSample team | 2026-11-07 | **sent**, awaiting reply |
+| `SAMEA114240991`, same | the ENA curation team | 2026-11-07 | **sent**, awaiting reply |
 | 11 BioSamples of PRJEB30030 | the study's submitters | — | drafted, not sent |
 | 3 BioSamples of PRJEB4782, plus 10 runs that hold no *Brucella* | the study's submitters | — | drafted, not sent |
 | `GCA_000662015.2` | GenBank | earlier, separately | already reported before this work; the 2026-11-07 message supplies its swap partner |
