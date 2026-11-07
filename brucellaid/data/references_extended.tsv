@@ -49,8 +49,6 @@ GCA_000409625.1_60a_genomic.fna.gz	anthropi	Brucella anthropi		60a	GCA_000409625
 GCA_000585655.1_Ochant_v5_genomic.fna.gz	anthropi	Brucella anthropi		W13P3	GCA_000585655.1
 GCA_000742955.1_ASM74295v1_genomic.fna.gz	anthropi	Brucella anthropi		OAB	GCA_000742955.1
 GCA_000878465.1_ASM87846v1_genomic.fna.gz	anthropi	Brucella anthropi		ML7	GCA_000878465.1
-GCA_001575075.1_ASM157507v1_genomic.fna.gz	anthropi	Brucella anthropi		FRAF13	GCA_001575075.1
-GCA_001586735.1_ASM158673v1_genomic.fna.gz	anthropi	Brucella anthropi		SUBG007	GCA_001586735.1
 GCA_002296345.1_ASM229634v1_genomic.fna.gz	anthropi	Brucella anthropi			GCA_002296345.1
 GCA_002387885.1_ASM238788v1_genomic.fna.gz	anthropi	Brucella anthropi			GCA_002387885.1
 GCA_002391935.1_ASM239193v1_genomic.fna.gz	anthropi	Brucella anthropi			GCA_002391935.1
@@ -119,6 +117,7 @@ GCA_051451765.1_ASM5145176v1_genomic.fna.gz	anthropi	Brucella anthropi		OI109	GC
 GCA_055405445.1_ASM5540544v1_genomic.fna.gz	anthropi	Brucella anthropi		ID_1296_21	GCA_055405445.1
 GCA_055755155.1_ASM5575515v1_genomic.fna.gz	anthropi	Brucella anthropi		WW35	GCA_055755155.1
 GCA_059694605.1_ASM5969460v1_genomic.fna.gz	anthropi	Brucella anthropi			GCA_059694605.1
+GCA_059995225.1_ASM5999522v1_genomic.fna.gz	anthropi	Brucella anthropi		WTB2	GCA_059995225.1
 GCA_900454235.1_34576_A02_genomic.fna.gz	anthropi	Brucella anthropi		NCTC12168	GCA_900454235.1
 GCA_907163095.1_OB_assembly_genomic.fna.gz	anthropi	Brucella anthropi			GCA_907163095.1
 GCA_965209795.1_isolate-18.bin_genomic.fna.gz	anthropi	Brucella anthropi			GCA_965209795.1
@@ -140,7 +139,6 @@ GCA_050815205.1_ASM5081520v1_genomic.fna.gz	ceti	Brucella ceti		02/611	GCA_05081
 GCA_012103155.1_O.ciceri_DSM_22292.fasta_genomic.fna.gz	ciceri	Brucella ciceri		DSM 22292	GCA_012103155.1
 GCA_022538045.1_ASM2253804v1_genomic.fna.gz	ciceri	Brucella ciceri		PW1	GCA_022538045.1
 GCA_041930145.1_ASM4193014v1_genomic.fna.gz	ciceri	Brucella ciceri		DSM 22292	GCA_041930145.1
-GCA_049065255.1_ASM4906525v1_genomic.fna.gz	intermedia	Brucella intermedia		SA289	GCA_049065255.1
 GCA_979492545.1_MCC_50810assemblyupdated_genomic.fna.gz	ciceri	Brucella ciceri			GCA_979492545.1
 GCA_001876955.1_ASM187695v1_genomic.fna.gz	cytisi	Brucella cytisi		IPA7.2	GCA_001876955.1
 GCA_012103075.1_O.cytisi_LMG_22713.fasta_genomic.fna.gz	cytisi	Brucella cytisi		LMG 22713	GCA_012103075.1
@@ -151,7 +149,6 @@ GCA_042271025.1_ASM4227102v1_genomic.fna.gz	cytisi	Brucella cytisi		NPDC055919	G
 GCA_058245555.1_ASM5824555v1_genomic.fna.gz	cytisi	Brucella cytisi		UF-298	GCA_058245555.1
 GCA_012103095.1_O.daejeonense_JCM_16234.fasta_genomic.fna.gz	daejeonensis	Brucella daejeonensis		JCM 16234	GCA_012103095.1
 GCA_014199265.1_ASM1419926v1_genomic.fna.gz	daejeonensis	Brucella daejeonensis		DSM 26944	GCA_014199265.1
-GCA_028621035.1_ASM2862103v1_genomic.fna.gz	gallinifaecis	Brucella gallinifaecis		IPG27	GCA_028621035.1
 GCA_042679345.1_ASM4267934v1_genomic.fna.gz	gallinifaecis	Brucella gallinifaecis		CCUG 48291	GCA_042679345.1
 GCA_002252505.1_ASM225250v1_genomic.fna.gz	grignonensis	Brucella grignonensis		OgA9a	GCA_002252505.1
 GCA_012103085.1_O.grignonense_LMG_18954.fasta_genomic.fna.gz	grignonensis	Brucella grignonensis		LMG 18954	GCA_012103085.1
@@ -185,7 +182,6 @@ GCA_014138165.1_ASM1413816v1_genomic.fna.gz	intermedia	Brucella intermedia		RH4W
 GCA_014495725.1_ASM1449572v1_genomic.fna.gz	intermedia	Brucella intermedia		ZJ499	GCA_014495725.1
 GCA_020526685.1_ASM2052668v1_genomic.fna.gz	intermedia	Brucella intermedia		MF13.2C	GCA_020526685.1
 GCA_024126535.1_ASM2412653v1_genomic.fna.gz	intermedia	Brucella intermedia		J112-3	GCA_024126535.1
-GCA_024127925.1_ASM2412792v1_genomic.fna.gz	intermedia	Brucella intermedia		J111-5	GCA_024127925.1
 GCA_025490555.1_ASM2549055v1_genomic.fna.gz	intermedia	Brucella intermedia		SG.G2	GCA_025490555.1
 GCA_026256505.1_ASM2625650v1_genomic.fna.gz	intermedia	Brucella intermedia		Q1107	GCA_026256505.1
 GCA_026256545.1_ASM2625654v1_genomic.fna.gz	intermedia	Brucella intermedia		Q1105	GCA_026256545.1
@@ -217,6 +213,7 @@ GCA_039674745.1_ASM3967474v1_genomic.fna.gz	intermedia	Brucella intermedia		TWI1
 GCA_040250265.1_ASM4025026v1_genomic.fna.gz	intermedia	Brucella intermedia		IITR130	GCA_040250265.1
 GCA_040956035.1_ASM4095603v1_genomic.fna.gz	intermedia	Brucella intermedia		IITR166	GCA_040956035.1
 GCA_048398275.1_ASM4839827v1_genomic.fna.gz	intermedia	Brucella intermedia		COL9b	GCA_048398275.1
+GCA_049065255.1_ASM4906525v1_genomic.fna.gz	intermedia	Brucella intermedia		SA289	GCA_049065255.1
 GCA_051959095.1_ASM5195909v1_genomic.fna.gz	intermedia	Brucella intermedia			GCA_051959095.1
 GCA_055817565.1_ASM5581756v1_genomic.fna.gz	intermedia	Brucella intermedia		PL_is394	GCA_055817565.1
 GCA_056033465.1_ASM5603346v1_genomic.fna.gz	intermedia	Brucella intermedia		RC02-22-35	GCA_056033465.1
@@ -309,7 +306,7 @@ GCA_000157795.1_ASM15779v1_genomic.fna.gz	pinnipedialis	Brucella pinnipedialis		
 GCA_000221005.1_ASM22100v1_genomic.fna.gz	pinnipedialis	Brucella pinnipedialis		B2/94	GCA_000221005.1
 GCA_000740275.1_ASM74027v1_genomic.fna.gz	pinnipedialis	Brucella pinnipedialis		6/566	GCA_000740275.1
 GCA_015624465.1_ASM1562446v1_genomic.fna.gz	pinnipedialis	Brucella pinnipedialis		23a-1	GCA_015624465.1
-GCA_002025625.1_ASM202562v1_genomic.fna.gz	pituitosa	Brucella pituitosa		AA2	GCA_002025625.1
+GCA_000559065.1_SJY1_genomic.fna.gz	pituitosa	Brucella pituitosa		SJY1	GCA_000559065.1
 GCA_002803535.1_ASM280353v1_genomic.fna.gz	pituitosa	Brucella pituitosa		BU72	GCA_002803535.1
 GCA_003049685.2_ASM304968v2_genomic.fna.gz	pituitosa	Brucella pituitosa		CCUG 50899	GCA_003049685.2
 GCA_008801705.1_ASM880170v1_genomic.fna.gz	pituitosa	Brucella pituitosa		CCUG 50899	GCA_008801705.1
@@ -323,12 +320,15 @@ GCA_965579345.1_MPB25478_genomic.fna.gz	pituitosa	Brucella pituitosa			GCA_96557
 GCA_965579405.1_MPB25415_genomic.fna.gz	pituitosa	Brucella pituitosa			GCA_965579405.1
 GCA_977012045.1_Ochrobactrum_pituitosum_R-92755_assembly_genomic.fna.gz	pituitosa	Brucella pituitosa		R-92755	GCA_977012045.1
 GCA_008932435.1_ASM893243v1_genomic.fna.gz	pseudintermedia	Brucella pseudintermedia		CCUG 34735	GCA_008932435.1
+GCA_024127925.1_ASM2412792v1_genomic.fna.gz	pseudintermedia	Brucella pseudintermedia		J111-5	GCA_024127925.1
 GCA_025118245.1_ASM2511824v1_genomic.fna.gz	pseudintermedia	Brucella pseudintermedia		ASAG-D25	GCA_025118245.1
 GCA_037990555.1_ASM3799055v1_genomic.fna.gz	pseudintermedia	Brucella pseudintermedia		CB	GCA_037990555.1
 GCA_039673925.1_ASM3967392v1_genomic.fna.gz	pseudintermedia	Brucella pseudintermedia		TWI652	GCA_039673925.1
 GCA_042697365.1_ASM4269736v1_genomic.fna.gz	pseudintermedia	Brucella pseudintermedia		Ops-OCH-23	GCA_042697365.1
 GCA_902825355.1_OCH-ISR3_genomic.fna.gz	pseudintermedia	Brucella pseudintermedia			GCA_902825355.1
+GCA_001586735.1_ASM158673v1_genomic.fna.gz	pseudogrignonensis	Brucella pseudogrignonensis		SUBG007	GCA_001586735.1
 GCA_001652485.1_ASM165248v1_genomic.fna.gz	pseudogrignonensis	Brucella pseudogrignonensis		K8	GCA_001652485.1
+GCA_002025625.1_ASM202562v1_genomic.fna.gz	pseudogrignonensis	Brucella pseudogrignonensis		AA2	GCA_002025625.1
 GCA_002975235.1_ASM297523v1_genomic.fna.gz	pseudogrignonensis	Brucella pseudogrignonensis		MYb58	GCA_002975235.1
 GCA_008932425.1_ASM893242v1_genomic.fna.gz	pseudogrignonensis	Brucella pseudogrignonensis		CCUG 43892	GCA_008932425.1
 GCA_012395205.1_ASM1239520v1_genomic.fna.gz	pseudogrignonensis	Brucella pseudogrignonensis		CIP 109451	GCA_012395205.1
@@ -351,7 +351,6 @@ GCA_062042781.1_ASM62042781v1_genomic.fna.gz	pseudogrignonensis	Brucella pseudog
 GCA_062043515.1_ASM62043515v1_genomic.fna.gz	pseudogrignonensis	Brucella pseudogrignonensis		OP-FW25-F7	GCA_062043515.1
 GCA_062045464.1_ASM62045464v1_genomic.fna.gz	pseudogrignonensis	Brucella pseudogrignonensis		OP-FW16-B5	GCA_062045464.1
 GCA_964253645.2_LjRoot244v2_genomic.fna.gz	pseudogrignonensis	Brucella pseudogrignonensis			GCA_964253645.2
-GCA_000559065.1_SJY1_genomic.fna.gz	rhizosphaerae	Brucella rhizosphaerae		SJY1	GCA_000559065.1
 GCA_002252475.1_ASM225247v1_genomic.fna.gz	rhizosphaerae	Brucella rhizosphaerae		PR17	GCA_002252475.1
 GCA_042662705.1_ASM4266270v1_genomic.fna.gz	rhizosphaerae	Brucella rhizosphaerae		CCM 7493	GCA_042662705.1
 GCA_042685525.1_ASM4268552v1_genomic.fna.gz	rhizosphaerae	Brucella rhizosphaerae		CCM 7493	GCA_042685525.1
@@ -373,6 +372,7 @@ GCA_024970345.1_ASM2497034v1_genomic.fna.gz	sp	Brucella sp.		2716	GCA_024970345.
 GCA_024970695.1_ASM2497069v1_genomic.fna.gz	sp	Brucella sp.		1315	GCA_024970695.1
 GCA_025908475.1_ASM2590847v1_genomic.fna.gz	sp	Brucella sp.		MAB-22	GCA_025908475.1
 GCA_026014005.1_ASM2601400v1_genomic.fna.gz	sp	Brucella sp.		JSBI001	GCA_026014005.1
+GCA_028621035.1_ASM2862103v1_genomic.fna.gz	sp	Brucella sp.		IPG27	GCA_028621035.1
 GCA_030063905.1_ASM3006390v1_genomic.fna.gz	sp	Brucella sp.		NM4	GCA_030063905.1
 GCA_030157885.1_ASM3015788v1_genomic.fna.gz	sp	Brucella sp.		bbatCR03	GCA_030157885.1
 GCA_030268145.1_ASM3026814v1_genomic.fna.gz	sp	Brucella sp.		NBRC 12950	GCA_030268145.1
@@ -420,6 +420,7 @@ GCA_900446145.1_59071_D01_genomic.fna.gz	suis	Brucella suis		NCTC5061	GCA_900446
 GCA_900446155.1_59302_G01_genomic.fna.gz	suis	Brucella suis		NCTC10097	GCA_900446155.1
 GCA_040395575.1_ASM4039557v1_genomic.fna.gz	thiophenivorans	Brucella thiophenivorans			GCA_040395575.1
 GCA_041930025.1_ASM4193002v1_genomic.fna.gz	thiophenivorans	Brucella thiophenivorans		DSM 7216	GCA_041930025.1
+GCA_001575075.1_ASM157507v1_genomic.fna.gz	tritici	Brucella tritici		FRAF13	GCA_001575075.1
 GCA_008932275.1_ASM893227v1_genomic.fna.gz	tritici	Brucella tritici		LMG 401	GCA_008932275.1
 GCA_008932285.1_ASM893228v1_genomic.fna.gz	tritici	Brucella tritici		TA93	GCA_008932285.1
 GCA_008932295.1_ASM893229v1_genomic.fna.gz	tritici	Brucella tritici		LMG 18957	GCA_008932295.1

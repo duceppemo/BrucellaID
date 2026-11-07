@@ -214,7 +214,7 @@ def test_main_with_the_extended_reference_set(tmp_path, monkeypatch):
     paths = {item['name']: item['path'] for item in report['reference_data']}
     assert paths['MASH sketch'].endswith('references_extended.msh')
     assert paths['Reference table'].endswith('references_extended.tsv')
-    assert '431 genome(s)' in next(item['detail'] for item in report['reference_data']
+    assert '432 genome(s)' in next(item['detail'] for item in report['reference_data']
                                    if item['name'] == 'Reference table')
 
 

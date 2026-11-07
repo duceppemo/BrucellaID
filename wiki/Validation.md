@@ -154,47 +154,46 @@ old 422.
 The [extended reference set](How-it-works#the-extended-reference-set) was validated separately, at a scale
 the repository's script is not meant for: 150 bp paired-end reads simulated at 20x (0.2% substitutions)
 from **all 2,022 *Brucella* assemblies** of the collection it was curated from, identified against three
-reference sets on the same machine. 431 of the samples are genomes of the extended set itself, so a
-self-match tells us nothing; the numbers below are the 1,544 *held-out* samples that carry a named species.
+reference sets on the same machine. 432 of the samples are genomes of the extended set itself, so a
+self-match tells us nothing; the numbers below are the 1,543 *held-out* samples that carry a named species.
 The other 95 samples are labelled *Brucella sp.* in NCBI and have no right answer to score.
 
 | Reference set | Correct species | Wrong | Not identified |
 | --- | --- | --- | --- |
-| Default (16 genomes, 8 species) | 1,451 (94.0%) | 25 | 68 |
-| mashID pack as published (389 genomes) | 1,533 (99.3%) | 11 | 0 |
-| Extended set (431 genomes, curated) | 1,538 (99.61%) | 6 | 0 |
+| Default (16 genomes, 8 species) | 1,451 (94.0%) | 25 | 67 |
+| mashID pack as published (389 genomes) | 1,532 (99.3%) | 11 | 0 |
+| Extended set (432 genomes, curated) | 1,538 (99.68%) | 5 | 0 |
 
 The default set's misses are the species it does not carry — *B. pinnipedialis* and the porpoise lineage
 of *B. ceti* land on *B. ceti* or *B. microti*, the whole former *Ochrobactrum* clade comes back `ND` —
 and all but two were flagged `unresolved` or `conflict`. The two that were not are the reason the
 extended set exists: two "*B. abortus*" samples reported as *B. melitensis* with no warning at all.
 
-Both turned out to be **mislabelled in NCBI**, and so are the extended set's six "wrong" calls, every
+Both turned out to be **mislabelled in NCBI**, and so are the extended set's five "wrong" calls, every
 one a genome the curation had already thrown out of the reference list for contradicting its own label:
 the "*B. abortus*" that is 0.0007 from *B. melitensis* and carries the melitensis ST 8, the two atypical
-"*B. abortus* bv. 1" BCB genomes, a submission batch whose *B. suis* and *B. inopinata* sequences are
-swapped (its "*B. suis* bv. 4 str. 40" is 0.022 from every *B. suis* and 0.0004 from *B. inopinata* BO1),
-and the "*B. cytisi*" WTB2 that is 0.0066 from *B. anthropi* and 0.038 from the *B. cytisi* type strain.
+"*B. abortus* bv. 1" BCB genomes, and a submission batch whose *B. suis* and *B. inopinata* sequences are
+swapped (its "*B. suis* bv. 4 str. 40" is 0.022 from every *B. suis* and 0.0004 from *B. inopinata* BO1).
 Each of those records is tracked with its evidence in
 [`curation/mislabelled_records.md`](https://github.com/duceppemo/BrucellaID/blob/main/curation/mislabelled_records.md),
 together with the public read sets whose submitted species the distance and the sequence type both
 contradict, so they can be reported rather than only excluded.
 
-Scored against what those seven genomes demonstrably are, the extended set got **every one of the 1,544
+Scored against what those six genomes demonstrably are, the extended set got **every one of the 1,543
 held-out named samples right**, including all 69 *B. canis*, all 24 *B. ceti* and all 8
 *B. pinnipedialis* — the boundaries the distance alone cannot draw. Of the 95 *Brucella sp.* samples, 53
 were reported as *Brucella sp.*, 40 as the named species they sit next to (36 of them with a note saying
 how close the call was), and the two genomes that are nowhere near the clade came back `ND`.
 
-Three genomes were added to the set after this was measured — the *B. papionis* reference and two unnamed
-lineages the curation had wrongly dropped as redundant twins — and they change none of it. Every one of
-the 2,022 assemblies was measured against all three: exactly four samples are nearer to one of them than
-to the reference they had matched, and **every one of the four is labelled *Brucella* sp. in NCBI**, so
-none was ever in the named universe these numbers are scored on. Three are the added genomes themselves,
-now self-matches; the fourth, `GCA_002994775.1`, stops being called *B. microti* at 0.00224 and matches
-the new lineage at 0.00019, which is the honest answer for an unnamed genome. No sample of a named species
-moves at all, and the two neighbours with the least margin, a *B. microti* and a *B. pinnipedialis* read
-set, return the same species, closest reference and distance with the three in the set as without.
+The set was revised after this was measured, and the figures above are recomputed against the set as it
+now stands: three genomes were added (the *B. papionis* reference and two unnamed lineages the curation
+had wrongly dropped as twins), and six genomes of the former *Ochrobactrum* group were relabelled by ANI
+to each species' type strain. Every one of the 2,022 assemblies was re-measured. Only four samples are
+nearer to an added genome than to the reference they had matched, and **all four are labelled *Brucella*
+sp. in NCBI**, so none was ever in the named universe. The six relabels move no held-out named sample
+either, because no such sample has one of them as its closest reference. The two neighbours with the
+least margin, a *B. microti* and a *B. pinnipedialis* read set, return the same species, closest
+reference and distance before and after.
 
 What this does not establish is the same as above, plus one thing: the reads were simulated from the very
 collection the set was curated from, so a lineage absent from GenBank in October 2026 is absent from both
@@ -212,7 +211,7 @@ automatically an error.
 | Reference set | Matches the submitter | Does not |
 | --- | --- | --- |
 | Default (16 genomes, 8 species) | 3,890 (96.2%) | 152 |
-| Extended set (431 genomes) | 3,990 (98.7%) | 52 |
+| Extended set (432 genomes) | 3,990 (98.7%) | 52 |
 
 The two sets disagree on 146 runs. **The extended set is right on 91 of them and the default set on none** —
 there is no run in the sweep where the sixteen genomes gave a better answer. Seventy-two of those are

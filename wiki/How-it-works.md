@@ -175,7 +175,7 @@ nine loci, 4,396 bp in all.
 
 The 16 genomes of the default set cover 8 species — the classical six plus *B. microti* and *B. neotomae*.
 The 2020 taxonomy moved the genus *Ochrobactrum* into *Brucella*, and sequencing keeps finding isolates of
-the atypical lineages, so the package also ships a second set: 431 curated genomes covering all 30 named
+the atypical lineages, so the package also ships a second set: 432 curated genomes covering all 30 named
 species of the clade, selected with
 
 ```bash

@@ -98,7 +98,7 @@ def test_compare_with_sketch():
 
 def test_the_extended_table_of_the_package():
     references = load_references(data_path(EXTENDED_REFERENCES_FILE))
-    assert len(references) == 431
+    assert len(references) == 432
     assert all(r.code and r.species for r in references.values())
     species = {r.species for r in references.values()}
     # All 30 named species, and "Brucella sp." for the unnamed lineages.
@@ -113,6 +113,6 @@ def test_the_extended_table_of_the_package():
 
 def test_the_extended_sketch_matches_the_extended_table():
     ids = sketch_references(reference_sketch(data_path(EXTENDED_SKETCH_FILE)))
-    assert len(ids) == 431
+    assert len(ids) == 432
     references = load_references(data_path(EXTENDED_REFERENCES_FILE))
     assert compare_with_sketch(ids, references) == []

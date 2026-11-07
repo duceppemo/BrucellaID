@@ -11,7 +11,7 @@ BrucellaID reads a *Brucella* fastq sample and answers two questions:
 
 * **Which species is it?** The reads are compared with [MASH](https://github.com/marbl/mash) to 16 *Brucella*
   reference genomes, and the closest one names the species and the reference itself.
-  `--reference-set extended` measures against 431 curated genomes of the whole clade instead — all 30
+  `--reference-set extended` measures against 432 curated genomes of the whole clade instead — all 30
   named species, *Ochrobactrum* included ([How it works](How-it-works#the-extended-reference-set)).
 * **Which sequence type is it?** The nine alleles of the
   [Whatmore MLST-9 scheme](https://doi.org/10.1186/1471-2180-7-34) are called from the reads with

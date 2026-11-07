@@ -40,23 +40,67 @@ label. They are consecutive accessions from one submission, which is where the e
 The *inopinata* half is the one worth raising first, because it is flagged as **type material** — the
 reference a future study would anchor on.
 
-## Assemblies: candidates, one line of evidence only
+## Assemblies: resolved by ANI to the type strain
 
-These are flagged by geometry alone and need type-strain anchoring per species before anything is claimed.
-The ex-*Ochrobactrum* species are diverse enough that "nearer to another species" is suggestive, not
-conclusive. The ratio column is how much nearer the other species is than the labelled one.
+These were flagged by distance alone and have now been settled the proper way: average nucleotide identity
+to the **type strain** of each candidate species, which is the accepted criterion for species assignment
+(95% is the boundary). Distance to a neighbouring genome is not a substitute, and anchoring on one misled
+us once — see the note below the table.
 
-| Accession | Label in NCBI | Nearer species | Distance | To its own label | Ratio | Note |
-| --- | --- | --- | --- | --- | --- | --- |
-| `GCA_001586735.1` | *B. anthropi* | *B. pseudogrignonensis* | 0.0129 | 0.1827 | 14× | |
-| `GCA_000559065.1` | *B. rhizosphaerae* | *B. pituitosa* | 0.0141 | 0.1158 | 8× | only 4 *rhizosphaerae* genomes exist to compare with |
-| `GCA_024127925.1` | *B. intermedia* | *B. pseudintermedia* | 0.0113 | 0.0835 | 7× | the two species are sisters |
-| `GCA_002025625.1` | *B. pituitosa* | *B. pseudogrignonensis* | 0.0260 | 0.1240 | 5× | |
-| `GCA_001575075.1` | *B. anthropi* | *B. tritici* | 0.0192 | 0.0717 | 3.7× | |
-| `GCA_979502475.1` | *B. lupini* | *B. anthropi* | 0.0051 | 0.0111 | 2.2× | weakest of the set |
-| `GCA_000292145.2` | *B. abortus* bv. 1 (BCB027) | an unnamed lineage | 0.0010 | 0.0016 | 1.6× | known atypical genome; margin is narrow |
-| `GCA_000292205.2` | *B. abortus* bv. 1 (BCB013) | *B. suis* | 0.0011 | 0.0022 | 2× | ST 120 is a PubMLST singleton recorded as *abortus*, so the ST does **not** corroborate |
-| `GCA_028621035.1` and `GCA_042679345.1` | both *B. gallinifaecis* | — | — | — | — | the only two *gallinifaecis* genomes are **0.167 apart**, so at most one of them can be that species. Needs the type strain to say which. |
+| Accession | Deposited | ANI to its own type strain | ANI to the nearest other type | Verdict |
+| --- | --- | --- | --- | --- |
+| `GCA_001586735.1` | *B. anthropi* | under 83% | **96.81%** *B. pseudogrignonensis* (CIP 109451) | relabelled *pseudogrignonensis* |
+| `GCA_001575075.1` | *B. anthropi* | 91.83% (ATCC 49188) | **96.54%** *B. tritici* (DSM 13340) | relabelled *tritici* |
+| `GCA_000559065.1` | *B. rhizosphaerae* | 87.20% (DSM 19824) | **97.96%** *B. pituitosa* (CCUG 50899) | relabelled *pituitosa* |
+| `GCA_024127925.1` | *B. intermedia* | 90.54% (CIP 105838) | **98.85%** *B. pseudintermedia* (CCUG 34735) | relabelled *pseudintermedia* |
+| `GCA_002025625.1` | *B. pituitosa* | 85.64% (CCUG 50899) | **96.31%** *B. pseudogrignonensis* (CIP 109451) | relabelled *pseudogrignonensis* |
+| `GCA_028621035.1` | *B. gallinifaecis* | — | nothing within 95%; best 87.34% | relabelled *Brucella* sp. |
+| `GCA_979502475.1` | *B. lupini* | **99.00%** (CB1) | 97.21% *B. anthropi* | **correct as deposited** |
+
+All six relabelled genomes are 6 to 11 ANI points closer to another species' type strain than to their
+own, so these are not borderline. `GCA_028621035.1` matches no named type strain: the two *gallinifaecis*
+type deposits (CCUG 48291 and ISO 196) are 100% ANI to each other, so that species is well defined and
+this genome is not in it.
+
+### Four named species that ANI cannot separate
+
+The same pass established something that bears on every record in this group. Four pairs of **different
+named species** have type strains at or above 95% ANI, which means they are one species by the standard
+criterion:
+
+| Pair | ANI between the type strains | Senior name |
+| --- | --- | --- |
+| *B. intermedia* / *B. ciceri* | 98.26% | *intermedia* (1998 vs 2010) |
+| *B. anthropi* / *B. lupini* | 97.14% | *anthropi* (1988) |
+| *B. lupini* / *B. cytisi* | 95.95% | — |
+| *B. anthropi* / *B. cytisi* | 95.51% | *anthropi* (1988) |
+
+Inside those groups a species name is partly a nomenclatural choice, and the senior name has priority.
+That is what justifies the two reports we made for this group, and it is also where a neighbour-anchored
+measurement went wrong: `GCA_049065255.1` (SA289) sits 0.00004 from an *intermedia*-labelled genome and
+99.09% from the *ciceri* type strain against 98.35% from the *intermedia* type. Read as a type-strain
+comparison alone that looks like *ciceri*; but the two species are inseparable, *intermedia* is the senior
+name, and 11 of the 12 genomes in SA289's own cluster are deposited as *intermedia*. It stays *intermedia*.
+`GCA_059995225.1` (WTB2) is the same situation — 99.11% to the *lupini* type, 96.87% to *anthropi*, 95.65%
+to *cytisi*, all one species — so it carries the senior name *anthropi*.
+
+## Assemblies: candidates with one line of evidence
+
+Two records remain unresolved, and no change is requested for either. Both are the atypical BCB genomes,
+and both are in the classical part of the clade where the type-strain ANI pass above does not apply.
+
+| Accession | Label in NCBI | Nearer species | Distance | To its own label | Why it is not concluded |
+| --- | --- | --- | --- | --- | --- |
+| `GCA_000292145.2` | *B. abortus* bv. 1 (BCB027) | an unnamed lineage | 0.0010 | 0.0016 | a narrow margin, though Bruce-ladder also declines to call it *abortus* |
+| `GCA_000292205.2` | *B. abortus* bv. 1 (BCB013) | *B. suis* | 0.0011 | 0.0022 | ST 120 is a PubMLST singleton recorded as *abortus*, so the ST does **not** corroborate; the PCR panel points at *melitensis* instead, so the methods disagree on what it is |
+
+Every method agrees they are **not** ordinary *B. abortus*, but they do not agree on what they are. Both
+are known atypical genomes and we propose no name for either.
+
+Four read sets are in a similar position — `SRR6003475`, `SRR10948139`, `ERR11807265` and `SRR1798201`,
+all former *Ochrobactrum* species where the nearest reference is 0.005–0.009 away and every PCR assay is
+negative on both substrates. These could be settled the same way as the assemblies above, by ANI to the
+type strains, which has not been done.
 
 ### Checked and cleared
 
@@ -138,7 +182,7 @@ so a wrong label here travels further than an ordinary isolate's would.
 is available: the former *Ochrobactrum* species do not carry the classical MLST alleles, and six of the
 nine loci got no read at all. The distance evidence is decisive on its own — 0.0076 from the nearest
 *B. anthropi* against 0.0381–0.0394 from the three deposits of the *cytisi* type strain, which rank 89th,
-90th and 91st of the 431 references. Every one of its top eight hits is *anthropi*. Status: to report.
+90th and 91st of the 432 references. Every one of its top eight hits is *anthropi*. Status: to report.
 
 ## Read sets that contain no *Brucella* sequence
 
@@ -231,7 +275,7 @@ mash dist curation.msh curation.msh > allvsall.tsv
 
 # a read set against the extended reference set, keeping every per-reference distance
 brucellaid -r1 RUN_1.fastq.gz -r2 RUN_2.fastq.gz -o out --reference-set extended
-#   out/brucellaid_mash.tsv holds the distance to all 431 references, ranked
+#   out/brucellaid_mash.tsv holds the distance to all 432 references, ranked
 #   out/brucellaid_mlst.tsv holds every allele call with the margin it had
 ```
 
@@ -317,7 +361,7 @@ lands on *Brucella* sp. instead of a confident wrong name. Dropping them worked 
 the simulated-read validation both were reported as a named species, *B. microti* and *B. pinnipedialis*,
 each with a `MASH (unresolved)` flag, rather than as *Brucella* sp.
 
-Both are now back in the set, which stands at 431 genomes. Measured against all 2,022 assemblies, exactly
+Both are now back in the set, which stands at 432 genomes. Measured against all 2,022 assemblies, exactly
 three samples change, every one of them labelled *Brucella* sp. in NCBI: the two genomes themselves, and
 `GCA_002994775.1`, which stops being called *B. microti* at 0.00224 and matches the bbatCR03 lineage at
 0.00019 — reported as *Brucella* sp., which is the honest answer. **No sample of a named species moves at
