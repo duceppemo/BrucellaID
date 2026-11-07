@@ -1,0 +1,109 @@
+Subject: Third-party curation request: 5 Brucella BioSamples whose organism field is
+         contradicted by the deposited reads, plus 10 flagged for annotation
+
+To the NCBI BioSample team,
+
+We have validated a Brucella species-identification tool against every public Brucella
+read set in ENA and the SRA - 4,042 runs under taxon 234 - and are reporting the records
+where the deposited organism does not match the sequence. We are not the submitter of
+any of them. We have written to the submitting groups as well, and will pass on anything
+they confirm or dispute.
+
+A separate message about six assembly records went to GenBank on 2026-11-07; this one
+concerns BioSamples behind SRA runs and does not overlap with it.
+
+Two requests. Section 1 asks for a change of organism. Section 2 asks only for an
+annotation.
+
+
+1. FIVE BIOSAMPLES: ORGANISM FIELD CONTRADICTED BY THE SEQUENCE
+
+Each rests on two methods sharing no code and no reference data: Mash distance over a
+curated 431-genome reference set covering all 30 named species of the clade, and the
+nine-locus Whatmore MLST scheme called from the reads. The real-time assays of Hoover
+et al. 2026 (doi:10.1128/spectrum.02974-25), run in silico, agree as a third line
+wherever the species is one they cover.
+
+  BioSample       runs                          deposited              proposed
+  SAMN00811170    SRR642185 SRR651210 SRR867710 B. abortus 63/183      B. suis
+  SAMN00811205    SRR867711                     B. melitensis 63/227   B. suis
+  SAMN15685105    SRR31560207                   B. abortus             B. melitensis
+  SAMN14309819    SRR11526759                   B. abortus             B. melitensis
+  SAMN44729562    SRR31357708                   B. cytisi              B. anthropi
+
+  SAMN00811170   Mash 0.0022-0.0023 to B. suis; ST 14 and ST 16, which PubMLST records
+                 as B. suis in 96.4% of 140 and all 15 isolates respectively; the
+                 B. suis assay is held and the abortus and melitensis assays absent.
+                 One BioSample sequenced three times; all three libraries agree.
+  SAMN00811205   Mash 0.00205 to B. suis; ST 14; same assay pattern.
+  SAMN15685105   Mash 0.00056 to B. melitensis against 0.0016 to any abortus; ST 7,
+                 which PubMLST records as B. melitensis in 98.6% of 72 isolates.
+  SAMN14309819   Mash 0.00098 to B. melitensis; ST 8, melitensis in 98.3% of 862
+                 isolates. Note the BioProject title for PRJNA610713 already reads
+                 "Brucella melitensis strain 2308", so only the sample's organism
+                 field disagrees. Strain 2308 is conventionally B. abortus 2308, which
+                 may be worth raising with the submitter separately; our evidence
+                 speaks to the species, not the strain designation.
+  SAMN44729562   Distance only, and we flag it as the weakest of the five. The former
+                 Ochrobactrum species carry none of the classical MLST alleles and
+                 neither PCR panel covers them. Mash 0.0076 to the nearest B. anthropi
+                 against 0.0381-0.0394 to the three deposited assemblies of the
+                 B. cytisi type strain, which agree with each other to 0.0026. The
+                 reliable statement is that the sequence is hard to reconcile with
+                 B. cytisi; B. anthropi is the best available reading.
+
+The first two carry strain designations, which is why we would prioritise them: a
+designation gets cited and requested, so a wrong species on one propagates further
+than on an ordinary isolate.
+
+
+2. TEN BIOSAMPLES: DEPOSITED AS BRUCELLA, LIBRARY HOLDS SOMETHING ELSE
+
+No organism change is requested. An annotation that the library does not contain the
+deposited organism would stop these being downloaded as Brucella.
+
+  runs                                 deposited              what the library holds
+  SRR825216 SRR825217 SRR825218        B. pinnipedialis       an uncultured
+                                                              Actinomycetaceae
+  SRR886241 SRR886242 SRR886243        B. ceti                Streptococcus intermedius
+  SRR848042                            B. abortus             Metamycoplasma orale
+  SRR25828922                          B. pseudogrignonensis  a Bacillus species
+
+  The three Actinomycetaceae libraries are one organism at 100% ANI to each other,
+  1.275 Mb at 33.2% GC, matching a GTDB r220 representative at 99.33% ANI with 365x
+  coverage and 81% containment; that representative is itself a metagenome-assembled
+  genome, so the organism has no isolate genome anywhere. The S. intermedius
+  identification is unambiguous: 100% ANI at 169x with 8092 of 8093 reference k-mers
+  present, and 16S identical to the type strain. M. orale is at 98.2% ANI with 16S
+  identical to the type strain, in a mixed library. For SRR25828922 we stop at genus:
+  95.8% ANI to Bacillus subtilis with 27% containment places it in Bacillus without
+  naming the species.
+
+
+3. TWO RECORDS WHERE THE DEPOSITED SPECIES IS CORRECT - NO ACTION WANTED
+
+Listed only so they are not caught up in the above if this report is actioned in bulk.
+
+  SRR952243 (B. abortus) holds genuine classical Brucella at 12.4x with 94% of a
+  reference genome present, under a dominant Ralstonia pickettii. SRR35797377
+  (B. melitensis) holds B. melitensis at 7.2x with 97% present, alongside minor
+  organisms. Both deposits look right; the libraries are contaminated. A note would
+  help a reader, but the organism field should stand. SRR24420454 (B. melitensis) holds
+  a third of a Brucella genome at 0.5x and nothing else - too shallow to judge, and we
+  request nothing for it.
+
+
+EVIDENCE AND METHOD
+
+Every per-record verdict, including the records we checked and cleared and the
+mislabelled genomes we found in our own reference set in the same pass, is public at
+https://github.com/duceppemo/BrucellaID under curation/. Happy to supply assemblies,
+allele calls, distance tables or identification output in whatever form is most useful.
+If any of this is better directed to pd-help, please let us know and we will resend.
+
+If any reading is disputed we would genuinely like to know. The physical isolate
+outranks the sequence, and the sequence outranks our reading of it.
+
+Marc-Olivier Duceppe
+Canadian Food Inspection Agency
+marc-olivier.duceppe@inspection.gc.ca

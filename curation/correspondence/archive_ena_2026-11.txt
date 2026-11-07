@@ -1,0 +1,102 @@
+Subject: Third-party curation request: 13 Brucella BioSamples whose organism field is
+         contradicted by the deposited reads, plus 11 flagged for annotation
+
+To the ENA curation team,
+
+We have validated a Brucella species-identification tool against every public Brucella
+read set in ENA - 4,042 runs under NCBI taxon 234 - and are reporting the records where
+the deposited organism does not match the sequence. We are not the submitter of any of
+them, so this goes to you rather than to the records directly; we have also written to
+the submitting groups and will copy you on anything they confirm or dispute.
+
+Two requests, in decreasing order of confidence. Section 1 asks for a change. Section 2
+asks only for an annotation.
+
+
+1. THIRTEEN BIOSAMPLES: ORGANISM FIELD CONTRADICTED BY THE SEQUENCE
+
+Each of these rests on two methods that share no code and no reference data: Mash
+distance over a curated 431-genome reference set covering all 30 named species of the
+clade, and the nine-locus Whatmore MLST scheme called from the reads. Where the species
+is one the panel covers, the real-time assays of Hoover et al. 2026
+(doi:10.1128/spectrum.02974-25) run in silico agree as a third line.
+
+    run          BioSample        deposited        proposed              Mash    ST
+    ERR2993145   SAMEA5176140     B. melitensis    B. suis            0.00007     -
+    ERR2993140   SAMEA5176147     B. melitensis    B. neotomae        0.00012    22
+    ERR2993152   SAMEA5176142     B. melitensis    B. abortus         0.00014     1
+    ERR2993155   SAMEA5176143     B. melitensis    B. suis            0.00014    14
+    ERR2993138   SAMEA5176141     B. melitensis    B. suis            0.00014    19
+    ERR2993134   SAMEA5176151     B. melitensis    B. pinnipedialis   0.00026    25
+    ERR2938660   SAMEA5145035     B. ovis          B. suis            0.00081    15
+    ERR2938678   SAMEA5145000     B. melitensis    B. abortus         0.00111     5
+    ERR2938669   SAMEA5145008     B. melitensis    B. suis            0.00181    15
+    ERR2938695   SAMEA5145011     B. melitensis    B. suis            0.00244    15
+    ERR471314    SAMEA2266858     B. ceti          B. abortus         0.00017     5
+    ERR471315    SAMEA2266859     B. ceti          B. abortus         0.00017     5
+    ERR473742    SAMEA2266954     B. abortus       B. neotomae        0.00034    22
+
+The Mash column is the distance to the nearest genome of the proposed species. For
+context, two genomes of one Brucella species are typically 0.0001 to 0.002 apart, so
+most of these are as close to the proposed species as members of one species get. The
+ST column is the sequence type; PubMLST records ST1 as B. abortus in 99.4% of 466
+isolates, ST5 as B. abortus in 98.6% of 71, ST14 as B. suis in 96.4% of 140, ST15 as
+B. suis in 96.1% of 103, ST19 as B. suis in all 6, ST22 as B. neotomae in all 9, and
+ST25 as B. pinnipedialis in 95.0% of 80. ERR2993145 has no ST called, but two
+independent reference sets reach B. suis for it.
+
+The libraries are sound: these assemble to 3.24-3.35 Mb, the normal size for a Brucella
+genome, so they are good genomes carrying a different species name rather than poor
+data misleading a distance.
+
+One record from the same submission is deliberately NOT in the table. ERR2938687
+(SAMEA5145007, deposited B. melitensis) has the largest distance of its group at
+0.00591, by far the worst assembly at 2,165 contigs, and carries a complete B. suis
+amplicon in 54% of informative reads alongside a B. melitensis amplicon in 33%. A mixed
+library explains all three observations where a wrong species name explains none, so we
+propose no new name and suggest only that it be flagged as a possible mixture.
+
+
+2. ELEVEN BIOSAMPLES: DEPOSITED AS BRUCELLA, LIBRARY CONTAINS LITTLE OR NONE
+
+No change of organism is requested here, because we cannot say what the submitter
+intended. An annotation that the library does not contain the deposited organism would
+stop these being downloaded as Brucella, which is how we came to them.
+
+    ERR471337 (SAMEA2266897), ERR473743 (SAMEA2266955), ERR554820 (SAMEA2382534),
+    ERR775236 (SAMEA2821524), ERR775237 (SAMEA2821525), ERR775244 (SAMEA2821533),
+    ERR775245 (SAMEA2821534), ERR775246 (SAMEA2821535), ERR775247 (SAMEA2821536),
+    ERR775248 (SAMEA2821537)  - all deposited as B. abortus
+    ERR3218177 (SAMEA104338291) - deposited as B. abortus
+
+These share 1 to 6 of 1000 k-mer hashes with any genome of the clade, where a real
+Brucella library at usable depth shares 900 or more. Profiling the reads against GTDB
+r220 by containment rather than abundance - the fairer test for a minority organism -
+finds Brucella in nine of the eleven at 0.03 to 0.17x coverage with only 4 to 13% of a
+reference genome present, which is trace or index-hopping level. ERR775246 reaches 31%
+at 0.43x and ERR3218177 reaches 52% at 0.79x, both still far short of a genome.
+
+What the libraries do contain, where we could establish it: ERR471337, ERR554820 and
+ERR775236 are Camelimonas fluminis at 98.4% ANI to the type strain; ERR473743 and
+ERR775237 are an unnamed Camelimonas species; ERR3218177 is dominated by
+Pseudochrobactrum saccharolyticum at 141x. All of those genera sit in Brucellaceae
+alongside Brucella, which may explain the original identifications. The five
+ERR775244-248 libraries are one organism in the family Alcaligenaceae with no sequenced
+representative in proGenomes v4, a dereplicated RefSeq sketch, or GTDB r220.
+
+
+EVIDENCE AND METHOD
+
+Every per-record verdict, including the records we checked and cleared and the
+mislabelled genomes we found in our own reference set in the same pass, is public at
+https://github.com/duceppemo/BrucellaID under curation/. We are happy to supply
+assemblies, allele calls, distance tables or the identification output in whatever form
+is most useful, and to route this through the ELIXIR Clearinghouse instead if that is
+the preferred mechanism for third-party curation.
+
+If any reading is disputed we would genuinely like to know. The physical isolate
+outranks the sequence, and the sequence outranks our reading of it.
+
+Marc-Olivier Duceppe
+Canadian Food Inspection Agency
+marc-olivier.duceppe@inspection.gc.ca

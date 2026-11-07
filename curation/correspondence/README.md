@@ -4,7 +4,17 @@ One message per recipient, plain text, ready to send. None carries a `To:` line:
 publishes submitter email addresses, so the recipient has to be chosen per record — the submitting
 organisation, the corresponding author of an associated paper, or the archive itself.
 
-| File | Records | Submitter | Status |
+There are two kinds of file here. The `archive_*` letters are addressed to the **curation teams** and
+consolidate every record in that archive into one request — use these if you would rather go through the
+archive than chase individual submitters. The rest are addressed to the **submitters**, one per
+submitting group, and say "your records"; they are not interchangeable with the archive letters.
+
+| To the archives | Records | Send to |
+| --- | --- | --- |
+| `archive_ena_2026-11.txt` | 13 BioSamples to change, 11 to annotate, 1 flagged as a probable mixture | the [ENA support form](https://www.ebi.ac.uk/ena/browser/support) or the ELIXIR Clearinghouse |
+| `archive_ncbi_2026-11.txt` | 5 BioSamples to change, 10 to annotate, 3 explicitly needing no action | `biosamplehelp@ncbi.nlm.nih.gov` |
+
+| To the submitters | Records | Submitter | Status |
 | --- | --- | --- | --- |
 | `genbank_2026-11.txt` | 5 assemblies | GenBank | **sent 2026-11-07** |
 | `prjeb30030_2026-11.txt` | 11 BioSamples | Instituto Nacional de Saúde Dr. Ricardo Jorge | drafted |
