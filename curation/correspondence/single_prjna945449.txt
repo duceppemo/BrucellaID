@@ -1,0 +1,35 @@
+Subject: SRR25828922 (PRJNA945449) does not appear to contain Brucella
+
+Dear colleagues,
+
+We have been validating a Brucella species-identification tool against every public
+Brucella read set in ENA, and one of your records came up - not with a different
+Brucella species, but with no detectable Brucella at all.
+
+    run          BioSample       deposited                        what we find
+    SRR25828922  SAMN33797231    Brucella pseudogrignonensis      a Bacillus species
+
+  - The reads share 5 of 1000 k-mer hashes with any genome of the Brucella clade. A
+    real Brucella library at usable depth shares 900 or more.
+  - Profiling the reads against GTDB r220 finds no Brucella at any coverage, and a
+    dominant organism at 101x matching Bacillus subtilis at 95.8% average nucleotide
+    identity, with 27% of that reference's k-mers present.
+  - The library assembles cleanly to 4.08 Mb.
+
+I would stop at genus. 95.8% identity with 27% containment places the organism in
+Bacillus but is not enough to name the species, and B. subtilis is simply the nearest
+sequenced relative we found rather than a confident match.
+
+What would help most is a check of what was uploaded against what was intended. If
+the wrong file went up, the right one may still exist; if the isolate was genuinely
+this organism, the record's organism field is the thing to amend. Either way the
+record is currently discoverable as Brucella, which is how we came to download it.
+
+If you disagree with the reading I would genuinely like to know.
+
+Every per-record verdict is public at https://github.com/duceppemo/BrucellaID under
+curation/. Happy to send the assembly or the profiling output.
+
+Marc-Olivier Duceppe
+Canadian Food Inspection Agency
+marc-olivier.duceppe@inspection.gc.ca

@@ -1,0 +1,36 @@
+Subject: SRR35797377 (PRJNA1290416) - your species is right; the library looks mixed
+
+Dear colleagues,
+
+We have been validating a Brucella species-identification tool against every public
+Brucella read set in ENA. This is not a correction request: your deposited species
+looks correct. I am writing because the record behaves oddly in automated screens and
+you may want to know why.
+
+    run          BioSample       deposited             what we find
+    SRR35797377  SAMN49920683    Brucella melitensis   B. melitensis, plus other
+                                                       organisms
+
+Profiling the reads against GTDB r220 finds Brucella melitensis at 99.91% average
+nucleotide identity with 97% of the reference genome present, at 7.2x coverage. That
+is a genuine and nearly complete Brucella melitensis genome, so the deposited species
+is supported.
+
+Alongside it the reads carry other organisms at under 1x - a Xanthomonas at 0.64x and
+a Cutibacterium at 0.14x - and the library assembles to 5.6 Mb in 10,733 contigs,
+which is roughly 1.7 times the size of a Brucella genome and far more fragmented than
+a clean 7x library would give.
+
+The practical consequence is that sketch-based identification tools, including ours,
+report this record as not identified. They measure what dominates a library rather
+than what is present in it, and at 7x inside a mixed library the Brucella contributes
+only about 26 of 1000 sketch hashes. Containment-based methods see it clearly;
+abundance-based ones do not. That is a limitation of the tools rather than a fault in
+your record, but it does mean the run will keep failing automated Brucella screens.
+
+If the isolate is still held and a cleaner library is ever convenient, it would be a
+useful record to have at depth. Nothing needs changing otherwise.
+
+Marc-Olivier Duceppe
+Canadian Food Inspection Agency
+marc-olivier.duceppe@inspection.gc.ca

@@ -39,6 +39,13 @@ genome in the Brucella clade. A real Brucella library at usable depth shares 900
 more. The genus marker of the real-time panel is negative on both the reads and their
 assemblies, and in silico Bruce-ladder finds nothing.
 
+We also checked these by containment rather than by abundance, which is the fairer
+test for a minority organism: profiling the reads against GTDB r220 finds Brucella in
+nine of the ten at 0.03-0.17x coverage with only 4-13% of the reference genome
+present, which is the level of index hopping or trace carry-over rather than a real
+population. The tenth, ERR775246, reaches 0.43x and 31%, still far short of a genome
+but worth mentioning for completeness.
+
 We have identified what they are, and the ten fall into three groups, each internally
 consistent:
 

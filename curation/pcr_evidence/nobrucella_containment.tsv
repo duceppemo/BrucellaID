@@ -1,0 +1,23 @@
+run	deposited_as	brucella_cov_x	brucella_containment_pct	dominant_cov_x	dominant_organism	verdict
+SRR35797377	Brucella melitensis	7.24	97	7	Brucella melitensis bv. 1 str. 16M chromosome I, complete se	contains genuine Brucella; the library is contaminated, not mislabelled
+SRR952243	Brucella abortus	12.45	94	180	Ralstonia pickettii strain H2Cu5 h2cu5_c1, whole genome shot	contains genuine Brucella; the library is contaminated, not mislabelled
+ERR3218177	Brucella abortus	0.79	52	141	Pseudochrobactrum saccharolyticum strain CCUG 33852 contig_0	minority Brucella present but incomplete; too little to call
+SRR24420454	Brucella melitensis	0.53	35	1	Brucella melitensis bv. 1 str. 16M chromosome I, complete se	minority Brucella present but incomplete; too little to call
+ERR775246	Brucella abortus	0.43	31	0	Brucella melitensis bv. 1 str. 16M chromosome I, complete se	minority Brucella present but incomplete; too little to call
+ERR471337	Brucella abortus	0.17	13	51	Camelimonas fluminis strain KCTC 42282 sequence001, whole ge	no meaningful Brucella
+ERR473743	Brucella abortus	0.15	13	0	Brucella melitensis bv. 1 str. 16M chromosome I, complete se	no meaningful Brucella
+ERR554820	Brucella abortus	0.09	7	61	Camelimonas fluminis strain KCTC 42282 sequence001, whole ge	no meaningful Brucella
+ERR775236	Brucella abortus	0.05	5	77	Camelimonas fluminis strain KCTC 42282 sequence001, whole ge	no meaningful Brucella
+ERR775237	Brucella abortus	0.03	5	0	Salmonella enterica subsp. enterica serovar Typhimurium str.	no meaningful Brucella
+ERR775245	Brucella abortus	0.04	5	0	Salmonella enterica subsp. enterica serovar Typhimurium str.	no meaningful Brucella
+ERR775248	Brucella abortus	0.05	5	0	Salmonella enterica subsp. enterica serovar Typhimurium str.	no meaningful Brucella
+ERR775244	Brucella abortus	0.04	4	0	Salmonella enterica subsp. enterica serovar Typhimurium str.	no meaningful Brucella
+ERR775247	Brucella abortus	0.05	4	0	Salmonella enterica subsp. enterica serovar Typhimurium str.	no meaningful Brucella
+SRR25828922	Brucella pseudogrignonensis	0.00	0	101	Bacillus subtilis strain SK6B4 contig00001, whole genome sho	no meaningful Brucella
+SRR825216	Brucella pinnipedialis	0.00	0	365	MAG TPA_asm: uncultured Actinomyces sp. isolate SRR16916874_	no meaningful Brucella
+SRR825217	Brucella pinnipedialis	0.00	0	364	MAG TPA_asm: uncultured Actinomyces sp. isolate SRR16916874_	no meaningful Brucella
+SRR825218	Brucella pinnipedialis	0.00	0	384	MAG TPA_asm: uncultured Actinomyces sp. isolate SRR16916874_	no meaningful Brucella
+SRR848042	Brucella abortus	0.00	0	44	Metamycoplasma orale ATCC 23714 F795DRAFT_scaffold00001.1_C,	no meaningful Brucella
+SRR886241	Brucella ceti	0.00	0	169	Streptococcus intermedius SK54 = ATCC 27335 acKdV-supercont1	no meaningful Brucella
+SRR886242	Brucella ceti	0.00	0	301	Streptococcus intermedius SK54 = ATCC 27335 acKdV-supercont1	no meaningful Brucella
+SRR886243	Brucella ceti	0.00	0	171	Streptococcus intermedius SK54 = ATCC 27335 acKdV-supercont1	no meaningful Brucella

@@ -253,11 +253,21 @@ Drafts live in [`correspondence/`](correspondence/).
 The nine unresolved assembly candidates and the four ex-*Ochrobactrum* read sets were
 deliberately left out of all of the above. The GenBank message offers the list if they want it.
 
-Still to draft: four single submissions.
+All seven single submissions are drafted (my earlier note said four; it was wrong). One of the seven,
+`SRR24420454` in PRJNA966239, got no message: its library holds a third of a *Brucella* genome at 0.5×
+and nothing else, so it is too shallow to say anything is wrong with it.
 
-`SRR952243` has moved out of the "holds no *Brucella*" group. GTDB finds genuine classical *Brucella* in
-it at 12.4× coverage with 94% of the reference present, under a dominant *Ralstonia pickettii*, so the
-deposited species is right and the library is contaminated. It is reported that way.
+**The 22 "holds no *Brucella*" records were re-tested by containment**, which is the fairer measure for a
+minority organism than the shared-hash count that found them — a sketch of the reads measures what
+*dominates* a library, while containment measures what is *present* in it.
+[`pcr_evidence/nobrucella_containment.tsv`](pcr_evidence/nobrucella_containment.tsv) has the per-run
+figures. Two records leave the group entirely, three are now stated more cautiously, and seventeen stand:
+
+| Verdict | Runs | What it means |
+| --- | --- | --- |
+| Contains genuine *Brucella*; **contaminated, not mislabelled** | `SRR35797377`, `SRR952243` | 94–97% of the reference genome present at 7–12×; the deposited species is right |
+| Minority *Brucella*, too little to call | `ERR3218177`, `SRR24420454`, `ERR775246` | 31–52% present at 0.4–0.8× |
+| No meaningful *Brucella* | the other 17 | 0–13% present, at or below trace level |
 
 ## A note on our own cutoffs
 

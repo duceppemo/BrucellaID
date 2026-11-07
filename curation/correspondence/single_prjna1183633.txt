@@ -1,0 +1,44 @@
+Subject: SRR31357708 (PRJNA1183633) types as Brucella anthropi rather than B. cytisi
+
+Dear colleagues,
+
+We have been validating a Brucella species-identification tool against every public
+Brucella read set in ENA, and one of your records came up.
+
+    run          BioSample       deposited         the sequence says
+    SRR31357708  SAMN44729562    Brucella cytisi   Brucella anthropi
+
+This one rests on distance rather than on the usual two independent methods, so I
+want to be clear about what it does and does not establish. The former Ochrobactrum
+species do not carry the classical Brucella MLST alleles - six of the nine loci got no
+read at all - and neither the Bruce-ladder nor the real-time assays we use cover that
+half of the clade. So there is no second method available here.
+
+What the distances show, over a curated 431-genome reference set covering all 30 named
+species:
+
+  - 0.0076 from the nearest B. anthropi genome, and every one of the eight nearest
+    matches is B. anthropi.
+  - 0.0381, 0.0383 and 0.0394 from the three deposited assemblies of the B. cytisi
+    type strain (ESC1, LMG 22713, DSM 19778). Those three agree with each other to
+    0.0026, so they form a tight cluster that this read set is not in. They rank 89th,
+    90th and 91st of the 431 references.
+  - The library assembles to 4.84 Mb, which is the size range of the former
+    Ochrobactrum species rather than the 3.3 Mb of a classical Brucella genome, so it
+    is independently in the right part of the clade.
+
+The honest summary is that the B. cytisi label is hard to reconcile with the sequence,
+and B. anthropi is the best available reading. Within that group the within-species
+spread is very wide - inside deposited B. anthropi it reaches 0.21 - so I would not
+argue hard for anthropi over another neighbour on 0.0076 alone.
+
+If you hold the isolate, that would settle it better than we can. If you disagree I
+would genuinely like to know: the physical isolate outranks the sequence, and the
+sequence outranks our reading of it.
+
+Every per-record verdict is public at https://github.com/duceppemo/BrucellaID under
+curation/, including the errors we found in our own reference set in the same pass.
+
+Marc-Olivier Duceppe
+Canadian Food Inspection Agency
+marc-olivier.duceppe@inspection.gc.ca

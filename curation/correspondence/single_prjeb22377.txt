@@ -1,0 +1,44 @@
+Subject: ERR3218177 (PRJEB22377) is dominated by Pseudochrobactrum, with Brucella a
+         minority
+
+Dear colleagues,
+
+We have been validating a Brucella species-identification tool against every public
+Brucella read set in ENA. One record in PRJEB22377 came up, and separately thirteen
+records in PRJEB4782, which I am writing about under separate cover.
+
+    run          BioSample          deposited          what the library holds
+    ERR3218177   SAMEA104338291     Brucella abortus   mostly Pseudochrobactrum
+                                                       saccharolyticum, with a
+                                                       minority Brucella
+
+Profiling the reads against GTDB r220:
+
+  - Pseudochrobactrum saccharolyticum at 98.8% average nucleotide identity, 141x
+    coverage, with 70% of that reference's k-mers present. This is the bulk of the
+    library.
+  - Brucella at 0.79x coverage with 52% of the reference genome present. Real but a
+    small minority, which is why our sketch-based identification reported the sample
+    as not identified: the read sketch is dominated by the other organism.
+
+  The library assembles to 3.95 Mb and shares 6 of 1000 k-mer hashes with the clade.
+
+Pseudochrobactrum may be the more interesting part. It sits in Brucellaceae, the same
+family as Brucella, and is a slow-growing gram-negative that has been reported from
+clinical and veterinary material, so an isolate typed biochemically could reasonably
+have been recorded as Brucella. We saw the same pattern in PRJEB4782, where five
+libraries deposited as B. abortus are Camelimonas, another Brucellaceae genus.
+
+Given the minority Brucella is genuinely present, this looks more like a mixed culture
+or a mixed library than a straightforward mislabel, so a note on the record may serve
+a reader better than a relabel - and if the isolate is still held, it may be worth
+re-examining for purity.
+
+If you disagree with the reading I would genuinely like to know.
+
+Every per-record verdict is public at https://github.com/duceppemo/BrucellaID under
+curation/, including the errors we found in our own reference set in the same pass.
+
+Marc-Olivier Duceppe
+Canadian Food Inspection Agency
+marc-olivier.duceppe@inspection.gc.ca
