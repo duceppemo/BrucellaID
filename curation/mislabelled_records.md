@@ -97,10 +97,30 @@ and both are in the classical part of the clade where the type-strain ANI pass a
 Every method agrees they are **not** ordinary *B. abortus*, but they do not agree on what they are. Both
 are known atypical genomes and we propose no name for either.
 
-Four read sets are in a similar position — `SRR6003475`, `SRR10948139`, `ERR11807265` and `SRR1798201`,
-all former *Ochrobactrum* species where the nearest reference is 0.005–0.009 away and every PCR assay is
-negative on both substrates. These could be settled the same way as the assemblies above, by ANI to the
-type strains, which has not been done.
+## Read sets: resolved by ANI to the type strain
+
+The four former *Ochrobactrum* read sets that distance alone could not settle were assembled with SKESA
+and put through the same type-strain comparison. Three are mislabelled and one is correct. **These were
+not in the messages sent on 2026-11-07** and need a follow-up.
+
+| Run | BioSample | Study | Deposited | ANI to its own type | ANI to the nearest other type | Verdict |
+| --- | --- | --- | --- | --- | --- | --- |
+| `SRR6003475` | `SAMN07581394` | PRJNA400855 | *B. thiophenivorans* | under 85% (DSM 7216) | **98.51%** *B. pituitosa* (CCUG 50899) | *pituitosa* |
+| `SRR10948139` | `SAMN13812480` | PRJNA558750 | *B. anthropi* | under 88% (ATCC 49188) | **98.67%** *B. ciceri*, 97.81% *B. intermedia* | *intermedia* |
+| `ERR11807265` | `SAMEA114240991` | PRJEB59403 | *B. anthropi* | under 88% (ATCC 49188) | **99.61%** *B. ciceri*, 98.31% *B. intermedia* | *intermedia* |
+| `SRR1798201` | `SAMN02744640` | PRJNA234825 | *B. lupini* | **98.59%** (CB1) | 97.37% *B. anthropi* | **correct as deposited** |
+
+The two deposited as *B. anthropi* are a clean result with a nomenclatural wrinkle. Both sit about 10 ANI
+points away from the *anthropi* type strain, so *anthropi* is wrong; both clear 95% against the *ciceri*
+and the *intermedia* type strains, which are one species, so the senior name **intermedia** applies. That
+is the same reasoning as for `GCA_049065255.1` above, reached independently.
+
+`SRR1798201` is cleared: its best type-strain match is its own deposited species. It also clears 95%
+against *anthropi* and *cytisi*, but since those three names are synonymous by ANI there is no basis for
+changing it.
+
+`SRR6003475` had been read as *pituitosa* on Mash distance alone; the type-strain comparison confirms it
+at 98.51%, with *thiophenivorans* below the 85% floor.
 
 ### Checked and cleared
 
@@ -210,16 +230,7 @@ The four runs sharing **zero** hashes are the clearest: whatever those files hol
 
 ## Read sets: candidates
 
-Called a species other than the submitter's, but with only one line of evidence. All are former
-*Ochrobactrum* species, where the reference side is thin and the within-species spread is wide, so a
-distance of 0.005–0.02 is suggestive rather than conclusive.
-
-| Run | Submitted as | Closest | Distance | Shared hashes |
-| --- | --- | --- | --- | --- |
-| `ERR11807265` | *B. anthropi* | *B. intermedia* | 0.0056 | 801/1000 |
-| `SRR10948139` | *B. anthropi* | *B. intermedia* | 0.0087 | 713/1000 |
-| `SRR1798201` | *B. lupini* | *B. anthropi* | 0.0089 | 708/1000 |
-| `SRR6003475` | *B. thiophenivorans* | *B. pituitosa* | 0.0029 | 890/1000 |
+None outstanding. The four that were listed here are resolved above by ANI to the type strain.
 
 ## Read sets where the label looks right and our reference set is what is missing
 
@@ -294,6 +305,8 @@ the records where a submitter is worth reaching directly.
 | 5 assemblies: `GCA_036881765.1`, `GCA_000661995.2`, `GCA_000163135.1`, `GCA_059995225.1`, `GCA_049065255.1` | GenBank | 2026-11-07 | **sent**, awaiting reply |
 | 13 BioSamples to change, 11 to annotate, 1 flagged as a mixture | the ENA curation team | 2026-11-07 | **sent**, awaiting reply |
 | 5 BioSamples to change, 10 to annotate, 3 marked as needing no action | the NCBI BioSample team | 2026-11-07 | **sent**, awaiting reply |
+| `SAMN07581394` and `SAMN13812480`, resolved by type-strain ANI after the first message | the NCBI BioSample team | — | drafted, not sent |
+| `SAMEA114240991`, same | the ENA curation team | — | drafted, not sent |
 | 11 BioSamples of PRJEB30030 | the study's submitters | — | drafted, not sent |
 | 3 BioSamples of PRJEB4782, plus 10 runs that hold no *Brucella* | the study's submitters | — | drafted, not sent |
 | `GCA_000662015.2` | GenBank | earlier, separately | already reported before this work; the 2026-11-07 message supplies its swap partner |

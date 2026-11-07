@@ -13,6 +13,8 @@ submitting group, and say "your records"; they are not interchangeable with the 
 | --- | --- | --- |
 | `archive_ena_2026-11.txt` | 13 BioSamples to change, 11 to annotate, 1 flagged as a probable mixture | **sent 2026-11-07** via the [ENA support form](https://www.ebi.ac.uk/ena/browser/support) |
 | `archive_ncbi_2026-11.txt` | 5 BioSamples to change, 10 to annotate, 3 explicitly needing no action | **sent 2026-11-07** to `biosamplehelp@ncbi.nlm.nih.gov` |
+| `archive_ena_followup_2026-11.txt` | `SAMEA114240991`, resolved by type-strain ANI after the first message | drafted — ENA support form |
+| `archive_ncbi_followup_2026-11.txt` | `SAMN07581394`, `SAMN13812480`, same | drafted — `biosamplehelp@ncbi.nlm.nih.gov` |
 
 | To the submitters | Records | Submitter | Status |
 | --- | --- | --- | --- |

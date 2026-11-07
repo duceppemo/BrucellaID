@@ -1,0 +1,52 @@
+Subject: Follow-up to our third-party curation request: two further Brucella
+         BioSamples, resolved by ANI to the type strain
+
+To the NCBI BioSample team,
+
+This adds two records to the request we sent on 2026-11-07. They were in that message's
+scope but were deliberately left out of it, because at the time they rested on Mash
+distance alone in a part of the clade where that is not enough to name a species. We
+have since resolved them properly, by average nucleotide identity to the type strain of
+each candidate species, and both are mislabelled.
+
+  BioSample       run           deposited                proposed
+  SAMN07581394    SRR6003475    B. thiophenivorans       B. pituitosa
+  SAMN13812480    SRR10948139   B. anthropi              B. intermedia
+
+  SAMN07581394   98.51% ANI to the B. pituitosa type strain CCUG 50899. The
+                 B. thiophenivorans type strain DSM 7216 falls below the 85% floor our
+                 comparison reports, so the deposited species is not a near miss.
+
+  SAMN13812480   Under 88% ANI to the B. anthropi type strain ATCC 49188, so anthropi is
+                 wrong. It is 98.67% to the B. ciceri type strain DSM 22292 and 97.81%
+                 to the B. intermedia type strain CIP 105838. Those two type strains are
+                 98.26% ANI to each other and so one species by the usual criterion;
+                 B. intermedia (Velasco et al. 1998) is the senior name over B. ciceri
+                 (Imran et al. 2010), which is why we propose intermedia.
+
+Both libraries were assembled with SKESA for this purpose, to 4.63 and 4.77 Mb, which is
+the size range of the former Ochrobactrum species.
+
+ONE THING WORTH RECORDING ALONGSIDE THESE
+
+The same comparison found that four pairs of named species in this group have type
+strains at or above 95% ANI, and so are not separable by the standard species criterion:
+
+    B. intermedia / B. ciceri        98.26%
+    B. anthropi   / B. lupini        97.14%
+    B. lupini     / B. cytisi        95.95%
+    B. anthropi   / B. cytisi        95.51%
+
+We mention it because it bears on how any request of this kind should be read. Within
+those groups a species name is partly a nomenclatural choice rather than a measurement,
+and we have applied the senior name where we propose one. It is also why we are not
+proposing changes to several other records in this part of the clade: SRR1798201
+(SAMN02744640, B. lupini) is 98.59% to its own type strain and we consider it correct,
+even though it also clears 95% against anthropi and cytisi.
+
+Every per-record verdict, the type-strain panel and the full ANI matrix are public at
+https://github.com/duceppemo/BrucellaID under curation/.
+
+Marc-Olivier Duceppe
+Canadian Food Inspection Agency
+marc-olivier.duceppe@inspection.gc.ca
