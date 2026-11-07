@@ -9,10 +9,10 @@
 
 BrucellaID reads a *Brucella* fastq sample and answers two questions:
 
-* **Which species is it?** The reads are compared with [MASH](https://github.com/marbl/mash) to 16 *Brucella*
-  reference genomes, and the closest one names the species and the reference itself.
-  `--reference-set extended` measures against 432 curated genomes of the whole clade instead — all 30
-  named species, *Ochrobactrum* included ([How it works](How-it-works#the-extended-reference-set)).
+* **Which species is it?** The reads are compared with [MASH](https://github.com/marbl/mash) to 432 curated
+  *Brucella* genomes covering all 30 named species of the clade, *Ochrobactrum* included, and the closest
+  one names the species and the reference itself. `--reference-set vsnp` measures against vSNP's 16 genomes
+  instead, which was the default before 2.0 ([How it works](How-it-works#the-reference-sets)).
 * **Which sequence type is it?** The nine alleles of the
   [Whatmore MLST-9 scheme](https://doi.org/10.1186/1471-2180-7-34) are called from the reads with
   [Seal](https://sourceforge.net/projects/bbmap/) from BBTools, and looked up in the
@@ -38,7 +38,7 @@ canis   Brucella canis      MASH+ST (arbitrated)  NC_010103-NC_010104.fasta  100
 
 ## Then
 * [How it works](How-it-works) — what the two calls rest on, and where each of them stops
-* [Validation](Validation) — 16 genomes, read for read
+* [Validation](Validation) — 4,042 public read sets, and 16 genomes read for read
 * [Troubleshooting](Troubleshooting) and the [FAQ](FAQ)
 * [Changelog](Changelog)
 

@@ -8,6 +8,8 @@ from brucellaid.references import (
     COLUMNS,
     EXTENDED_REFERENCES_FILE,
     EXTENDED_SKETCH_FILE,
+    VSNP_REFERENCES_FILE,
+    VSNP_SKETCH_FILE,
     Reference,
     compare_with_sketch,
     data_path,
@@ -24,10 +26,10 @@ def table(*rows):
     return ['# a comment\n', HEADER + '\n', '\n'] + [row + '\n' for row in rows]
 
 
-def test_the_table_of_the_package():
-    references = load_references()
+def test_the_vsnp_table_of_the_package():
+    references = load_references(data_path(VSNP_REFERENCES_FILE))
     assert len(references) == 16
-    assert load_references() is references  # Read once
+    assert load_references(data_path(VSNP_REFERENCES_FILE)) is references  # Read once
     abortus = references['NC_006932-NC_006933.fasta']
     assert abortus.code == 'ab1'
     assert abortus.label == 'Brucella abortus bv. 1'
@@ -76,7 +78,8 @@ def test_data_path_of_a_missing_file():
 
 
 def test_reference_sketch():
-    assert reference_sketch().endswith('data/references.msh')
+    assert reference_sketch().endswith('data/references_extended.msh')
+    assert reference_sketch(data_path(VSNP_SKETCH_FILE)).endswith('data/references.msh')
     assert reference_sketch('/my/own.msh') == '/my/own.msh'
 
 
@@ -116,3 +119,11 @@ def test_the_extended_sketch_matches_the_extended_table():
     assert len(ids) == 432
     references = load_references(data_path(EXTENDED_REFERENCES_FILE))
     assert compare_with_sketch(ids, references) == []
+
+
+def test_the_default_set_of_the_package_is_the_extended_one():
+    # From 2.0, and at this level rather than only in the command line: a caller that reaches
+    # analyse_samples() directly, as scripts/make_example_report.py does, measures against the 432 genomes.
+    assert reference_sketch(None) == data_path(EXTENDED_SKETCH_FILE)
+    assert len(load_references()) == 432
+    assert load_references() == load_references(data_path(EXTENDED_REFERENCES_FILE))

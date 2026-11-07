@@ -580,15 +580,16 @@ METHODS = [
      'the sketch of each reference genome. The distance is an '
      'estimate of the fraction of positions that differ, so 0.000024 is about 99.998% identity. The closest '
      'reference names the species, provided the reads share at least the required number of its 1000 '
-     'min-hashes; below that the sample is reported as ND, because the closest of sixteen genomes is not an '
-     'answer.'),
+     'min-hashes; below that the sample is reported as ND, because the closest genome of the set is not an '
+     'answer. The reference data table above says which set this run measured against.'),
     ('Why there is no biovar in this report',
      'BrucellaID does not report a biovar, because it cannot measure one. Three things stand in the way. '
-     'The sketch holds a reference for B. abortus biovars 1 and 3 only, so 43% of the biovar-labelled '
-     'B. abortus isolates of the PubMLST isolate database are of a biovar it has no reference for. The '
-     'distance cannot separate the biovars it does hold: the two B. melitensis biovar 1 references are '
-     '0.000756 apart, which is further apart than the biovar 2 and biovar 3 references are from each '
-     'other. And a biovar is a phenotype that genome clustering does not track -- the best any rule from '
+     'Hardly any reference carries a biovar at all: 7 of the 432 genomes of the default set do, because '
+     'the NCBI records of the rest carry none, so 93% of the biovar-labelled B. abortus isolates of the '
+     'PubMLST isolate database are of a biovar no reference has. The distance cannot separate the biovars '
+     'that are there: the two B. suis biovar 2 genomes are 0.00163 apart, further than the biovar 3 genome '
+     'is from one of them (0.00150). And a biovar is a phenotype that genome clustering does not track -- '
+     'the best any rule from '
      'sequence type to biovar could manage over the isolate database is 66% for B. abortus and 63% for '
      'B. melitensis, because one ST spans several biovars. The biovars recorded for the ST are shown above '
      'for what they are worth. For a biovar, use classical biotyping, or brucetyper, which reads the '

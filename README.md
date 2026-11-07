@@ -35,11 +35,13 @@ Both the reference sketch and the MLST database come with the package: nothing t
 configure.
 
 ## Features
-* **Two independent answers**: the species, from the closest of 16 *Brucella* reference genomes, and the
+* **Two independent answers**: the species, from the closest of 432 curated *Brucella* genomes covering
+  all 30 named species of the clade, and the
   sequence type, from the nine MLST alleles. Both come with the numbers they rest on, and neither is
   quietly rewritten by the other.
-* **The ST decides the one pair a distance cannot.** *B. canis* and *B. suis* bv. 4 are 0.00024 apart — the
-  closest pair of the sixteen, closer than two *B. suis* references are to each other — so which one a
+* **The ST decides the one pair a distance cannot.** *B. canis* and *B. suis* bv. 4 are 0.00024 apart —
+  closer than two *B. suis* references are to each other, and in the 432-genome default set the nearest
+  *canis*–*suis* pair, at 0.000264, is still the closest pair of different species there is — so which one a
   *canis* read set lands on first is noise. The two species share no sequence type at all, so where MASH
   leaves both within reach, the ST chooses, from a table of the species of every ST counted over 3,426
   PubMLST isolates. A `SpeciesSource` column says what each call rested on, and an ST that contradicts a
@@ -62,9 +64,9 @@ configure.
   run at a time. A sample that fails leaves the others readable.
 * **Current reference data**: the MLST database is PubMLST's, 309 alleles and 122 sequence types, plus the
   species of 118 of them counted over PubMLST's isolate database — all rebuilt by scripts in the
-  repository. The sketch is vSNP's 16 *Brucella* genomes, with the species, biovar, strain and accession of
-  each.
-* **The whole clade when you need it**: `--reference-set extended` measures against 432 curated genomes
+  repository. Two sketches ship: the 432-genome clade set that 2.0 uses by default, and vSNP's 16 genomes
+  under `--reference-set vsnp`, each with the species, biovar, strain and accession of every genome.
+* **The whole clade, by default**: from 2.0 a run measures against 432 curated genomes
   covering **all 30 named species** — the former *Ochrobactrum* included — plus the unnamed lineages, so
   an atypical isolate is reported as *Brucella sp.* rather than forced onto the nearest classical species.
   Nothing in INSDC is *labelled* *B. papionis*, the thirtieth species — its genome sits there under
@@ -72,16 +74,17 @@ configure.
   [Validated](https://github.com/duceppemo/BrucellaID/wiki/Validation) twice: on simulated reads of 2,022
   NCBI assemblies, every held-out sample of a named species right once seven genomes mislabelled in NCBI —
   which the curation itself caught — are accounted for; and on **every usable public *Brucella* read set in
-  ENA**, 4,042 real libraries, where it matches the submitter on 98.7% against the default set's 96.2%, and
+  ENA**, 4,042 real libraries, where it matches the submitter on 98.7% against the vSNP set's 96.2%, and
   wins all 91 of the disagreements that have a right answer without losing one.
 * **Backwards compatible where it counts**: the MASH identification is vSNP's, down to the threshold of
   150 shared hashes (`--no-st-species` reports it alone), and `--xlsx` still writes the
   `stat_alignment_summary_<date>.xlsx` of the first version.
 * **Nothing to configure**: only the Python standard library, plus MASH and BBTools. The two optional
   output formats, xlsx and PDF, are the only things that want a package, and neither is needed.
-* **Tested**: 351 tests, 100% coverage, end to end on a synthetic genome and on reads tiled over the real
+* **Tested**: 363 tests, 100% coverage, end to end on a synthetic genome and on reads tiled over the real
   MLST alleles.
-* **Validated** on 16 genomes with a known answer: every species and closest reference right, and
+* **Validated** on the 16 vSNP genomes with a known answer, read for read (`--reference-set vsnp`, which
+  is what those 16 are): every species and closest reference right, and
   all 14 sequence types the one the genome carries — read off the assembly by exact match, which shares no
   code with the read-based caller. The *B. canis* genome is the one call the distance did not make on its
   own, and the ST made it; not one of the sixteen came back as a disagreement. The nearest neighbouring

@@ -1,12 +1,12 @@
 # How it works
 
-A run does two independent things to the same reads: it measures the distance to 16 reference genomes, and
+A run does two independent things to the same reads: it measures the distance to 432 reference genomes, and
 it calls the nine MLST alleles. The two answers are kept apart in the reports, with the numbers each one
 rests on, and a third step puts them together only where it has to — for the one pair of species a sketch
 of any size cannot separate. When they disagree anywhere else, both numbers are in the reports and the
 disagreement is the finding.
 
-## 1. Which species: the MASH distance to 16 reference genomes
+## 1. Which species: the MASH distance to 432 reference genomes
 
 The reads of a sample — R1 and R2 together, as one read set — are piped into
 `mash dist -r -m N references.msh -`. MASH reduces the read set to the 1000 smallest hashes of its 21-mers
@@ -29,7 +29,7 @@ hashes the two share.
 The closest reference names the species, and the reference table also gives that genome's own biovar,
 strain and NCBI accessions — facts about the reference, not calls about the sample. A reference is only reported when the reads share at least **150 of its 1000 hashes**
 (`--min-hashes`). Below that the sample is reported as `ND`: there is some *Brucella* in it, or there is
-not, but the closest of 16 genomes is not an answer. The first version of BrucellaID used the same
+not, but the closest genome of the set is not an answer. The first version of BrucellaID used the same
 threshold.
 
 **What this tells you, and what it does not.** The *Brucella* species are extraordinarily close — they are
@@ -56,8 +56,8 @@ Three things rule a biovar out, and none of them is fixable by trying harder:
 
 | | |
 | --- | --- |
-| **Coverage** | The sketch holds *B. abortus* biovars 1 and 3 and no others. Of the biovar-labelled *B. abortus* isolates in the PubMLST isolate database, **43%** are of a biovar there is no reference for (bv 6, 2, 5, 4, 9, 7); for those, the nearest reference can only ever name the wrong one. *B. suis* bv 5 is missing too |
-| **Resolution** | The two *B. melitensis* **biovar 1** references of the sketch are **0.000756** apart — *further* than the biovar 2 and biovar 3 references are from each other (0.000706). Two genomes of the same biovar are further apart than genomes of different biovars, so ranking by distance carries no biovar signal |
+| **Coverage** | A biovar is recorded for only **7 of the 432** genomes of the default set, because the NCBI records of the rest carry none: *B. abortus* bv. 5, *B. melitensis* bv. 1 and 2, and *B. suis* bv. 1, 2 and 3. Of the 240 biovar-labelled *B. abortus* isolates in the PubMLST isolate database, **93%** are of a biovar no reference carries; for those the nearest reference could only ever name the wrong one. vSNP's 16 genomes are better covered here and still miss 42% of them |
+| **Resolution** | The two *B. suis* **biovar 2** genomes of the default set are **0.00163** apart, while the *B. suis* biovar 3 genome sits **0.00150** from one of them — *closer* than the two biovar 2 genomes are to each other. Two genomes of the same biovar are further apart than genomes of different biovars, so ranking by distance carries no biovar signal. The same held in vSNP's 16: its two *B. melitensis* biovar 1 references are 0.000756 apart, its biovar 2 and 3 references 0.000706 |
 | **Biology** | A biovar is a phenotype (CO<sub>2</sub>, H<sub>2</sub>S, dye sensitivity, A/M sera, phage lysis) and is not monophyletic. Over the isolate database, the best any ST → biovar rule could manage is **66%** for *B. abortus* and **63%** for *B. melitensis*: ST 8 alone is biovar 3 in 47 isolates, biovar 1 in 34 and biovar 2 in 22. Only *B. suis* is tidy, at 96% |
 
 What is still reported, because it is a fact rather than a call: `brucellaid_mash.tsv` gives the biovar of
@@ -68,15 +68,19 @@ with their counts, so you can see for yourself how little they settle.
 [brucetyper](https://github.com/duceppemo/brucetyper), which reads the Bruce-ladder and Suis-ladder assays
 *in silico*.
 
-Of the 16 references, two (*B. ceti* Cudo and *B. suis* bv. 4 strain 40) come from vSNP under their own
-names rather than from an accession; the other 14 are NCBI genomes, listed in `references.tsv`.
+The 432 genomes of the default set are all NCBI assemblies, named in `references_extended.tsv` by the GCA
+accession they were downloaded under. Of vSNP's 16, two (*B. ceti* Cudo and *B. suis* bv. 4 strain 40) come
+from vSNP under its own names rather than from an accession; the other 14 are NCBI genomes, listed in
+`references.tsv`.
 
-**One pair this cannot decide.** *B. canis* ATCC 23365 and *B. suis* bv. 4 strain 40 are **0.00024** apart
-— the closest pair of the sixteen, closer than two *B. suis* references are to each other, and inside the
-variation within either species. Which of the two a *canis* or a *suis* bv. 4 read set lands on first is
-noise, and no sketch, at any size, with any number of references, will change that: they are that close. The
-next closest cross-species pair in the sketch is 0.0007 apart, which MASH decides on its own. Step 3 is
-about that one pair.
+**One pair this cannot decide.** *B. canis* and *B. suis* are closer to each other than either is to
+anything else, in both sets: *B. canis* ATCC 23365 and *B. suis* bv. 4 strain 40 are **0.00024** apart in
+vSNP's 16, and the closest *canis*–*suis* pair of the 432 is **0.000264** — the closest pair of different
+species in either sketch, closer than two *B. suis* references are to each other, and inside the variation
+within either species. Which of the two a *canis* or a *suis* read set lands on first is noise, and no
+sketch, at any size, with any number of references, will change that: they are that close. The next closest
+pair of different species in the default set is *B. ceti* and *B. pinnipedialis*, more than twice as far
+apart at 0.00058. Step 3 is about the *canis*–*suis* pair.
 
 ## 2. Which sequence type: the nine MLST alleles, called with Seal
 
@@ -171,16 +175,19 @@ it is worth looking into.
 The MLST scheme itself is [Whatmore, Perrett and MacMillan (2007)](https://doi.org/10.1186/1471-2180-7-34):
 nine loci, 4,396 bp in all.
 
-## The extended reference set
+## The reference sets
 
-The 16 genomes of the default set cover 8 species — the classical six plus *B. microti* and *B. neotomae*.
-The 2020 taxonomy moved the genus *Ochrobactrum* into *Brucella*, and sequencing keeps finding isolates of
-the atypical lineages, so the package also ships a second set: 432 curated genomes covering all 30 named
-species of the clade, selected with
+The package ships two, and **the extended set is the default from 2.0**:
 
 ```bash
-brucellaid -i reads/ -o results/ --reference-set extended
+brucellaid -i reads/ -o results/                      # 432 genomes, all 30 named species
+brucellaid -i reads/ -o results/ --reference-set vsnp # vSNP's 16 genomes, 8 species
 ```
+
+vSNP's 16 genomes cover 8 species — the classical six plus *B. microti* and *B. neotomae*. The 2020
+taxonomy moved the genus *Ochrobactrum* into *Brucella*, and sequencing keeps finding isolates of the
+atypical lineages, so a sample of any of the other 22 species could only land on a wrong neighbour or on
+`ND`. The extended set is 432 curated genomes covering all 30 named species of the clade.
 
 With it, a *B. anthropi* or *B. intermedia* sample is named instead of coming back `ND`, a marine-mammal
 or vole-adjacent species lands on its own references instead of the nearest classical one, and an isolate
@@ -189,6 +196,17 @@ named species" — rather than forced onto the closest named species. What does 
 is still the species of the closest genome, the ST still arbitrates where two species are within reach
 (*B. canis* sits inside *B. suis* whichever set measures it), and there is still
 [no biovar](How-it-works#no-biovar).
+
+**Why the default moved.** Measured over every usable public *Brucella* read set in ENA — 4,042 runs — the
+two sets disagree on 146, and the extended set is right on 91 of them and vSNP's 16 on none. There is no
+run in that archive where the smaller set gave a better answer, and across the 2,018 *B. melitensis* and
+1,118 *B. abortus* runs that carry most real traffic the two return the same call, so the extra genomes add
+coverage without disturbing what the 16 already did well.
+[Validation](Validation#on-real-public-read-sets-the-whole-archive) has the numbers.
+
+**Why `vsnp` is still there.** It is what every answer from this tool before 2.0 was measured against, it
+is the set vSNP itself uses, and its `code` column carries vSNP's own species codes (`ab1`, `mel1`), which
+the extended table does not — see [Usage](Usage) if a pipeline reads those.
 
 The set is derived from the 2,022 *Brucella* (NCBI taxon 234) assemblies behind the
 [mashID *Brucella* pack](https://doi.org/10.6084/m9.figshare.33970168), dereplicated at a MASH distance of
@@ -208,9 +226,6 @@ distances, which
 [`curation/papionis/README.md`](https://github.com/duceppemo/BrucellaID/blob/main/curation/papionis/README.md)
 lays out. Only one *B. papionis* strain has ever been sequenced, so the species is covered rather than
 tested.
-
-The default set remains the default: it is vSNP's, every answer in the
-field so far was measured against it, and the extended set is one release old.
 
 ## Why not an assembly?
 

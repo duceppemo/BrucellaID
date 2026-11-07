@@ -47,7 +47,7 @@ The `_1` and `_2` files are paired automatically, and the sample name is what is
 brucellaid -i reads -o results -t 8 -p 2
 ```
 ```
-16 reference genome(s) in .../brucellaid/data/references.msh
+432 reference genome(s) in .../brucellaid/data/references_extended.msh
 9 MLST locus/loci: gap, aroA, glk, dnaK, gyrB, trpE, cobQ, int_hyp, omp25
 118 sequence type(s) with a species, to decide the species MASH cannot
 4 sample(s) found in reads
@@ -56,19 +56,20 @@ ERR2136546: identifying the species with MASH (2 file(s))
 ERR3454415: identifying the species with MASH (2 file(s))
 ERR3454415: about 230,479,484 bases, roughly 70x coverage: sketching the k-mers seen at least 3 time(s)
 ERR2136546: about 153,926,473 bases, roughly 47x coverage: sketching the k-mers seen at least 2 time(s)
-ERR2136546: Brucella canis str. ATCC 23365 (NC_010103-NC_010104.fasta, MASH distance 0.00652, 773/1000 hashes)
+ERR2136546: Brucella canis str. Oliveri (GCA_000530495.1_Oliveri_genomic.fna.gz, MASH distance 0.00652, 773/1000 hashes)
 ERR2136546: calling the MLST alleles with Seal
 ERR2136546: ST 20 (profile 1-6-4-1-5-3-5-4-6)
 ERR2136546: Brucella canis (MASH+ST, arbitrated)
-ERR3454415: Brucella abortus bv. 1 str. 9-941 (NC_006932-NC_006933.fasta, MASH distance 0.00066, 973/1000 hashes)
+ERR3454415: Brucella abortus str. 2308 (GCA_000742195.1_ASM74219v1_genomic.fna.gz, MASH distance 0.00068, 972/1000 hashes)
 ERR3454415: ST 1 (profile 2-1-1-2-1-3-1-1-1)
-SRR19520329: Brucella melitensis bv. 3 str. Ether (NZ_CP007760-NZ_CP007761.fasta, MASH distance 0.00058, 976/1000 hashes)
+ERR3454415: Brucella abortus (MASH+ST, agree)
+SRR19520329: Brucella melitensis str. 48_S36 (GCA_061325495.1_ASM6132549v1_genomic.fna.gz, MASH distance 0.00051, 979/1000 hashes)
 SRR19520329: ST 11 (profile 3-2-3-2-1-5-3-2-10)
-SRR8550484: Brucella suis bv. 2 str. ATCC 23445 (NC_010169-NC_010167.fasta, MASH distance 0.00645, 775/1000 hashes)
+SRR8550484: Brucella suis str. 1330 (GCA_000742055.1_ASM74205v1_genomic.fna.gz, MASH distance 0.00645, 775/1000 hashes)
 SRR8550484: ST 15 (profile 1-2-7-1-3-3-5-3-2)
-Done in 35s
+Done in 33s
 ```
-35 seconds on 8 threads, for 4.6 million read pairs. `-p 2` runs two samples at a time and gives each of
+33 seconds on 8 threads, for 4.6 million read pairs. `-p 2` runs two samples at a time and gives each of
 them four of the eight threads. The `about ... coverage` line of each sample is the k-mer copy threshold being derived
 from each sample’s depth — 3 copies for the ~70x libraries, 2 for the 47x one — which is what keeps a deep
 read set’s sequencing errors out of the sketch. Section 6 shows what that is worth.
@@ -77,40 +78,62 @@ read set’s sequencing errors out of the sketch. Section 6 shows what that is w
 `results/brucellaid.tsv`, also printed to the terminal:
 
 ```
-Sample       Species              SpeciesSource         ClosestReference               SharedHashes  SequenceType  AlleleProfile       STSpecies            Reads
-ERR2136546   Brucella canis       MASH+ST (arbitrated)  NC_010103-NC_010104.fasta      773/1000      20            1-6-4-1-5-3-5-4-6   Brucella canis       625576
-ERR3454415   Brucella abortus     MASH+ST (agree)       NC_006932-NC_006933.fasta      973/1000      1             2-1-1-2-1-3-1-1-1   Brucella abortus     1175082
-SRR19520329  Brucella melitensis  MASH+ST (agree)       NZ_CP007760-NZ_CP007761.fasta  976/1000      11            3-2-3-2-1-5-3-2-10  Brucella melitensis  1136924
-SRR8550484   Brucella suis        MASH+ST (agree)       NC_010169-NC_010167.fasta      775/1000      15            1-2-7-1-3-3-5-3-2   Brucella suis        1693672
+Sample       Species              SpeciesSource         ClosestReference                             SharedHashes  SequenceType  AlleleProfile       STSpecies            Reads
+ERR2136546   Brucella canis       MASH+ST (arbitrated)  GCA_000530495.1_Oliveri_genomic.fna.gz       773/1000      20            1-6-4-1-5-3-5-4-6   Brucella canis       625576
+ERR3454415   Brucella abortus     MASH+ST (agree)       GCA_000742195.1_ASM74219v1_genomic.fna.gz    972/1000      1             2-1-1-2-1-3-1-1-1   Brucella abortus     1175082
+SRR19520329  Brucella melitensis  MASH+ST (agree)       GCA_061325495.1_ASM6132549v1_genomic.fna.gz  979/1000      11            3-2-3-2-1-5-3-2-10  Brucella melitensis  1136924
+SRR8550484   Brucella suis        MASH+ST (agree)       GCA_000742055.1_ASM74205v1_genomic.fna.gz    775/1000      15            1-2-7-1-3-3-5-3-2   Brucella suis        1693672
 ```
 Four species, four sequence types, and each species is the one the submitter labelled the run with.
-`MashDistance`, left out above to fit, reads 0.006524, 0.000656, 0.000582 and 0.006455. There is no biovar
+`MashDistance`, left out above to fit, reads 0.006524, 0.000681, 0.000508 and 0.006455. There is no biovar
 column: see [How it works](How-it-works#no-biovar).
+
+The reference names are GenBank accessions because a run identifies against the 432-genome clade set by
+default from 2.0. `--reference-set vsnp` gives vSNP's 16 genomes and its own file names instead, and on
+these four samples the same four species.
 
 **The first sample is the interesting one.** Its `SpeciesSource` says `arbitrated`, and the `Notes` column,
 also left out above, says why:
 
 ```
-nearly as close: B-REF-BS4-40.fasta (Brucella suis bv. 4, 768/1000 hashes); MASH cannot separate
-Brucella canis and Brucella suis: ST 20 is Brucella canis in 70 of 70 isolate(s), which agrees with
-the closest reference
+loose match: the closest reference is 0.00652 away and shares 773/1000 hashes, where a read set of a
+species the sketch holds usually matches within 0.005. The reads may hold more than Brucella, or this
+lineage may have no near relative in the sketch; the species named is still the closest one; nearly as
+close: GCA_000741995.1_ASM74199v1_genomic.fna.gz (Brucella suis, 768/1000 hashes), 3 other Brucella canis
+genome(s); MASH cannot separate Brucella canis and Brucella suis: ST 20 is Brucella canis in 70 of 70
+isolate(s), which agrees with the closest reference
 ```
+Three things are being said there, and all three matter.
+
 *B. canis* came first by **five hashes out of a thousand** — 0.006524 against 0.006698, a margin that is
 noise, not a measurement. So the species was not decided by that margin: ST 20 was, and ST 20 is *B. canis*
 in all 70 isolates of the PubMLST isolate database that carry it, and never *B. suis*. Had the distances
 come out the other way round, as they easily could have, the answer would have been the same. See
 [How it works](How-it-works).
 
+The **loose match** note is separate, and it is about this library rather than about the species: 773 of
+1000 hashes at a distance of 0.0065 is far from the 0.0003 or so a clean read set of a species the set
+covers usually gives. The species is still the nearest genome's, but something about these reads — extra
+organisms, or a lineage with no close relative — is keeping them at arm's length from every reference.
+Both the *B. canis* and the *B. suis* sample here read that way, and they did so against vSNP's 16 genomes
+too, so it is the libraries, not the reference set.
+
+And **three other *B. canis* genomes were nearly as close as well**, counted rather than listed. In a set
+of 432 a cluster of same-species genomes crowds the top of the table and listing them all would bury the
+one line that matters, which is the *B. suis* genome 5 hashes behind.
+
 ## 5. Read what the calls rest on
 `results/brucellaid_mash.tsv` has every distance. For the *B. canis* sample, the first four:
 
 ```
-Sample      Reference                      Species           Biovar  MashDistance  SharedHashes
-ERR2136546  NC_010103-NC_010104.fasta      Brucella canis            0.006524      773
-ERR2136546  B-REF-BS4-40.fasta             Brucella suis     4       0.006698      768
-ERR2136546  NC_017251-NC_017250.fasta      Brucella suis     1       0.007196      754
-ERR2136546  NZ_CP007719-NZ_CP007718.fasta  Brucella suis     3       0.007268      752
+Sample      Reference                                    Species          Biovar  MashDistance  SharedHashes
+ERR2136546  GCA_000530495.1_Oliveri_genomic.fna.gz       Brucella canis           0.006524      773
+ERR2136546  GCA_000741995.1_ASM74199v1_genomic.fna.gz    Brucella suis            0.006698      768
+ERR2136546  GCA_056582615.1_ASM5658261v1_genomic.fna.gz  Brucella canis           0.006769      766
+ERR2136546  GCA_050496145.1_ASM5049614v1_genomic.fna.gz  Brucella canis           0.006981      760
 ```
+The *B. suis* genome in second place is the whole reason this sample needs the sequence type. Rows three
+and four are the other *B. canis* genomes the note counted.
 
 `results/brucellaid_mlst.tsv` has the nine allele calls and the margin of each. For the *B. abortus*
 sample:

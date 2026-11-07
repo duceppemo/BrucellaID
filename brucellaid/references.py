@@ -10,10 +10,13 @@ from .errors import BrucellaIDError
 
 log = logging.getLogger(__name__)
 
-REFERENCES_FILE = 'references.tsv'
-SKETCH_FILE = 'references.msh'
+# The extended set is the default from 2.0, so it is what load_references() and reference_sketch() reach for
+# when they are given no file. There is deliberately no name that means "whichever set is the default": a
+# caller that cares which genomes it measured against has to say which, the way the reports do.
 EXTENDED_REFERENCES_FILE = 'references_extended.tsv'
 EXTENDED_SKETCH_FILE = 'references_extended.msh'
+VSNP_REFERENCES_FILE = 'references.tsv'
+VSNP_SKETCH_FILE = 'references.msh'
 COLUMNS = ('reference', 'code', 'species', 'biovar', 'strain', 'accessions')
 
 
@@ -90,10 +93,10 @@ def load_references(path=None):
     """
     The reference table, read once.
 
-    :param path: a reference table of your own, instead of the one of the package
+    :param path: a reference table of your own, instead of the extended one of the package
     :return: {reference: Reference}
     """
-    path = path or data_path(REFERENCES_FILE)
+    path = path or data_path(EXTENDED_REFERENCES_FILE)
     try:
         with open(path) as f:
             return parse_references(f)
@@ -115,8 +118,8 @@ def lookup(references, sketch_id):
 
 
 def reference_sketch(path=None):
-    """Path of the MASH sketch of the reference genomes."""
-    return path or data_path(SKETCH_FILE)
+    """Path of the MASH sketch of the reference genomes, the extended set unless another file is named."""
+    return path or data_path(EXTENDED_SKETCH_FILE)
 
 
 def compare_with_sketch(sketch_ids, references):

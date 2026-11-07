@@ -1,14 +1,15 @@
 # Reference data
 
-Nine files, about 4 MB — 3.5 MB of it the extended sketch. `brucellaid --sketch/--references/--alleles/
---profiles/--st-species` take files of your own instead of the first five, and `--reference-set extended`
-switches to the extended pair; the logo is only used by the reports.
+Nine files, about 4 MB — 3.5 MB of it the extended sketch, which is the pair a run uses by default from
+2.0. `brucellaid --sketch/--references/--alleles/--profiles/--st-species` take files of your own instead of
+the packaged ones, and `--reference-set vsnp` switches to the 16-genome pair; the logo is only used by the
+reports.
 
 | File | What it is | Where it comes from |
 | --- | --- | --- |
 | `references.msh` | MASH sketch of 16 *Brucella* reference genomes (k = 21, 1000 hashes) | The *Brucella* part of [vSNP](https://github.com/USDA-VS/vsnp)'s reference set, as `vsnp_reference.msh` |
 | `references.tsv` | What each genome of the sketch is: vSNP species code, species, biovar, strain, NCBI accessions | Written for BrucellaID, from the sketch and vSNP's `species_accessions.csv` |
-| `references_extended.msh` | MASH sketch of 432 curated genomes covering the whole *Brucella* clade, all 30 of its named species plus 47 unnamed lineages (k = 21, 1000 hashes), used by `--reference-set extended` | The assemblies behind the [mashID *Brucella* pack](https://doi.org/10.6084/m9.figshare.33970168), dereplicated at 0.0003 and curated: `scripts/extended_references_curation.tsv` logs every decision. The *B. papionis* genome is the one NCBI files under *Brucella* sp., relabelled on the evidence in `curation/papionis/README.md` |
+| `references_extended.msh` | MASH sketch of 432 curated genomes covering the whole *Brucella* clade, all 30 of its named species plus 48 genomes of lineages with no name yet (k = 21, 1000 hashes), the default from 2.0 | The assemblies behind the [mashID *Brucella* pack](https://doi.org/10.6084/m9.figshare.33970168), dereplicated at 0.0003 and curated: `scripts/extended_references_curation.tsv` logs every decision. The *B. papionis* genome is the one NCBI files under *Brucella* sp., relabelled on the evidence in `curation/papionis/README.md` |
 | `references_extended.tsv` | What each genome of the extended sketch is. The code is the species epithet (plus the biovar when NCBI records one); only 7 genomes have a biovar and 352 a strain, because the NCBI records of the rest carry none | Generated from the NCBI assembly data report of the 432 accessions |
 | `mlst_alleles.fasta` | 309 alleles of the nine MLST loci | [PubMLST](https://pubmlst.org/organisms/brucella-spp), "MLST (9 locus)", downloaded 2026-10-31 |
 | `mlst_profiles.tsv` | 122 sequence types | The same scheme, the same day |

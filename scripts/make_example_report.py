@@ -34,7 +34,7 @@ from brucellaid import htmlreport, pdfreport, qa  # noqa: E402
 from brucellaid.mlst import PROFILES_FILE, alleles_fasta, load_profiles  # noqa: E402
 from brucellaid.pipeline import analyse_samples  # noqa: E402
 from brucellaid.references import (  # noqa: E402
-    REFERENCES_FILE,
+    EXTENDED_REFERENCES_FILE,
     data_path,
     load_references,
     reference_sketch,
@@ -109,7 +109,7 @@ def reference_data(sketch, references, loci, st_table):
     alleles = alleles_fasta(None)
     return qa.data_facts([
         ('MASH sketch', sketch, '{} reference genome(s), k = 21, 1000 hashes'.format(len(references))),
-        ('Reference table', data_path(REFERENCES_FILE),
+        ('Reference table', data_path(EXTENDED_REFERENCES_FILE),
          '{} genome(s) with their species, biovar, strain and accessions'.format(len(references))),
         ('MLST alleles', alleles, '{} allele(s) of the {} loci'.format(qa.fasta_count(alleles), len(loci))),
         ('MLST profiles', data_path(PROFILES_FILE),

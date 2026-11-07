@@ -141,10 +141,13 @@ def test_failed_sample_exits_with_an_error(tmp_path, sketch):
 
 
 @requires_mash
-def test_the_sketch_and_the_reference_table_of_the_package_match():
-    """Every genome of the MASH sketch is named in the reference table, and the other way round."""
+@pytest.mark.parametrize(('which', 'genomes'), [('EXTENDED', 432), ('VSNP', 16)])
+def test_the_sketch_and_the_reference_table_of_the_package_match(which, genomes):
+    """Every genome of each packaged sketch is named in its reference table, and the other way round."""
+    from brucellaid import references as refs
     from brucellaid.mash import sketch_references
-    from brucellaid.references import compare_with_sketch, load_references, reference_sketch
-    ids = sketch_references(reference_sketch())
-    assert len(ids) == 16
-    assert compare_with_sketch(ids, load_references()) == []
+    sketch = refs.data_path(getattr(refs, '{}_SKETCH_FILE'.format(which)))
+    table = refs.data_path(getattr(refs, '{}_REFERENCES_FILE'.format(which)))
+    ids = sketch_references(refs.reference_sketch(sketch))
+    assert len(ids) == genomes
+    assert refs.compare_with_sketch(ids, refs.load_references(table)) == []

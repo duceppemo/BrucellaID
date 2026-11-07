@@ -32,31 +32,34 @@ nine loci. `--no-st-species` leaves the ST out of it entirely. See
 
 ### Why not just add more reference genomes instead?
 More references fix a different problem than the one the ST fixes. *B. canis* and *B. suis* bv. 4 are
-0.00024 apart, which is inside the variation within either species: in a dereplicated 432-genome *Brucella*
-database the nearest pair of *canis* and *suis* genomes is 0.000194 apart. More references move that
-boundary around; they do not create one, and the MLST loci, which do separate the two, are what settles it.
-What more references *do* fix is coverage: the 16 genomes carry 8 species, and a sample of any other —
+0.00024 apart, which is inside the variation within either species: in the 432-genome default set the
+nearest pair of *canis* and *suis* genomes is 0.000264 apart, still the closest pair of different species
+in the sketch. More references move that boundary around; they do not create one, and the MLST loci, which
+do separate the two, are what settles it.
+What more references *do* fix is coverage, which is why the extended set is the default from 2.0: vSNP's
+16 genomes carry 8 species, and a sample of any other —
 *B. pinnipedialis*, the whole former *Ochrobactrum* clade — can only land on a wrong neighbour or on `ND`.
-That is what `--reference-set extended` is for.
+`--reference-set vsnp` is still there for the runs that want the old 16, and nothing else.
 
 ### What is the extended reference set?
 432 curated genomes covering all 30 named species of the *Brucella* clade (the 2020 taxonomy moved
-*Ochrobactrum* into it) plus the lineages that have no name yet, selected with `--reference-set extended`.
+*Ochrobactrum* into it) plus the lineages that have no name yet. It is what a run uses from 2.0.
 One of the 30 took some finding. Nothing in INSDC is labelled *B. papionis*, so it looked as though no
 set could carry it — but the genome is there under *Brucella* sp., and
 [`curation/papionis/README.md`](https://github.com/duceppemo/BrucellaID/blob/main/curation/papionis/README.md)
 records how it was identified and relabelled.
-[How it works](How-it-works#the-extended-reference-set) says where it comes from and
+[How it works](How-it-works#the-reference-sets) says where it comes from and
 [Validation](Validation#at-scale-the-extended-reference-set) what it does on simulated reads of 2,022
 assemblies and [on every public *Brucella* read set in ENA](Validation#on-real-public-read-sets-the-whole-archive).
-The 16 vSNP genomes stay the default.
+The 16 vSNP genomes are still a run away, as `--reference-set vsnp`.
 
 ### Where did the biovar column go?
 It was removed in 1.1, because it was never a biovar call and was read as one. It held the biovar of the
-closest reference genome. Three things make a real biovar call impossible here: the sketch has references
-for only *B. abortus* biovars 1 and 3, so 43% of biovar-labelled *B. abortus* isolates in PubMLST are of a
-biovar it cannot name; the two *B. melitensis* biovar 1 references are further apart (0.000756) than the
-biovar 2 and 3 references are from each other (0.000706), so the distance carries no biovar signal; and a
+closest reference genome. Three things make a real biovar call impossible here: hardly any reference
+carries a biovar at all, 7 of the 432 genomes of the default set, so 93% of biovar-labelled *B. abortus*
+isolates in PubMLST are of a biovar none of them can name; the two *B. suis* biovar 2 genomes are further
+apart (0.00163) than the biovar 3 genome is from one of them (0.00150), so the distance carries no biovar
+signal; and a
 biovar is a phenotype that is not monophyletic — the best possible ST → biovar rule reaches 66% for
 *B. abortus* and 63% for *B. melitensis*. See [How it works](How-it-works#no-biovar).
 
@@ -75,7 +78,7 @@ reference set. Read the note's distance and shared hashes, and `brucellaid_mash.
 
 ### Why 150 shared hashes?
 It is the threshold the first version of BrucellaID used, and it separates "this read set is *Brucella*"
-from "the closest of 16 genomes happens to be this one" with room to spare: a real *Brucella* sample at 20x
+from "the closest genome of the set happens to be this one" with room to spare: a real *Brucella* sample at 20x
 shares 900 or more of the 1000 hashes, and a sample of the nearest neighbouring species shares almost none.
 `--min-hashes` changes it.
 
@@ -117,7 +120,8 @@ calls — all of which are reported — but BrucellaID will not tell you "two st
 `brucellaid_mash.tsv` and the per-locus margins.
 
 ### Is it the same answer as vSNP?
-For the species, almost: the same 16 reference genomes, the same sketch and the same threshold of 150 shared
+For the species, `--reference-set vsnp` is almost exactly vSNP's answer: the same 16 reference genomes,
+the same sketch and the same threshold of 150 shared
 hashes, so the MASH identification is vSNP's. It can differ for one pair — a *B. canis* or *B. suis* bv. 4
 read set, where the sequence type now chooses between the two instead of the distance deciding by a margin
 of noise. `--no-st-species` gives vSNP's answer exactly. For the MLST, the alleles are now called from the reads with Seal rather than with

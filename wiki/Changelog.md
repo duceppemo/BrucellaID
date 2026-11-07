@@ -1,7 +1,43 @@
 # Changelog
 
-## Unreleased
-* **The extended reference set.** `--reference-set extended` identifies against 432 curated genomes
+## 2.0.0
+
+**The extended reference set is now the default, and that is a breaking change.** A run with no
+`--reference-set` identifies against 432 curated genomes covering all 30 named species of the *Brucella*
+clade instead of vSNP's 16 genomes and 8 species. Over every usable public *Brucella* read set in ENA —
+4,042 runs — the two sets disagree on 146, and the extended set is right on 91 of them and the 16 on
+none; across the 2,018 *B. melitensis* and 1,118 *B. abortus* runs that carry most real traffic they agree,
+so the change adds coverage without disturbing the calls the smaller set already made well.
+
+What this means in practice:
+
+* `--reference-set default` **no longer exists**. The values are `extended` (the default) and `vsnp`.
+  A script passing `default` gets an argparse error naming the two valid choices, rather than silently
+  changing behaviour.
+* `--reference-set vsnp` reproduces 1.x exactly: the same 16 genomes, the same sketch, the same threshold.
+* **The `code` column changes with the set**, which matters for the legacy `--xlsx` report and for
+  `species_code` in the JSON. With the extended set the codes are species epithets (`abortus5`,
+  `anthropi`); vSNP's own codes (`ab1`, `mel1`) exist only in the 16-genome table. A pipeline reading those
+  codes needs `--reference-set vsnp`.
+* **Callers of the library get the extended set too**, not just the command line: `reference_sketch()` and
+  `load_references()` resolve to it when they are given no file, so a script that reaches
+  `analyse_samples()` directly measures against the 432 genomes without having to know about
+  `--reference-set`. There is deliberately no constant meaning "whichever set is the default" --
+  `EXTENDED_*` and `VSNP_*` are the only names, so code that cares which genomes it used has to say which.
+* **The no-biovar figures are now the default set's**, and they are starker: a biovar is recorded for only
+  7 of the 432 genomes, because the NCBI records of the rest carry none, so 93% of the biovar-labelled
+  *B. abortus* isolates of the PubMLST isolate database are of a biovar no reference has, against 42% for
+  vSNP's 16. The resolution argument is unchanged in kind -- the two *B. suis* biovar 2 genomes are 0.00163
+  apart, further than the biovar 3 genome is from one of them -- and the reports say so in those terms.
+* Nothing about the MLST changes, the 150-shared-hash threshold is unchanged, and there is still no biovar.
+* `validation/run_validation.sh` pins `--reference-set vsnp`. It reads those 16 genomes genome for genome,
+  so its expected answers are their sketch IDs, and its negative control is *B. anthropi* ATCC 49188, which
+  comes back `ND` only because the vSNP set does not carry it. The default set's evidence is the two
+  at-scale validations instead.
+
+### Also new in 2.0
+* **The extended reference set**, which is what the paragraphs above are about. It identifies against 432
+  curated genomes
   covering the whole *Brucella* clade -- all 30 named species, the former *Ochrobactrum* included
   (*B. papionis* is labelled nowhere in INSDC: its genome was found under "Brucella sp." and relabelled on
   sequence-type and distance evidence, see curation/papionis/README.md), plus the
@@ -12,8 +48,7 @@
   caught by the curation itself -- are accounted for, and on all 4,042 usable public Brucella read sets in
   ENA, where it matches the submitter on 98.7% against 96.2% and wins every disagreement that has a right
   answer. Of its 52 non-matches, 20 are mislabelled records and 22 are read sets holding little or no
-  Brucella; none is a wrong species named off a reference that was there. The 16 vSNP genomes remain the
-  default, and
+  Brucella; none is a wrong species named off a reference that was there.
   `scripts/make_extended_references.py` rebuilds the extended sketch from NCBI.
 * **A loose match is now said to be loose.** When the closest reference is further than
   `--loose-distance` (0.005 by default), the call carries a note giving the distance and the shared hashes.

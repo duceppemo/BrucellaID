@@ -8,6 +8,7 @@ from brucellaid import __version__, cli
 from brucellaid.errors import BrucellaIDError
 from brucellaid.mlst import MlstResult
 from brucellaid.pipeline import SampleResult
+from brucellaid.references import COLUMNS
 from brucellaid.samples import Sample
 from tests.conftest import write_fastq
 
@@ -206,23 +207,55 @@ def test_sample_fixture_names_the_sample_from_the_file_name():
     assert Sample('a', ['a_R1.fastq.gz']).paired is False
 
 
-def test_main_with_the_extended_reference_set(tmp_path, monkeypatch):
+def reference_paths(out):
+    report = json.loads((out / 'brucellaid.json').read_text())
+    paths = {item['name']: item['path'] for item in report['reference_data']}
+    detail = next(item['detail'] for item in report['reference_data'] if item['name'] == 'Reference table')
+    return paths, detail
+
+
+@pytest.mark.parametrize('argv', [[], ['--reference-set', 'extended']])
+def test_main_identifies_against_the_extended_set_by_default(tmp_path, monkeypatch, argv):
+    """From 2.0 the extended set is what a run with no --reference-set uses."""
     fake_run(monkeypatch)
     reads = write_fastq(tmp_path / 'a_R1.fastq.gz', [('r', 'ACGT')])
-    cli.main(['-r1', str(reads), '-o', str(tmp_path / 'out'), '--reference-set', 'extended'])
-    report = json.loads((tmp_path / 'out' / 'brucellaid.json').read_text())
-    paths = {item['name']: item['path'] for item in report['reference_data']}
+    cli.main(['-r1', str(reads), '-o', str(tmp_path / 'out'), *argv])
+    paths, detail = reference_paths(tmp_path / 'out')
     assert paths['MASH sketch'].endswith('references_extended.msh')
     assert paths['Reference table'].endswith('references_extended.tsv')
-    assert '432 genome(s)' in next(item['detail'] for item in report['reference_data']
-                                   if item['name'] == 'Reference table')
+    assert '432 genome(s)' in detail
 
 
+def test_main_with_the_vsnp_reference_set(tmp_path, monkeypatch):
+    fake_run(monkeypatch)
+    reads = write_fastq(tmp_path / 'a_R1.fastq.gz', [('r', 'ACGT')])
+    cli.main(['-r1', str(reads), '-o', str(tmp_path / 'out'), '--reference-set', 'vsnp'])
+    paths, detail = reference_paths(tmp_path / 'out')
+    assert paths['MASH sketch'].endswith('references.msh')
+    assert not paths['MASH sketch'].endswith('references_extended.msh')
+    assert '16 genome(s)' in detail
+
+
+@pytest.mark.parametrize('which', ['extended', 'vsnp'])
 @pytest.mark.parametrize('extra', [['--sketch', 'mine.msh'], ['--references', 'mine.tsv']])
-def test_main_rejects_the_extended_set_next_to_a_custom_file(tmp_path, monkeypatch, capsys, extra):
+def test_main_rejects_a_packaged_set_next_to_a_custom_file(tmp_path, monkeypatch, capsys, which, extra):
     fake_run(monkeypatch)
     reads = write_fastq(tmp_path / 'a_R1.fastq.gz', [('r', 'ACGT')])
     with pytest.raises(SystemExit) as exit_info:
-        cli.main(['-r1', str(reads), '-o', str(tmp_path / 'out'), '--reference-set', 'extended', *extra])
+        cli.main(['-r1', str(reads), '-o', str(tmp_path / 'out'), '--reference-set', which, *extra])
     assert exit_info.value.code == 1
     assert 'cannot be combined' in capsys.readouterr().err
+
+
+def test_main_takes_a_custom_sketch_without_a_reference_set(tmp_path, monkeypatch):
+    """--sketch alone must not trip the guard: no --reference-set was asked for."""
+    fake_run(monkeypatch)
+    reads = write_fastq(tmp_path / 'a_R1.fastq.gz', [('r', 'ACGT')])
+    sketch = tmp_path / 'mine.msh'
+    sketch.write_bytes(b'')
+    table = tmp_path / 'mine.tsv'
+    table.write_text('\t'.join(COLUMNS) + '\nmine.fasta\tx\tBrucella abortus\t\t\t\n')
+    cli.main(['-r1', str(reads), '-o', str(tmp_path / 'out'), '--sketch', str(sketch),
+              '--references', str(table)])
+    paths, _ = reference_paths(tmp_path / 'out')
+    assert paths['MASH sketch'] == str(sketch.resolve())

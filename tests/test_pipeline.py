@@ -177,9 +177,11 @@ def test_analyse_sample_keeps_the_species_when_the_typing_fails(monkeypatch):
 
 
 def test_analyse_sample_reads_the_reference_table_of_the_package(monkeypatch):
-    fake_tools(monkeypatch)
+    """With no table passed, the extended one of the package is read, as it is from 2.0."""
+    fake_tools(monkeypatch, hits=['GCA_000163115.1_ASM16311v1_genomic.fna.gz\tq\t0.001\t0\t950/1000\n'])
     result = analyse_sample(Sample('s', ['s_R1.fastq.gz']), mlst=False)
-    assert result.species == 'Brucella abortus'  # ab1 is in the table of the package too
+    assert result.species == 'Brucella abortus'
+    assert result.code == 'abortus5'  # The extended set codes the epithet and the biovar, not vSNP's "ab5"
 
 
 def test_analyse_samples_keeps_the_order_of_the_samples(monkeypatch):

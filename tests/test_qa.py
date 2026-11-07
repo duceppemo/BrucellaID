@@ -112,8 +112,8 @@ def test_data_facts(tmp_path):
 
 
 def test_data_facts_knows_the_packaged_files():
-    from brucellaid.references import SKETCH_FILE, data_path
-    facts = qa.data_facts([('MASH sketch', data_path(SKETCH_FILE), '16 genomes')])
+    from brucellaid.references import EXTENDED_SKETCH_FILE, data_path
+    facts = qa.data_facts([('MASH sketch', data_path(EXTENDED_SKETCH_FILE), '432 genomes')])
     assert facts[0]['packaged'] is True
 
 

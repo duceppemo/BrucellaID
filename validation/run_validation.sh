@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Download the genomes of genomes.tsv, simulate reads from each one, download the real read sets of
-# reads.tsv, run BrucellaID over all of it and check what it called.
+# reads.tsv, run BrucellaID over all of it and check what it called. The run is pinned to the 16 vSNP
+# genomes (--reference-set vsnp), which is what this suite is about; see the note on the run itself.
 #
 #   bash validation/run_validation.sh            # about 40 minutes and 1.5 GB in validation/data
 #   COVERAGE=10 bash validation/run_validation.sh
@@ -65,6 +66,11 @@ if [ "$real" != 0 ]; then
 fi
 
 rm -rf "$results"
-brucellaid -i "$data/reads" -o "$results" -t "$threads" -p 2 > /dev/null
+# --reference-set vsnp, not the 2.0 default: this suite measures the 16 genomes read for read, and its
+# expectations are their sketch IDs. The negative control depends on it too -- Brucella anthropi
+# ATCC 49188 is here to come back ND as the nearest thing to the genus that is outside the vSNP set, and
+# the extended set carries it as a reference and so names it correctly. What the default set does is
+# measured at scale instead: wiki/Validation.md, "At scale" and "On real public read sets".
+brucellaid --reference-set vsnp -i "$data/reads" -o "$results" -t "$threads" -p 2 > /dev/null
 flags=(); [ "$real" = 0 ] && flags+=(--no-real)
 python3 "$here/check_results.py" "$results" "$data" "${flags[@]}"

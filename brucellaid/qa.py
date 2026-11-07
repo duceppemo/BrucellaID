@@ -21,7 +21,7 @@ from datetime import datetime
 from pathlib import Path
 
 from .mlst import NEW_PROFILE, UNKNOWN
-from .references import SKETCH_FILE, data_path, lookup
+from .references import EXTENDED_SKETCH_FILE, data_path, lookup
 from .species import CONFLICT, UNRESOLVED
 
 BLOCK = 1 << 20  # Read a file for its checksum a megabyte at a time: an input file can be gigabytes
@@ -129,9 +129,14 @@ def environment(operator=None):
 
 
 def is_packaged(path):
-    """Whether a reference data file is the one that ships with the package."""
+    """
+    Whether a reference data file is the one that ships with the package.
+
+    Any packaged file would do to find the folder; the extended sketch is only the one that is certain to
+    be there.
+    """
     try:
-        return Path(path).resolve().parent == Path(data_path(SKETCH_FILE)).resolve().parent
+        return Path(path).resolve().parent == Path(data_path(EXTENDED_SKETCH_FILE)).resolve().parent
     except OSError:
         return False
 

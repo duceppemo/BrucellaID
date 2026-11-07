@@ -17,8 +17,8 @@ from .mlst import DEFAULT_MIN_READS, PROFILES_FILE, alleles_fasta, load_profiles
 from .pipeline import analyse_samples
 from .references import (
     EXTENDED_REFERENCES_FILE,
-    EXTENDED_SKETCH_FILE,
-    REFERENCES_FILE,
+    VSNP_REFERENCES_FILE,
+    VSNP_SKETCH_FILE,
     compare_with_sketch,
     data_path,
     load_references,
@@ -159,10 +159,11 @@ def build_parser():
                               .format(DEFAULT_MISMATCHES))
 
     data = parser.add_argument_group('reference data (the package ships all of it)')
-    data.add_argument('--reference-set', choices=('default', 'extended'), default='default', dest='reference_set',
-                      help='Which packaged reference set to identify against. "default" is the 16 genomes of '
-                           'vSNP, 8 species; "extended" is 432 curated genomes covering the whole Brucella '
-                           'clade, all 30 named species plus unnamed lineages. Default: default.')
+    data.add_argument('--reference-set', choices=('vsnp', 'extended'), default=None, dest='reference_set',
+                      help='Which packaged reference set to identify against. "extended", the default, is 432 '
+                           'curated genomes covering the whole Brucella clade, all 30 named species plus the '
+                           'unnamed lineages; "vsnp" is the 16 genomes of vSNP, 8 species, which was the default '
+                           'before 2.0. Neither can be combined with --sketch or --references.')
     data.add_argument('--sketch', metavar='FILE',
                       help='MASH sketch of the reference genomes, instead of the one of the package.')
     data.add_argument('--references', metavar='FILE', dest='references',
@@ -233,7 +234,7 @@ def reference_data(args, sketch, references, loci, st_table, mlst=True, md5=True
     alleles = alleles_fasta(args.alleles)
     files = [('MASH sketch', sketch, '{} reference genome(s), k = 21, 1000 hashes'.format(
                   len(sketch_references(sketch)))),
-             ('Reference table', args.references or data_path(REFERENCES_FILE),
+             ('Reference table', args.references or data_path(EXTENDED_REFERENCES_FILE),
               '{} genome(s) with their species, biovar, strain and accessions'.format(len(references)))]
     if mlst:
         files.append(('MLST alleles', alleles, '{} allele(s) of the {} loci'.format(
@@ -261,12 +262,14 @@ def main(argv=None):
         check_mash()
         if mlst:
             check_seal()
-        if args.reference_set == 'extended':
-            if args.sketch or args.references:
-                raise BrucellaIDError('--reference-set extended names the packaged extended sketch and reference '
-                                      'table: it cannot be combined with --sketch or --references.')
-            args.sketch = data_path(EXTENDED_SKETCH_FILE)
-            args.references = data_path(EXTENDED_REFERENCES_FILE)
+        if args.reference_set is not None and (args.sketch or args.references):
+            raise BrucellaIDError('--reference-set {} names a packaged sketch and reference table: it cannot be '
+                                  'combined with --sketch or --references.'.format(args.reference_set))
+        if args.reference_set == 'vsnp':
+            # The extended set is the default from 2.0, which reference_sketch() and load_references() reach
+            # through their own defaults; only the 16 vSNP genomes have to be named here.
+            args.sketch = data_path(VSNP_SKETCH_FILE)
+            args.references = data_path(VSNP_REFERENCES_FILE)
         sketch = reference_sketch(args.sketch)
         references = load_references(args.references)
         alleles = alleles_fasta(args.alleles)

@@ -82,7 +82,7 @@ The package ships all five files, and each can be replaced:
 
 | Option | What it takes |
 | --- | --- |
-| `--reference-set NAME` | Which packaged reference set to identify against: `default` (the 16 genomes of vSNP, 8 species) or `extended` (432 curated genomes, the whole *Brucella* clade — see [How it works](How-it-works#the-extended-reference-set)) |
+| `--reference-set NAME` | Which packaged reference set to identify against. `extended`, the default, is 432 curated genomes covering the whole *Brucella* clade; `vsnp` is the 16 genomes of vSNP, 8 species, which was the default before 2.0. See [How it works](How-it-works#the-reference-sets) |
 | `--sketch FILE` | A MASH sketch of reference genomes. Keep MASH's defaults (k = 21, 1000 hashes) |
 | `--references FILE` | The table saying what each genome of the sketch is |
 | `--alleles FILE` | A fasta file of MLST alleles, named `<locus>_<number>` |
@@ -94,8 +94,9 @@ locus of the fasta file must be a column of the table. The genomes of `--sketch`
 `--references` should name the same genomes; BrucellaID warns when they do not, and a sample closest to a
 genome that is not in the table is reported without a species.
 
-`--reference-set extended` names packaged files, so it cannot be combined with `--sketch` or
-`--references`: pass your own files, or pick a packaged set, not both.
+`--reference-set` names packaged files, so neither value can be combined with `--sketch` or
+`--references`: pass your own files, or pick a packaged set, not both. `--sketch` or `--references` on
+their own are fine — no set was asked for, so nothing is being overridden.
 
 `scripts/make_mlst_data.py` rebuilds the MLST files from PubMLST, `scripts/make_st_species.py` rebuilds the
 ST to species table from PubMLST's isolate database, and `scripts/make_reference_data.py` and

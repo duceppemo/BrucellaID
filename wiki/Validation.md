@@ -2,7 +2,16 @@
 
 Sixteen genomes whose answer is known, reads simulated from each one; two of those genomes again at depths
 where a fixed k-mer copy threshold breaks; and four real public read sets that must keep giving the answer
-they are known to give. Reproduce it with:
+they are known to give.
+
+This first suite measures **the 16 vSNP genomes**, not the extended set that 2.0 identifies against by
+default: it reads those 16 genome for genome, so its answers are their sketch IDs, and its negative control
+is *B. anthropi* ATCC 49188, which has to come back `ND` precisely because the vSNP set does not carry it.
+The script therefore passes `--reference-set vsnp`. What the default set does is measured at scale, further
+down: [simulated reads of 2,022 assemblies](#at-scale-the-extended-reference-set) and
+[every usable public *Brucella* read set in ENA](#on-real-public-read-sets-the-whole-archive).
+
+Reproduce it with:
 
 ```bash
 bash validation/run_validation.sh      # about 40 minutes and 1.5 GB, all of it in validation/data
@@ -106,8 +115,10 @@ that is not one.
 ranged from 0.00024 to 0.00354 on the simulated 20x samples. The narrowest was *B. canis* ATCC 23365,
 which is 0.00024 away from *B. suis* bv. 4 strain 40 — ten hashes out of a thousand. The same measurement
 taken within a species is why there is no biovar in the reports: the two *B. melitensis* biovar 1
-references of this very sketch are 0.000756 apart, further than the biovar 2 and biovar 3 references are
-from each other.
+references of the vSNP sketch these runs measured against are 0.000756 apart, further than the biovar 2 and
+biovar 3 references are from each other. The default 432-genome set does not improve on this and is not
+meant to — it records a biovar for only 7 of its genomes
+([How it works](How-it-works#no-biovar)).
 
 **And the calls the distance did not make.** The simulated *B. canis* sample and the real one
 (ERR2136546) are the two lines whose `species from` reads `arbitrated`: *B. suis* bv. 4 was inside the
@@ -151,7 +162,7 @@ old 422.
 
 ## At scale: the extended reference set
 
-The [extended reference set](How-it-works#the-extended-reference-set) was validated separately, at a scale
+The [extended reference set](How-it-works#the-reference-sets) was validated separately, at a scale
 the repository's script is not meant for: 150 bp paired-end reads simulated at 20x (0.2% substitutions)
 from **all 2,022 *Brucella* assemblies** of the collection it was curated from, identified against three
 reference sets on the same machine. 432 of the samples are genomes of the extended set itself, so a
@@ -160,11 +171,11 @@ The other 95 samples are labelled *Brucella sp.* in NCBI and have no right answe
 
 | Reference set | Correct species | Wrong | Not identified |
 | --- | --- | --- | --- |
-| Default (16 genomes, 8 species) | 1,451 (94.0%) | 25 | 67 |
+| vSNP set (16 genomes, 8 species) | 1,451 (94.0%) | 25 | 67 |
 | mashID pack as published (389 genomes) | 1,532 (99.3%) | 11 | 0 |
-| Extended set (432 genomes, curated) | 1,538 (99.68%) | 5 | 0 |
+| Extended set (432 genomes, curated) — **the default from 2.0** | 1,538 (99.68%) | 5 | 0 |
 
-The default set's misses are the species it does not carry — *B. pinnipedialis* and the porpoise lineage
+The vSNP set's misses are the species it does not carry — *B. pinnipedialis* and the porpoise lineage
 of *B. ceti* land on *B. ceti* or *B. microti*, the whole former *Ochrobactrum* clade comes back `ND` —
 and all but two were flagged `unresolved` or `conflict`. The two that were not are the reason the
 extended set exists: two "*B. abortus*" samples reported as *B. melitensis* with no warning at all.
@@ -210,14 +221,14 @@ automatically an error.
 
 | Reference set | Matches the submitter | Does not |
 | --- | --- | --- |
-| Default (16 genomes, 8 species) | 3,890 (96.2%) | 152 |
-| Extended set (432 genomes) | 3,990 (98.7%) | 52 |
+| vSNP set (16 genomes, 8 species) | 3,890 (96.2%) | 152 |
+| Extended set (432 genomes) — **the default from 2.0** | 3,990 (98.7%) | 52 |
 
-The two sets disagree on 146 runs. **The extended set is right on 91 of them and the default set on none** —
+The two sets disagree on 146 runs. **The extended set is right on 91 of them and the vSNP set on none** —
 there is no run in the sweep where the sixteen genomes gave a better answer. Seventy-two of those are
-species the default set cannot name, which come back `ND` at 0.17–0.26: 35 *B. anthropi*, 15
+species the vSNP set cannot name, which come back `ND` at 0.17–0.26: 35 *B. anthropi*, 15
 *B. intermedia*, and most of the rest of the former *Ochrobactrum* clade. Nineteen are wrong-species calls
-the extended set corrects, most of them marine: the default set scored **0 of 11** on *B. pinnipedialis*,
+the extended set corrects, most of them marine: the vSNP set scored **0 of 11** on *B. pinnipedialis*,
 sending six of them to *B. ceti*, where the extended set gets 8 of 11 with the other three not identified.
 
 What the extended set's 52 non-matches are, one by one:
@@ -244,7 +255,7 @@ against what the sequences demonstrably are, the extended set is right on 4,032 
 record found on either side of this validation is listed with its evidence in
 [`curation/mislabelled_records.md`](https://github.com/duceppemo/BrucellaID/blob/main/curation/mislabelled_records.md).
 
-What this does establish is that the extended set costs nothing on the species the default set already
+What this does establish is that the extended set costs nothing on the species the vSNP set already
 covers: across 2,018 *B. melitensis* and 1,118 *B. abortus* runs — the bulk of real traffic — the two sets
 return the same answer, so the extra 412 genomes add coverage without disturbing the calls that matter most.
 
