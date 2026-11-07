@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.0.0
+## 2.0.0 (2026-11-07)
 
 **The extended reference set is now the default, and that is a breaking change.** A run with no
 `--reference-set` identifies against 432 curated genomes covering all 30 named species of the *Brucella*
@@ -19,6 +19,17 @@ What this means in practice:
   `species_code` in the JSON. With the extended set the codes are species epithets (`abortus5`,
   `anthropi`); vSNP's own codes (`ab1`, `mel1`) exist only in the 16-genome table. A pipeline reading those
   codes needs `--reference-set vsnp`.
+* **A sample that matches nothing no longer carries 431 close matches.** A read set that shares no hashes
+  sits at distance 1 from every reference, so every one of them tied with the closest and was reported as
+  nearly as close — with 16 genomes that was invisible, with 432 it put a whole reference table in the
+  sample's block of the quality assurance report and in `close_matches` in the JSON. A sample that was not
+  identified now has no close matches, which is what the report was always meant to say.
+* **One half of a custom pair is now an error instead of a silent `ND`.** `--sketch` and `--references` go
+  together, and a 1.x command line that passed only `--sketch` fell back on the 16-genome table, which
+  matched it. It now falls back on the extended table, whose IDs are GCA file names, so nothing in such a
+  sketch could be named and every sample came back `ND` from a run that exited 0. A sketch none of whose
+  genomes the reference table names is refused, by name, before any sample is read. A custom sketch that is
+  a subset of a packaged set still works on its own, as before.
 * **Callers of the library get the extended set too**, not just the command line: `reference_sketch()` and
   `load_references()` resolve to it when they are given no file, so a script that reaches
   `analyse_samples()` directly measures against the 432 genomes without having to know about
@@ -44,7 +55,7 @@ What this means in practice:
   lineages with no name yet, which are reported honestly as *Brucella sp.*. Derived from the 2,022
   assemblies behind the mashID *Brucella* pack and curated genome by genome
   (`scripts/extended_references_curation.tsv` logs every exclusion and why); validated on simulated reads
-  of all 2,022, every held-out sample of a named species right once seven genomes mislabelled in NCBI --
+  of all 2,022, every held-out sample of a named species right once six genomes mislabelled in NCBI --
   caught by the curation itself -- are accounted for, and on all 4,042 usable public Brucella read sets in
   ENA, where it matches the submitter on 98.7% against 96.2% and wins every disagreement that has a right
   answer. Of its 52 non-matches, 20 are mislabelled records and 22 are read sets holding little or no

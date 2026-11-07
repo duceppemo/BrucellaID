@@ -33,7 +33,8 @@ def data_path(name):
 class Reference:
     """One genome of the MASH sketch."""
     reference: str  # The sketch ID, which is the name of the file the sketch was built from
-    code: str  # The vSNP species code, e.g. "ab1"
+    code: str  # A short code for the species: the epithet in the extended table ("abortus5"), vSNP's
+    #            own code in the 16-genome one ("ab1"). The legacy xlsx report writes it as the species
     species: str  # e.g. "Brucella abortus"
     biovar: str = ''
     strain: str = ''

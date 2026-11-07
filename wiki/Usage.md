@@ -62,14 +62,16 @@ Run `multiqc results/` on the output folder to fold the run into a MultiQC repor
 would match the called allele and its neighbours alike. Raising it makes the allele calls less, not more,
 reliable.
 
-The ST is only consulted where the MASH distance leaves two species within reach, which in the sketch of
-the package means *B. canis* and *B. suis* bv. 4 and nothing else. `--no-st-species` restores the
-behaviour of version 1.0.0, where the closest reference decided alone. See
+The ST is only consulted where the MASH distance leaves two species within reach. In vSNP's 16 genomes
+that meant *B. canis* against *B. suis* bv. 4 and nothing else; in the 432-genome default set a second
+species falls within the margin for 38 of the 432 genomes, across 14 species pairs, so it comes up more
+often than it used to. `--no-st-species` restores the behaviour of version 1.0.0, where the closest
+reference decided alone. See
 [How it works](How-it-works) for what the `SpeciesSource` column reports.
 
 Lowering `--min-hashes` reports a species for a sample that holds little *Brucella* (a mixed culture, a low
-yield extraction); the closest reference is then still the closest of the 16, which is not the same as the
-right one. The `brucellaid_mash.tsv` report shows what the call rests on.
+yield extraction); the closest reference is then still only the closest of the set, which is not the same
+as the right one. The `brucellaid_mash.tsv` report shows what the call rests on.
 
 `--min-kmer-copies` is almost never worth setting by hand: the right value depends on the coverage, which
 is why it is derived from the input rather than fixed. Set it only to reproduce an older run

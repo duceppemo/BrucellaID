@@ -88,8 +88,16 @@ references:
     url: "https://sourceforge.net/projects/bbmap/"
   - type: software
     title: "vSNP"
-    notes: "The 16 Brucella reference genomes of the MASH sketch come from vSNP's reference set."
+    notes: "The 16 Brucella reference genomes of the vsnp reference set, which --reference-set vsnp selects and which was the default before 2.0, come from vSNP's own reference set."
     authors:
       - family-names: Stuber
         given-names: Tod
     url: "https://github.com/USDA-VS/vsnp"
+  - type: data
+    title: "Brucella database for mashID"
+    notes: "The 432 reference genomes of the extended set, the default from 2.0, are curated representatives of the 2,022 NCBI taxon-234 assemblies of this collection (version 4)."
+    authors:
+      - family-names: Duceppe
+        given-names: Marc-Olivier
+    year: 2026
+    doi: "10.6084/m9.figshare.33970168"

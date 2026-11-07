@@ -20,6 +20,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
 
+from .errors import BrucellaIDError
 from .mlst import NEW_PROFILE, UNKNOWN
 from .references import EXTENDED_SKETCH_FILE, data_path, lookup
 from .species import CONFLICT, UNRESOLVED
@@ -132,12 +133,13 @@ def is_packaged(path):
     """
     Whether a reference data file is the one that ships with the package.
 
-    Any packaged file would do to find the folder; the extended sketch is only the one that is certain to
-    be there.
+    Any packaged file would do to find the folder; the extended sketch is only the one it is cheapest to
+    name. A run that never needs that file -- "--reference-set vsnp", or a fully custom pair -- must not
+    fail here because it is missing, so a missing data file means "not packaged" rather than an error.
     """
     try:
         return Path(path).resolve().parent == Path(data_path(EXTENDED_SKETCH_FILE)).resolve().parent
-    except OSError:
+    except (OSError, BrucellaIDError):
         return False
 
 
@@ -244,8 +246,9 @@ def top_hits(rows, top=TOP_HITS):
     """
     The hits a report shows: the closest few, and any other that is near enough to be in the running.
 
-    A report that lists all sixteen references pushes a sample over a page for rows that say the sample is
-    not Brucella ovis. The ones that matter are the closest handful and anything inside the close-match
+    A report that lists every reference would run to pages of rows saying the sample is not Brucella ovis,
+    and the default set has 432 of them. The ones that matter are the closest handful and anything inside
+    the close-match
     margin, which is the evidence for the species call; the rest are in brucellaid_mash.tsv, which holds
     every distance.
 

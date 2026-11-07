@@ -43,11 +43,12 @@ PNG_WIDTH = 1200  # Wide enough for the PDF report at 300 dpi
 TAGLINE = 'Brucella species identification and MLST from reads'
 MARGIN = 10  # Uniform margin around the ink, in user units
 
-# The icon: the 16 reference genomes of the sketch around the sample, with the closest one highlighted
+# The icon: reference genomes ringed around the sample, with the closest one highlighted. The count is
+# how many dots make a legible ring at this size, not the size of any reference set.
 CENTRE = (62, 66)
 RADIUS = 46
 REFERENCES = 16
-CLOSEST = 2  # Which of the 16 the sample is closest to, counting clockwise from the top
+CLOSEST = 2  # Which dot of the ring the sample is closest to, counting clockwise from the top
 
 
 def short(value):

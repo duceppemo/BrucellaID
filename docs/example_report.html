@@ -234,14 +234,14 @@ footer {
 </svg>
 </div>
 <h1>Quality assurance report</h1>
-<p class="sub">4 sample(s): 4 ok, 0 with a warning, 0 failed. BrucellaID 2.0.0, run on 2026-11-07T16:09:00-05:00.</p>
+<p class="sub">4 sample(s): 4 ok, 0 with a warning, 0 failed. BrucellaID 2.0.0, run on 2026-11-07T16:43:59-05:00.</p>
 <div class="panel" style="border-color:var(--accent);background:var(--accent-soft)">This is an example report: a real run of the four public read sets of the BrucellaID tutorial, produced by scripts/make_example_report.py, which leaves out the computer it ran on. The user account, the host name, the operating system and the working directory read [removed], and the input and reference files are named without the folder they were in. Everything else is as BrucellaID wrote it. A report of your own names them all, which is what makes it worth signing.</div>
 <nav class="toc"><b>Contents</b><ol><li><a href="#summary">Summary</a></li><li><a href="#warnings">Notes, warnings and errors</a></li><li><a href="#samples">Samples</a></li><li><a href="#methods">Definitions and methods</a></li><li><a href="#run">Run information</a></li></ol></nav>
 <h2 id="summary" class="first"><span class="n">1</span> Summary</h2>
 <div class="chips"><span class="chip"><b>4</b> sample(s)</span><span class="chip ok"><b>4</b> ok</span></div>
 <dl class="facts">
-<dt>Run started</dt><dd class="wrap">2026-11-07T16:09:00-05:00</dd>
-<dt>Run finished</dt><dd class="wrap">2026-11-07T16:09:34-05:00</dd>
+<dt>Run started</dt><dd class="wrap">2026-11-07T16:43:59-05:00</dd>
+<dt>Run finished</dt><dd class="wrap">2026-11-07T16:44:33-05:00</dd>
 <dt>Operator</dt><dd class="wrap">M-O Duceppe</dd>
 <dt>Command</dt><dd class="wrap">python3 scripts/make_example_report.py reads</dd>
 </dl>
@@ -576,7 +576,7 @@ footer {
 <h3>Why there is no biovar in this report</h3><p>BrucellaID does not report a biovar, because it cannot measure one. Three things stand in the way. Hardly any reference carries a biovar at all: 7 of the 432 genomes of the default set do, because the NCBI records of the rest carry none, so 93% of the biovar-labelled B. abortus isolates of the PubMLST isolate database are of a biovar no reference has. The distance cannot separate the biovars that are there: the two B. suis biovar 2 genomes are 0.00163 apart, further than the biovar 3 genome is from one of them (0.00150). And a biovar is a phenotype that genome clustering does not track -- the best any rule from sequence type to biovar could manage over the isolate database is 66% for B. abortus and 63% for B. melitensis, because one ST spans several biovars. The biovars recorded for the ST are shown above for what they are worth. For a biovar, use classical biotyping, or brucetyper, which reads the Bruce-ladder and Suis-ladder assays in silico.</p>
 <h3>The sequence type, from the alleles</h3><p>The same reads are given to Seal with the alleles of the nine loci as references, counting each read for every allele it shares the highest number of 25-mers with and for no other. The allele the sample carries is therefore counted for every read of its locus, and a neighbouring allele only for the reads that fall where the two agree, so the allele with the most reads wins. No mismatch is allowed in a k-mer, because the alleles of a locus differ by as little as one base. Two alleles with the same count are reported as a tie rather than separated by a coin toss, and a locus below the minimum read count is not called.</p>
 <h3>What the ST values mean</h3><p>A number is a profile that is in the table. &quot;new&quot; means all nine alleles were called but the combination is not in the table, which is either a genuinely new ST or a novel allele called as its nearest neighbour. &quot;ND&quot; means at least one locus had no call; the note says which.</p>
-<h3>How the species is decided when two are equally close</h3><p>Some Brucella species are closer to each other than the variation within either of them: in the sketch that ships with BrucellaID, B. canis and B. suis bv. 4 are 0.00024 apart, the closest pair of the sixteen. Where a reference of a second species is within the close-match margin of the closest one, the distance has not really chosen, and the sequence type chooses among those species, because the two share no ST. An ST is only used when enough of its isolates agree on a species, and an ST that contradicts a species the distance picked cleanly is reported as a conflict and not obeyed.</p>
+<h3>How the species is decided when two are equally close</h3><p>Some Brucella species are closer to each other than the variation within either of them: in the sketches that ship with BrucellaID, the closest pair of different species is always a B. canis and a B. suis: 0.00024 apart in the 16 genomes of vSNP, 0.000264 in the 432 of the default set. Where a reference of a second species is within the close-match margin of the closest one, the distance has not really chosen, and the sequence type chooses among those species, because the two share no ST. An ST is only used when enough of its isolates agree on a species, and an ST that contradicts a species the distance picked cleanly is reported as a conflict and not obeyed.</p>
 <h3>What this report does not establish</h3><p>That the sample is what the label on the tube says, that the library is not a mixture of two isolates, or that the reference data is current. It establishes what the software was given, what it measured, and what it concluded from those measurements.</p>
 <h2 id="run"><span class="n">5</span> Run information</h2>
 <dl class="facts">
@@ -585,8 +585,8 @@ footer {
 <dt>Computer</dt><dd class="wrap">[removed]</dd>
 <dt>Operating system</dt><dd class="wrap">[removed]</dd>
 <dt>Working directory</dt><dd class="wrap">[removed]</dd>
-<dt>Started</dt><dd class="wrap">2026-11-07T16:09:00-05:00</dd>
-<dt>Finished</dt><dd class="wrap">2026-11-07T16:09:34-05:00</dd>
+<dt>Started</dt><dd class="wrap">2026-11-07T16:43:59-05:00</dd>
+<dt>Finished</dt><dd class="wrap">2026-11-07T16:44:33-05:00</dd>
 <dt>Command</dt><dd class="wrap">python3 scripts/make_example_report.py reads</dd>
 </dl>
 <h3>Software</h3>
@@ -625,7 +625,7 @@ footer {
 <li class="wrap">Jolley KA, Bray JE, Maiden MCJ. Open-access bacterial population genomics: BIGSdb software, the PubMLST.org website and their applications. Wellcome Open Research 2018;3:124. doi:10.12688/wellcomeopenres.14826.1</li>
 <li class="wrap">Bushnell B. BBTools. https://sourceforge.net/projects/bbmap/</li>
 </ol>
-<footer>BrucellaID 2.0.0 &middot; 2026-11-07T16:09:00-05:00 &middot; [removed]@[removed] &middot; this report is self-contained: it needs no network to render.</footer>
+<footer>BrucellaID 2.0.0 &middot; 2026-11-07T16:43:59-05:00 &middot; [removed]@[removed] &middot; this report is self-contained: it needs no network to render.</footer>
 </main>
 </body>
 </html>

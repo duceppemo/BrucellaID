@@ -4,10 +4,16 @@ Sixteen genomes whose answer is known, reads simulated from each one; two of tho
 where a fixed k-mer copy threshold breaks; and four real public read sets that must keep giving the answer
 they are known to give.
 
-This first suite measures **the 16 vSNP genomes**, not the extended set that 2.0 identifies against by
-default: it reads those 16 genome for genome, so its answers are their sketch IDs, and its negative control
-is *B. anthropi* ATCC 49188, which has to come back `ND` precisely because the vSNP set does not carry it.
-The script therefore passes `--reference-set vsnp`. What the default set does is measured at scale, further
+This first suite measures **the vSNP reference set**, not the extended set that 2.0 identifies against by
+default, so its expected answers are vSNP sketch IDs and the script passes `--reference-set vsnp`. Its
+negative control is *B. anthropi* ATCC 49188, which has to come back `ND` precisely because the vSNP set
+does not carry it. Sixteen genomes are simulated from, but they are not the sixteen of the sketch: **13 of
+the sketch's 16 are tested**, covering 7 of its 8 species, and the other three samples are a *B. abortus*
+genome deliberately left out of the sketch, the *B. anthropi* control and an *E. coli* control. The three
+sketch genomes never tested are *B. ceti* Cudo and *B. suis* bv. 4 strain 40, which vSNP distributes under
+its own names so the script cannot download them, and the *B. neotomae* reference.
+
+What the default set does is measured at scale, further
 down: [simulated reads of 2,022 assemblies](#at-scale-the-extended-reference-set) and
 [every usable public *Brucella* read set in ENA](#on-real-public-read-sets-the-whole-archive).
 
@@ -165,9 +171,11 @@ old 422.
 The [extended reference set](How-it-works#the-reference-sets) was validated separately, at a scale
 the repository's script is not meant for: 150 bp paired-end reads simulated at 20x (0.2% substitutions)
 from **all 2,022 *Brucella* assemblies** of the collection it was curated from, identified against three
-reference sets on the same machine. 432 of the samples are genomes of the extended set itself, so a
-self-match tells us nothing; the numbers below are the 1,543 *held-out* samples that carry a named species.
-The other 95 samples are labelled *Brucella sp.* in NCBI and have no right answer to score.
+reference sets on the same machine. Of the 2,022, 95 are labelled *Brucella sp.* in NCBI and have no right
+answer to score, and 432 are genomes of the extended set itself, where a self-match tells us nothing. Those
+two exclusions overlap by 48, the unnamed genomes that are themselves references, so what is left is
+**1,543 held-out samples carrying a named species** (2,022 − 95 unnamed − 384 named references), and the
+numbers below are theirs.
 
 | Reference set | Correct species | Wrong | Not identified |
 | --- | --- | --- | --- |
@@ -257,7 +265,7 @@ record found on either side of this validation is listed with its evidence in
 
 What this does establish is that the extended set costs nothing on the species the vSNP set already
 covers: across 2,018 *B. melitensis* and 1,118 *B. abortus* runs — the bulk of real traffic — the two sets
-return the same answer, so the extra 412 genomes add coverage without disturbing the calls that matter most.
+return the same answer, so the extra 416 genomes add coverage without disturbing the calls that matter most.
 
 This sweep also found the gap it needed to: for the diverse part of the clade there was no distance-based
 caution at all. A sample 0.0089 from its nearest *B. anthropi* was reported as a plain `MASH` call with the

@@ -2,11 +2,14 @@
 Decide the species of a sample: what the MASH distances and the sequence type together say.
 
 MASH compares the whole read set to the reference genomes and is right about the species nearly always, but
-not always: some Brucella species are closer to each other than the variation within either of them. In the
-sketch of the package, B. canis ATCC 23365 and B. suis bv. 4 strain 40 are 0.00024 apart -- the closest pair
-of the sixteen, and closer than two B. suis references are to each other -- so which of the two a canis or a
-suis bv. 4 read set lands on first is noise. Every other pair of species in the sketch is at least 0.0007
-apart, so MASH decides those on its own.
+not always: some Brucella species are closer to each other than the variation within either of them. In both
+sketches of the package the closest pair of different species is a B. canis and a B. suis, and it is closer
+than two B. suis references are to each other: B. canis ATCC 23365 and B. suis bv. 4 strain 40 are 0.00024
+apart in vSNP's 16 genomes, and the nearest canis-suis pair of the 432-genome default set is 0.000264. Which
+of the two such a read set lands on first is noise. MASH decides most other pairs on its own, but not all
+of them: in the 432-genome set a reference of a second species falls within CLOSE_MATCH_MARGIN of the
+closest for 38 of the 432 genomes, across 14 species pairs, so arbitration is not a canis/suis special
+case any more.
 
 The sequence type decides the pair MASH cannot. The nine-locus scheme gives B. canis ST 20, 21 and 106 and
 gives B. suis fourteen others, and not one ST is shared between them: an ST is a different kind of evidence,
@@ -157,8 +160,9 @@ def candidates_of(identification, references):
     close.
 
     More than one means MASH cannot choose. The genomes nearly as close are the ones within
-    mash.CLOSE_MATCH_MARGIN of the closest, which is wide enough to hold the canis/suis bv. 4 pair and
-    nothing else of the sketch of the package.
+    mash.CLOSE_MATCH_MARGIN of the closest. In vSNP's 16 that reaches the canis/suis bv. 4 pair and
+    nothing else; in the 432-genome default set it reaches a second species for 38 of the genomes,
+    across 14 species pairs, so arbitration is no longer a one-pair special case.
 
     :return: tuple of species, the closest first, without repetition
     """
@@ -172,7 +176,7 @@ def candidates_of(identification, references):
 
 def closest_of(identification, references, species):
     """
-    The closest reference genome of one species, which is where its vSNP species code comes from.
+    The closest reference genome of one species, which is where that species' code comes from.
 
     When the ST moves the call to another species, the code of the genome MASH landed on belongs to the
     species it named, not to the one being reported, so it cannot be carried over.
@@ -201,7 +205,7 @@ class SpeciesCall:
 
     @property
     def code(self):
-        """The vSNP species code, written to the "species" column of the legacy xlsx report."""
+        """The reference table's code for the species, written to the "species" column of the legacy xlsx report."""
         return self.reference.code if self.reference else UNKNOWN
 
     @property

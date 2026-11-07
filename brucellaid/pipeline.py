@@ -44,7 +44,7 @@ class SampleResult:
 
     @property
     def code(self):
-        """The vSNP species code, written to the "species" column of the legacy xlsx report."""
+        """The reference table's code for the species, written to the "species" column of the legacy xlsx report."""
         return self.call.code if self.call else UNKNOWN
 
     @property

@@ -22,6 +22,7 @@ from .references import (
     compare_with_sketch,
     data_path,
     load_references,
+    lookup,
     reference_sketch,
 )
 from .report import print_table, run_info, write_reports
@@ -39,6 +40,7 @@ EPILOG = '''examples:
   brucellaid -r1 sample.fastq.gz -o results/
   brucellaid -i folder_of_fastq/ -o results/
   brucellaid -i folder_of_fastq/ -o results/ -p 4 -t 16 --xlsx
+  brucellaid -r1 sample_R1.fastq.gz -o results/ --reference-set vsnp   (the 16 genomes of 1.x)
 
 documentation: https://github.com/duceppemo/BrucellaID/wiki'''
 
@@ -89,7 +91,8 @@ def build_parser():
     max_cpu = available_cpus()
     parser = ArgumentParser(prog='brucellaid', formatter_class=RawDescriptionHelpFormatter, epilog=EPILOG,
                             description='Identify the Brucella species of sequencing reads by their MASH distance\n'
-                                        'to 16 reference genomes, and type them with the nine-locus MLST scheme.\n'
+                                        'to 432 curated reference genomes covering all 30 named species of the\n'
+                                        'clade, and type them with the nine-locus MLST scheme.\n'
                                         'Where two species are too close for MASH to choose, the sequence type\n'
                                         'chooses between them.')
     inputs = parser.add_argument_group('input (one sample with -r1, or a folder of samples with -i)')
@@ -276,8 +279,19 @@ def main(argv=None):
         loci = load_profiles(args.profiles)[0] if mlst else ()
         st_table = None if args.no_st_species else load_st_species(args.st_species)
         data = reference_data(args, sketch, references, loci, st_table, mlst=mlst, md5=not args.no_md5)
-        log.info('%d reference genome(s) in %s', len(sketch_references(sketch)), sketch)
-        for message in compare_with_sketch(sketch_references(sketch), references):
+        sketch_ids = sketch_references(sketch)
+        log.info('%d reference genome(s) in %s', len(sketch_ids), sketch)
+        if sketch_ids and not any(lookup(references, name) for name in sketch_ids):
+            # One custom file without the other. --sketch and --references are a pair, and from 2.0 the
+            # table a lone --sketch falls back on is the extended one, whose IDs are GCA file names: a 1.x
+            # command line that passed only one of them would otherwise run to completion, exit 0 and
+            # report ND for every sample, because no genome of the sketch can be named.
+            raise BrucellaIDError('Not one of the {} genome(s) of the MASH sketch {} is in the reference '
+                                  'table {}, so no sample could be given a species. --sketch and '
+                                  '--references go together: pass the table that names the genomes of that '
+                                  'sketch.'.format(len(sketch_ids), sketch, args.references or
+                                                   data_path(EXTENDED_REFERENCES_FILE)))
+        for message in compare_with_sketch(sketch_ids, references):
             log.warning('%s', message)
         if mlst:
             log.info('%d MLST locus/loci: %s', len(loci), ', '.join(loci))

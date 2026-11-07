@@ -608,8 +608,9 @@ METHODS = [
      'nearest neighbour. "ND" means at least one locus had no call; the note says which.'),
     ('How the species is decided when two are equally close',
      'Some Brucella species are closer to each other than the variation within either of them: in the '
-     'sketch that ships with BrucellaID, B. canis and B. suis bv. 4 are 0.00024 apart, the closest pair of '
-     'the sixteen. Where a reference of a second species is within the close-match margin of the closest '
+     'sketches that ship with BrucellaID, the closest pair of different species is always a B. canis and a '
+     'B. suis: 0.00024 apart in the 16 genomes of vSNP, 0.000264 in the 432 of the default set. Where a '
+     'reference of a second species is within the close-match margin of the closest '
      'one, the distance has not really chosen, and the sequence type chooses among those species, because '
      'the two share no ST. An ST is only used when enough of its isolates agree on a species, and an ST '
      'that contradicts a species the distance picked cleanly is reported as a conflict and not obeyed.'),

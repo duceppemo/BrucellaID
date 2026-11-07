@@ -6,7 +6,7 @@ drops the k-mers seen fewer times than a depth-derived copy threshold, and the a
 a locus is covered by many reads that
 each vote. A contig votes once, and a contig holding several loci would be assigned to one of them. For an
 assembly, [brucetyper](https://github.com/duceppemo/brucetyper) does *in silico* PCR, and `mash dist`
-against `brucellaid/data/references.msh` identifies a genome directly.
+against `brucellaid/data/references_extended.msh` identifies a genome directly.
 
 ### Nanopore or PacBio reads?
 They work. The reads are long enough to cover a whole locus, which helps, but their error rate costs k-mers:
@@ -22,8 +22,10 @@ shares most of its hashes with the right reference.
 ### What does `SpeciesSource` mean, and can the ST overrule MASH?
 It says what the species rests on. `MASH` is the distance alone, `MASH+ST (agree)` is both saying the same
 thing, and `(arbitrated)` means a reference of a second species was within 0.0005 of the closest one — so
-MASH had not really chosen — and the sequence type chose among those species. In the sketch of the package
-that happens for *B. canis* against *B. suis* bv. 4, and for no other pair.
+MASH had not really chosen — and the sequence type chose among those species. In vSNP's 16 genomes that
+happened for *B. canis* against *B. suis* bv. 4 and no other pair; the 432-genome default set has a second
+species inside the margin for 38 of its genomes, over 14 species pairs, *canis*/*suis*,
+*ceti*/*pinnipedialis* and the former *Ochrobactrum* ones among them.
 
 The ST cannot overrule a species MASH picked cleanly. An ST pointing at a species that was nowhere near the
 closest reference is reported as `MASH (conflict)`, with the MASH call kept: a thousand min-hashes against
@@ -56,10 +58,10 @@ The 16 vSNP genomes are still a run away, as `--reference-set vsnp`.
 ### Where did the biovar column go?
 It was removed in 1.1, because it was never a biovar call and was read as one. It held the biovar of the
 closest reference genome. Three things make a real biovar call impossible here: hardly any reference
-carries a biovar at all, 7 of the 432 genomes of the default set, so 93% of biovar-labelled *B. abortus*
-isolates in PubMLST are of a biovar none of them can name; the two *B. suis* biovar 2 genomes are further
-apart (0.00163) than the biovar 3 genome is from one of them (0.00150), so the distance carries no biovar
-signal; and a
+carries a biovar at all, 7 of the 432 genomes of the default set, so 93% of the *B. abortus* isolates in
+PubMLST that have a numbered biovar are of a biovar none of them can name; the two *B. suis* biovar 2
+genomes are further apart (0.00163) than the biovar 3 genome is from one of them (0.00150), so the
+distance carries no biovar signal; and a
 biovar is a phenotype that is not monophyletic — the best possible ST → biovar rule reaches 66% for
 *B. abortus* and 63% for *B. melitensis*. See [How it works](How-it-works#no-biovar).
 

@@ -28,7 +28,7 @@ import urllib.request
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent))
 
-from brucellaid.references import load_references  # noqa: E402
+from brucellaid.references import VSNP_REFERENCES_FILE, data_path, load_references  # noqa: E402
 
 EFETCH = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi'
 DATA = pathlib.Path(__file__).resolve().parent.parent / 'brucellaid' / 'data'
@@ -56,7 +56,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[1])
     parser.add_argument('--genomes', required=True, help='Folder for the downloaded genomes (created if needed)')
     parser.add_argument('--out', default=str(DATA / 'references.msh'), help='Sketch to write')
-    parser.add_argument('--references', default=None, help='A reference table of your own')
+    # The vSNP table by name, not by load_references()'s default, which is the extended set from 2.0:
+    # this script builds the 16-genome sketch, and the extended one has its own script.
+    parser.add_argument('--references', default=data_path(VSNP_REFERENCES_FILE),
+                        help='A reference table of your own (default: the packaged vsnp table)')
     parser.add_argument('--fasta', action='append', default=[], metavar='NAME=PATH',
                         help='A genome that has no accession, as it is named in the reference table')
     args = parser.parse_args()

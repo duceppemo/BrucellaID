@@ -56,7 +56,7 @@ Three things rule a biovar out, and none of them is fixable by trying harder:
 
 | | |
 | --- | --- |
-| **Coverage** | A biovar is recorded for only **7 of the 432** genomes of the default set, because the NCBI records of the rest carry none: *B. abortus* bv. 5, *B. melitensis* bv. 1 and 2, and *B. suis* bv. 1, 2 and 3. Of the 240 biovar-labelled *B. abortus* isolates in the PubMLST isolate database, **93%** are of a biovar no reference carries; for those the nearest reference could only ever name the wrong one. vSNP's 16 genomes are better covered here and still miss 42% of them |
+| **Coverage** | A biovar is recorded for only **7 of the 432** genomes of the default set, because the NCBI records of the rest carry none: *B. abortus* bv. 5, *B. melitensis* bv. 1 and 2, and *B. suis* bv. 1, 2 and 3. Of the 240 *B. abortus* isolates with a numbered biovar in the PubMLST isolate database, **93%** are of a biovar no reference carries; for those the nearest reference could only ever name the wrong one. vSNP's 16 genomes are better covered here and still miss 42% of them |
 | **Resolution** | The two *B. suis* **biovar 2** genomes of the default set are **0.00163** apart, while the *B. suis* biovar 3 genome sits **0.00150** from one of them — *closer* than the two biovar 2 genomes are to each other. Two genomes of the same biovar are further apart than genomes of different biovars, so ranking by distance carries no biovar signal. The same held in vSNP's 16: its two *B. melitensis* biovar 1 references are 0.000756 apart, its biovar 2 and 3 references 0.000706 |
 | **Biology** | A biovar is a phenotype (CO<sub>2</sub>, H<sub>2</sub>S, dye sensitivity, A/M sera, phage lysis) and is not monophyletic. Over the isolate database, the best any ST → biovar rule could manage is **66%** for *B. abortus* and **63%** for *B. melitensis*: ST 8 alone is biovar 3 in 47 isolates, biovar 1 in 34 and biovar 2 in 22. Only *B. suis* is tidy, at 96% |
 
@@ -78,9 +78,9 @@ anything else, in both sets: *B. canis* ATCC 23365 and *B. suis* bv. 4 strain 40
 vSNP's 16, and the closest *canis*–*suis* pair of the 432 is **0.000264** — the closest pair of different
 species in either sketch, closer than two *B. suis* references are to each other, and inside the variation
 within either species. Which of the two a *canis* or a *suis* read set lands on first is noise, and no
-sketch, at any size, with any number of references, will change that: they are that close. The next closest
-pair of different species in the default set is *B. ceti* and *B. pinnipedialis*, more than twice as far
-apart at 0.00058. Step 3 is about the *canis*–*suis* pair.
+sketch, at any size, with any number of references, will change that: they are that close. The three
+closest pairs of different species in the default set are all *canis*–*suis*; the closest that is not,
+*B. ceti* against *B. pinnipedialis*, is 0.00058. Step 3 is about the *canis*–*suis* pair.
 
 ## 2. Which sequence type: the nine MLST alleles, called with Seal
 
@@ -170,7 +170,7 @@ it is worth looking into.
 | --- | --- |
 | `references.msh`, `references.tsv` | The *Brucella* part of [vSNP](https://github.com/USDA-VS/vsnp)'s reference set, 16 genomes |
 | `mlst_alleles.fasta`, `mlst_profiles.tsv` | The MLST (9 locus) scheme of [PubMLST](https://pubmlst.org/organisms/brucella-spp), downloaded with `scripts/make_mlst_data.py` |
-| `mlst_st_species.tsv` | The species of each ST, counted over the 3,426 isolates of the PubMLST *Brucella* isolate database, with `scripts/make_st_species.py` |
+| `mlst_st_species.tsv` | The species of each ST, counted over the 3,403 isolates of the PubMLST *Brucella* isolate database that carry an ST, with `scripts/make_st_species.py` |
 
 The MLST scheme itself is [Whatmore, Perrett and MacMillan (2007)](https://doi.org/10.1186/1471-2180-7-34):
 nine loci, 4,396 bp in all.

@@ -22,18 +22,27 @@ Also printed to standard output.
 | `Error` | Why the sample failed, when it did. The other samples are still reported |
 
 ```
-Sample  Species           SpeciesSource    ClosestReference           MashDistance  SharedHashes  SequenceType  AlleleProfile      STSpecies         Reads   Notes  Error
-ab1     Brucella abortus  MASH+ST (agree)  NC_006932-NC_006933.fasta  0.000024      999/1000      1             2-1-1-2-1-3-1-1-1  Brucella abortus  438192
+Sample      Species           SpeciesSource    ClosestReference                           MashDistance  SharedHashes  SequenceType  AlleleProfile      STSpecies         Reads    Notes  Error
+ERR3454415  Brucella abortus  MASH+ST (agree)  GCA_000742195.1_ASM74219v1_genomic.fna.gz  0.000681      972/1000      1             2-1-1-2-1-3-1-1-1  Brucella abortus  1175082
+            nearly as close: 9 other Brucella abortus genome(s)
 ```
 
-A *B. canis* sample, where the distance alone cannot choose and the ST does, with the note it carries:
+A *B. canis* sample, where the distance alone cannot choose and the ST does, with the notes it carries:
 
 ```
-canis   Brucella canis  MASH+ST (arbitrated)  NC_010103-NC_010104.fasta  0.000000  1000/1000  20  1-6-4-1-5-3-5-4-6  Brucella canis  66251
-        nearly as close: B-REF-BS4-40.fasta (Brucella suis bv. 4, 990/1000 hashes); MASH cannot separate
-        Brucella canis and Brucella suis: ST 20 is Brucella canis in 70 of 70 isolate(s), which agrees with
-        the closest reference
+ERR2136546  Brucella canis  MASH+ST (arbitrated)  GCA_000530495.1_Oliveri_genomic.fna.gz  0.006524  773/1000  20  1-6-4-1-5-3-5-4-6  Brucella canis  625576
+            loose match: the closest reference is 0.00652 away and shares 773/1000 hashes, where a read
+            set of a species the sketch holds usually matches within 0.005. The reads may hold more than
+            Brucella, or this lineage may have no near relative in the sketch; the species named is still
+            the closest one; nearly as close: GCA_000741995.1_ASM74199v1_genomic.fna.gz (Brucella suis,
+            768/1000 hashes), 3 other Brucella canis genome(s); MASH cannot separate Brucella canis and
+            Brucella suis: ST 20 is Brucella canis in 70 of 70 isolate(s), which agrees with the closest
+            reference
 ```
+
+Both rows are from the [Tutorial](Tutorial) run, against the 432-genome default set, which is why the
+references are GCA accessions. With `--reference-set vsnp` the same samples name vSNP's own sketch IDs
+instead (`NC_006932-NC_006933.fasta`, `NC_010103-NC_010104.fasta`).
 
 **There is no biovar column.** BrucellaID reports the species and the sequence type, and does not claim a
 biovar: see [How it works](How-it-works#no-biovar). `brucellaid_mash.tsv` gives the biovar of each
@@ -81,14 +90,16 @@ status and the error, if any.
   "tool": "brucellaid",
   "samples": [
     {
-      "sample": "ab1",
+      "sample": "ERR3454415",
       "species": "Brucella abortus",
-      "species_code": "ab1",
+      "species_code": "abortus",
       "identified": true,
       "species_call": {"species": "Brucella abortus", "source": "MASH+ST", "verdict": "agree",
                        "mash_candidates": ["Brucella abortus"], "sequence_type": "1",
                        "st_species": "Brucella abortus", "st_purity": 0.994, "st_isolates": 466, "notes": []},
-      "closest_reference": {"reference": "NC_006932-NC_006933.fasta", "mash_distance": 2.4e-05, "shared_hashes": 999},
+      "closest_reference": {"reference": "GCA_000742195.1_ASM74219v1_genomic.fna.gz",
+                            "description": "Brucella abortus str. 2308",
+                            "mash_distance": 0.000680979, "shared_hashes": 972, "total_hashes": 1000},
       "mlst": {"sequence_type": "1", "profile": "2-1-1-2-1-3-1-1-1", "complete": true}
     }
   ]
@@ -136,7 +147,7 @@ evidence could not separate, or the two kinds of evidence disagreeing) or `faile
 NAME` puts a name other than the user account on the report.
 
 ## `brucellaid_report.pdf` — the same report as a PDF (`--pdf`)
-The same evidence, laid out for paper, with "Page 3 of 9" in the footer of every page so a loose sheet can
+The same evidence, laid out for paper, with "Page 3 of 8" in the footer of every page so a loose sheet can
 be placed. It needs reportlab, which is not installed by default:
 
 ```bash
@@ -144,7 +155,7 @@ pip install 'brucellaid[pdf]'     # or: conda install -c conda-forge reportlab
 ```
 The HTML report holds the same information and needs nothing installed, so the PDF is for the places that
 want a file to sign and file rather than a page to read. **[Example PDF report](https://duceppemo.github.io/BrucellaID/example_report.pdf)** — the same four
-samples, 12 pages.
+samples, 8 pages.
 
 ## `brucellaid_mqc.json` — for MultiQC
 A [MultiQC custom content](https://docs.seqera.io/multiqc/custom_content) file. Run `multiqc` on the output
@@ -161,5 +172,10 @@ and offer to average it.
 ## `stat_alignment_summary_<date>.xlsx` — the legacy report (`--xlsx`)
 The report the first version of BrucellaID wrote, for whatever still reads it: the four columns
 `time_stamp`, `sample_name`, `species` and `mlst_type`, in Courier New 10. The `species` column holds the
-vSNP species code (`ab1`, `mel3`, `suis2`, ...), not the species name, exactly as before. It needs the
-`xlsxwriter` package.
+reference table's **code** rather than the species name, exactly as before. It needs the `xlsxwriter`
+package.
+
+**Which code depends on the reference set**, and that changed in 2.0. The default 432-genome set codes the
+species epithet and the biovar where NCBI records one (`abortus`, `abortus5`, `anthropi`); vSNP's own codes
+(`ab1`, `mel3`, `suis2`, ...) exist only in the 16-genome table. A pipeline that matches on `ab1` needs
+`--reference-set vsnp`. The same applies to `species_code` in `brucellaid.json`.

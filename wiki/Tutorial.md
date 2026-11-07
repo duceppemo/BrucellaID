@@ -11,7 +11,7 @@ pip install brucellaid
 brucellaid --version
 ```
 ```
-brucellaid 1.2.1
+brucellaid 2.0.0
 ```
 One `conda install brucellaid` will do all of it once the
 [bioconda recipe](https://github.com/bioconda/bioconda-recipes/pull/71040) is merged. See
@@ -65,7 +65,7 @@ ERR3454415: ST 1 (profile 2-1-1-2-1-3-1-1-1)
 ERR3454415: Brucella abortus (MASH+ST, agree)
 SRR19520329: Brucella melitensis str. 48_S36 (GCA_061325495.1_ASM6132549v1_genomic.fna.gz, MASH distance 0.00051, 979/1000 hashes)
 SRR19520329: ST 11 (profile 3-2-3-2-1-5-3-2-10)
-SRR8550484: Brucella suis str. 1330 (GCA_000742055.1_ASM74205v1_genomic.fna.gz, MASH distance 0.00645, 775/1000 hashes)
+SRR8550484: Brucella suis str. Thompsen (GCA_000742055.1_ASM74205v1_genomic.fna.gz, MASH distance 0.00645, 775/1000 hashes)
 SRR8550484: ST 15 (profile 1-2-7-1-3-3-5-3-2)
 Done in 33s
 ```
@@ -161,7 +161,7 @@ not how far the genome is. Requiring three copies, as the estimated 69x asks, gi
 0.006455.
 
 The distance that remains is real. It is ten times that of the *B. abortus* and *B. melitensis* samples
-because this isolate genuinely sits that far from the *B. suis* bv. 2 ATCC 23445 reference — just as the
+because this isolate genuinely sits that far from the *B. suis* str. Thompsen reference — just as the
 *B. canis* sample does from its own closest reference, at nearly the same distance. The identification and
 ST 15 would have been the same either way; what changed is that the number on the report is now a property
 of the sample rather than of how deeply it happened to be sequenced. The report says which threshold each
@@ -173,7 +173,8 @@ sample got and the coverage it came from, and `--min-kmer-copies 2` reproduces a
 **[This is what it looks like](https://duceppemo.github.io/BrucellaID/example_report.html)** for the four samples of this tutorial, with the machine it ran on
 removed.
 The *B. canis* sample is the one to look at — its block lists the five closest references, with
-`NC_010103-NC_010104.fasta` highlighted as the closest and `B-REF-BS4-40.fasta` shaded, because at
+`GCA_000530495.1_Oliveri_genomic.fna.gz` highlighted as the closest and
+`GCA_000741995.1_ASM74199v1_genomic.fna.gz` shaded, because at
 0.006524 against 0.006698 the distance did not really choose. Beside them, **The species call** shows
 what decided it:
 
@@ -201,7 +202,7 @@ gives a MultiQC report with a **BrucellaID** table of the four samples.
 
 ```json
 "software": {
-  "brucellaid": "1.2.1",
+  "brucellaid": "2.0.0",
   "Python": "3.12.16",
   "MASH": "2.3",
   "BBTools": "40.05",
@@ -218,7 +219,8 @@ If something downstream reads the xlsx of the first version:
 brucellaid -i reads -o results --xlsx
 ```
 writes `results/stat_alignment_summary_<date>.xlsx` next to the other reports, with the same four columns
-as before and the vSNP species code (`canis`, `ab1`, `mel3`, `suis2`) in the `species` column.
+as before and the reference table's code (`canis`, `abortus`, `melitensis`, `suis` with the default set;
+vSNP's `ab1`, `mel3`, `suis2` with `--reference-set vsnp`) in the `species` column.
 
 ## Where to go next
 * [Output files](Output-files) — every column of every report

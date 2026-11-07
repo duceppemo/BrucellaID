@@ -20,6 +20,14 @@ Nothing is written outside `validation/data` and `validation/results`, which are
 | `check_results.py` | Compares the reports with the two tables, and with the MLST profile read off each genome |
 | `run_validation.sh` | The steps above, in order |
 
+**The run is pinned to `--reference-set vsnp`**, not the 2.0 default. This suite reads vSNP's 16 genomes
+genome for genome, so the answers in `genomes.tsv` and `reads.tsv` are their sketch IDs, and the negative
+control is *B. anthropi* ATCC 49188, which comes back `ND` only because the vSNP set does not carry it —
+the extended set has it as a reference and names it correctly, the 2020 taxonomy having moved
+*Ochrobactrum* into the genus. What the default 432-genome set does is measured at scale instead, in the
+"At scale" and "On real public read sets" sections of the
+[Validation wiki page](https://github.com/duceppemo/BrucellaID/wiki/Validation).
+
 The species comes from `genomes.tsv`. The **sequence type is not listed anywhere**: `check_results.py`
 reads it off each genome by looking for an exact match of every MLST allele of the package, which is an
 answer that owes nothing to the read-based caller it is checking. A genome that is not in the MASH sketch

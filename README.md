@@ -43,8 +43,8 @@ configure.
   closer than two *B. suis* references are to each other, and in the 432-genome default set the nearest
   *canis*–*suis* pair, at 0.000264, is still the closest pair of different species there is — so which one a
   *canis* read set lands on first is noise. The two species share no sequence type at all, so where MASH
-  leaves both within reach, the ST chooses, from a table of the species of every ST counted over 3,426
-  PubMLST isolates. A `SpeciesSource` column says what each call rested on, and an ST that contradicts a
+  leaves both within reach, the ST chooses, from a table of the species of every ST counted over the 3,403
+  PubMLST isolates that carry one. A `SpeciesSource` column says what each call rested on, and an ST that contradicts a
   species MASH picked cleanly is reported, never obeyed.
 * **Nothing is hidden**: the distance to every reference, the reads behind every allele call and the
   runner-up that call had to beat, a note when a second reference was nearly as close, a note when the
@@ -72,7 +72,7 @@ configure.
   Nothing in INSDC is *labelled* *B. papionis*, the thirtieth species — its genome sits there under
   *Brucella* sp., which is [how we found it](https://github.com/duceppemo/BrucellaID/blob/main/curation/papionis/README.md).
   [Validated](https://github.com/duceppemo/BrucellaID/wiki/Validation) twice: on simulated reads of 2,022
-  NCBI assemblies, every held-out sample of a named species right once seven genomes mislabelled in NCBI —
+  NCBI assemblies, every held-out sample of a named species right once six genomes mislabelled in NCBI —
   which the curation itself caught — are accounted for; and on **every usable public *Brucella* read set in
   ENA**, 4,042 real libraries, where it matches the submitter on 98.7% against the vSNP set's 96.2%, and
   wins all 91 of the disagreements that have a right answer without losing one.
@@ -81,13 +81,13 @@ configure.
   `stat_alignment_summary_<date>.xlsx` of the first version.
 * **Nothing to configure**: only the Python standard library, plus MASH and BBTools. The two optional
   output formats, xlsx and PDF, are the only things that want a package, and neither is needed.
-* **Tested**: 363 tests, 100% coverage, end to end on a synthetic genome and on reads tiled over the real
+* **Tested**: 365 tests, 100% coverage, end to end on a synthetic genome and on reads tiled over the real
   MLST alleles.
-* **Validated** on the 16 vSNP genomes with a known answer, read for read (`--reference-set vsnp`, which
-  is what those 16 are): every species and closest reference right, and
-  all 14 sequence types the one the genome carries — read off the assembly by exact match, which shares no
-  code with the read-based caller. The *B. canis* genome is the one call the distance did not make on its
-  own, and the ST made it; not one of the sixteen came back as a disagreement. The nearest neighbouring
+* **Validated** against the vSNP reference set, genome for genome (`--reference-set vsnp`): reads
+  simulated from 13 of its 16 genomes, 7 of its 8 species, with every species and closest reference right
+  and all 14 sequence types the one the genome carries — read off the assembly by exact match, which
+  shares no code with the read-based caller. The *B. canis* genome is the one call the distance did not
+  make on its own, and the ST made it; not one came back as a disagreement. The nearest neighbouring
   species shares 4 of 1000 hashes and comes back as not identified
   ([Validation](https://github.com/duceppemo/BrucellaID/wiki/Validation)).
 
@@ -154,6 +154,11 @@ This DOI always points to the latest version; each release also has its own DOI,
 > Jolley KA, Bray JE, Maiden MCJ. Open-access bacterial population genomics: BIGSdb software, the
 > PubMLST.org website and their applications. *Wellcome Open Research* 2018;3:124.
 > https://doi.org/10.12688/wellcomeopenres.14826.1
+
+The 432 genomes of the default reference set are curated representatives of the assembly collection behind
+the mashID *Brucella* pack, which has its own DOI:
+
+> Duceppe M-O. *Brucella* database for mashID. figshare 2026. https://doi.org/10.6084/m9.figshare.33970168
 
 GitHub's **"Cite this repository"** button gives the citation in APA and BibTeX formats, from
 [`CITATION.cff`](https://github.com/duceppemo/BrucellaID/blob/main/CITATION.cff).

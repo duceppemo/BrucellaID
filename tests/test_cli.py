@@ -79,11 +79,18 @@ def test_file_bases(tmp_path):
     assert cli.file_bases(tmp_path / 'missing.fasta') == 0
 
 
-def fake_run(monkeypatch, results=None, error=None):
-    """Replace the tool checks and the analysis, so that main() can be run without MASH or Seal."""
+def fake_run(monkeypatch, results=None, error=None, sketch_ids=None):
+    """
+    Replace the tool checks and the analysis, so that main() can be run without MASH or Seal.
+
+    sketch_ids has to name a genome of whichever reference table the run will load, because main() refuses
+    a sketch none of whose genomes the table names. The default is a genome of the extended table, which
+    is the default set from 2.0.
+    """
     monkeypatch.setattr(cli, 'check_mash', lambda: '/bin/mash')
     monkeypatch.setattr(cli, 'check_seal', lambda: '/bin/seal.sh')
-    monkeypatch.setattr(cli, 'sketch_references', lambda sketch: ['NC_006932-NC_006933.fasta'])
+    ids = ['GCA_000742195.1_ASM74219v1_genomic.fna.gz'] if sketch_ids is None else list(sketch_ids)
+    monkeypatch.setattr(cli, 'sketch_references', lambda sketch: ids)
     monkeypatch.setattr(cli, 'compare_with_sketch', lambda ids, references: [])
 
     def analyse(samples, **options):
@@ -227,7 +234,7 @@ def test_main_identifies_against_the_extended_set_by_default(tmp_path, monkeypat
 
 
 def test_main_with_the_vsnp_reference_set(tmp_path, monkeypatch):
-    fake_run(monkeypatch)
+    fake_run(monkeypatch, sketch_ids=['NC_006932-NC_006933.fasta'])
     reads = write_fastq(tmp_path / 'a_R1.fastq.gz', [('r', 'ACGT')])
     cli.main(['-r1', str(reads), '-o', str(tmp_path / 'out'), '--reference-set', 'vsnp'])
     paths, detail = reference_paths(tmp_path / 'out')
@@ -247,9 +254,28 @@ def test_main_rejects_a_packaged_set_next_to_a_custom_file(tmp_path, monkeypatch
     assert 'cannot be combined' in capsys.readouterr().err
 
 
+def test_main_rejects_a_sketch_no_genome_of_which_the_table_names(tmp_path, monkeypatch, capsys):
+    """
+    A 1.x command line that passed --sketch alone used to pair with the 16-genome table.
+
+    From 2.0 it pairs with the extended one, whose IDs are GCA file names, so nothing in the sketch can
+    be named and every sample would come back ND from a run that exited 0.
+    """
+    fake_run(monkeypatch, sketch_ids=['NC_006932-NC_006933.fasta'])
+    reads = write_fastq(tmp_path / 'a_R1.fastq.gz', [('r', 'ACGT')])
+    sketch = tmp_path / 'mine.msh'
+    sketch.write_bytes(b'')
+    with pytest.raises(SystemExit) as exit_info:
+        cli.main(['-r1', str(reads), '-o', str(tmp_path / 'out'), '--sketch', str(sketch)])
+    assert exit_info.value.code == 1
+    error = capsys.readouterr().err
+    assert 'is in the reference table' in error
+    assert '--sketch and --references go together' in error
+
+
 def test_main_takes_a_custom_sketch_without_a_reference_set(tmp_path, monkeypatch):
     """--sketch alone must not trip the guard: no --reference-set was asked for."""
-    fake_run(monkeypatch)
+    fake_run(monkeypatch, sketch_ids=['mine.fasta'])
     reads = write_fastq(tmp_path / 'a_R1.fastq.gz', [('r', 'ACGT')])
     sketch = tmp_path / 'mine.msh'
     sketch.write_bytes(b'')

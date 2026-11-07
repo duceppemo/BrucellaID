@@ -37,7 +37,7 @@ cd BrucellaID
 conda env create -f environment.yml
 conda activate brucellaid
 pip install --no-deps -e .
-pytest            # optional: 363 tests
+pytest            # optional: 365 tests
 ```
 `python -m brucellaid` works too, and takes the same arguments as the `brucellaid` command.
 
@@ -50,16 +50,19 @@ The tag will be listed on biocontainers.pro. Until then, build your own from the
 BrucellaID from a clone.
 
 ## What is installed
-The package ships its reference data and the logo of the reports, about 350 kB in all:
+The package ships its reference data and the logo of the reports, about 3.9 MB in all, 3.5 MB of it the
+extended sketch:
 
 | File | What it is |
 | --- | --- |
-| `references.msh` | The MASH sketch of the 16 *Brucella* reference genomes |
-| `references.tsv` | What each genome is: species, biovar, strain, NCBI accessions |
+| `references_extended.msh` | The MASH sketch of the 432 *Brucella* reference genomes a run uses by default from 2.0 |
+| `references_extended.tsv` | What each of those genomes is: code, species, biovar, strain, NCBI accession |
+| `references.msh` | The MASH sketch of vSNP's 16 *Brucella* reference genomes, reached with `--reference-set vsnp` |
+| `references.tsv` | What each of those genomes is: vSNP species code, species, biovar, strain, NCBI accessions |
 | `mlst_alleles.fasta` | The 309 alleles of the nine MLST loci |
 | `mlst_profiles.tsv` | The 122 sequence types |
 | `mlst_st_species.tsv` | The species of each sequence type, from PubMLST's isolate database |
 | `logo.svg`, `logo.png` | The logo the quality assurance reports carry |
 
-`--sketch`, `--references`, `--alleles`, `--profiles` and `--st-species` take files of your own instead
-(see [Usage](Usage)).
+`--reference-set` picks between the two packaged sketches, and `--sketch`, `--references`, `--alleles`,
+`--profiles` and `--st-species` take files of your own instead (see [Usage](Usage)).

@@ -371,7 +371,16 @@ class Identification:
 
     @property
     def close_matches(self):
-        """The other references within CLOSE_MATCH_MARGIN of the closest one, closest first."""
+        """
+        The other references within CLOSE_MATCH_MARGIN of the closest one, closest first.
+
+        None when the sample was not identified. A read set that shares no hashes sits at distance 1 from
+        every reference, so every one of them ties with the closest and would be called a close match --
+        431 of them against the 432-genome default set, which is a reference table in place of a report
+        rather than the evidence for a call that was not made.
+        """
+        if not self.identified:
+            return []
         return [hit for hit in self.hits[1:] if hit.distance - self.best.distance <= CLOSE_MATCH_MARGIN]
 
 

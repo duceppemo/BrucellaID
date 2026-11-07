@@ -20,8 +20,9 @@ reports.
 The sketch ID of a genome is the name of the file it was built from, which is what `mash dist` reports and
 what `references.tsv` keys on.
 
-`mlst_st_species.tsv` is what decides the one species pair the sketch cannot: *B. canis* ATCC 23365 and
-*B. suis* bv. 4 strain 40 are 0.00024 apart, and the two species share no ST.
+`mlst_st_species.tsv` is what decides the species pair a distance cannot: *B. canis* and *B. suis* are
+0.00024 apart in the vsnp sketch (ATCC 23365 against bv. 4 strain 40) and 0.000264 at their closest in the
+extended one, and the two species share no ST.
 
 Two genomes of the sketch, `Bceti1Cudo.fasta` (*B. ceti* strain Cudo) and `B-REF-BS4-40.fasta` (*B. suis*
 bv. 4 strain 40), are distributed by vSNP under its own names rather than as accessions, so their
@@ -38,10 +39,12 @@ PubMLST serves the data submitted up to a cut-off date unless you authenticate; 
 it was given. The MLST data here was downloaded on 2026-10-31, with data submitted up to 2024-12-31.
 
 The isolate database has no bulk export, so `make_st_species.py` reads its 3426 records one at a time
-with a pause between them — about forty minutes — and caches them, so a second run is free. The
+with a pause between them — about forty minutes — and caches them, so a second run is free. 3,403 of
+those records carry one of the 118 STs of the table, which is what its isolate counts add up to. The
 species and biovar labels in it are the submitters', not the curators', which is why the table
 reports a purity column instead of a single name: 105 of the 118 STs are seen in one species only, and
-the thirteen that are not disagree by one to three isolates out of dozens.
+the thirteen that are not disagree by one to fifteen isolates. The largest is ST 8, where 15 of 862
+isolates are recorded as *Brucella* sp. rather than *B. melitensis*.
 
 The scheme is Whatmore, Perrett and MacMillan (2007),
 [doi:10.1186/1471-2180-7-34](https://doi.org/10.1186/1471-2180-7-34). PubMLST is maintained at the

@@ -1,8 +1,10 @@
-# The genomes the validation runs on. Reads are simulated from each one and given to BrucellaID.
+# The genomes the validation runs on. Reads are simulated from each one and given to BrucellaID, which
+# run_validation.sh pins to --reference-set vsnp: "the sketch" below means those 16 genomes, and the
+# expected answers are their sketch IDs.
 # accessions: NCBI nucleotide accessions, chromosome 1 first, separated by ";".
 # reference, species: what the identification must return. "-" means "not checked": a genome that is
-# not in the sketch is only expected to give the right species, and a genome that is not Brucella is expected
-# not to be identified at all (species ND).
+# not in the sketch is only expected to give the right species, and a genome outside the sketch's reach
+# altogether is expected not to be identified at all (species ND).
 # biovar: the genome's own biovar, for the reader; BrucellaID reports none and check_results.py checks none.
 # coverage: the depth the reads are simulated at. "-" means the depth the run asked for (COVERAGE, 20 unless
 # set); a number is that depth no matter what the run asked for, and check_results.py then also checks that
@@ -24,7 +26,7 @@ ovis_ATCC25840	NC_009505.1;NC_009504.1	NC_009505-NC_009504.fasta	Brucella ovis	-
 ceti_TE10759-12	NC_022905.1;NC_022906.1	NC_022905-NC_022906.fasta	Brucella ceti	-	-	in the sketch
 microti_CCM4915	NC_013119.1;NC_013118.1	NC_013119_NC_013118.fasta	Brucella microti	-	-	in the sketch
 abortus_2308	AM040264.1;AM040265.1	-	Brucella abortus	-	-	not in the sketch
-anthropi_ATCC49188	NC_009667.1;NC_009668.1	-	-	-	-	not Brucella: the nearest neighbour of the genus, formerly Ochrobactrum anthropi
+anthropi_ATCC49188	NC_009667.1;NC_009668.1	-	-	-	-	outside the vSNP set this suite runs against: the nearest thing to it, Ochrobactrum anthropi until the 2020 taxonomy made it Brucella anthropi. The 432-genome default set carries it and names it, which is why the run is pinned to --reference-set vsnp
 coli_MG1655	NC_000913.3	-	-	-	-	not Brucella: a negative control
 melitensis_16M_150x	NC_003317.1;NC_003318.1	NC_003317-NC_003318.fasta	Brucella melitensis	1	150	in the sketch; deep enough that the k-mer copy threshold must rise, or the error k-mers crowd the sketch
 suis_1330_250x	NC_017251.1;NC_017250.1	NC_017251-NC_017250.fasta	Brucella suis	1	250	in the sketch; deeper still, and a second species: the threshold must keep up

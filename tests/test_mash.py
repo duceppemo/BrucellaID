@@ -80,6 +80,21 @@ def test_identification_below_the_threshold():
     assert identification.close_matches == []
 
 
+def test_a_sample_that_matches_nothing_has_no_close_matches():
+    """
+    Every reference ties at distance 1 when no hash is shared, and none of them is a close match.
+
+    Without the guard this is one close match per reference -- 431 of them against the 432-genome
+    default set -- and qa.top_hits shows every close match, so the report holds a reference table
+    instead of the evidence for a call that was not made.
+    """
+    hits = parse_dist(''.join('ref{}.fasta\tq\t1\t1\t0/1000\n'.format(n) for n in range(40)))
+    identification = Identification(hits)
+    assert not identification.identified
+    assert len(identification.hits) == 40
+    assert identification.close_matches == []
+
+
 def test_close_match_margin_is_a_distance_not_a_ratio():
     hits = parse_dist('a.fasta\tq\t0.001\t0\t900/1000\n'
                       'b.fasta\tq\t{}\t0\t800/1000\n'.format(0.001 + CLOSE_MATCH_MARGIN * 2))

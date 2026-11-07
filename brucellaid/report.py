@@ -222,7 +222,7 @@ def write_multiqc(results, path):
     content = {
         'id': 'brucellaid',
         'section_name': 'BrucellaID',
-        'description': 'Brucella species from the MASH distance to 16 reference genomes, and the nine-locus '
+        'description': 'Brucella species from the MASH distance to a set of reference genomes, and the nine-locus '
                        'sequence type, by {}. "SpeciesSource" says whether the species rests on the distance, '
                        'on the sequence type, or on both.'.format(link),
         'plot_type': 'table',
