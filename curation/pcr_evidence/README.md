@@ -7,7 +7,7 @@ with either: *in silico* PCR of published assays.
 | Tool | Assays | Run on |
 | --- | --- | --- |
 | [brucetyper](https://github.com/duceppemo/brucetyper) | Bruce-ladder, Suis-ladder, AMOS, RB51 junction | every assembly |
-| [insilicoPCR](https://github.com/duceppemo/insilicoPCR) 0.9.0 | the two real-time assays of Hoover et al. 2026 | every assembly **and** every raw read set |
+| [insilicoPCR](https://github.com/duceppemo/insilicoPCR) 0.10.1 | the two real-time assays of Hoover et al. 2026 | every assembly **and** every raw read set |
 
 The Hoover assay is [doi:10.1128/spectrum.02974-25](https://doi.org/10.1128/spectrum.02974-25) (CFIA Ottawa
 Laboratory-Fallowfield): a genus singleplex for the classical *Brucella* species, and a multiplex with one
@@ -27,7 +27,8 @@ below.
   read set, and all 22 read sets that appear to hold no *Brucella*. 47 produced an assembly;
   `SRR24420454` produced nothing, which is a result in itself.
 
-`evidence_assemblies.tsv` and `evidence_reads.tsv` carry one row per subject with every assay verdict.
+`evidence_assemblies.tsv` and `evidence_reads.tsv` carry one row per subject with every assay verdict, and
+`evidence_fastq_diagnostics.tsv` one row per assay that the read-mode mini-assembly missed, with why.
 
 ## What it establishes
 
@@ -47,13 +48,21 @@ worst assemblies in the set.
 labelled *B. inopinata* BO1 behaves like *B. suis*, the genome labelled *B. suis* behaves like
 *B. inopinata*, and the genuine BO1 assembly behaves differently from the one claiming to be it.
 
-**20 of the 22 "no *Brucella*" read sets are PCR-negative on both substrates**, independently confirming
-what the shared-hash counts said. The two exceptions are more interesting than a clean negative would
-have been, and both are **mixed libraries** rather than mistakes: `SRR952243` is negative on its assembly
-but genus- and *abortus*-positive on its reads, so it holds a minority *B. abortus* population under a
-dominant other organism — it assembles cleanly into 5.4 Mb, far too large for *Brucella*. `SRR35797377` is
-*melitensis*-positive on an assembly that is 10,733 contigs of mixture, with no genus signal, so it is
-equivocal and is reported that way.
+**20 of the 22 "no *Brucella*" read sets are PCR-negative for a species on both substrates**,
+independently confirming what the shared-hash counts said. The two exceptions are **mixed libraries**
+rather than mistakes, and both are genus-positive, so each does hold some classical *Brucella*:
+
+* `SRR952243` is negative on its assembly but genus- and *B. abortus*-positive on its reads, so a minority
+  *B. abortus* population sits under a dominant other organism — the library assembles cleanly into
+  5.4 Mb, far too large for *Brucella*. This is the one case where reads see more than the assembly, and
+  0.10.1 confirms it.
+* `SRR35797377` is genus-positive on both substrates and *B. melitensis*-positive on an assembly that is
+  10,733 contigs of mixture; in the reads that *melitensis* amplicon is in a single read, which the
+  threshold rejects. So: a trace of *B. melitensis* in a library that holds a little classical *Brucella*
+  and a great deal of something else.
+
+Neither is a counter-example to the shared-hash verdict — 26 and 146 of 1000 hashes is what a minority
+population looks like — but "mixed library" describes them better than "not *Brucella*".
 
 **For the former *Ochrobactrum* records this evidence is silent.** All four candidates are negative on
 every assay on both substrates, and Bruce-ladder is equally silent, because neither assay was designed for
@@ -61,25 +70,33 @@ that half of the clade. Those records stand or fall on the distances alone.
 
 ## Two caveats worth passing on
 
-**A negative on raw reads is weak evidence of absence, and the reason is the mini-assembly step.** The
-assembly and the reads agree on 38 of the 48 read sets. Of the ten that differ, nine have *more* signal
-from the whole-genome assembly than from the reads.
+**Read mode used to lose targets silently; it no longer does.** The first pass of this analysis ran
+insilicoPCR 0.9.0, where the reads disagreed with the whole-genome assembly on ten of the 48 read sets and
+nine of those were the assembly seeing *more*. The cause was the Tadpole mini-assembly that read mode
+searches against: it omitted the target region, or broke inside the amplicon so the two primers landed on
+different contigs, while the reads carrying the oligos sat in the baited set all along. That was reported
+as [insilicoPCR#7](https://github.com/duceppemo/insilicoPCR/issues/7) and fixed in 0.10.0, which calls
+such targets directly from the reads and writes a diagnostics file explaining every miss.
 
-In FASTQ mode insilicoPCR baits reads matching the oligos, recruits the reads overlapping those, assembles
-the recruited set with Tadpole, and searches that mini-assembly. Tracing one of the nine through its
-retained intermediates shows the loss is at the assembly step, not at baiting and not at the search: the
-reads covering the missing target are present in both the baited and the recruited set — more of them than
-for a target that did report in the same sample — and Tadpole's default thresholds simply build no contig
-over them, so the target is absent from what the search sees. Re-running Tadpole on the identical recruited
-reads with a lower seed count, coverage floor and minimum contig length recovers the missing target and
-takes the mini-assembly from 5 contigs to 31.
+Rerun on 0.10.1, **reads and assembly now agree on 44 of the 48 read sets, up from 38**. Ten read sets
+gained an assay and none lost one, nine of them recovering exactly what their whole-genome assembly had
+reported all along. The assembly-mode results are byte-for-byte identical between the two versions, so
+nothing above rests on the change.
 
-So these negatives are an artefact of the default assembly settings rather than evidence that the target
-is absent, and the remedy is to lower those thresholds or to read the verdict off the whole-genome
-assembly. Worth passing to the tool's author.
+Two read sets gained more than a recovered negative, and both had poor assemblies — one of 2,165 contigs,
+one of 4,251:
 
-The one case that runs the other way, `SRR952243`, is the one that matters biologically: a minority
-population present in the reads and absent from its whole-genome assembly.
+* `SRR867710`, the third library of the Broad BioSample, now supports *B. suis* where its own assembly
+  gave only a genus signal, so **all three libraries of that BioSample now agree**.
+* `ERR2938687` reports *two* species assays, *B. suis* in 54% of informative reads and *B. melitensis* in
+  33%, just over the threshold. It is the weakest of the eleven PRJEB30030 findings on distance, and it
+  has the worst assembly. **A mixture fits all three observations better than a simple mislabel**, and it
+  should be reported that way.
+
+The threshold earns its keep in the other direction too. Ten assays are flagged `WEAK_READ_SUPPORT` —
+present in the reads but below the 2-read, 30% minimum — and they are the ones a looser rule would have
+turned into false positives: 2% here, 15% there, and two single-read traces in libraries that hold no
+*Brucella* to speak of.
 
 **The *B. suis* assay's specificity rests on exact matching.** Tolerating two mismatches
 (`-m 2 --3p-penalty 3`) makes it fire on nearly every classical *Brucella* genome, including *abortus*,

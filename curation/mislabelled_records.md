@@ -212,10 +212,16 @@ on both substrates, while the other two turn out to be **mixed libraries** with 
 population rather than errors. For the former *Ochrobactrum* records the PCR evidence is silent, because
 neither assay was designed for that half of the clade; those records rest on the distances alone.
 
-`pcr_evidence/README.md` also records two caveats worth carrying into any report: a negative on raw reads
-is weak evidence of absence, because the default settings of the mini-assembly step that FASTQ mode runs
-before searching can drop a target whose reads were baited successfully, and the *B. suis* assay's
-specificity depends on exact primer matching.
+Two findings from the read side are worth carrying into any report. `ERR2938687`, the weakest of the
+eleven PRJEB30030 records on distance and the one with the worst assembly, reports *B. suis* in 54% of
+informative reads and *B. melitensis* in 33%: **a mixture fits it better than a simple mislabel**, and it
+should be described that way rather than as a clean finding. And the two read sets that looked like
+exceptions in the "no *Brucella*" group are mixed libraries holding a minority classical *Brucella*
+population, not errors in that verdict.
+
+`pcr_evidence/README.md` records the remaining caveat — the *B. suis* assay's specificity depends on exact
+primer matching — and the history of a read-mode false negative that this analysis found and that
+[insilicoPCR#7](https://github.com/duceppemo/insilicoPCR/issues/7) fixed in 0.10.0.
 
 ## Reproducing the evidence
 

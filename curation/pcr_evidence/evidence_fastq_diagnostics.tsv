@@ -1,0 +1,77 @@
+run	group	assay	status	why_assembly_missed_it	read_detail
+ERR2938660	mislabel	BA	PARTIAL_BAIT	NOT_ASSEMBLED	no read carries the reverse primer
+ERR2938660	mislabel	BM_10	PARTIAL_BAIT	NOT_ASSEMBLED	no read carries the reverse primer
+ERR2938669	mislabel	BA	PARTIAL_BAIT	NOT_ASSEMBLED	no read carries the reverse primer
+ERR2938669	mislabel	BM_10	NOT_IN_READS	NOT_ASSEMBLED	no complete amplicon in the reads; reads carrying the primers could hold amplicons up to 369 bp, so longer amplicons cannot be ruled out
+ERR2938669	mislabel	BS	CALLED_FROM_READS	SPLIT_ACROSS_CONTIGS	complete amplicon in 56 of 67 informative read(s) (84%), size(s) 102 bp
+ERR2938678	mislabel	BA	CALLED_FROM_READS	SPLIT_ACROSS_CONTIGS	complete amplicon in 17 of 25 informative read(s) (68%), size(s) 75 bp
+ERR2938678	mislabel	BM_10	PARTIAL_BAIT	NOT_ASSEMBLED	no read carries the reverse primer
+ERR2938678	mislabel	BS	PARTIAL_BAIT	NOT_ASSEMBLED	no read carries the forward primer
+ERR2938687	mislabel	BA	PARTIAL_BAIT	NOT_ASSEMBLED	no read carries the reverse primer
+ERR2938687	mislabel	BM_10	CALLED_FROM_READS	SPLIT_ACROSS_CONTIGS	complete amplicon in 3 of 9 informative read(s) (33%), size(s) 147 bp
+ERR2938687	mislabel	BS	CALLED_FROM_READS	NOT_ASSEMBLED	complete amplicon in 7 of 13 informative read(s) (54%), size(s) 102 bp
+ERR2938695	mislabel	BA	PARTIAL_BAIT	NOT_ASSEMBLED	no read carries the reverse primer
+ERR2938695	mislabel	BM_10	WEAK_READ_SUPPORT	NOT_ASSEMBLED	complete amplicon in 5 of 22 informative read(s) (23%), size(s) 147 bp; a read-level call needs at least 2 reads or read pairs and 30% of informative reads
+ERR2938695	mislabel	BS	CALLED_FROM_READS	SPLIT_ACROSS_CONTIGS	complete amplicon in 11 of 17 informative read(s) (65%), size(s) 102 bp
+ERR2993134	mislabel	BA	WEAK_READ_SUPPORT	NOT_ASSEMBLED	complete amplicon in 1 of 53 informative read(s) (2%), size(s) 75 bp; a read-level call needs at least 2 reads or read pairs and 30% of informative reads
+ERR2993134	mislabel	BM_10	PARTIAL_BAIT	NOT_ASSEMBLED	no read carries the reverse primer
+ERR2993134	mislabel	BS	PARTIAL_BAIT	NOT_ASSEMBLED	no read carries the forward primer
+ERR2993138	mislabel	BA	PARTIAL_BAIT	NOT_ASSEMBLED	no read carries the reverse primer
+ERR2993138	mislabel	BM_10	NOT_IN_READS	NOT_ASSEMBLED	no complete amplicon in the reads; reads carrying the primers could hold amplicons up to 521 bp, so longer amplicons cannot be ruled out
+ERR2993138	mislabel	BS	PARTIAL_BAIT	NOT_ASSEMBLED	no read carries the forward primer
+ERR2993140	mislabel	BA	PARTIAL_BAIT	NOT_ASSEMBLED	no read carries the reverse primer
+ERR2993140	mislabel	BM_10	WEAK_READ_SUPPORT	NOT_ASSEMBLED	complete amplicon in 1 of 41 informative read(s) (2%), size(s) 147 bp; a read-level call needs at least 2 reads or read pairs and 30% of informative reads
+ERR2993140	mislabel	BS	PARTIAL_BAIT	NOT_ASSEMBLED	no read carries the forward primer
+ERR2993145	mislabel	BA	PARTIAL_BAIT	NOT_ASSEMBLED	no read carries the reverse primer
+ERR2993145	mislabel	BM_10	PARTIAL_BAIT	NOT_ASSEMBLED	no read carries the reverse primer
+ERR2993152	mislabel	BM_10	PARTIAL_BAIT	NOT_ASSEMBLED	no read carries the reverse primer
+ERR2993152	mislabel	BS	NOT_IN_READS	NOT_ASSEMBLED	no complete amplicon in the reads; reads carrying the primers could hold amplicons up to 480 bp, so longer amplicons cannot be ruled out
+ERR2993155	mislabel	BA	PARTIAL_BAIT	NOT_ASSEMBLED	no read carries the reverse primer
+ERR2993155	mislabel	BM_10	PARTIAL_BAIT	NOT_ASSEMBLED	no read carries the reverse primer
+ERR3218177	no-brucella	BA	WEAK_READ_SUPPORT	NOT_ASSEMBLED	complete amplicon in 1 of 1 informative read(s) (100%), size(s) 75 bp; a read-level call needs at least 2 reads or read pairs and 30% of informative reads
+ERR3218177	no-brucella	Bru_genus	WEAK_READ_SUPPORT	NOT_ASSEMBLED	complete amplicon in 1 of 1 informative read(s) (100%), size(s) 93 bp; a read-level call needs at least 2 reads or read pairs and 30% of informative reads
+ERR471314	mislabel	BM_10	PARTIAL_BAIT	NOT_ASSEMBLED	no read carries the reverse primer
+ERR471314	mislabel	BS	PARTIAL_BAIT	NOT_ASSEMBLED	no read carries the forward primer
+ERR471315	mislabel	BM_10	PARTIAL_BAIT	NOT_ASSEMBLED	no read carries the reverse primer
+ERR471315	mislabel	BS	PARTIAL_BAIT	NOT_ASSEMBLED	no read carries the forward primer
+ERR471337	no-brucella	Bru_genus	PARTIAL_BAIT	NOT_ASSEMBLED	no read carries the forward primer
+ERR473742	mislabel	BA	PARTIAL_BAIT	NOT_ASSEMBLED	no read carries the reverse primer
+ERR473742	mislabel	BM_10	PARTIAL_BAIT	NOT_ASSEMBLED	no read carries the reverse primer
+ERR473742	mislabel	BS	PARTIAL_BAIT	NOT_ASSEMBLED	no read carries the forward primer
+ERR473743	no-brucella	BM_10	PARTIAL_BAIT	NOT_ASSEMBLED	no read carries the reverse primer
+ERR775245	no-brucella	Bru_genus	PARTIAL_BAIT	NOT_ASSEMBLED	no read carries the forward primer
+ERR775246	no-brucella	BA	PARTIAL_BAIT	NOT_ASSEMBLED	no read carries the reverse primer
+ERR775246	no-brucella	BM_10	PARTIAL_BAIT	NOT_ASSEMBLED	no read carries the reverse primer
+ERR775246	no-brucella	BS	PARTIAL_BAIT	NOT_ASSEMBLED	no read carries the forward primer
+ERR775246	no-brucella	Bru_genus	PARTIAL_BAIT	NOT_ASSEMBLED	no read carries the forward primer
+ERR775247	no-brucella	BA	PARTIAL_BAIT	NOT_ASSEMBLED	no read carries the reverse primer
+SRR11526759	mislabel	BA	PARTIAL_BAIT	NOT_ASSEMBLED	no read carries the reverse primer
+SRR11526759	mislabel	BM_10	CALLED_FROM_READS	NOT_ASSEMBLED	complete amplicon in 42 of 51 informative read(s) (82%), size(s) 147 bp
+SRR11526759	mislabel	BS	PARTIAL_BAIT	NOT_ASSEMBLED	no read carries the forward primer
+SRR24420454	no-brucella	BM_10	PARTIAL_BAIT	NOT_ASSEMBLED	no read carries the forward primer
+SRR24420454	no-brucella	BS	PARTIAL_BAIT	NOT_ASSEMBLED	no read carries the forward primer
+SRR24420454	no-brucella	Bru_genus	NOT_IN_READS	NOT_ASSEMBLED	no complete amplicon in the reads; reads carrying the primers could hold amplicons up to 39 bp, so longer amplicons cannot be ruled out
+SRR31560207	mislabel	BA	PARTIAL_BAIT	NOT_ASSEMBLED	no read carries the reverse primer
+SRR31560207	mislabel	BM_10	CALLED_FROM_READS	NOT_ASSEMBLED	complete amplicon in 8 of 8 informative read(s) (100%), size(s) 147 bp
+SRR31560207	mislabel	BS	PARTIAL_BAIT	NOT_ASSEMBLED	no read carries the forward primer
+SRR35797377	no-brucella	BA	PARTIAL_BAIT	NOT_ASSEMBLED	no read carries the reverse primer
+SRR35797377	no-brucella	BM_10	WEAK_READ_SUPPORT	NOT_ASSEMBLED	complete amplicon in 1 of 1 informative read(s) (100%), size(s) 147 bp; a read-level call needs at least 2 reads or read pairs and 30% of informative reads
+SRR35797377	no-brucella	BS	PARTIAL_BAIT	NOT_ASSEMBLED	no read carries the forward primer
+SRR4038994	papionis	BA	PARTIAL_BAIT	NOT_ASSEMBLED	no read carries the reverse primer
+SRR4038994	papionis	BM_10	PARTIAL_BAIT	NOT_ASSEMBLED	no read carries the reverse primer
+SRR4038994	papionis	BS	PARTIAL_BAIT	NOT_ASSEMBLED	no read carries the forward primer
+SRR642185	mislabel	BA	WEAK_READ_SUPPORT	SPLIT_ACROSS_CONTIGS	complete amplicon in 3 of 17 informative read(s) (18%), size(s) 75 bp; a read-level call needs at least 2 reads or read pairs and 30% of informative reads
+SRR642185	mislabel	BM_10	PARTIAL_BAIT	NOT_ASSEMBLED	no read carries the reverse primer
+SRR642185	mislabel	BS	CALLED_FROM_READS	SPLIT_ACROSS_CONTIGS	complete amplicon in 5 of 6 informative read(s) (83%), size(s) 102 bp
+SRR651210	mislabel	BA	WEAK_READ_SUPPORT	SPLIT_ACROSS_CONTIGS	complete amplicon in 3 of 11 informative read(s) (27%), size(s) 75 bp; a read-level call needs at least 2 reads or read pairs and 30% of informative reads
+SRR651210	mislabel	BM_10	PARTIAL_BAIT	NOT_ASSEMBLED	no read carries the reverse primer
+SRR651210	mislabel	BS	CALLED_FROM_READS	SPLIT_ACROSS_CONTIGS	complete amplicon in 4 of 7 informative read(s) (57%), size(s) 102 bp
+SRR825218	no-brucella	BS	PARTIAL_BAIT	NOT_ASSEMBLED	no read carries the reverse primer
+SRR867710	mislabel	BA	PARTIAL_BAIT	NOT_ASSEMBLED	no read carries the reverse primer
+SRR867710	mislabel	BM_10	WEAK_READ_SUPPORT	SPLIT_ACROSS_CONTIGS	complete amplicon in 1 of 5 informative read(s) (20%), size(s) 147 bp; a read-level call needs at least 2 reads or read pairs and 30% of informative reads
+SRR867710	mislabel	BS	CALLED_FROM_READS	SPLIT_ACROSS_CONTIGS	complete amplicon in 31 of 54 informative read(s) (57%), size(s) 102 bp
+SRR867711	mislabel	BA	WEAK_READ_SUPPORT	SPLIT_ACROSS_CONTIGS	complete amplicon in 22 of 148 informative read(s) (15%), size(s) 75 bp; a read-level call needs at least 2 reads or read pairs and 30% of informative reads
+SRR867711	mislabel	BM_10	NOT_IN_READS	NOT_ASSEMBLED	no complete amplicon in the reads; reads carrying the primers could hold amplicons up to 170 bp, so longer amplicons cannot be ruled out
+SRR867711	mislabel	BS	CALLED_FROM_READS	SPLIT_ACROSS_CONTIGS	complete amplicon in 37 of 43 informative read(s) (86%), size(s) 102 bp
+SRR952243	no-brucella	BM_10	PARTIAL_BAIT	NOT_ASSEMBLED	no read carries the reverse primer
+SRR952243	no-brucella	BS	PARTIAL_BAIT	NOT_ASSEMBLED	no read carries the forward primer
