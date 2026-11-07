@@ -61,14 +61,25 @@ that half of the clade. Those records stand or fall on the distances alone.
 
 ## Two caveats worth passing on
 
-**A negative on raw reads is weak evidence of absence.** The assembly and the reads agree on 38 of the 48
-read sets. Of the ten that differ, nine have *more* signal from the assembly, and read length explains
-them: a 102 bp amplicon cannot sit inside a 101 bp read, and a 147 bp amplicon cannot sit inside a 140 bp
-read, so the primer pair can never be found convergent on one fragment. The remainder is exact matching
-meeting sequencing error — one wrong base at a primer site removes that read, while the assembly consensus
-has corrected it. The assembly is the more sensitive substrate for this assay, which is the opposite of
-the intuitive expectation. The one case that runs the other way, `SRR952243`, is the one that matters
-biologically: a minority population present in the reads and absent from the assembly.
+**A negative on raw reads is weak evidence of absence, and the reason is the mini-assembly step.** The
+assembly and the reads agree on 38 of the 48 read sets. Of the ten that differ, nine have *more* signal
+from the whole-genome assembly than from the reads.
+
+In FASTQ mode insilicoPCR baits reads matching the oligos, recruits the reads overlapping those, assembles
+the recruited set with Tadpole, and searches that mini-assembly. Tracing one of the nine through its
+retained intermediates shows the loss is at the assembly step, not at baiting and not at the search: the
+reads covering the missing target are present in both the baited and the recruited set — more of them than
+for a target that did report in the same sample — and Tadpole's default thresholds simply build no contig
+over them, so the target is absent from what the search sees. Re-running Tadpole on the identical recruited
+reads with a lower seed count, coverage floor and minimum contig length recovers the missing target and
+takes the mini-assembly from 5 contigs to 31.
+
+So these negatives are an artefact of the default assembly settings rather than evidence that the target
+is absent, and the remedy is to lower those thresholds or to read the verdict off the whole-genome
+assembly. Worth passing to the tool's author.
+
+The one case that runs the other way, `SRR952243`, is the one that matters biologically: a minority
+population present in the reads and absent from its whole-genome assembly.
 
 **The *B. suis* assay's specificity rests on exact matching.** Tolerating two mismatches
 (`-m 2 --3p-penalty 3`) makes it fire on nearly every classical *Brucella* genome, including *abortus*,

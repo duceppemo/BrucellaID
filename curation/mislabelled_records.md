@@ -213,8 +213,9 @@ population rather than errors. For the former *Ochrobactrum* records the PCR evi
 neither assay was designed for that half of the clade; those records rest on the distances alone.
 
 `pcr_evidence/README.md` also records two caveats worth carrying into any report: a negative on raw reads
-is weak evidence of absence, because an amplicon longer than the read can never be found in it, and the
-*B. suis* assay's specificity depends on exact primer matching.
+is weak evidence of absence, because the default settings of the mini-assembly step that FASTQ mode runs
+before searching can drop a target whose reads were baited successfully, and the *B. suis* assay's
+specificity depends on exact primer matching.
 
 ## Reproducing the evidence
 
