@@ -1,0 +1,9 @@
+run	study	deposited_as	identification	evidence
+SRR825216	PRJNA52097	Brucella pinnipedialis	Actinomycetaceae, uncultured, no isolate genome	sylph 99.33% ANI to GTDB rep GCA_946998115.1 (a metagenome-assembled genome, 1.08 Mb, 32.5% GC) at 365x and 81% containment; 1.275 Mb at 33.2% GC, 995 genes, 89% coding density; 100% ANI across the three libraries; 16S 100% to a reference deposited as Pauljensenia hongkongensis
+SRR825217	PRJNA52097	Brucella pinnipedialis	Actinomycetaceae, uncultured, no isolate genome	same organism as SRR825216 (100% ANI)
+SRR825218	PRJNA52097	Brucella pinnipedialis	Actinomycetaceae, uncultured, no isolate genome	same organism as SRR825216 (100% ANI)
+SRR848042	PRJNA77813	Brucella abortus	Metamycoplasma orale	sylph 98.2% ANI at 44x; 16S 100% to M. orale NCTC 10112; mashID both databases; library is mixed (17.7 Mb in 18,776 contigs)
+SRR886241	PRJNA197004	Brucella ceti	Streptococcus intermedius	sylph 100% ANI at 169x with 8092/8093 containment; 16S 100%; mashID both databases; 1.91 Mb at 37.6% GC
+SRR886242	PRJNA197004	Brucella ceti	Streptococcus intermedius	as SRR886241
+SRR886243	PRJNA197004	Brucella ceti	Streptococcus intermedius	as SRR886241
+SRR952243	PRJNA213741	Brucella abortus	Ralstonia pickettii, plus genuine Brucella: contaminated rather than mislabelled	sylph: R. pickettii 98.0% ANI at 129x, and classical Brucella at 12.4x with 94% containment; 16S 100% R. pickettii; read-level PCR finds the genus and abortus assays in the reads but not the assembly

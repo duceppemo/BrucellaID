@@ -248,13 +248,16 @@ Drafts live in [`correspondence/`](correspondence/).
 | 11 BioSamples of PRJEB30030 | the study's submitters | — | drafted, not sent |
 | 3 BioSamples of PRJEB4782, plus 10 runs that hold no *Brucella* | the study's submitters | — | drafted, not sent |
 | `GCA_000662015.2` | GenBank | earlier, separately | already reported before this work; the 2026-11-07 message supplies its swap partner |
+| 2 BioSamples of PRJNA173595/PRJNA173601, plus 8 runs across PRJNA52097, PRJNA197004, PRJNA77813 and PRJNA213741 | the Broad Institute | — | drafted, not sent |
 
 The nine unresolved assembly candidates and the four ex-*Ochrobactrum* read sets were
 deliberately left out of all of the above. The GenBank message offers the list if they want it.
 
-Still to draft: the Broad Institute records (2 BioSamples mislabelled in PRJNA173595/PRJNA173601, and
-8 runs holding no *Brucella* across PRJNA52097, PRJNA197004, PRJNA77813 and PRJNA213741) and four
-single submissions.
+Still to draft: four single submissions.
+
+`SRR952243` has moved out of the "holds no *Brucella*" group. GTDB finds genuine classical *Brucella* in
+it at 12.4× coverage with 94% of the reference present, under a dominant *Ralstonia pickettii*, so the
+deposited species is right and the library is contaminated. It is reported that way.
 
 ## A note on our own cutoffs
 

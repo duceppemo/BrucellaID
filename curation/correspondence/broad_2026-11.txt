@@ -1,0 +1,122 @@
+Subject: Twelve Brucella sequencing records from 2012-2013 whose deposited species
+         does not match the sequence
+
+Dear colleagues,
+
+We have been validating a Brucella species-identification tool against every public
+Brucella read set in ENA. Twelve records deposited by the Broad Institute between
+December 2012 and August 2013, across six studies, do not match their deposited
+species. Of the 19 runs in those studies we were able to analyse 14; the other five
+fell outside our size filters.
+
+I am conscious these are thirteen-year-old records from an early-generation project
+and that the material behind them may be long gone. I am not expecting anyone to
+re-sequence anything. The reason for writing is that the records are still being
+consumed - they are feeding reference databases, which is how we met them - so a
+metadata correction or even a note on the record would be worth more than its effort.
+
+Two different problems, and they need different handling.
+
+METHOD, BRIEFLY
+
+Mash distance over a curated 431-genome reference set covering all 30 named species of
+the Brucella clade; MLST-9 (Whatmore et al.) called from reads and read off assemblies
+by exact allele match; in silico Bruce-ladder, Suis-ladder and AMOS PCR; and the
+real-time assays of Hoover et al. 2026 (doi:10.1128/spectrum.02974-25) run in silico.
+For the libraries that are not Brucella at all we added mashID against proGenomes v4
+and a dereplicated RefSeq sketch, sylph against GTDB r220, fastANI, and 16S rRNA
+extracted with barrnap and compared with the NCBI type-strain database and nt.
+
+
+1. TWO NAMED REFERENCE STRAINS THAT TYPE AS B. SUIS
+
+These two matter more than their number suggests, because both carry strain
+designations. A strain designation gets cited, requested and reused, so a wrong
+species on one travels further than a wrong species on an ordinary isolate.
+
+    BioSample      runs                            deposited             Mash      ST
+    SAMN00811170   SRR642185 SRR651210 SRR867710   B. abortus 63/183    0.0022   14,16
+    SAMN00811205   SRR867711                       B. melitensis 63/227  0.00205   14
+
+    Both read as B. suis. PubMLST records ST14 as B. suis in 96.4% of 140 isolates and
+    ST16 as B. suis in all 15 it has. The B. suis real-time assay is held in full and
+    the B. abortus and B. melitensis assays are absent; in silico Suis-ladder and
+    Bruce-ladder give suis patterns.
+
+    SAMN00811170 is one BioSample sequenced three times rather than three records. All
+    three libraries agree, which is a consistency check rather than three independent
+    findings - and a useful one, because two of the three assemble well and the third
+    badly, and all three still read as B. suis.
+
+    If strains 63/183 and 63/227 are held in a collection, the deposited material may
+    be worth checking too: the sequence suggests the mix-up predates the sequencing.
+
+
+2. EIGHT LIBRARIES THAT DO NOT CONTAIN THE DEPOSITED ORGANISM
+
+These share nothing meaningful with any Brucella genome - between zero and 146 of
+1000 k-mer hashes, where a real Brucella library at usable depth shares 900 or more.
+We identified what they do contain, since "not Brucella" is less useful than a name.
+
+  PRJNA52097 - SRR825216, SRR825217, SRR825218, deposited as B. pinnipedialis
+
+    An uncultured member of the family Actinomycetaceae. The three libraries are the
+    same organism (100% ANI to each other), 1.275 Mb at 33.2% GC, 995 predicted genes
+    at 89% coding density, so a real reduced genome rather than a fragment.
+
+    It matches a GTDB r220 representative at 99.33% ANI with 365x coverage and 81% of
+    that genome's k-mers present. That representative, GCA_946998115.1, is itself a
+    metagenome-assembled genome from a human microbiome study - 1.08 Mb at 32.5% GC -
+    so this organism has no isolate genome anywhere, which is why it is absent from
+    proGenomes v4 and from a dereplicated RefSeq sketch while being present in GTDB.
+    Its 16S is 100% identical to a reference deposited as Pauljensenia (formerly
+    Actinomyces) hongkongensis, though that species' own genome is 70.5% GC, so we
+    would not put a species name on it.
+
+  PRJNA197004 - SRR886241, SRR886242, SRR886243, deposited as B. ceti
+
+    Streptococcus intermedius, and this one is not ambiguous: 100% ANI at 169x
+    coverage with 8092 of 8093 reference k-mers present, 16S 100% identical, and
+    assemblies of 1.91 Mb at 37.6% GC matching the species. Oral flora.
+
+  PRJNA77813 - SRR848042, deposited as B. abortus
+
+    Metamycoplasma orale (formerly Mycoplasma orale), at 98.2% ANI and 44x coverage,
+    with the 16S 100% identical to M. orale NCTC 10112. The library is a mixture: the
+    assembly runs to 17.7 Mb in 18,776 contigs. M. orale is among the commonest
+    cell-culture contaminants.
+
+  PRJNA213741 - SRR952243, deposited as B. abortus
+
+    This one is NOT a mislabel, and I would treat it separately. The library is
+    dominated by Ralstonia pickettii - 98.0% ANI, 129x, 16S 100% identical, and a
+    clean 5.4 Mb assembly at 63.7% GC - but it also contains genuine classical
+    Brucella at 12.4x coverage with 94% of the reference genome present. Our own
+    read-level PCR independently finds the genus marker and the B. abortus assay in
+    the reads while finding nothing in the assembly, because the Brucella is
+    outnumbered.
+
+    So the deposited species looks right and the library is contaminated. R. pickettii
+    is the classic ultrapure-water and reagent organism. A note on the record would
+    serve a reader better than a relabel.
+
+
+WHAT WOULD HELP
+
+For section 1, correcting the organism field on the two BioSamples, since that is the
+submitter's to amend rather than the archive's. For section 2, a note on each record
+that the library does not contain the deposited organism would stop the next person
+downloading them as Brucella; if the original files still exist somewhere, a check of
+what was uploaded against what was intended may be worth more.
+
+If you disagree with any of these readings I would genuinely like to know. The
+physical isolate outranks the sequence, and the sequence outranks our reading of it.
+
+Every per-record verdict is public at https://github.com/duceppemo/BrucellaID under
+curation/, including the records we checked and cleared and the errors we found in our
+own reference set in the same pass. Happy to send assemblies, allele calls, distance
+tables or the 16S sequences directly.
+
+Marc-Olivier Duceppe
+Canadian Food Inspection Agency
+marc-olivier.duceppe@inspection.gc.ca
