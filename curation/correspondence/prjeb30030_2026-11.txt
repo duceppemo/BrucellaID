@@ -1,0 +1,87 @@
+Subject: Eleven BioSamples in PRJEB30030 whose deposited species differs from the
+         sequence
+
+Dear colleagues,
+
+We have been validating a Brucella species-identification tool against every public
+Brucella read set in ENA, and PRJEB30030 came up. Eighty-seven of your 98 runs came
+back exactly as deposited. Eleven did not, and I am writing because the BioSample
+organism field is yours to amend rather than the archive's, and because a couple of
+the patterns may be more useful to you than to us.
+
+Nothing here is a comment on the sequencing, which is good: nine of the eleven
+libraries assemble to 3.24-3.35 Mb, the normal size for a Brucella genome. These look
+like sound genomes with a different species name on them.
+
+METHOD, BRIEFLY
+
+Two independent lines, which is why I am raising it rather than filing it. Mash
+distance over a curated 431-genome reference set covering all 30 named species of the
+clade, and MLST-9 (Whatmore et al.) called from the reads and read off the assemblies
+by exact allele match. The two share no code and no reference data. Where the
+real-time assays of Hoover et al. 2026 (doi:10.1128/spectrum.02974-25) cover the
+species in question, run in silico, they agree as well.
+
+THE TEN RECORDS
+
+    run          BioSample       deposited         sequence says     Mash     ST
+    ERR2993145   SAMEA5176140    B. melitensis     B. suis           0.00007  -
+    ERR2993140   SAMEA5176147    B. melitensis     B. neotomae       0.00012  22
+    ERR2993152   SAMEA5176142    B. melitensis     B. abortus        0.00014  1
+    ERR2993155   SAMEA5176143    B. melitensis     B. suis           0.00014  14
+    ERR2993138   SAMEA5176141    B. melitensis     B. suis           0.00014  19
+    ERR2993134   SAMEA5176151    B. melitensis     B. pinnipedialis  0.00026  25
+    ERR2938660   SAMEA5145035    B. ovis           B. suis           0.00081  15
+    ERR2938678   SAMEA5145000    B. melitensis     B. abortus        0.00111  5
+    ERR2938669   SAMEA5145008    B. melitensis     B. suis           0.00181  15
+    ERR2938695   SAMEA5145011    B. melitensis     B. suis           0.00244  15
+
+PubMLST records these sequence types as: ST1 B. abortus (99.4% of 466 isolates), ST5
+B. abortus (98.6% of 71), ST14 B. suis (96.4% of 140), ST15 B. suis (96.1% of 103),
+ST19 B. suis (100% of 6), ST22 B. neotomae (100% of 9), ST25 B. pinnipedialis (95.0%
+of 80). ERR2993145 has no ST called, but both of our reference sets reach B. suis for
+it independently.
+
+Six of the ten sit 0.0001-0.0003 from the species the sequence indicates, which is as
+close as two genomes of one species ever get, so these are not borderline.
+
+ONE PATTERN YOU MAY BE ABLE TO CHECK
+
+Ten of the eleven are deposited as B. melitensis, but the sequences fall into five
+different species. If the labels had drifted one isolate at a time we would expect
+the errors to be scattered in both directions; a single deposited name against five
+true species looks more like a name applied across a batch than per isolate. The two
+accession blocks also behave differently: the ERR29931xx/4xxx group sits at
+0.00007-0.00026 while the ERR29386xx group sits at 0.00081-0.00244. You will know far
+better than we would whether those correspond to separate runs, plates or submission
+batches.
+
+ONE RECORD I WOULD NOT CALL A MISLABEL
+
+    ERR2938687   SAMEA5145007    B. melitensis     probably a mixture
+
+This one has the largest Mash distance of the eleven (0.00591), by far the worst
+assembly (2,165 contigs against 26-80 for the others), and in the reads it carries a
+complete B. suis amplicon in 54% of informative reads and a complete B. melitensis
+amplicon in 33%. A mixed culture or a contaminated library explains all three
+observations together; a wrong species name explains none of them well. I would
+suggest re-examining the isolate rather than changing the record.
+
+WHAT WOULD HELP
+
+If you agree with the readings, updating the organism field on the ten BioSamples
+would correct them downstream - they are currently feeding reference databases, which
+is how we met them. If you disagree on any, I would genuinely like to know: the
+physical isolate outranks the sequence, and the sequence outranks our reading of it.
+
+Every per-record verdict is public at https://github.com/duceppemo/BrucellaID under
+curation/, including the records we checked and cleared and the errors we found in our
+own reference set in the same pass. Happy to send the assemblies, the allele calls or
+the distance tables directly.
+
+With thanks for depositing the data in the first place - none of this would be
+checkable otherwise.
+
+Marc-Olivier Duceppe
+Canadian Food Inspection Agency
+marc-olivier.duceppe@inspection.gc.ca

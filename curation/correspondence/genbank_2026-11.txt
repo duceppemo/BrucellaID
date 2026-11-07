@@ -1,0 +1,158 @@
+Subject: Five Brucella assemblies whose deposited species is contradicted by their
+         sequence, and one follow-up to my message of [DATE OF EARLIER EMAIL]
+
+This is a third set of Brucella records. Section 2 is a follow-up that answers a
+question I left open last time rather than a new finding.
+
+Methods are as before: MLST-9 (Whatmore et al. scheme) read off the assembly by
+exact allele match, Mash distance over a curated 431-genome Brucella reference set
+covering all 30 named species of the clade, in silico Bruce-ladder/Suis-ladder/AMOS,
+and the real-time assays of Hoover et al. 2026 (doi:10.1128/spectrum.02974-25) run
+in silico. Where your own ANI check already reaches a verdict I have quoted it.
+
+
+1. ONE MORE ST8 ASSEMBLY DEPOSITED AS B. ABORTUS THAT TYPES AS B. MELITENSIS
+
+This is a fifth record of the pattern in section 1 of my earlier message, and your
+ANI check already flags it.
+
+    accession        deposited          MLST-9   ANI check              our reading
+    GCA_036881765.1  Brucella abortus   ST8      mismatch, melitensis   B. melitensis
+                                                 99.91%
+
+    Mash: nearest B. melitensis 0.00074, nearest B. abortus 0.00164. PubMLST records
+    ST8 as B. melitensis in 98.3% of 862 isolates. The B. melitensis assay is held in
+    full and the B. abortus assay is absent; Bruce-ladder independently calls
+    melitensis.
+
+
+2. THE OTHER HALF OF THE BO1 PAIR (follow-up to section 4 of my earlier message)
+
+Last time I reported GCA_000662015.2, deposited as "Brucella inopinata BO1", and
+noted that it sits 0.0237 from GCA_000182725.1, which carries the same strain
+designation, so the two records under that strain name are not the same organism. I
+said that observation was more useful for triage than my own species call. This is
+where the other organism went.
+
+    accession        deposited                      ANI check          our reading
+    GCA_000661995.2  Brucella suis bv. 4 str. 40    synonym_match,     B. inopinata
+                                                    melitensis 97.83%  (BO1)
+
+    Mash from GCA_000661995.2: nearest B. inopinata 0.00044, and every classical
+    species at 0.0224 or more (nearest B. suis 0.0226, nearest B. canis 0.0231). Its
+    three nearest neighbours of any species are all deposited B. inopinata.
+
+    The two records are consecutive accessions from one submission, and each one's
+    sequence matches the other's deposited name. The PCR panel separates them in the
+    same direction: GCA_000662015.2 holds the B. suis assay, while GCA_000661995.2 is
+    absent on all three species assays and on the genus marker, which is how the
+    deposited B. inopinata controls behave.
+
+    I would treat these two as one correction rather than two. Note that the ANI best
+    match for GCA_000661995.2 is B. melitensis at 97.83%, which I do not think is
+    informative here: B. inopinata sits around 97-98% from the classical species, so
+    the comparison is inside the band where ANI cannot separate them in this genus.
+
+
+3. ONE ASSEMBLY DEPOSITED AS BRUCELLA SP. THAT IS B. PAPIONIS
+
+This is a naming request rather than a correction, and it is the one I would most
+like to see actioned, because the species is currently absent from the archive.
+
+    accession        deposited                      ANI check          our reading
+    GCA_000163135.1  Brucella sp. NVSL 07-0026      genus_match,       B. papionis
+                                                    microti 99.79%
+
+    Nothing in INSDC is labelled Brucella papionis. A search of the assembly database
+    for taxon 1462582 returns nothing, and so does ENA's. This is the only genome of
+    the species in the archive, which is why your ANI check can only reach genus: it
+    has no B. papionis reference to match against.
+
+    MLST-9 ST54, profile 9-12-20-10-1-3-5-8-2. PubMLST records ST54 as B. papionis in
+    both of the isolates that carry it. The same nine alleles, by exact match, are
+    carried by an assembly we made from SRR4038994, a read set submitted as
+    B. papionis strain B07-0026 (BioSample SAMN05417907); that assembly sits 0.000048
+    from GCA_000163135.1, and NVSL 07-0026 is the same strain designation with the
+    laboratory prefix on it.
+
+    Mash places it 0.00200 from B. microti, 0.00201 from B. pinnipedialis, 0.00214
+    from B. ceti and 0.00239 from B. suis, near-equidistant from four classical
+    species and identical to none, which is what a species of its own looks like.
+
+
+4. ONE ASSEMBLY DEPOSITED AS B. CYTISI THAT IS NOT B. CYTISI
+
+Your ANI check and my reading agree the deposited name is wrong and disagree on the
+replacement, so I am only confident of the negative.
+
+    accession        deposited          ANI check             our reading
+    GCA_059995225.1  Brucella cytisi    mismatch,             not B. cytisi;
+                     (strain WTB2)      lupini 97.75%         nearest B. anthropi
+
+    Mash from GCA_059995225.1: nearest B. anthropi 0.00665, nearest B. lupini 0.01030,
+    nearest other B. cytisi 0.03950. All three deposited assemblies of the B. cytisi
+    type strain (ESC1, LMG 22713, DSM 19778) agree with each other to 0.0026 and sit
+    0.0407, 0.0409 and 0.0425 from this genome, so it is not in that cluster.
+
+    B. anthropi is closer than B. lupini in our data by a factor of 1.5, but both are
+    former Ochrobactrum species where within-species diversity is very wide - the
+    spread inside deposited B. anthropi reaches 0.21 - so I would not argue for
+    anthropi over lupini on 0.0066 against 0.0103. The reliable statement is that the
+    genome is not B. cytisi. The PCR panel is silent for this half of the clade and
+    offers nothing either way.
+
+
+5. ONE ASSEMBLY DEPOSITED AS B. CICERI THAT APPEARS TO BE B. INTERMEDIA
+
+I raise this one knowing your ANI check supports the deposited name, so the case
+rests on the cluster rather than on a single distance.
+
+    accession        deposited             ANI check            our reading
+    GCA_049065255.1  Brucella ciceri       species_match,       B. intermedia
+                     (strain SA289)        ciceri 99.14%
+
+    Mash from GCA_049065255.1: 0.00004 to GCA_001917355.1, which is deposited as
+    B. intermedia, and 0.00658 to the nearest deposited B. ciceri, including the
+    ciceri type strain DSM 22292. It is also 0.000005 from GCA_049065885.1, deposited
+    as Brucella sp.
+
+    The strain cluster it belongs to (SA148, SA289, IR068 and their neighbours) is
+    deposited as B. intermedia in 12 of 14 records and as B. ciceri in 2. Every member
+    of that cluster is further from the ciceri type strain than the within-species
+    spread of deposited B. ciceri, so if the cluster is ciceri then the type strain is
+    the outlier, which seems the less likely reading.
+
+    I appreciate 99.14% clears the species threshold. My difficulty is the one I
+    raised last time: in this genus almost any pair of species clears it, so a
+    species_match does not establish that the deposited name is the closest available
+    one. Here the deposited name is 0.0066 away and another deposited name is 0.00004
+    away.
+
+
+WHAT I AM NOT ASKING ABOUT
+
+Nine further assemblies are flagged in our curation but rest on distance alone, in
+parts of the clade where the MLST and both PCR assays are silent and where
+within-species diversity is wide enough that "nearer to another species" is
+suggestive and no more. I am not proposing changes to those and have not listed them
+here; I can send them if a list of records worth a second look is useful to you.
+
+Two assemblies deposited as B. abortus biovar 1 (the BCB027 and BCB013 genomes) are
+clearly not ordinary B. abortus by every method we applied, but the methods disagree
+on what they are, so I have no name to propose.
+
+
+DATA
+
+Every per-record verdict, including those we checked and cleared and the errors we
+found in our own reference set in the same pass, is public at
+https://github.com/duceppemo/BrucellaID under curation/ - mislabelled_records.md for
+the record and curation/pcr_evidence/ for the assay tables. Happy to send any of it
+directly, or the assemblies and read sets as we processed them.
+
+With thanks for the ANI fields, which made three of the five records above much
+quicker to assess than they would otherwise have been.
+
+Marc-Olivier Duceppe
+Canadian Food Inspection Agency
+marc-olivier.duceppe@inspection.gc.ca

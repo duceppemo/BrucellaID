@@ -1,0 +1,81 @@
+Subject: PRJEB4782 - three BioSamples whose deposited species differs from the
+         sequence, and ten runs that appear not to hold Brucella
+
+Dear colleagues,
+
+We have been validating a Brucella species-identification tool against every public
+Brucella read set in ENA, and PRJEB4782 came up. One hundred and forty-three of your
+156 runs came back exactly as deposited. Thirteen did not, in two quite different
+ways, and the second group is the reason I am writing rather than just filing a
+metadata note.
+
+METHOD, BRIEFLY
+
+Mash distance over a curated 431-genome reference set covering all 30 named species of
+the clade, and MLST-9 (Whatmore et al.) called from the reads and read off the
+assemblies by exact allele match. The two share no code and no reference data. The
+real-time assays of Hoover et al. 2026 (doi:10.1128/spectrum.02974-25), run in silico,
+agree where they cover the species in question.
+
+1. THREE BIOSAMPLES WITH A DIFFERENT SPECIES
+
+    run          BioSample       deposited      sequence says    Mash     ST
+    ERR471314    SAMEA2266858    B. ceti        B. abortus       0.00017  5
+    ERR471315    SAMEA2266859    B. ceti        B. abortus       0.00017  5
+    ERR473742    SAMEA2266954    B. abortus     B. neotomae      0.00034  22
+
+PubMLST records ST5 as B. abortus (98.6% of 71 isolates) and ST22 as B. neotomae
+(100% of 9). In silico Bruce-ladder independently gives the same species for all
+three, and the species-specific real-time assay fires correctly for the two
+B. abortus readings. All three are tight matches, not borderline calls.
+
+The two B. ceti records are consecutive accessions and consecutive BioSamples, so they
+may be one mix-up rather than two.
+
+2. TEN RUNS THAT DO NOT APPEAR TO HOLD BRUCELLA
+
+These are deposited as B. abortus and share one or two of 1000 k-mer hashes with any
+genome in the Brucella clade. A real Brucella library at usable depth shares 900 or
+more. The genus marker of the real-time panel is negative on both the reads and their
+assemblies, and in silico Bruce-ladder finds nothing.
+
+What makes me think this is a file-handling issue rather than ten independent errors
+is that the assemblies fall into two tight size classes, neither of them Brucella
+(a Brucella genome is about 3.3 Mb):
+
+    run          assembly size     run          assembly size
+    ERR554820    4,503,334 bp      ERR775244    1,913,108 bp
+    ERR471337    4,449,368 bp      ERR775248    1,912,218 bp
+    ERR775236    4,423,614 bp      ERR775245    1,884,007 bp
+    ERR775237    3,954,007 bp      ERR775247    1,883,342 bp
+    ERR473743    3,953,140 bp      ERR775246    1,876,705 bp
+
+The five on the right are within 37 kb of each other. We have not tried to identify
+what they are, since that is outside what we were doing, but if it would help I am
+happy to run them against a broader reference set and send you the result.
+
+These ten are the reason for the email rather than a metadata correction: someone
+searching the archive for B. abortus reads will find and download them, which is how
+we did.
+
+WHAT WOULD HELP
+
+For the three in section 1, updating the organism field on the BioSamples would
+correct them downstream. For the ten in section 2, a check of what was uploaded
+against what was intended would be worth more than any change to the labels - if the
+wrong files went up, the right ones may still exist.
+
+If you disagree with any of the readings I would genuinely like to know. The physical
+isolate outranks the sequence, and the sequence outranks our reading of it.
+
+Every per-record verdict is public at https://github.com/duceppemo/BrucellaID under
+curation/, including the records we checked and cleared and the errors we found in our
+own reference set in the same pass. Happy to send assemblies, allele calls or distance
+tables directly.
+
+With thanks for depositing the data in the first place - 143 of 156 is a better record
+than most, and none of this would be checkable otherwise.
+
+Marc-Olivier Duceppe
+Canadian Food Inspection Agency
+marc-olivier.duceppe@inspection.gc.ca
