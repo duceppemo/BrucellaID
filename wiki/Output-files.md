@@ -32,12 +32,13 @@ A *B. canis* sample, where the distance alone cannot choose and the ST does, wit
 ```
 ERR2136546  Brucella canis  MASH+ST (arbitrated)  GCA_000530495.1_Oliveri_genomic.fna.gz  0.006524  773/1000  20  1-6-4-1-5-3-5-4-6  Brucella canis  625576
             loose match: the closest reference is 0.00652 away and shares 773/1000 hashes, where a read
-            set of a species the sketch holds usually matches within 0.005. The reads may hold more than
-            Brucella, or this lineage may have no near relative in the sketch; the species named is still
-            the closest one; nearly as close: GCA_000741995.1_ASM74199v1_genomic.fna.gz (Brucella suis,
-            768/1000 hashes), 3 other Brucella canis genome(s); MASH cannot separate Brucella canis and
-            Brucella suis: ST 20 is Brucella canis in 70 of 70 isolate(s), which agrees with the closest
-            reference
+            set of a species the sketch holds is expected to match within 0.005 (--loose-distance). The
+            reads may hold more than Brucella, this lineage may have no near relative in the sketch, or
+            the k-mer copy threshold may be low for this library (try --min-kmer-copies above the derived
+            value); the species named is still the closest one; nearly as close:
+            GCA_000741995.1_ASM74199v1_genomic.fna.gz (Brucella suis, 768/1000 hashes), 3 other Brucella
+            canis genome(s); MASH cannot separate Brucella canis and Brucella suis: ST 20 is Brucella
+            canis in 70 of 70 isolate(s), which agrees with the closest reference
 ```
 
 Both rows are from the [Tutorial](Tutorial) run, against the 432-genome default set, which is why the
@@ -178,4 +179,7 @@ package.
 **Which code depends on the reference set**, and that changed in 2.0. The default 432-genome set codes the
 species epithet and the biovar where NCBI records one (`abortus`, `abortus5`, `anthropi`); vSNP's own codes
 (`ab1`, `mel3`, `suis2`, ...) exist only in the 16-genome table. A pipeline that matches on `ab1` needs
-`--reference-set vsnp`. The same applies to `species_code` in `brucellaid.json`.
+`--reference-set vsnp`, and `--xlsx` logs a warning when it is writing epithets rather than those codes.
+The same applies to `species_code` in `brucellaid.json`. Note that the two kinds of code identify different
+things: a vSNP code names one reference genome and is unique across the 16, while an epithet names a species,
+so the 432 genomes of the default set carry 37 distinct codes between them.

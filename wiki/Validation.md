@@ -100,8 +100,18 @@ runs. Each gave the species its submitter gave it, the sequence type it is known
 reference genome as the simulated sample of that reference — real reads and simulated reads never
 disagreed. The two libraries at 60x or more raised the threshold to 3, which is also checked.
 *B. suis* SRR8550484 is the before-and-after picture: at ~69x the fixed threshold left it 422 of 1000
-hashes at distance 0.0248, and the derived threshold gives the same library 775 hashes at 0.0065 — the
-rest is the real distance between that isolate and the ATCC 23445 reference, not an artefact of its depth.
+hashes at distance 0.0248, and the derived threshold gives the same library 775 hashes at 0.0065.
+
+That remaining 0.0065 is **not** all real distance, and an earlier version of this page said it was.
+Raising the threshold by hand keeps recovering hashes: the same library against the same reference gives
+990 of 1000 at 0.00024 with `--min-kmer-copies 12`, and *B. canis* ERR2136546 goes from 773 hashes at
+0.0065 to 989 at 0.00026 with `--min-kmer-copies 4`. So the derived threshold is still low for these two
+libraries, and their distances are inflated by roughly a factor of 25 at the default. The species and the
+sequence type are right either way, and `--reference-set vsnp` gives the same inflated figures, so this is
+neither a wrong call nor a 2.0 regression — but `MashDistance` and `SharedHashes` should be read as a floor
+on the match, not as a measurement, and the loose-match note on these two samples is an artefact of the
+threshold rather than of the library. Re-deriving `DEPTH_PER_KMER_COPY` would change every figure on this
+page, so it is work for after 2.0 rather than part of it.
 
 **The sequence types agree, 16 of 16 and 4 of 4.** Every ST called from simulated reads is the one the
 genome carries, read off the assembly by exact match: ST 1, 5, 6, 7, 8, 9, 12, 13, 14, 15, 17, 20, 26 and

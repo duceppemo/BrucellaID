@@ -97,11 +97,12 @@ also left out above, says why:
 
 ```
 loose match: the closest reference is 0.00652 away and shares 773/1000 hashes, where a read set of a
-species the sketch holds usually matches within 0.005. The reads may hold more than Brucella, or this
-lineage may have no near relative in the sketch; the species named is still the closest one; nearly as
-close: GCA_000741995.1_ASM74199v1_genomic.fna.gz (Brucella suis, 768/1000 hashes), 3 other Brucella canis
-genome(s); MASH cannot separate Brucella canis and Brucella suis: ST 20 is Brucella canis in 70 of 70
-isolate(s), which agrees with the closest reference
+species the sketch holds is expected to match within 0.005 (--loose-distance). The reads may hold more
+than Brucella, this lineage may have no near relative in the sketch, or the k-mer copy threshold may be
+low for this library (try --min-kmer-copies above the derived value); the species named is still the
+closest one; nearly as close: GCA_000741995.1_ASM74199v1_genomic.fna.gz (Brucella suis, 768/1000 hashes),
+3 other Brucella canis genome(s); MASH cannot separate Brucella canis and Brucella suis: ST 20 is
+Brucella canis in 70 of 70 isolate(s), which agrees with the closest reference
 ```
 Three things are being said there, and all three matter.
 

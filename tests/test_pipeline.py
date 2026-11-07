@@ -28,6 +28,40 @@ def test_species_notes_of_a_clear_match():
     assert notes == []
 
 
+def test_species_notes_say_when_the_distance_cannot_separate_the_references():
+    """
+    Past MAX_CLOSE_MATCHES the margin is measuring nothing, so the names are replaced by the count.
+
+    Sharing a few hashes of 1000 makes mash give many references exactly the same distance, and they all
+    tie with the best one. Listing them put 127 genomes and 10 kB of text in one Notes cell.
+    """
+    hits = 'a.fasta\tq\t0.2\t1\t4/1000\n' + ''.join(
+        'ref{}.fasta\tq\t0.2\t1\t4/1000\n'.format(i) for i in range(60))
+    found = identification(hits, min_hashes=1)
+    assert found.identified
+    assert len(found.within_margin) == 60
+    assert found.undiscriminating == 60
+    assert found.close_matches == []       # not offered as evidence
+    _, notes = species_notes(found, REFERENCES)
+    note = next(n for n in notes if 'cannot separate' in n)
+    assert '60 of them sit within 0.0005 of the closest' in note
+    assert '4/1000 hashes' in note
+    assert 'ref1.fasta' not in note
+    assert not any('nearly as close' in n for n in notes)
+
+
+def test_species_notes_still_name_a_handful_of_close_references():
+    """Below the cap the names are the evidence for the call, and are kept."""
+    hits = 'a.fasta\tq\t0.001\t0\t950/1000\n' + ''.join(
+        'ref{}.fasta\tq\t0.001\t0\t949/1000\n'.format(i) for i in range(3))
+    found = identification(hits)
+    assert found.undiscriminating == 0
+    assert len(found.close_matches) == 3
+    _, notes = species_notes(found, REFERENCES)
+    assert any('nearly as close' in n for n in notes)
+    assert not any('cannot separate' in n for n in notes)
+
+
 def test_species_notes_call_a_distant_closest_reference_a_loose_match():
     found = identification('NC_006932-NC_006933.fasta\tq\t0.00900\t0\t700/1000\n')
     reference, notes = species_notes(found, REFERENCES)

@@ -254,23 +254,74 @@ def test_main_rejects_a_packaged_set_next_to_a_custom_file(tmp_path, monkeypatch
     assert 'cannot be combined' in capsys.readouterr().err
 
 
-def test_main_rejects_a_sketch_no_genome_of_which_the_table_names(tmp_path, monkeypatch, capsys):
+@pytest.mark.parametrize(('argv', 'warned'), [
+    ([], True),                                  # the default set: epithet codes, not vSNP's
+    (['--reference-set', 'extended'], True),
+    (['--reference-set', 'vsnp'], False),         # vSNP's own codes, which is what the report was for
+])
+def test_main_warns_that_xlsx_codes_changed_with_the_default_set(tmp_path, monkeypatch, capsys, argv, warned):
+    """The legacy report exists for pipelines reading ab1/mel1, and the default table has no such codes."""
+    ids = ['NC_006932-NC_006933.fasta'] if 'vsnp' in argv else None
+    fake_run(monkeypatch, sketch_ids=ids)
+    reads = write_fastq(tmp_path / 'a_R1.fastq.gz', [('r', 'ACGT')])
+    cli.main(['-r1', str(reads), '-o', str(tmp_path / 'out'), '--xlsx', '--no-mlst', *argv])
+    assert ('Add --reference-set vsnp for the 1.x codes' in capsys.readouterr().err) is warned
+
+
+def test_main_does_not_warn_about_xlsx_with_a_custom_table(tmp_path, monkeypatch, capsys):
+    """A custom table's codes are the caller's own business, so there is nothing to warn about."""
+    fake_run(monkeypatch, sketch_ids=['mine.fasta'])
+    reads = write_fastq(tmp_path / 'a_R1.fastq.gz', [('r', 'ACGT')])
+    table = tmp_path / 'mine.tsv'
+    table.write_text('\t'.join(COLUMNS) + '\nmine.fasta\tab1\tBrucella abortus\t\t\t\n')
+    cli.main(['-r1', str(reads), '-o', str(tmp_path / 'out'), '--xlsx', '--no-mlst',
+              '--references', str(table)])
+    assert 'Add --reference-set vsnp' not in capsys.readouterr().err
+
+
+def test_main_rejects_a_sketch_the_table_cannot_name_when_the_st_is_off_too(tmp_path, monkeypatch, capsys):
     """
     A 1.x command line that passed --sketch alone used to pair with the 16-genome table.
 
     From 2.0 it pairs with the extended one, whose IDs are GCA file names, so nothing in the sketch can
-    be named and every sample would come back ND from a run that exited 0.
+    be named. With the sequence type switched off as well there is no species to be had from anywhere,
+    and every sample would come back ND from a run that exited 0.
     """
     fake_run(monkeypatch, sketch_ids=['NC_006932-NC_006933.fasta'])
     reads = write_fastq(tmp_path / 'a_R1.fastq.gz', [('r', 'ACGT')])
     sketch = tmp_path / 'mine.msh'
     sketch.write_bytes(b'')
     with pytest.raises(SystemExit) as exit_info:
-        cli.main(['-r1', str(reads), '-o', str(tmp_path / 'out'), '--sketch', str(sketch)])
+        cli.main(['-r1', str(reads), '-o', str(tmp_path / 'out'), '--sketch', str(sketch), '--no-mlst'])
     assert exit_info.value.code == 1
     error = capsys.readouterr().err
     assert 'is in the reference table' in error
-    assert '--sketch and --references go together' in error
+    assert '--reference-set vsnp' in error
+
+
+@pytest.mark.parametrize('off', [['--no-mlst'], ['--no-st-species']])
+def test_main_rejects_it_for_either_way_of_switching_the_st_off(tmp_path, monkeypatch, capsys, off):
+    fake_run(monkeypatch, sketch_ids=['NC_006932-NC_006933.fasta'])
+    reads = write_fastq(tmp_path / 'a_R1.fastq.gz', [('r', 'ACGT')])
+    with pytest.raises(SystemExit):
+        cli.main(['-r1', str(reads), '-o', str(tmp_path / 'out'), '--sketch', 'mine.msh', *off])
+    assert 'no sample could be given a species at all' in capsys.readouterr().err
+
+
+def test_main_allows_a_sketch_of_your_own_genomes_when_the_st_can_name_them(tmp_path, monkeypatch, capsys):
+    """
+    A sketch of your own assemblies is a supported way to run: the species comes from the ST.
+
+    species.call_species has a branch for exactly this -- "a custom sketch whose closest genome the
+    reference table does not name" -- so the guard must warn rather than refuse while an ST table is
+    loaded, or that branch is unreachable from the command line.
+    """
+    fake_run(monkeypatch, sketch_ids=['my_assembly_1.fna.gz', 'my_assembly_2.fna.gz'])
+    reads = write_fastq(tmp_path / 'a_R1.fastq.gz', [('r', 'ACGT')])
+    cli.main(['-r1', str(reads), '-o', str(tmp_path / 'out'), '--sketch', 'mine.msh'])
+    error = capsys.readouterr().err
+    assert 'the distance has no species to offer' in error
+    assert 'species of its sequence type' in error
 
 
 def test_main_takes_a_custom_sketch_without_a_reference_set(tmp_path, monkeypatch):

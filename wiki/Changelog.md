@@ -18,12 +18,28 @@ What this means in practice:
 * **The `code` column changes with the set**, which matters for the legacy `--xlsx` report and for
   `species_code` in the JSON. With the extended set the codes are species epithets (`abortus5`,
   `anthropi`); vSNP's own codes (`ab1`, `mel1`) exist only in the 16-genome table. A pipeline reading those
-  codes needs `--reference-set vsnp`.
+  codes needs `--reference-set vsnp`, and `--xlsx` now warns when it is writing epithets instead, because
+  that report exists for the pipelines that read the old codes and nothing else.
+* **`--no-mlst` and `--no-st-species` now flag many more samples than they did.** Neither is changed, but
+  both switch off the arbitrator, and a second species falls inside the close-match margin for 38 of the
+  432 genomes of the default set against essentially one pair of vSNP's 16. Those samples are reported
+  `MASH (unresolved)` with a warning rather than arbitrated, which is the same behaviour reaching a much
+  larger share of runs.
+* **The distance no longer lists references it cannot separate.** Past 40 references inside the
+  close-match margin the margin is measuring nothing: mash derives the distance from the shared-hash
+  count, so at a low count every reference sharing the same few hashes gets exactly the same distance and
+  ties with the best. A sample sharing 4 of 1000 hashes was seen to tie 127 references across twelve
+  species, which put 10 kB of genome names in one `Notes` cell and 128 rows in the report. The note now
+  gives the count and says the distance cannot separate them; the densest real case over the 432 packaged
+  genomes is 16, so nothing legitimate is suppressed.
 * **A sample that matches nothing no longer carries 431 close matches.** A read set that shares no hashes
   sits at distance 1 from every reference, so every one of them tied with the closest and was reported as
   nearly as close — with 16 genomes that was invisible, with 432 it put a whole reference table in the
   sample's block of the quality assurance report and in `close_matches` in the JSON. A sample that was not
-  identified now has no close matches, which is what the report was always meant to say.
+  identified now has no close matches, which is what the report was always meant to say. The caption over
+  that table no longer claims a ranking the distances do not support either: where every reference is the
+  same distance away it says so, instead of "closest first" over an arbitrary five of a 432-way tie and
+  "the other 427 are further away" about references that are not.
 * **One half of a custom pair is now an error instead of a silent `ND`.** `--sketch` and `--references` go
   together, and a 1.x command line that passed only `--sketch` fell back on the 16-genome table, which
   matched it. It now falls back on the extended table, whose IDs are GCA file names, so nothing in such a

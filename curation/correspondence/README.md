@@ -52,3 +52,10 @@ than assuming the recipient knows it.
 * `single_prjna1290416.txt` — their species is **correct**. The library is mixed, which is why
   sketch-based tools report the run as not identified, and the message explains that rather than asking
   for anything.
+
+## The sent letters are kept verbatim
+
+Three of the five letters already sent describe a "431-genome reference set". The set was 431 when they
+went out on 2026-11-07 and is 432 now, so the drafts still here were corrected and the sent files were
+not. They are left exactly as sent, because that is what the recipients hold; `../mislabelled_records.md`
+records the date each one went. Do not "fix" a figure in a sent letter.

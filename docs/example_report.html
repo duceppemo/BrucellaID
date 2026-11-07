@@ -234,14 +234,14 @@ footer {
 </svg>
 </div>
 <h1>Quality assurance report</h1>
-<p class="sub">4 sample(s): 4 ok, 0 with a warning, 0 failed. BrucellaID 2.0.0, run on 2026-11-07T16:43:59-05:00.</p>
+<p class="sub">4 sample(s): 4 ok, 0 with a warning, 0 failed. BrucellaID 2.0.0, run on 2026-11-07T17:31:25-05:00.</p>
 <div class="panel" style="border-color:var(--accent);background:var(--accent-soft)">This is an example report: a real run of the four public read sets of the BrucellaID tutorial, produced by scripts/make_example_report.py, which leaves out the computer it ran on. The user account, the host name, the operating system and the working directory read [removed], and the input and reference files are named without the folder they were in. Everything else is as BrucellaID wrote it. A report of your own names them all, which is what makes it worth signing.</div>
 <nav class="toc"><b>Contents</b><ol><li><a href="#summary">Summary</a></li><li><a href="#warnings">Notes, warnings and errors</a></li><li><a href="#samples">Samples</a></li><li><a href="#methods">Definitions and methods</a></li><li><a href="#run">Run information</a></li></ol></nav>
 <h2 id="summary" class="first"><span class="n">1</span> Summary</h2>
 <div class="chips"><span class="chip"><b>4</b> sample(s)</span><span class="chip ok"><b>4</b> ok</span></div>
 <dl class="facts">
-<dt>Run started</dt><dd class="wrap">2026-11-07T16:43:59-05:00</dd>
-<dt>Run finished</dt><dd class="wrap">2026-11-07T16:44:33-05:00</dd>
+<dt>Run started</dt><dd class="wrap">2026-11-07T17:31:25-05:00</dd>
+<dt>Run finished</dt><dd class="wrap">2026-11-07T17:32:00-05:00</dd>
 <dt>Operator</dt><dd class="wrap">M-O Duceppe</dd>
 <dt>Command</dt><dd class="wrap">python3 scripts/make_example_report.py reads</dd>
 </dl>
@@ -264,12 +264,12 @@ footer {
 <caption>Errors first, then the notes of each sample, in the order they were raised. A note on a sample whose status is &quot;ok&quot; is a remark, not a problem.</caption>
 <thead><tr><th>Sample</th><th>Status</th><th>What it says</th></tr></thead>
 <tbody>
-<tr><td>ERR2136546</td><td><span class="pill ok">ok</span></td><td>loose match: the closest reference is 0.00652 away and shares 773/1000 hashes, where a read set of a species the sketch holds usually matches within 0.005. The reads may hold more than Brucella, or this lineage may have no near relative in the sketch; the species named is still the closest one</td></tr>
+<tr><td>ERR2136546</td><td><span class="pill ok">ok</span></td><td>loose match: the closest reference is 0.00652 away and shares 773/1000 hashes, where a read set of a species the sketch holds is expected to match within 0.005 (--loose-distance). The reads may hold more than Brucella, this lineage may have no near relative in the sketch, or the k-mer copy threshold may be low for this library (try --min-kmer-copies above the derived value); the species named is still the closest one</td></tr>
 <tr><td>ERR2136546</td><td><span class="pill ok">ok</span></td><td>nearly as close: GCA_000741995.1_ASM74199v1_genomic.fna.gz (Brucella suis, 768/1000 hashes), 3 other Brucella canis genome(s)</td></tr>
 <tr><td>ERR2136546</td><td><span class="pill ok">ok</span></td><td>MASH cannot separate Brucella canis and Brucella suis: ST 20 is Brucella canis in 70 of 70 isolate(s), which agrees with the closest reference</td></tr>
 <tr><td>ERR3454415</td><td><span class="pill ok">ok</span></td><td>nearly as close: 9 other Brucella abortus genome(s)</td></tr>
 <tr><td>SRR19520329</td><td><span class="pill ok">ok</span></td><td>nearly as close: 6 other Brucella melitensis genome(s)</td></tr>
-<tr><td>SRR8550484</td><td><span class="pill ok">ok</span></td><td>loose match: the closest reference is 0.00645 away and shares 775/1000 hashes, where a read set of a species the sketch holds usually matches within 0.005. The reads may hold more than Brucella, or this lineage may have no near relative in the sketch; the species named is still the closest one</td></tr>
+<tr><td>SRR8550484</td><td><span class="pill ok">ok</span></td><td>loose match: the closest reference is 0.00645 away and shares 775/1000 hashes, where a read set of a species the sketch holds is expected to match within 0.005 (--loose-distance). The reads may hold more than Brucella, this lineage may have no near relative in the sketch, or the k-mer copy threshold may be low for this library (try --min-kmer-copies above the derived value); the species named is still the closest one</td></tr>
 <tr><td>SRR8550484</td><td><span class="pill ok">ok</span></td><td>nearly as close: 2 other Brucella suis genome(s)</td></tr>
 </tbody></table>
 <h2 id="samples"><span class="n">3</span> Samples</h2>
@@ -418,7 +418,7 @@ footer {
 <tr><td>omp25</td><td>6</td><td>172</td><td>omp25_2 (98)</td><td>74</td><td>1.76</td><td></td></tr>
 </tbody></table>
 <h4>Notes</h4><ul>
-<li class="wrap">loose match: the closest reference is 0.00652 away and shares 773/1000 hashes, where a read set of a species the sketch holds usually matches within 0.005. The reads may hold more than Brucella, or this lineage may have no near relative in the sketch; the species named is still the closest one</li>
+<li class="wrap">loose match: the closest reference is 0.00652 away and shares 773/1000 hashes, where a read set of a species the sketch holds is expected to match within 0.005 (--loose-distance). The reads may hold more than Brucella, this lineage may have no near relative in the sketch, or the k-mer copy threshold may be low for this library (try --min-kmer-copies above the derived value); the species named is still the closest one</li>
 <li class="wrap">nearly as close: GCA_000741995.1_ASM74199v1_genomic.fna.gz (Brucella suis, 768/1000 hashes), 3 other Brucella canis genome(s)</li>
 <li class="wrap">MASH cannot separate Brucella canis and Brucella suis: ST 20 is Brucella canis in 70 of 70 isolate(s), which agrees with the closest reference</li>
 </ul>
@@ -566,7 +566,7 @@ footer {
 <tr><td>omp25</td><td>2</td><td>330</td><td>omp25_21 (250)</td><td>80</td><td>1.32</td><td></td></tr>
 </tbody></table>
 <h4>Notes</h4><ul>
-<li class="wrap">loose match: the closest reference is 0.00645 away and shares 775/1000 hashes, where a read set of a species the sketch holds usually matches within 0.005. The reads may hold more than Brucella, or this lineage may have no near relative in the sketch; the species named is still the closest one</li>
+<li class="wrap">loose match: the closest reference is 0.00645 away and shares 775/1000 hashes, where a read set of a species the sketch holds is expected to match within 0.005 (--loose-distance). The reads may hold more than Brucella, this lineage may have no near relative in the sketch, or the k-mer copy threshold may be low for this library (try --min-kmer-copies above the derived value); the species named is still the closest one</li>
 <li class="wrap">nearly as close: 2 other Brucella suis genome(s)</li>
 </ul>
 </section>
@@ -585,8 +585,8 @@ footer {
 <dt>Computer</dt><dd class="wrap">[removed]</dd>
 <dt>Operating system</dt><dd class="wrap">[removed]</dd>
 <dt>Working directory</dt><dd class="wrap">[removed]</dd>
-<dt>Started</dt><dd class="wrap">2026-11-07T16:43:59-05:00</dd>
-<dt>Finished</dt><dd class="wrap">2026-11-07T16:44:33-05:00</dd>
+<dt>Started</dt><dd class="wrap">2026-11-07T17:31:25-05:00</dd>
+<dt>Finished</dt><dd class="wrap">2026-11-07T17:32:00-05:00</dd>
 <dt>Command</dt><dd class="wrap">python3 scripts/make_example_report.py reads</dd>
 </dl>
 <h3>Software</h3>
@@ -625,7 +625,7 @@ footer {
 <li class="wrap">Jolley KA, Bray JE, Maiden MCJ. Open-access bacterial population genomics: BIGSdb software, the PubMLST.org website and their applications. Wellcome Open Research 2018;3:124. doi:10.12688/wellcomeopenres.14826.1</li>
 <li class="wrap">Bushnell B. BBTools. https://sourceforge.net/projects/bbmap/</li>
 </ol>
-<footer>BrucellaID 2.0.0 &middot; 2026-11-07T16:43:59-05:00 &middot; [removed]@[removed] &middot; this report is self-contained: it needs no network to render.</footer>
+<footer>BrucellaID 2.0.0 &middot; 2026-11-07T17:31:25-05:00 &middot; [removed]@[removed] &middot; this report is self-contained: it needs no network to render.</footer>
 </main>
 </body>
 </html>

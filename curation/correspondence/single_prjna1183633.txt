@@ -20,15 +20,15 @@ That half of the clade carries none of the classical Brucella MLST alleles, and
 neither the Bruce-ladder nor the real-time assays we use cover it, so distance is the
 only method available here.
 
-What the distances show, over a curated 431-genome reference set covering all 30 named
+What the distances show, over a curated 432-genome reference set covering all 30 named
 species of the clade:
 
   - 0.0076 from the nearest B. anthropi genome, and all eight nearest matches are
     B. anthropi.
   - 0.0381, 0.0383 and 0.0394 from the three deposited assemblies of the B. cytisi
     type strain (ESC1, LMG 22713, DSM 19778). Those three agree with each other to
-    0.0026, so they form a tight cluster your isolate is not in; they rank 89th, 90th
-    and 91st of the 431 references.
+    0.0012-0.0026, so they form a tight cluster your isolate is not in; they rank 89th, 90th
+    and 91st of the 432 references.
   - The library assembles to 4.84 Mb, which is the size range of the former
     Ochrobactrum species, so the isolate is at least in the right part of the clade.
 

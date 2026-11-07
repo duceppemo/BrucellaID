@@ -10,7 +10,7 @@ Brucella read set in ENA, and one of your records came up.
 
 Three lines of evidence, from methods that share no code and no reference data:
 
-  - Mash distance 0.00056 to the nearest B. melitensis genome in a curated 431-genome
+  - Mash distance 0.00056 to the nearest B. melitensis genome in a curated 432-genome
     reference set covering all 30 named species of the clade. That is as close as two
     genomes of one species normally get.
   - MLST-9 (Whatmore et al.) sequence type 7, which the PubMLST isolate database

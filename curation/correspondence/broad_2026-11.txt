@@ -1,13 +1,15 @@
-Subject: Twelve Brucella sequencing records from 2012-2013 whose deposited species
-         does not match the sequence
+Subject: Ten Brucella sequencing records from 2012-2013 - nine whose deposited
+         species does not match the sequence, and one contaminated library
 
 Dear colleagues,
 
 We have been validating a Brucella species-identification tool against every public
-Brucella read set in ENA. Twelve records deposited by the Broad Institute between
-December 2012 and August 2013, across six studies, do not match their deposited
-species. Of the 19 runs in those studies we were able to analyse 14; the other five
-fell outside our size filters.
+Brucella read set in ENA. Ten records deposited by the Broad Institute between
+December 2012 and August 2013, across six studies, are worth a look - two BioSamples
+and eight runs, counting SAMN00811170 once rather than once per library. Nine do not
+match their deposited species; the tenth, SRR952243, does match, but the library is
+dominated by a contaminant and I have set it apart below. Of the 19 runs in those
+studies we were able to analyse 14; the other five fell outside our size filters.
 
 I am conscious these are thirteen-year-old records from an early-generation project
 and that the material behind them may be long gone. I am not expecting anyone to
@@ -19,7 +21,7 @@ Two different problems, and they need different handling.
 
 METHOD, BRIEFLY
 
-Mash distance over a curated 431-genome reference set covering all 30 named species of
+Mash distance over a curated 432-genome reference set covering all 30 named species of
 the Brucella clade; MLST-9 (Whatmore et al.) called from reads and read off assemblies
 by exact allele match; in silico Bruce-ladder, Suis-ladder and AMOS PCR; and the
 real-time assays of Hoover et al. 2026 (doi:10.1128/spectrum.02974-25) run in silico.
@@ -52,11 +54,14 @@ species on one travels further than a wrong species on an ordinary isolate.
     be worth checking too: the sequence suggests the mix-up predates the sequencing.
 
 
-2. EIGHT LIBRARIES THAT DO NOT CONTAIN THE DEPOSITED ORGANISM
+2. SEVEN LIBRARIES THAT DO NOT CONTAIN THE DEPOSITED ORGANISM, AND ONE THAT DOES
 
-These share nothing meaningful with any Brucella genome - between zero and 146 of
-1000 k-mer hashes, where a real Brucella library at usable depth shares 900 or more.
-We identified what they do contain, since "not Brucella" is less useful than a name.
+Seven of these eight share nothing meaningful with any Brucella genome - between zero
+and 146 of 1000 k-mer hashes, where a real Brucella library at usable depth shares 900
+or more. We identified what they do contain, since "not Brucella" is less useful than
+a name. The eighth, SRR952243, is the exception and is not a mislabel at all: its
+deposited species looks right and the library is simply dominated by something else.
+It is last below, and I would treat it separately.
 
   PRJNA52097 - SRR825216, SRR825217, SRR825218, deposited as B. pinnipedialis
 

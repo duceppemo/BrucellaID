@@ -123,6 +123,21 @@ def reference_sketch(path=None):
     return path or data_path(EXTENDED_SKETCH_FILE)
 
 
+NAMES_LISTED = 8  # Genomes named in a mismatch message before it falls back to a count
+
+
+def names(items, listed=NAMES_LISTED):
+    """
+    Some of a list of genome names, for a log line: all of them when there are few, else a few and a count.
+
+    A lone --sketch of eight genomes against the 432-genome default table disagrees on 424 of them, and
+    naming every one makes a single 19 kB log line. The count is the useful part.
+    """
+    if len(items) <= listed:
+        return ', '.join(items)
+    return '{} and {} more'.format(', '.join(items[:listed]), len(items) - listed)
+
+
 def compare_with_sketch(sketch_ids, references):
     """
     What the MASH sketch and the reference table disagree on.
@@ -139,8 +154,8 @@ def compare_with_sketch(sketch_ids, references):
     messages = []
     if missing:
         messages.append('{} genome(s) of the MASH sketch are not in the reference table, and a sample closest to '
-                        'one of them is reported without a species: {}'.format(len(missing), ', '.join(missing)))
+                        'one of them is reported without a species: {}'.format(len(missing), names(missing)))
     if unused:
         messages.append('{} genome(s) of the reference table are not in the MASH sketch: {}'.format(
-            len(unused), ', '.join(unused)))
+            len(unused), names(unused)))
     return messages

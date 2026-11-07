@@ -30,6 +30,7 @@ from .qa import (
     close_hits,
     counted,
     groups,
+    hits_caption,
     margin,
     status,
     top_hits,
@@ -437,7 +438,8 @@ def identification_table(result, references):
         return []
     best = result.identification.best
     out = []
-    shown, hidden = top_hits(close_hits(result, references))
+    all_hits = close_hits(result, references)
+    shown, hidden = top_hits(all_hits)
     rows = []
     for hit, reference, close in shown:
         row_class = 'best' if hit is best else ('close' if close else '')
@@ -446,10 +448,7 @@ def identification_table(result, references):
                       '{:.6f}'.format(hit.distance), '{:.3f}'.format(hit.identity),
                       '{}/{}'.format(hit.shared_hashes, hit.total_hashes), '{:.3g}'.format(hit.p_value)],
                      row_class))
-    caption = 'Closest first. A shaded row is too close to the first to be separated by distance alone.'
-    if hidden:
-        caption += ' The other {} reference(s) are further away; brucellaid_mash.tsv has every ' \
-                   'distance.'.format(hidden)
+    caption = hits_caption(all_hits, hidden)
     out.append(table(['Reference genome', 'Species', 'Strain', 'Distance', 'Identity %', 'Shared hashes',
                       'p-value'], rows, caption=caption))
     return out

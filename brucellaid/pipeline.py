@@ -5,7 +5,13 @@ from concurrent import futures
 from dataclasses import dataclass, field
 
 from .errors import BrucellaIDError
-from .mash import DEFAULT_MIN_HASHES, KMER_COPIES_AUTO, LOOSE_MATCH_DISTANCE, identify
+from .mash import (
+    CLOSE_MATCH_MARGIN,
+    DEFAULT_MIN_HASHES,
+    KMER_COPIES_AUTO,
+    LOOSE_MATCH_DISTANCE,
+    identify,
+)
 from .mlst import DEFAULT_MIN_READS, UNKNOWN, run_mlst
 from .references import load_references, lookup, reference_sketch
 from .seal import DEFAULT_KMER_SIZE, DEFAULT_MISMATCHES
@@ -86,10 +92,19 @@ def species_notes(identification, references, loose_distance=LOOSE_MATCH_DISTANC
                      'reported'.format(best.reference))
     if best.distance > loose_distance:
         notes.append('loose match: the closest reference is {:.5f} away and shares {}/{} hashes, where a read '
-                     'set of a species the sketch holds usually matches within {:g}. The reads may hold more '
-                     'than Brucella, or this lineage may have no near relative in the sketch; the species named '
-                     'is still the closest one'
+                     'set of a species the sketch holds is expected to match within {:g} (--loose-distance). '
+                     'The reads may hold more '
+                     'than Brucella, this lineage may have no near relative in the sketch, or the k-mer copy '
+                     'threshold may be low for this library (try --min-kmer-copies above the derived value); '
+                     'the species named is still the closest one'
                      .format(best.distance, best.shared_hashes, best.total_hashes, loose_distance))
+    if identification.undiscriminating:
+        notes.append('the distance cannot separate the references here: {} of them sit within {:g} of the '
+                     'closest, because sharing only {}/{} hashes leaves the distance too coarse to tell '
+                     'them apart. No second species is named from it, and the species named is still the '
+                     'closest one; brucellaid_mash.tsv has every distance'
+                     .format(identification.undiscriminating, CLOSE_MATCH_MARGIN, best.shared_hashes,
+                             best.total_hashes))
     close = identification.close_matches
     if close:
         parts, same_species = [], 0

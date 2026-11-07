@@ -27,6 +27,7 @@ tiled over the real MLST alleles, and are skipped if `mash` or `seal.sh` is not 
 the package, so please keep it there.
 
 Lint with [ruff](https://docs.astral.sh/ruff/): `ruff check .`, or install the git hook with `pre-commit install`.
+Neither is in `environment.yml`, so `pip install ruff pre-commit` first.
 `ruff format` is **not** used: the code is wrapped by hand to read as prose, and reformatting it would rewrite
 most of the files for nothing.
 The tests run on GitHub Actions for Python 3.10, 3.12 and 3.14.
@@ -39,16 +40,20 @@ The reference data in `brucellaid/data/`, plus the logo the reports carry:
 
 | File | What it is |
 | --- | --- |
-| `references.msh` | The MASH sketch of the 16 *Brucella* reference genomes, as vSNP assembled it |
-| `references.tsv` | What each genome of the sketch is: species, biovar, strain, NCBI accessions |
+| `references_extended.msh` | The MASH sketch of the 432 curated genomes a run identifies against by default from 2.0: all 30 named species of the clade, plus the lineages with no name yet |
+| `references_extended.tsv` | What each of those genomes is. Its `code` is the species epithet (`abortus5`, `anthropi`), not a vSNP code |
+| `references.msh` | The MASH sketch of the 16 *Brucella* reference genomes, as vSNP assembled it. `--reference-set vsnp` selects it; it was the default before 2.0 |
+| `references.tsv` | What each genome of that sketch is: vSNP species code, species, biovar, strain, NCBI accessions |
 | `mlst_alleles.fasta` | The 309 alleles of the nine MLST-9 loci |
 | `mlst_profiles.tsv` | The 122 sequence types, as allele numbers |
-| `mlst_st_species.tsv` | The species of each sequence type, counted over PubMLST's isolate database |
+| `mlst_st_species.tsv` | The species of 118 of the 122 sequence types, counted over the 3,403 isolates of PubMLST's isolate database that carry one |
 | `logo.svg`, `logo.png` | The logo of the reports, written by `assets/make_logo.py` |
 
-`scripts/make_mlst_data.py` rebuilds the two MLST files from PubMLST, `scripts/make_st_species.py` rebuilds the ST
-to species table from PubMLST's isolate database, and `scripts/make_reference_data.py` rebuilds the sketch from
-the accessions of `references.tsv`. Run them, check what changed, and say in the pull request which
+`scripts/make_mlst_data.py` rebuilds the two MLST files from PubMLST and `scripts/make_st_species.py` rebuilds
+the ST to species table from PubMLST's isolate database. The two sketches have a script each, and they are not
+interchangeable: `scripts/make_extended_references.py` rebuilds the 432-genome default from the accessions of
+`references_extended.tsv`, and `scripts/make_reference_data.py` rebuilds the 16-genome vSNP sketch from the
+accessions of `references.tsv`. Run them, check what changed, and say in the pull request which
 day the data was downloaded; `wiki/Changelog.md` records it too. A sketch must keep MASH's defaults (k = 21,
 1000 hashes), because the threshold of 150 shared hashes is read against that sketch size.
 
@@ -67,17 +72,21 @@ those changes would be overwritten. Edit the files in `wiki/` in your pull reque
 ## Releases (maintainers)
 1. Update the version in `brucellaid/__init__.py` and `CITATION.cff` (`version` and `date-released`).
 2. Rename "Unreleased" in `wiki/Changelog.md` to the version and date.
-3. Refresh the example report of the wiki if the report changed: run BrucellaID over the four read sets of the
-   [tutorial](wiki/Tutorial.md), then
-   `python3 scripts/make_example_report.py <folder of the tutorial reads>`, which runs them and writes
+3. Refresh the example report in `docs/` if the report changed: fetch the four read sets of the
+   [tutorial](wiki/Tutorial.md), then run
+   `python3 scripts/make_example_report.py <folder of the tutorial reads>`, which analyses them itself and writes
    `docs/example_report.html` and `docs/example_report.pdf` with the computer they ran on left out, refusing
    to write either if a value it had to remove survived. Never commit a report straight from a run: it names
    the host, the account and every path. `docs/` is published at https://duceppemo.github.io/BrucellaID/ by
    GitHub Pages.
-4. Commit, tag (`git tag -a vX.Y.Z`), push the commit and the tag, then create the GitHub release once the tests pass.
+4. Push the commit to `main` and wait for `tests.yml` to go green **before** tagging: that workflow does not
+   run on tags, so a tag is only as tested as the branch commit it points at. Then
+   `git tag -a vX.Y.Z`, push the tag, and create the GitHub release.
 5. Publishing the GitHub release automatically uploads the package to
    [PyPI](https://pypi.org/project/brucellaid/) (`.github/workflows/publish.yml`, trusted publishing: no token
    needed; the release tag must match the package version), and Zenodo archives it and mints a DOI. Add that DOI to
-   `CITATION.cff` and to the badge in `README.md`.
+   `CITATION.cff` and to the badge in `README.md` in a follow-up commit, since neither exists until the release
+is published.
 6. Bioconda: update `recipe/meta.yaml` (version and sha256 of the new GitHub tarball). Bioconda's bot usually opens
-   the pull request to `bioconda-recipes` on its own for new releases; otherwise copy the recipe and open it by hand.
+   the pull request to `bioconda-recipes` on its own for new releases, but only once the recipe is already in
+that repository; until the first one is merged, copy the recipe and open the pull request by hand.

@@ -38,7 +38,9 @@ def test_the_vsnp_table_of_the_package():
     assert {r.species for r in references.values()} == {
         'Brucella abortus', 'Brucella melitensis', 'Brucella suis', 'Brucella canis', 'Brucella ovis',
         'Brucella ceti', 'Brucella microti', 'Brucella neotomae'}
-    # Every code is unique: the legacy xlsx report writes it as the species
+    # Every vSNP code is unique, one per genome, which is what the legacy xlsx report was written against.
+    # The extended table does not share that property and is not meant to: its codes are species
+    # epithets, so 432 genomes carry 37 distinct codes (80 of them "anthropi").
     assert len({r.code for r in references.values()}) == len(references)
 
 
@@ -97,6 +99,20 @@ def test_compare_with_sketch():
     assert len(messages) == 2
     assert 'not in the reference table' in messages[0] and 'c.fasta' in messages[0]
     assert 'not in the MASH sketch' in messages[1] and 'b.fasta' in messages[1]
+
+
+def test_compare_with_sketch_counts_the_names_it_does_not_list():
+    """A lone --sketch of a few genomes disagrees with 424 of the 432, which is not a log line."""
+    rows = ['g{:03d}.fasta\tc{:03d}\tBrucella x'.format(i, i) for i in range(30)]
+    references = parse_references(table(*rows))
+    message = compare_with_sketch(['g000.fasta'], references)[0]
+    assert '29 genome(s) of the reference table are not in the MASH sketch' in message
+    assert 'and 21 more' in message
+    assert message.count('.fasta') == 8
+    # Few enough, and every one is named
+    short = compare_with_sketch(['g{:03d}.fasta'.format(i) for i in range(25)], references)[0]
+    assert 'more' not in short
+    assert short.count('.fasta') == 5
 
 
 def test_the_extended_table_of_the_package():

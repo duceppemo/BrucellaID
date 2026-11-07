@@ -162,6 +162,49 @@ def test_html_report_keeps_a_close_match_that_falls_past_the_fifth_row():
     assert hidden == 6
 
 
+def test_hits_caption_does_not_claim_a_ranking_the_distances_do_not_support():
+    """
+    A read set that shares no hashes sits at distance 1 from every reference.
+
+    "Closest first" and "the others are further away" are then both false: with the 432-genome default
+    set the five rows shown are an arbitrary slice of a 432-way tie.
+    """
+    from brucellaid.mash import MashHit
+    from brucellaid.qa import hits_caption
+
+    def rows(*distances):
+        return [(MashHit('r{}.fna.gz'.format(i), d, 0.0, 0, 1000), None, False)
+                for i, d in enumerate(distances)]
+
+    tied = hits_caption(rows(*([1.0] * 432)), 427)
+    assert 'arbitrary few of a tie' in tied
+    assert 'these 432 reference genomes is the same distance' in tied
+    assert 'further away' not in tied
+    assert 'brucellaid_mash.tsv has every distance' in tied
+
+    ranked = hits_caption(rows(0.001, 0.002, 0.003), 1)
+    assert ranked.startswith('Closest first.')
+    assert 'The other 1 reference(s) are further away' in ranked
+
+    # Nothing hidden: no pointer at the full table, and no tie wording for a single reference
+    assert hits_caption(rows(0.001, 0.002), 0) == (
+        'Closest first. A shaded row is too close to the first to be separated by distance alone.')
+    assert hits_caption(rows(1.0), 0).startswith('Closest first.')
+    assert hits_caption([], 0).startswith('Closest first.')
+
+
+def test_both_reports_say_a_tie_is_a_tie(tmp_path):
+    """The HTML and the PDF share the caption, so neither can drift from the other."""
+    tied = ''.join('r{}.fna.gz\tq\t1\t1\t0/1000\n'.format(i) for i in range(8))
+    result = good('nothing', hits=tied)
+    markup = htmlreport.build([result], REFERENCES, RUN)
+    assert 'arbitrary few of a tie' in markup
+    assert 'further away' not in markup
+    pdf = tmp_path / 'r.pdf'
+    pdfreport.write([result], REFERENCES, RUN, pdf)
+    assert pdf.stat().st_size > 0
+
+
 def test_html_report_explains_how_the_species_was_decided():
     markup = htmlreport.build([good('canis', hits=CANIS_HITS, st='20')], REFERENCES, RUN)
     assert 'ST 20 is Brucella canis in 70 of 70 isolate(s)' in markup

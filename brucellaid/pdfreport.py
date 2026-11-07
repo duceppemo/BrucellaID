@@ -30,6 +30,7 @@ from .qa import (
     close_hits,
     counted,
     groups,
+    hits_caption,
     margin,
     status,
     top_hits,
@@ -423,7 +424,8 @@ class Report:
         if result.identification is None:
             return
         best = result.identification.best
-        shown, hidden = top_hits(close_hits(result, references))
+        all_hits = close_hits(result, references)
+        shown, hidden = top_hits(all_hits)
         rows, highlight = [], {}
         for index, (hit, reference, close) in enumerate(shown):
             if hit is best or close:
@@ -432,10 +434,7 @@ class Report:
                          reference.strain if reference else '',
                          '{:.6f}'.format(hit.distance), '{:.3f}'.format(hit.identity),
                          '{}/{}'.format(hit.shared_hashes, hit.total_hashes)])
-        caption = 'Closest first. A shaded row is too close to the first to be separated by distance alone.'
-        if hidden:
-            caption += ' The other {} reference(s) are further away; brucellaid_mash.tsv has every ' \
-                       'distance.'.format(hidden)
+        caption = hits_caption(all_hits, hidden)
         self.para(caption, 'cell')
         self.table(['Reference genome', 'Species', 'Strain', 'Distance', 'Identity %', 'Shared hashes'],
                    rows, highlight=highlight, keep=False)

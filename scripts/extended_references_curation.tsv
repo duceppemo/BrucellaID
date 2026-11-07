@@ -1,8 +1,8 @@
 # How the 432 genomes of the extended reference set were chosen, from the 454 dereplicated
 # representatives of the mashID Brucella pack's source collection (figshare article 33970168, version 4;
 # 2,022 NCBI taxon-234 assemblies, dereplicated at a MASH distance of 0.0003).
-# Validated on simulated reads of all 2,022 assemblies: 1544/1544 held-out samples of a named species
-# right once the seven mislabelled truth genomes below are accounted for (wiki, Validation).
+# Validated on simulated reads of all 2,022 assemblies: 1543/1543 held-out samples of a named species
+# right once the six mislabelled truth genomes below are accounted for (wiki, Validation).
 # Every genome not listed here was kept as it was.
 # The DROP-SP cutoff of 0.004 was set on the classical species and does not transfer: it dropped three
 # genomes that are not twins at all. GCA_000163135.1 is B. papionis (now a RELABEL), and

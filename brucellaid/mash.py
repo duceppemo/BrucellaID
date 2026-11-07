@@ -23,6 +23,9 @@ DEFAULT_MIN_HASHES = 150
 # A second reference within this distance of the best one is reported as a close match: the Brucella genomes
 # differ by little, and the biovar references in particular are nearly identical.
 CLOSE_MATCH_MARGIN = 0.0005
+# More references than this within the margin means the margin is not separating anything: see
+# Identification.undiscriminating. The densest real case over the 432 packaged genomes is 16.
+MAX_CLOSE_MATCHES = 40
 # Beyond this distance the closest reference is reported as a loose match. It says nothing about which species
 # is right: it says the reads are not close to anything in the sketch, which happens when the library holds
 # more than one organism and when the sample belongs to a lineage the sketch has no near relative for. Measured
@@ -38,8 +41,15 @@ LOOSE_MATCH_DISTANCE = 0.005
 # the sketch. Measured on 225 real runs plus one library strided from 5x to 92x, a fixed 2 starts losing the
 # true reference above about 240x (the shared hashes fall below the --min-hashes threshold and nothing is
 # reported) and a fixed 10 destroys a 5x sketch, so the value is derived from the coverage instead of being
-# a constant. One extra required copy per 20x fits every one of those measurements.
-MIN_KMER_COPIES = 2             # Floor, and the right value below about 50x
+# a constant. One extra required copy per 20x fits the sweep those numbers came from.
+#
+# It is not generous enough everywhere. Two of the four tutorial libraries keep recovering hashes when the
+# threshold is raised by hand well past the derived value: SRR8550484 at ~69x goes from 775/1000 at 0.0065
+# to 990/1000 at 0.00024 with 12 copies, and ERR2136546 at ~47x from 773/1000 at 0.0065 to 989/1000 at
+# 0.00026 with 4. The species and the ST are unaffected, and every validated figure rests on the values
+# below, so they stand for 2.0 -- but the derivation is due a second look, and a distance from a default
+# run is a floor on the match rather than a measurement of it.
+MIN_KMER_COPIES = 2             # Floor, and the usual value below about 50x
 MAX_KMER_COPIES = 20            # Ceiling: beyond about 400x the sketch is already stable
 DEPTH_PER_KMER_COPY = 20        # One more required copy per this much coverage
 KMER_COPIES_AUTO = 0            # "Derive it from the coverage", the default
@@ -370,18 +380,42 @@ class Identification:
         return self.best.shared_hashes >= self.min_hashes
 
     @property
+    def within_margin(self):
+        """Every other reference within CLOSE_MATCH_MARGIN of the closest one, closest first."""
+        return [hit for hit in self.hits[1:] if hit.distance - self.best.distance <= CLOSE_MATCH_MARGIN]
+
+    @property
+    def undiscriminating(self):
+        """
+        How many references sit within the margin when that number is too large to be evidence, else 0.
+
+        A close match is meant to say "MASH could not choose between these two". It can only say that
+        while the distance is resolved finely enough to separate them, and at a low shared-hash count it
+        is not: mash derives the distance from the shared count, so every reference sharing the same few
+        hashes gets exactly the same distance and ties with the best one. Sharing 4 of 1000 hashes has
+        been seen to tie 127 references across twelve species, which is not ambiguity between two
+        candidates but an absence of measurement.
+
+        The cap is set against the densest real case: over the 432 genomes of the default set, comparing
+        each with all the others, at most 16 ever fall within the margin of a genome's closest hit, and
+        the 99th percentile is 13. Anything past 40 is the degenerate kind.
+        """
+        count = len(self.within_margin)
+        return count if count > MAX_CLOSE_MATCHES else 0
+
+    @property
     def close_matches(self):
         """
         The other references within CLOSE_MATCH_MARGIN of the closest one, closest first.
 
-        None when the sample was not identified. A read set that shares no hashes sits at distance 1 from
-        every reference, so every one of them ties with the closest and would be called a close match --
-        431 of them against the 432-genome default set, which is a reference table in place of a report
-        rather than the evidence for a call that was not made.
+        Empty when the sample was not identified, because a read set that shares no hashes sits at
+        distance 1 from every reference and would tie with all 431 others; and empty when the margin is
+        not discriminating, which `undiscriminating` explains. Either way the report says so in words
+        instead of printing a reference table, and brucellaid_mash.tsv still holds every distance.
         """
-        if not self.identified:
+        if not self.identified or self.undiscriminating:
             return []
-        return [hit for hit in self.hits[1:] if hit.distance - self.best.distance <= CLOSE_MATCH_MARGIN]
+        return self.within_margin
 
 
 def coverage_text(coverage):

@@ -242,6 +242,29 @@ def close_hits(result, references):
     return rows
 
 
+def hits_caption(rows, hidden):
+    """
+    What to say under the table of closest reference genomes.
+
+    "Closest first", and "the rest are further away", are both untrue when every hit is the same distance
+    away, which is what a read set that shares no hashes with anything gives: all 432 references of the
+    default set sit at distance 1, so the handful shown is an arbitrary slice of a tie and the ones left
+    out are not further away at all. Saying so is the point of the table.
+
+    :param rows: every row from close_hits(), not only the ones being shown
+    :param hidden: how many top_hits() left out
+    """
+    if len(rows) > 1 and len({hit.distance for hit, _, _ in rows}) == 1:
+        caption = ('Every one of these {} reference genomes is the same distance from the reads, so the '
+                   'rows below are an arbitrary few of a tie rather than the closest.'.format(len(rows)))
+        return caption + ' brucellaid_mash.tsv has every distance.' if hidden else caption
+    caption = 'Closest first. A shaded row is too close to the first to be separated by distance alone.'
+    if hidden:
+        caption += (' The other {} reference(s) are further away; brucellaid_mash.tsv has every '
+                    'distance.'.format(hidden))
+    return caption
+
+
 def top_hits(rows, top=TOP_HITS):
     """
     The hits a report shows: the closest few, and any other that is near enough to be in the running.

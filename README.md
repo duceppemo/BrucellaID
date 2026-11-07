@@ -81,7 +81,7 @@ configure.
   `stat_alignment_summary_<date>.xlsx` of the first version.
 * **Nothing to configure**: only the Python standard library, plus MASH and BBTools. The two optional
   output formats, xlsx and PDF, are the only things that want a package, and neither is needed.
-* **Tested**: 365 tests, 100% coverage, end to end on a synthetic genome and on reads tiled over the real
+* **Tested**: 377 tests, 100% coverage, end to end on a synthetic genome and on reads tiled over the real
   MLST alleles.
 * **Validated** against the vSNP reference set, genome for genome (`--reference-set vsnp`): reads
   simulated from 13 of its 16 genomes, 7 of its 8 species, with every species and closest reference right

@@ -11,7 +11,7 @@ metadata note.
 
 METHOD, BRIEFLY
 
-Mash distance over a curated 431-genome reference set covering all 30 named species of
+Mash distance over a curated 432-genome reference set covering all 30 named species of
 the clade, and MLST-9 (Whatmore et al.) called from the reads and read off the
 assemblies by exact allele match. The two share no code and no reference data. The
 real-time assays of Hoover et al. 2026 (doi:10.1128/spectrum.02974-25), run in silico,

@@ -273,6 +273,13 @@ def main(argv=None):
             # through their own defaults; only the 16 vSNP genomes have to be named here.
             args.sketch = data_path(VSNP_SKETCH_FILE)
             args.references = data_path(VSNP_REFERENCES_FILE)
+        elif args.xlsx and not args.references and not args.sketch:
+            # The legacy report exists for pipelines that read vSNP's species codes, and from 2.0 the
+            # default table does not carry them: its codes are species epithets. Saying so is cheaper than
+            # a pipeline silently matching nothing. A custom table is the caller's own business.
+            log.warning('--xlsx writes the reference table\'s code in its "species" column, and against '
+                        'the default set that is a species epithet ("abortus", "abortus5"), not vSNP\'s '
+                        'code ("ab1", "mel1"). Add --reference-set vsnp for the 1.x codes.')
         sketch = reference_sketch(args.sketch)
         references = load_references(args.references)
         alleles = alleles_fasta(args.alleles)
@@ -282,15 +289,23 @@ def main(argv=None):
         sketch_ids = sketch_references(sketch)
         log.info('%d reference genome(s) in %s', len(sketch_ids), sketch)
         if sketch_ids and not any(lookup(references, name) for name in sketch_ids):
-            # One custom file without the other. --sketch and --references are a pair, and from 2.0 the
-            # table a lone --sketch falls back on is the extended one, whose IDs are GCA file names: a 1.x
-            # command line that passed only one of them would otherwise run to completion, exit 0 and
-            # report ND for every sample, because no genome of the sketch can be named.
-            raise BrucellaIDError('Not one of the {} genome(s) of the MASH sketch {} is in the reference '
-                                  'table {}, so no sample could be given a species. --sketch and '
-                                  '--references go together: pass the table that names the genomes of that '
-                                  'sketch.'.format(len(sketch_ids), sketch, args.references or
-                                                   data_path(EXTENDED_REFERENCES_FILE)))
+            # One custom file without the other, or a sketch of genomes of your own. From 2.0 the table a
+            # lone --sketch falls back on is the extended one, whose IDs are GCA file names, so a 1.x
+            # command line that passed only one of the packaged files names nothing at all.
+            detail = ('Not one of the {} genome(s) of the MASH sketch {} is in the reference table {}'
+                      .format(len(sketch_ids), sketch,
+                              args.references or data_path(EXTENDED_REFERENCES_FILE)))
+            if mlst and st_table is not None:
+                # The sequence type can still name the species: a sketch of your own genomes against the
+                # packaged ST table is a supported way to run, and call_species has a branch for it.
+                log.warning('%s, so the distance has no species to offer. Each sample will be given the '
+                            'species of its sequence type where that is reliable enough. Pass the table '
+                            'that names the genomes of that sketch to identify by distance too.', detail)
+            else:
+                raise BrucellaIDError('{}, so no sample could be given a species at all: the sequence '
+                                      'type, which is the only other source, is switched off. --sketch and '
+                                      '--references go together; for a packaged set use --reference-set '
+                                      'vsnp or --reference-set extended.'.format(detail))
         for message in compare_with_sketch(sketch_ids, references):
             log.warning('%s', message)
         if mlst:

@@ -33,7 +33,7 @@ reads fastq only (see the [FAQ](FAQ)).
 | `--pdf` | Also write that report as a PDF. Needs reportlab: `pip install 'brucellaid[pdf]'` |
 | `--no-md5` | Do not checksum the input files for the reports (a second or two per gigabyte) |
 | `--operator NAME` | The name to put on the report. Default: the user account |
-| `--xlsx` | Also write `stat_alignment_summary_<date>.xlsx`, the report of the first version |
+| `--xlsx` | Also write `stat_alignment_summary_<date>.xlsx`, the report of the first version. Its `species` column holds the reference table's code, which the default set spells as a species epithet rather than as vSNP's `ab1`; the run warns when that is what it is writing. See [Output files](Output-files) |
 
 The main table is printed to standard output as well, so `brucellaid ... > results.tsv` works: the messages
 go to standard error. See [Output files](Output-files).
@@ -51,7 +51,7 @@ Run `multiqc results/` on the output folder to fold the run into a MultiQC repor
 | `--loose-distance D` | 0.005 | MASH distance beyond which the closest reference is called a loose match, in a note. It does not change the species reported |
 | `--min-kmer-copies N` | from the coverage | Copies of a k-mer the reads must hold for MASH to sketch it. The default derives it from the number of bases in the files: one more copy per 20x, from 2 to 20 |
 | `--min-reads N` | 5 | Reads behind an allele call for it to be kept |
-| `--no-mlst` | off | Identify the species only. The ST then takes no part in the species call either |
+| `--no-mlst` | off | Identify the species only. The ST then takes no part in the species call either, so a sample with a second species inside the close-match margin is reported `MASH (unresolved)` and flagged for review instead of being arbitrated. Against the 432-genome default set that happens far more often than it did against vSNP's 16 |
 | `--no-st-species` | off | Do not let the ST take part in the species call: report the closest reference's species, whatever else was just as close |
 | `--min-st-purity F` | 0.95 | Share of the isolates of an ST that must carry the same species for that ST to take part |
 | `--min-st-isolates N` | 3 | Isolates an ST must rest on to take part |

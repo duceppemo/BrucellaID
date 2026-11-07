@@ -16,7 +16,7 @@ So the run-level organism field appears to be the only place the species is wron
 
 Our evidence, from methods that share no code and no reference data:
 
-  - Mash distance 0.00098 to the nearest B. melitensis genome in a curated 431-genome
+  - Mash distance 0.00098 to the nearest B. melitensis genome in a curated 432-genome
     reference set covering all 30 named species of the clade, against 0.0016 or more
     to any B. abortus.
   - MLST-9 (Whatmore et al.) sequence type 8, which the PubMLST isolate database

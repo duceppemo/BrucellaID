@@ -32,6 +32,7 @@ from brucellaid.mash import (
     versions,
     write_reads,
 )
+from brucellaid.references import VSNP_SKETCH_FILE, data_path
 from tests.conftest import requires_mash, write_fastq
 
 DIST_OUTPUT = (
@@ -140,8 +141,8 @@ def test_versions_of_the_installation():
 
 
 @requires_mash
-def test_sketch_references_of_the_package():
-    ids = sketch_references(mash.Path(__file__).parent.parent / 'brucellaid' / 'data' / 'references.msh')
+def test_sketch_references_of_the_vsnp_sketch_of_the_package():
+    ids = sketch_references(data_path(VSNP_SKETCH_FILE))
     assert 'NC_006932-NC_006933.fasta' in ids
     assert sketch_references.cache_info().currsize == 1  # Read once per sketch
 
