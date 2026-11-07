@@ -1,0 +1,47 @@
+accession	group	ncbi_label	mash_mlst_says	qpcr_genus	qpcr_abortus	qpcr_melitensis	qpcr_suis	bruce_ladder	suis_ladder	amos	rb51
+GCA_000292145.2	candidate	Brucella abortus bv. 1 BCB027	atypical, nearer an unnamed lineage	yes	no	no	no	pinnipedialis_ceti	N/A	N/A	not_RB51
+GCA_000292205.2	candidate	Brucella abortus bv. 1 BCB013	nearer suis	yes	no	yes	no	N/A	N/A	N/A	not_RB51
+GCA_000559065.1	candidate	Brucella rhizosphaerae	nearer pituitosa	no	no	no	no	N/A	N/A	N/A	N/A
+GCA_001575075.1	candidate	Brucella anthropi	nearer tritici	no	no	no	no	N/A	N/A	N/A	N/A
+GCA_001586735.1	candidate	Brucella anthropi	nearer pseudogrignonensis	no	no	no	no	N/A	N/A	N/A	N/A
+GCA_002025625.1	candidate	Brucella pituitosa	nearer pseudogrignonensis	no	no	no	no	N/A	N/A	N/A	N/A
+GCA_024127925.1	candidate	Brucella intermedia	nearer pseudintermedia	no	no	no	no	N/A	N/A	N/A	N/A
+GCA_028621035.1	candidate	Brucella gallinifaecis	the two gallinifaecis genomes are 0.167 apart	no	no	no	no	N/A	N/A	N/A	N/A
+GCA_042679345.1	candidate	Brucella gallinifaecis	the two gallinifaecis genomes are 0.167 apart	no	no	no	no	N/A	N/A	N/A	N/A
+GCA_979502475.1	candidate	Brucella lupini	nearer anthropi	no	no	no	no	N/A	N/A	N/A	N/A
+GCA_000182725.1	cleared	Brucella inopinata BO1 (type)	correctly labelled	no	no	no	no	N/A	N/A	N/A	not_RB51
+GCA_001917355.1	cleared	Brucella intermedia	correctly labelled, twin of the ciceri relabel	no	no	no	no	N/A	N/A	N/A	N/A
+GCA_000022745.1	control	Brucella microti CCM 4915	control: Brucella microti (type strain)	yes	no	no	no	suis_bv2/suis_bv1_3_4	N/A	N/A	not_RB51
+GCA_000158775.1	control	Brucella ceti B1/94	control: Brucella ceti (type strain)	yes	no	no	no	pinnipedialis_ceti	N/A	N/A	not_RB51
+GCA_000739315.1	control	Brucella abortus 544	control: Brucella abortus (type strain)	yes	yes	no	no	abortus	N/A	abortus_bv1_2_4	not_RB51
+GCA_000740275.1	control	Brucella pinnipedialis	control: Brucella pinnipedialis	yes	no	no	no	pinnipedialis_ceti	N/A	N/A	not_RB51
+GCA_000742255.1	control	Brucella neotomae 5K33	control: Brucella neotomae (type strain)	yes	no	no	no	neotomae	N/A	N/A	not_RB51
+GCA_000755105.1	control	Brucella suis	control: Brucella suis	yes	no	no	yes	N/A	bv01	N/A	not_RB51
+GCA_001511795.1	control	Brucella vulpis	control: Brucella vulpis	yes	no	no	no	N/A	N/A	N/A	not_RB51
+GCA_003049685.2	control	Brucella pituitosa	control: Brucella pituitosa (type strain)	no	no	no	no	N/A	N/A	N/A	N/A
+GCA_003516085.1	control	Brucella melitensis	control: Brucella melitensis	yes	no	yes	no	melitensis	N/A	melitensis	not_RB51
+GCA_012103095.1	control	Brucella daejeonensis	control: Brucella daejeonensis (type strain)	no	no	no	no	N/A	N/A	N/A	N/A
+GCA_012103105.1	control	Brucella haematophila	control: Brucella haematophila (type strain)	no	no	no	no	N/A	N/A	N/A	N/A
+GCA_012103185.1	control	Brucella anthropi ATCC 49188	control: Brucella anthropi (type strain)	no	no	no	no	N/A	N/A	N/A	N/A
+GCA_012395245.1	control	Brucella tritici	control: Brucella tritici (type strain)	no	no	no	no	N/A	N/A	N/A	N/A
+GCA_014197065.1	control	Brucella pecoris	control: Brucella pecoris (type strain)	no	no	no	no	N/A	N/A	N/A	N/A
+GCA_026014005.1	control	Brucella sp. JSBI001	control: Brucella sp.	no	no	no	no	N/A	N/A	N/A	N/A
+GCA_041929945.1	control	Brucella pseudogrignonensis	control: Brucella pseudogrignonensis (type strain)	no	no	no	no	N/A	N/A	N/A	N/A
+GCA_041929965.1	control	Brucella oryzae	control: Brucella oryzae (type strain)	no	no	no	no	N/A	N/A	N/A	N/A
+GCA_041930025.1	control	Brucella thiophenivorans	control: Brucella thiophenivorans (type strain)	no	no	no	no	N/A	N/A	N/A	N/A
+GCA_041930085.1	control	Brucella grignonensis	control: Brucella grignonensis (type strain)	no	no	no	no	N/A	N/A	N/A	N/A
+GCA_041930145.1	control	Brucella ciceri	control: Brucella ciceri (type strain)	no	no	no	no	N/A	N/A	N/A	N/A
+GCA_041930165.1	control	Brucella cytisi	control: Brucella cytisi (type strain)	no	no	no	no	N/A	N/A	N/A	N/A
+GCA_042685525.1	control	Brucella rhizosphaerae	control: Brucella rhizosphaerae (type strain)	no	no	no	no	N/A	N/A	N/A	N/A
+GCA_042697365.1	control	Brucella pseudintermedia	control: Brucella pseudintermedia	no	no	no	no	N/A	N/A	N/A	N/A
+GCA_044987085.1	control	Brucella amazoniensis	control: Brucella amazoniensis	yes	no	no	no	suis_bv2/suis_bv1_3_4	N/A	N/A	not_RB51
+GCA_053713455.1	control	Brucella lupini	control: Brucella lupini (type strain)	no	no	no	no	N/A	N/A	N/A	N/A
+GCA_056582615.1	control	Brucella canis	control: Brucella canis	yes	no	no	no	canis	N/A	N/A	not_RB51
+GCA_900446135.1	control	Brucella ovis	control: Brucella ovis (type strain)	yes	no	no	no	ovis	N/A	ovis	N/A
+GCA_900454225.1	control	Brucella intermedia	control: Brucella intermedia (type strain)	no	no	no	no	N/A	N/A	N/A	N/A
+GCA_000163135.1	mislabel	Brucella sp. NVSL 07-0026	Brucella papionis	yes	no	no	no	melitensis	N/A	N/A	not_RB51
+GCA_000661995.2	mislabel	Brucella suis bv. 4 str. 40	Brucella inopinata	no	no	no	no	N/A	N/A	N/A	not_RB51
+GCA_000662015.2	mislabel	Brucella inopinata BO1 (type)	Brucella suis/canis	yes	no	no	yes	N/A	N/A	N/A	not_RB51
+GCA_036881765.1	mislabel	Brucella abortus	Brucella melitensis	yes	no	yes	no	melitensis	N/A	melitensis	not_RB51
+GCA_049065255.1	mislabel	Brucella ciceri	Brucella intermedia	no	no	no	no	N/A	N/A	N/A	N/A
+GCA_059995225.1	mislabel	Brucella cytisi	Brucella anthropi	no	no	no	no	N/A	N/A	N/A	N/A

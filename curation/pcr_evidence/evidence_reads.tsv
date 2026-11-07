@@ -1,0 +1,49 @@
+run	group	submitted_as	mash_mlst_says	asm_Bru_genus	asm_BA	asm_BM_10	asm_BS	reads_Bru_genus	reads_BA	reads_BM_10	reads_BS	agree_asm_reads	bruce_ladder	suis_ladder	amos
+ERR11807265	candidate	Brucella anthropi	Brucella intermedia	no	no	no	no	no	no	no	no	same	N/A	N/A	N/A
+ERR2938660	mislabel	Brucella ovis	Brucella suis	yes	no	no	yes	yes	no	no	yes	same	suis_bv2/suis_bv1_3_4	bv02	N/A
+ERR2938669	mislabel	Brucella melitensis	Brucella suis	yes	no	no	yes	yes	no	no	no	DIFFERENT	suis_bv2/suis_bv1_3_4	bv02	N/A
+ERR2938678	mislabel	Brucella melitensis	Brucella abortus	yes	yes	no	no	yes	no	no	no	DIFFERENT	abortus	N/A	N/A
+ERR2938687	mislabel	Brucella melitensis	Brucella suis	yes	no	no	no	yes	no	no	no	same	N/A	N/A	N/A
+ERR2938695	mislabel	Brucella melitensis	Brucella suis	yes	no	no	yes	yes	no	no	no	DIFFERENT	N/A	bv02	N/A
+ERR2993134	mislabel	Brucella melitensis	Brucella pinnipedialis	yes	no	no	no	yes	no	no	no	same	N/A	N/A	N/A
+ERR2993138	mislabel	Brucella melitensis	Brucella suis	yes	no	no	no	yes	no	no	no	same	suis_bv2/suis_bv1_3_4	bv05	N/A
+ERR2993140	mislabel	Brucella melitensis	Brucella neotomae	yes	no	no	no	yes	no	no	no	same	neotomae	N/A	N/A
+ERR2993145	mislabel	Brucella melitensis	Brucella suis	yes	no	no	yes	yes	no	no	yes	same	suis_bv2/suis_bv1_3_4	bv04	N/A
+ERR2993152	mislabel	Brucella melitensis	Brucella abortus	yes	yes	no	no	yes	yes	no	no	same	abortus	N/A	abortus_bv1_2_4
+ERR2993155	mislabel	Brucella melitensis	Brucella suis	yes	no	no	yes	yes	no	no	yes	same	suis_bv2/suis_bv1_3_4	bv01	N/A
+ERR3218177	no-brucella	Brucella abortus	shares 6/1000 hashes	no	no	no	no	no	no	no	no	same	N/A	N/A	N/A
+ERR471314	mislabel	Brucella ceti	Brucella abortus	yes	yes	no	no	yes	yes	no	no	same	abortus	N/A	abortus_bv1_2_4
+ERR471315	mislabel	Brucella ceti	Brucella abortus	yes	yes	no	no	yes	yes	no	no	same	abortus	N/A	N/A
+ERR471337	no-brucella	Brucella abortus	shares 2/1000 hashes with the clade	no	no	no	no	no	no	no	no	same	N/A	N/A	N/A
+ERR473742	mislabel	Brucella abortus	Brucella neotomae	yes	no	no	no	yes	no	no	no	same	neotomae	N/A	N/A
+ERR473743	no-brucella	Brucella abortus	shares 1/1000 hashes	no	no	no	no	no	no	no	no	same	N/A	N/A	N/A
+ERR554820	no-brucella	Brucella abortus	shares 2/1000 hashes	no	no	no	no	no	no	no	no	same	N/A	N/A	N/A
+ERR775236	no-brucella	Brucella abortus	shares 2/1000 hashes	no	no	no	no	no	no	no	no	same	N/A	N/A	N/A
+ERR775237	no-brucella	Brucella abortus	shares 1/1000 hashes	no	no	no	no	no	no	no	no	same	N/A	N/A	N/A
+ERR775244	no-brucella	Brucella abortus	shares 2/1000 hashes	no	no	no	no	no	no	no	no	same	N/A	N/A	N/A
+ERR775245	no-brucella	Brucella abortus	shares 2/1000 hashes	no	no	no	no	no	no	no	no	same	N/A	N/A	N/A
+ERR775246	no-brucella	Brucella abortus	shares 2/1000 hashes	no	no	no	no	no	no	no	no	same	N/A	N/A	N/A
+ERR775247	no-brucella	Brucella abortus	shares 2/1000 hashes	no	no	no	no	no	no	no	no	same	N/A	N/A	N/A
+ERR775248	no-brucella	Brucella abortus	shares 2/1000 hashes	no	no	no	no	no	no	no	no	same	N/A	N/A	N/A
+SRR10948139	candidate	Brucella anthropi	Brucella intermedia	no	no	no	no	no	no	no	no	same	N/A	N/A	N/A
+SRR11526759	mislabel	Brucella abortus	Brucella melitensis	yes	no	yes	no	yes	no	no	no	DIFFERENT	melitensis	N/A	N/A
+SRR1798201	candidate	Brucella lupini	Brucella anthropi	no	no	no	no	no	no	no	no	same	N/A	N/A	N/A
+SRR24420454	no-brucella	Brucella melitensis	shares 105/1000 hashes	no	no	no	no	no	no	no	no	same			
+SRR25828922	no-brucella	Brucella pseudogrignonensis	shares 5/1000 hashes	no	no	no	no	no	no	no	no	same	N/A	N/A	N/A
+SRR31357708	mislabel	Brucella cytisi	Brucella anthropi	no	no	no	no	no	no	no	no	same	N/A	N/A	N/A
+SRR31560207	mislabel	Brucella abortus	Brucella melitensis	yes	no	yes	no	no	no	no	no	DIFFERENT	melitensis	N/A	N/A
+SRR35797377	no-brucella	Brucella melitensis	shares 26/1000 hashes	yes	no	yes	no	yes	no	no	no	DIFFERENT	N/A	N/A	N/A
+SRR4038994	papionis	Brucella papionis	Brucella papionis (confirmed)	yes	no	no	no	yes	no	no	no	same	melitensis	N/A	N/A
+SRR6003475	candidate	Brucella thiophenivorans	Brucella pituitosa	no	no	no	no	no	no	no	no	same	N/A	N/A	N/A
+SRR642185	mislabel	Brucella abortus 63/183	Brucella suis	yes	no	no	yes	yes	no	no	no	DIFFERENT	suis_bv2/suis_bv1_3_4	N/A	N/A
+SRR651210	mislabel	Brucella abortus 63/183	Brucella suis	yes	no	no	yes	yes	no	no	no	DIFFERENT	suis_bv2/suis_bv1_3_4	bv01	N/A
+SRR825216	no-brucella	Brucella pinnipedialis	shares 0/1000 hashes	no	no	no	no	no	no	no	no	same	N/A	N/A	N/A
+SRR825217	no-brucella	Brucella pinnipedialis	shares 0/1000 hashes	no	no	no	no	no	no	no	no	same	N/A	N/A	N/A
+SRR825218	no-brucella	Brucella pinnipedialis	shares 0/1000 hashes	no	no	no	no	no	no	no	no	same	N/A	N/A	N/A
+SRR848042	no-brucella	Brucella abortus	shares 0/1000 hashes	no	no	no	no	no	no	no	no	same	N/A	N/A	N/A
+SRR867710	mislabel	Brucella abortus 63/183	Brucella suis	yes	no	no	no	yes	no	no	no	same	N/A	N/A	N/A
+SRR867711	mislabel	Brucella melitensis 63/227	Brucella suis	yes	no	no	yes	yes	no	no	no	DIFFERENT	suis_bv2/suis_bv1_3_4	bv01	N/A
+SRR886241	no-brucella	Brucella ceti	shares 1/1000 hashes	no	no	no	no	no	no	no	no	same	N/A	N/A	N/A
+SRR886242	no-brucella	Brucella ceti	shares 1/1000 hashes	no	no	no	no	no	no	no	no	same	N/A	N/A	N/A
+SRR886243	no-brucella	Brucella ceti	shares 1/1000 hashes	no	no	no	no	no	no	no	no	same	N/A	N/A	N/A
+SRR952243	no-brucella	Brucella abortus	shares 146/1000 hashes, the borderline case	no	no	no	no	yes	yes	no	no	DIFFERENT	N/A	N/A	N/A

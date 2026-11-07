@@ -194,6 +194,28 @@ BrucellaID could not place the sample because the extended set has no suitable r
   and a `new` sequence type. It sits beside an unnamed lineage representative rather than an *inopinata*
   genome, which probably says more about how few *inopinata* genomes exist than about the label.
 
+## PCR evidence
+
+Every record above was found with a MASH distance and a nine-locus MLST. A third and fourth line of
+evidence now sits in [`pcr_evidence/`](pcr_evidence/README.md): *in silico* Bruce-ladder, Suis-ladder, AMOS
+and RB51 junction PCR with [brucetyper](https://github.com/duceppemo/brucetyper), and the two real-time
+assays of Hoover et al. 2026 ([doi:10.1128/spectrum.02974-25](https://doi.org/10.1128/spectrum.02974-25))
+with [insilicoPCR](https://github.com/duceppemo/insilicoPCR), run on every assembly **and** on every raw
+read set. 46 assemblies were re-downloaded from NCBI and 48 read sets downloaded, md5-verified and
+assembled with SKESA for the purpose, against a control panel of one genome per species of the clade.
+
+In short: the mislabelled read sets are **good *Brucella* genomes with the wrong name on them**, not junk
+that confused a distance — 19 of 21 assemble to 3.24–3.35 Mb and 20 of 21 are genus-positive, and of the
+17 whose verdict species the multiplex covers, 14 fired the matching species assay. The swapped pair is
+confirmed from both directions. 20 of the 22 read sets that appear to hold no *Brucella* are PCR-negative
+on both substrates, while the other two turn out to be **mixed libraries** with a minority *Brucella*
+population rather than errors. For the former *Ochrobactrum* records the PCR evidence is silent, because
+neither assay was designed for that half of the clade; those records rest on the distances alone.
+
+`pcr_evidence/README.md` also records two caveats worth carrying into any report: a negative on raw reads
+is weak evidence of absence, because an amplicon longer than the read can never be found in it, and the
+*B. suis* assay's specificity depends on exact primer matching.
+
 ## Reproducing the evidence
 
 ```bash
