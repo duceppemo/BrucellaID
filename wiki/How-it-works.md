@@ -74,10 +74,13 @@ to compare against in the first place. None of that is fixable with a better alg
 reports the species and the sequence type and stops there. Version 1.1 removed the column that used to
 carry the closest reference's biovar, because readers were reading it as a call.
 
-Two facts about the *references* are still reported, since they are facts and not calls:
-`brucellaid_mash.tsv` gives each reference genome's own biovar, and the quality assurance report lists the
-biovars recorded for the sample's ST with their counts — which is the quickest way to see how little they
-settle. The report's methods section sets out the full argument, with the measurements behind it.
+**No biovar appears anywhere beside a sample**, not even the ones recorded in PubMLST for its sequence
+type. From 2.1.1 the reports do not show those either: 42 of the 118 sequence types in the shipped table
+have a single biovar on record, so a third of samples would carry one bare value next to their own species
+and ST, which is exactly how the old biovar column came to be read as a call. The counts are still in
+`brucellaid/data/mlst_st_species.tsv` and in `brucellaid.json` for anyone who wants them, and the report's
+methods section sets out the full argument with the measurements behind it. What `brucellaid_mash.tsv`
+gives is each *reference genome's* own biovar, which is a fact about the reference.
 
 **For a biovar**, use classical biotyping, or
 [brucetyper](https://github.com/duceppemo/brucetyper), which reads the Bruce-ladder and Suis-ladder assays

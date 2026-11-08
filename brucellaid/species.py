@@ -72,6 +72,9 @@ class StSpecies:
     species: str
     purity: float  # Share of the isolates of this ST that carry this species, 1.0 when they all do
     isolates: int  # Isolates of this ST in the PubMLST isolate database
+    # Parsed from the table and carried in the JSON, but deliberately not rendered in either report:
+    # 42 of the 118 shipped STs have a single biovar on record, and one value shown beside a sample
+    # reads as a measurement of that sample, which is why the biovar column went in 1.1.0.
     biovars: str = ''  # The biovars recorded for this species, "1:86;2:16", or ""
     other: str = ''  # The other species of this ST, "Brucella melitensis:3", or ""
 

@@ -478,7 +478,6 @@ def decision_block(result):
          else (call.candidates[0] if call.candidates else '')),
         ('Sequence type', call.st),
         ('What that ST is, in the isolate database', entry.evidence if entry else ''),
-        ('Biovars of its isolates', entry.biovars.replace(';', ', ') if entry and entry.biovars else ''),
         ('Why the ST was not used', call.st_reason),
     ]))
     if call.verdict:
@@ -599,8 +598,11 @@ METHODS = [
      'is from one of them (0.00150). And a biovar is a phenotype that genome clustering does not track -- '
      'the best any rule from '
      'sequence type to biovar could manage over the isolate database is 66% for B. abortus and 63% for '
-     'B. melitensis, because one ST spans several biovars. The biovars recorded for the ST are shown above '
-     'for what they are worth. For a biovar, use classical biotyping, or brucetyper, which reads the '
+     'B. melitensis, because one ST spans several biovars. This report therefore shows no biovar at all, '
+     'not even the ones recorded for the ST: of the 118 sequence types in the table, 42 have a single '
+     'biovar on record, and showing one next to a sample invites reading it as a measurement of that '
+     'sample. The counts are in the packaged mlst_st_species.tsv for anyone who wants them. '
+     'For a biovar, use classical biotyping, or brucetyper, which reads the '
      'Bruce-ladder and Suis-ladder assays in silico.'),
     ('The sequence type, from the alleles',
      'The same reads are given to Seal with the alleles of the nine loci as references, counting each read '

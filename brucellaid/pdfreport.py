@@ -412,8 +412,6 @@ class Report:
             ('Species within reach', ', '.join(call.candidates)),
             ('Sequence type', call.st),
             ('What that ST is', call.entry.evidence if call.entry else ''),
-            ('Biovars of its isolates', call.entry.biovars.replace(';', ', ')
-             if call.entry and call.entry.biovars else ''),
             ('Why the ST was not used', call.st_reason),
         ], width=width)
         if call.verdict:

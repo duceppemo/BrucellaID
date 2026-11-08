@@ -104,6 +104,28 @@ def test_html_report_is_well_formed_and_holds_every_section(tmp_path):
     assert 'Reviewed by' in markup and 'Signature' in markup
 
 
+def test_neither_report_shows_a_biovar_for_the_sample(tmp_path):
+    """
+    The ST's recorded biovars are parsed but must not be rendered beside a sample.
+
+    42 of the 118 shipped sequence types have a single biovar on record, so the field would show one bare
+    value next to the sample's own species and ST on about a third of samples -- which is how the biovar
+    column came to be read as a call, and why 1.1.0 removed it. The counts stay in mlst_st_species.tsv and
+    in the JSON; the methods section explains the refusal instead.
+    """
+    results = [good(), good('canis', hits=CANIS_HITS, st='20')]
+    assert any(r.call.entry and r.call.entry.biovars for r in results), \
+        'fixture no longer carries biovars, so this guards nothing'
+
+    markup = htmlreport.build(results, REFERENCES, RUN, inputs=qa.describe_inputs(results), data=DATA)
+    assert 'Biovars of its isolates' not in markup
+    assert 'Why there is no biovar' in markup
+
+    path = pdfreport.write(results, REFERENCES, RUN, tmp_path / 'r.pdf', data=[])
+    _, text = read_pdf(path)
+    assert 'Biovars of its isolates' not in text
+
+
 def test_html_report_carries_the_logo():
     markup = htmlreport.build([good()], REFERENCES, RUN)
     assert '<div class="logo"><svg' in markup

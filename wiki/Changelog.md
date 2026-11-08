@@ -1,5 +1,30 @@
 # Changelog
 
+## 2.1.1 (2026-11-08)
+
+**The reports no longer show the biovars recorded for a sample's sequence type.** The quality assurance
+report carried a `Biovars of its isolates` row in each sample's evidence block, holding the biovars PubMLST
+records for that ST with their counts. It is gone from both the HTML and the PDF.
+
+The reason is the shape of the data rather than the idea. Of the 118 sequence types in the shipped table,
+**42 have a single biovar on record** and 59 have none, so on about a third of samples the row rendered one
+bare value — `2:60` — beside that sample's own species and sequence type. That reads as a biovar call, which
+is precisely how the reference-genome biovar column came to be misread before 1.1.0 removed it. The 17 STs
+that record several biovars did convey the ambiguity well; they were the minority.
+
+Nothing measured is lost. The counts remain in the packaged `mlst_st_species.tsv`, in a custom
+`--st-species` table, and in `brucellaid.json`; the reference genomes' own biovars remain in
+`brucellaid_mash.tsv`, where they are facts about the references. The report's methods section still sets
+out why no biovar can be measured — 7 of the 432 references carry one, the two *B. suis* biovar 2 genomes
+are further apart than the biovar 3 genome is from one of them, and the best any ST-to-biovar rule manages
+is 66% — and now says plainly that this is why it shows none at all.
+
+* The wiki's biovar explanation is cut to one short treatment under
+  [How it works](How-it-works#no-biovar), where it had grown to seven places and about forty lines of
+  argument for something the tool does not do. The pages that mentioned it now point there in a clause.
+* **393 tests**, 100% statement and branch coverage. One is new, and asserts the row is absent from both
+  reports while the fixture still carries biovars, so it cannot come back unnoticed.
+
 ## 2.1.0 (2026-11-08)
 
 **The k-mer copy threshold was re-derived, and reported distances change because of it.** Before MASH
