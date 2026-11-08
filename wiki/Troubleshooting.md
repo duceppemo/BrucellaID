@@ -93,11 +93,10 @@ The note on the sample says *why* the ST was no help, and there are seven reason
   ST takes no part by request, and this verdict is the expected one rather than a problem.
 
 ## The biovar is not the one the laboratory reported
-BrucellaID reports no biovar, and 1.1.0 removed the column that used to hold one: it was the biovar of the
-closest reference genome, and it was read as a call. The `Biovar` column of `brucellaid_mash.tsv` is still
-exactly that — a fact about each reference genome, not about the sample. See
-[How it works](How-it-works#no-biovar) for why no honest biovar can come from this data, and use classical
-biotyping, or [brucetyper](https://github.com/duceppemo/brucetyper), for a real one.
+BrucellaID never reported one. The `Biovar` column of `brucellaid_mash.tsv` is a fact about each
+*reference genome*, not a call about your sample, and nothing else in the output claims a biovar —
+[How it works](How-it-works#no-biovar) says why it cannot. For a biovar, use classical biotyping or
+[brucetyper](https://github.com/duceppemo/brucetyper).
 
 ## `Seal failed: java.lang.OutOfMemoryError`
 Give Seal more memory with `--memory 4g`, or run fewer samples at a time (`-p`). The default heap is

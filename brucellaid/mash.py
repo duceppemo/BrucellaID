@@ -78,10 +78,10 @@ LOOSE_MATCH_DISTANCE = 0.001
 # Those three libraries stop at 70x, and the median public Brucella run is 141x, so a second set of 60 ENA
 # runs was swept at their own depth from 51x to 1903x, thresholds to 64. 81 curves from 63 libraries in
 # all. One more copy per 5x with a ceiling of 48 lands inside the plateau for 80 of the 81, recovering at
-# least 99.5% of the best for nine curves in ten (86% reach 99.6%) and 100% at the median.
+# least 99.5% of the best for nine curves in ten and 100% at the median.
 #
 #     depth      51-54x  101-112x  198-250x  420-535x  700-780x  1218-1903x
-#     plateau       6-24      3-48      6-64     32-64     12-64        20-64
+#     plateau       6-24      3-48      6-64     32-64     12-64        16-64
 #
 # What this replaces was one more copy per 20x with a ceiling of 20, which lands outside for 55 of the 81
 # and as low as 63.6%. It was about three times too cautious in the middle of the range, so a deep library

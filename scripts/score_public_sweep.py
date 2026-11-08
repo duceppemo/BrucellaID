@@ -49,7 +49,9 @@ def main():
     print('which set is right, over the {} with a species-level answer:'.format(len(judgeable)))
     print('  extended set    {}'.format(len(extended)))
     print('  vSNP set        {}'.format(len(vsnp)))
-    print('  ({} before setting aside the {} whose submitter named no species)'.format(len(raw), len(vague)))
+    print('  ({} before setting aside the {} of those wins whose submitter named no species;'
+          ' {} of the {} runs here have such a label)'.format(
+              len(raw), len(raw) - len(extended), len(vague), len(disagreements)))
     print()
 
     nd = [r for r in disagreements if r['vsnp_call'] == 'ND']

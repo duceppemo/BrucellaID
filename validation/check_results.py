@@ -130,9 +130,14 @@ def check_depth(row, record, problems):
     if estimated is None or abs(estimated - depth) > 0.2 * depth:
         problems.append('estimated coverage is {}, the reads hold {:.0f}x'.format(
             '{:.0f}x'.format(estimated) if estimated else 'unknown', depth))
-    elif abs(copies - expected_copies(depth)) > 1:
-        problems.append('the k-mer copy threshold is {}, expected about {} at {:.0f}x'.format(
-            copies, expected_copies(depth), depth))
+    # Against the ESTIMATE, not the true depth. The tool only ever sees the estimate, and the check above
+    # already tolerates that being 20% out -- which at one copy per 5x is six copies at 150x, so comparing
+    # with expected_copies(depth) would fail a sample whose coverage it had just accepted. What is being
+    # checked here is that the shipped formula was applied, so the formula's own input is what to apply it
+    # to. (The tolerance of 1 absorbs the rounding of a fractional estimate.)
+    elif abs(copies - expected_copies(estimated)) > 1:
+        problems.append('the k-mer copy threshold is {}, expected {} at the {:.0f}x estimated'.format(
+            copies, expected_copies(estimated), estimated))
     if shared is not None and shared < MIN_CLEAN_HASHES:
         problems.append('only {}/1000 hashes shared with the reference: the sketch is polluted '
                         'at {:.0f}x'.format(shared, depth))

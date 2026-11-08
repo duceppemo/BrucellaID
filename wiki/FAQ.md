@@ -20,7 +20,7 @@ the margins in `brucellaid_mlst.tsv`.
 ### How much coverage do I need?
 20x is plenty and 10x is comfortable, and the two answers give out at different depths. The species
 identification is the more forgiving: striding three real libraries down depth by depth, the sketch still
-shares 834 to 950 of its 1000 hashes with the right reference at 5x to 7x, and 983 or more from 14x up — the
+shares 814 to 950 of its 1000 hashes with the right reference at 5x to 7x, and 947 or more from 14x up — the
 figures are on [The k-mer copy threshold](K-mer-threshold). The allele calls go first, as loci start coming
 back as ties, which BrucellaID reports rather than guesses. How shallow that begins is not measured here:
 the suite simulates 20x and the shallowest real library in it is 47x, so run
@@ -69,18 +69,12 @@ assemblies and [on every public *Brucella* read set in ENA](Validation-at-scale#
 The 16 vSNP genomes are still a run away, as `--reference-set vsnp`.
 
 ### Where did the biovar column go?
-It was removed in 1.1, because it was never a biovar call and was read as one. It held the biovar of the
-closest reference genome. Three things make a real biovar call impossible here: hardly any reference
-carries a biovar at all, 7 of the 432 genomes of the default set, so 93% of the *B. abortus* isolates in
-PubMLST that have a numbered biovar are of a biovar none of them can name; the two *B. suis* biovar 2
-genomes are further apart (0.00163) than the biovar 3 genome is from one of them (0.00150), so the
-distance carries no biovar signal; and a
-biovar is a phenotype that is not monophyletic — the best possible ST → biovar rule reaches 66% for
-*B. abortus* and 63% for *B. melitensis*. See [How it works](How-it-works#no-biovar).
-
-What is still there: `brucellaid_mash.tsv` gives the biovar of each *reference genome*, and the quality
-assurance report shows the biovars recorded for the sample's ST with their counts. For a biovar, use
-classical biotyping or [brucetyper](https://github.com/duceppemo/brucetyper).
+It went in 1.1, because it held the closest *reference genome's* biovar and was being read as a call about
+the sample. BrucellaID does not handle biovars at all: a biovar is a phenotype that does not follow the
+tree, so neither the distance nor the sequence type can settle one —
+[How it works](How-it-works#no-biovar) has the short version and the quality assurance report's methods
+section the long one. For a biovar, use classical biotyping or
+[brucetyper](https://github.com/duceppemo/brucetyper).
 
 ### What does "loose match" in the notes mean?
 That the closest reference is further than `--loose-distance` (0.001 by default) — the sample matched

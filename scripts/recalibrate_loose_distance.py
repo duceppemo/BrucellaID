@@ -90,6 +90,17 @@ def main():
     clean = [p for p in points if p[5] < 0.001]
     print('the clean bulk: the {:.0f} runs that were already within 0.001 under the old threshold are '
           'now all within {:.5f}'.format(sum(p[2] for p in clean), max(p[0] for p in clean)))
+    print()
+
+    # The same arithmetic on the old distances, as a check that the sampling is not skewing the answer.
+    # It will not land exactly on the published 2.0 figures, which were measured over all 4,020 runs
+    # rather than over a 207-run sample; how close it comes is the sampling error of that sample.
+    old_p95 = weighted_quantile([(p[5], p[2]) for p in agreeing], 0.95)
+    old_past = sum(p[2] for p in points if p[5] > 0.005)
+    print('the same weighting applied to the pre-2.1 distances in this file gives p95 {:.5f} and {:.1f}% '
+          'past 0.005,'.format(old_p95, 100 * old_past / population))
+    print('against the 0.00464 and 4.9% measured over all 4,020 runs: that gap is this sample\'s '
+          'sampling error.')
     return 0
 
 

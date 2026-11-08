@@ -100,8 +100,10 @@ configure.
 
 ## What it does not do
 Assembly, SNP calling, phylogeny, AMR, biovar typing and MLVA. It names the species and the sequence type,
-and writes down what both answers rest on — and there is no biovar column, because the reference genomes
-cannot support one ([why](https://github.com/duceppemo/BrucellaID/wiki/How-it-works#no-biovar)).
+and writes down what both answers rest on. **It does not handle biovars**, because a biovar is a
+phenotype that does not follow the tree — no distance and no sequence type can settle one, so BrucellaID
+does not guess ([the detail](https://github.com/duceppemo/BrucellaID/wiki/How-it-works#no-biovar)). Use
+classical biotyping or [brucetyper](https://github.com/duceppemo/brucetyper) for that.
 
 Two limits of the validation are worth knowing before you rely on it. **No mixed or metagenomic sample is
 tested anywhere**: every measurement is a single isolate, so a sample holding two organisms is outside what
@@ -137,9 +139,8 @@ the evidence behind every call and a box to sign. To see it work on data with a 
 **What the two answers mean**: the species is the species of the closest reference genome, except where a
 reference of another species is just as close and the sequence type chooses between the two — the
 `SpeciesSource` column says which happened. The sequence type is `new` when the nine alleles are called but
-the combination is not in the table, and `ND` when a locus could not be called. **There is no biovar**:
-BrucellaID cannot measure one, and
-[says why](https://github.com/duceppemo/BrucellaID/wiki/How-it-works#no-biovar) rather than guessing. See
+the combination is not in the table, and `ND` when a locus could not be called. There is no biovar, for
+the reason given above. See
 [How it works](https://github.com/duceppemo/BrucellaID/wiki/How-it-works).
 
 ## Documentation

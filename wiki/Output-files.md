@@ -66,9 +66,8 @@ own species and "nearly as close" is therefore the normal case. In 1.x the colum
 rule of "a non-empty `Notes` means look at this one" fired rarely; it now fires on almost everything and
 needs replacing with a check on `Status`.
 
-**There is no biovar column.** BrucellaID reports the species and the sequence type, and does not claim a
-biovar: see [How it works](How-it-works#no-biovar). `brucellaid_mash.tsv` gives the biovar of each
-*reference genome*, which is a fact about the reference and not about the sample.
+**There is no biovar column**, because BrucellaID does not handle biovars at all
+([why](How-it-works#no-biovar)). The `Biovar` in `brucellaid_mash.tsv` is each *reference genome's* own.
 
 ## `brucellaid_mlst.tsv` — one row per sample and locus
 What each allele call rests on.

@@ -183,8 +183,10 @@ The 207 re-measured runs are in
 [`scripts/loose_distance_calibration.tsv`](https://github.com/duceppemo/BrucellaID/blob/main/scripts/loose_distance_calibration.tsv),
 and `scripts/recalibrate_loose_distance.py` prints both tables from it. Measuring all 4,020 again was not
 practical, so the population was binned by each run's old distance, a sample drawn from each bin, and every
-row carries its bin's weight; the percentiles are computed on the weighted sample. The same script
-reproduces the 2.0 figures from the original sweep, which is how the method above was checked.
+row carries its bin's weight; the percentiles are computed on the weighted sample. The method was checked
+by re-deriving the 2.0 figures from the original sweep with it, which gave back the published 0.00464 and
+4.9%. The script also applies the same weighting to the pre-2.1 distances it ships, which gives 0.00496 and
+4.8% — the gap from those published figures is the sampling error of 207 runs standing for 4,020.
 
 ## What this does not establish
 

@@ -124,11 +124,9 @@ that is not one.
 **How tight the genus is, in numbers.** The distance between the closest reference and the second closest
 ranged from 0.00024 to 0.00352 on the simulated 20x samples. The narrowest was *B. canis* ATCC 23365,
 which is 0.00024 away from *B. suis* bv. 4 strain 40 — ten hashes out of a thousand. The same measurement
-taken within a species is why there is no biovar in the reports: the two *B. melitensis* biovar 1
-references of the vSNP sketch these runs measured against are 0.000756 apart, further than the biovar 2 and
-biovar 3 references are from each other. The default 432-genome set does not improve on this and is not
-meant to — it records a biovar for only 7 of its genomes
-([How it works](How-it-works#no-biovar)).
+taken within a species is one of the reasons there is no biovar in the reports: the two *B. melitensis*
+biovar 1 references these runs measured against are 0.000756 apart, further than the biovar 2 and biovar 3
+references are from each other ([more](How-it-works#no-biovar)).
 
 **And the calls the distance did not make.** The simulated *B. canis* sample and the real one
 (ERR2136546) are the two lines whose `species from` reads `arbitrated`: *B. suis* bv. 4 was inside the
@@ -172,8 +170,8 @@ way it can work — a check that imports what it is checking cannot fail.
   is a metagenomic sample, a mixed culture or a degraded library.
 * **Low depth.** The simulated default is 20x, and the shallowest real library is 47x. Run the script with
   `COVERAGE=5` to see where the ties begin.
-* **Biovars.** Nothing at all: BrucellaID does not report a biovar, and this validation does not test for
-  one. See [How it works](How-it-works#no-biovar) for the three reasons.
+* **Biovars.** Nothing at all: BrucellaID does not handle biovars, and this validation does not test for
+  one. See [How it works](How-it-works#no-biovar).
 * **Novel alleles.** Every genome here carries alleles the database holds.
 
 The threshold those `k-mer copies` figures come from is derived in
