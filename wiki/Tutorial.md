@@ -116,7 +116,7 @@ of 432 a cluster of same-species genomes crowds the top of the table and listing
 one line that matters, which is the *B. suis* genome nine hashes behind.
 
 None of these four samples carries a **loose match** note, which is the other note this column can hold:
-it appears when the closest reference is further than `--loose-distance`, 0.005 by default, and says that
+it appears when the closest reference is further than `--loose-distance`, 0.001 by default, and says that
 the reads are not close to anything in the set rather than that the species is wrong. Earlier versions of
 this page showed two of these libraries carrying one, at 0.0065. That was the k-mer copy threshold being
 too low rather than anything about the libraries, and

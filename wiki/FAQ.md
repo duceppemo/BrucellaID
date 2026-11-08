@@ -83,13 +83,14 @@ assurance report shows the biovars recorded for the sample's ST with their count
 classical biotyping or [brucetyper](https://github.com/duceppemo/brucetyper).
 
 ### What does "loose match" in the notes mean?
-That the closest reference is further than `--loose-distance` (0.005 by default) — the sample matched
+That the closest reference is further than `--loose-distance` (0.001 by default) — the sample matched
 something, but not closely. It is **not** a claim that the species is wrong, and BrucellaID does not change
-the call: over every public *Brucella* read set in ENA, 185 of the 195 calls past 0.005 agreed with the
-submitter anyway. What they had in common was a diluted sketch — every one of those 185 shared fewer than
-900 of the 1000 hashes, against the 900-plus a clean library shares. (Those figures were measured before
-2.1.0 changed the k-mer copy threshold; [the derivation](Validation-at-scale#the-loose-match-distance) says
-what that means for them.) The note names three causes: the reads
+the call: over every public *Brucella* read set in ENA, agreement with the submitter barely moves with
+distance — 99.8% of calls within 0.0005 agree, and so do 95% to 100% of those in every band beyond it. The
+note flags about 4% of identified runs, and 98% of those still agree with their submitter, so it marks a
+library worth a second look rather than a species worth doubting;
+[the derivation](Validation-at-scale#the-loose-match-distance) has the figures. The note names three
+causes: the reads
 hold more than *Brucella*, which is the usual one; the sample is a lineage with no near relative in the
 reference set; or a minority *Brucella* population is being filtered out along with the sequencing errors,
 which `--min-kmer-copies` either side of the derived value will show — see

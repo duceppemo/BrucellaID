@@ -47,7 +47,7 @@ of something else:
 ```
 SRR24420453  Brucella melitensis  MASH+ST (agree)  GCA_002191375.1_ASM219137v1_genomic.fna.gz  0.061326  160/1000  11  3-2-3-2-1-5-3-2-10  Brucella melitensis  53748612
              loose match: the closest reference is 0.06133 away and shares 160/1000 hashes, where a read
-             set of a species the sketch holds is expected to match within 0.005 (--loose-distance). The
+             set of a species the sketch holds is expected to match within 0.001 (--loose-distance). The
              reads may hold more than Brucella, this lineage may have no near relative in the sketch, or
              a minority Brucella population may be being filtered out with the sequencing errors (try
              --min-kmer-copies either side of the derived value and see whether the distance moves); the
@@ -57,7 +57,7 @@ SRR24420453  Brucella melitensis  MASH+ST (agree)  GCA_002191375.1_ASM219137v1_g
 
 The species is still reported, and the nine loci still typed it as ST 11, which is *B. melitensis* and
 agrees — but 160 of 1000 hashes at 0.061 is nothing like the 989-to-996 a clean library of a species in the
-sketch returns, and the note is what says so. The three causes it lists are the three there are; see
+sketch returns, and sixty times `--loose-distance`, so the note is what says so. The three causes it lists are the three there are; see
 [The k-mer copy threshold](K-mer-threshold) for the third.
 
 **`Status`, not `Notes`, is the field to alert on.** Against the 432-genome default set the `Notes` column

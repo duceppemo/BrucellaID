@@ -72,7 +72,7 @@ def test_species_notes_call_a_distant_closest_reference_a_loose_match():
 
 
 def test_species_notes_say_nothing_about_a_distance_just_inside_the_threshold():
-    found = identification('NC_006932-NC_006933.fasta\tq\t0.00500\t0\t870/1000\n')
+    found = identification('NC_006932-NC_006933.fasta\tq\t0.00100\t0\t957/1000\n')
     assert species_notes(found, REFERENCES)[1] == []
 
 

@@ -96,9 +96,9 @@ What the extended set's 52 non-matches are, one by one:
   is far enough away to be a thin reference side rather than a wrong answer; one is the *B. papionis* read
   set, which had no reference to match at the time; one is an *inopinata*-adjacent lineage that landed on
   an unnamed representative. The sweep measured that band at 0.005–0.02; across the four of them
-  re-measured under the 2.1.0 threshold it is 0.0029–0.0088, and one — a *B. pituitosa* run at 0.0029 —
-  now falls inside `--loose-distance` and so no longer carries the note. That is the clearest single piece
-  of evidence that 0.005 is due a re-measurement.
+  re-measured under the 2.1.0 threshold it is 0.0029–0.0088. All four are still flagged, because
+  `--loose-distance` came down with them — at the old 0.005 the *B. pituitosa* run at 0.0029 would have
+  been missed, which is what the recalibration below exists to prevent.
 
 The sweep ran before the *B. papionis* genome was added. Re-running that one read set with it in the set
 reports *B. papionis* at 0.00010, which would make the extended figure 3,991 of 4,042; most of the other
@@ -118,24 +118,60 @@ species in the archive.
 This sweep also found the gap it needed to: for the diverse part of the clade there was no distance-based
 caution at all. A sample 0.0089 from its nearest *B. anthropi* was reported as a plain `MASH` call with the
 same confidence as one at 0.0003, and only one of those ten limit cases carried any flag. That is now
-fixed. Past `--loose-distance`, 0.005 by default, the call carries a note giving the distance and the
-shared hashes, which takes the ten limit cases from one flagged to eight.
+fixed. Past `--loose-distance`, 0.001 by default, the call carries a note giving the distance and the
+shared hashes.
 
 ### The loose-match distance
 
-The 0.005 of `--loose-distance` came out of this sweep rather than out of a guess. Of the 4,020 identified
-runs, 195 sit past 0.005 — 4.9%, so the note stays rare — and 185 of those 195 agreed with the submitter
-anyway, which is why the note does not touch the species call. What those 185 had in common is the useful
-part: **every one of them shared fewer than 900 of the 1000 hashes**, median 696, against the 900-plus a
-clean library shares. A loose match is usually a diluted library rather than a wrong species, and saying so
-is more useful than either hiding it or acting on it.
+`--loose-distance` came out of this sweep rather than out of a guess, and the rule is one line: **the
+threshold is the 95th percentile of the distance of calls that agree with the submitter**, taken to a
+round number. Past that, the closest reference is further away than a correctly identified library normally
+sits, which is worth a note.
 
-> **These figures were measured before 2.1.0**, under the k-mer copy threshold of one copy per 20x. That
-> threshold left error k-mers in the sketch and so inflated every read-derived distance; the distances
-> above, and the 4.9% rate that follows from them, are therefore an upper bound on what the note does now.
-> The "fewer than 900 hashes" half of the finding is the part that carries the conclusion, and it is the
-> part least likely to move. Re-measuring the calibration against the current threshold is pending; see
-> [The k-mer copy threshold](K-mer-threshold).
+It was **0.005 in 2.0 and is 0.001 from 2.1.0**, because the re-derived
+[k-mer copy threshold](K-mer-threshold) shrank every read-derived distance by about sevenfold and the old
+value was calibrated on the inflated ones. Re-measured against the current threshold:
+
+| | 2.0 | 2.1.0 |
+| --- | --- | --- |
+| 95th percentile of agreeing calls | 0.00464 | **0.00066** |
+| threshold taken from it | 0.005 | **0.001** |
+| share of the 4,020 identified runs it flags | 4.9% | 4.0% |
+| of those, still agreeing with the submitter | 96% | 98% |
+
+So the note stays as rare as it was, and the old value left where it was would have missed the
+thin-reference cases it exists to catch — the *B. pituitosa* run two bullets up, at 0.0029, among them.
+The choice is not on a knife edge: anything from 0.0005 to 0.002 flags 2.8% to 6.6% of runs with 96% to 98%
+of them still agreeing, and ordinary libraries are nowhere near it, the 3,226 runs already inside 0.001
+before now sitting inside 0.00046.
+
+**What says the note should not change the species call** is a separate measurement, and the only one here
+that is not a restatement of the threshold: agreement with the submitter is flat in distance.
+
+| distance | runs | agree with submitter |
+| --- | --- | --- |
+| 0 – 0.0005 | 3,756 | 99.8% |
+| 0.0005 – 0.001 | 103 | 100% |
+| 0.001 – 0.005 | 85 | 95.3% |
+| 0.005 – 0.02 | 53 | 100% |
+| past 0.02 | 23 | 100% |
+
+A loose match is a diluted library or a thin reference side; it does not predict a wrong species, which is
+why it is reported and not acted on.
+
+> Earlier versions of this page offered a second fact as corroboration — that the agreeing calls past the
+> threshold all shared fewer than 900 of their 1000 hashes. **That was not evidence.** MASH derives the
+> distance from the shared-hash count, so the two are one measurement in different units: over these 4,042
+> runs, 317 distinct shared-hash values map to 317 distinct distances and not one maps to two. "Past 0.005"
+> and "sharing fewer than about 820" are the same statement, so the shared-hash version is entailed by the
+> threshold rather than supporting it. The flat agreement rate above is what does the work.
+
+The 207 re-measured runs are in
+[`scripts/loose_distance_calibration.tsv`](https://github.com/duceppemo/BrucellaID/blob/main/scripts/loose_distance_calibration.tsv),
+and `scripts/recalibrate_loose_distance.py` prints both tables from it. Measuring all 4,020 again was not
+practical, so the population was binned by each run's old distance, a sample drawn from each bin, and every
+row carries its bin's weight; the percentiles are computed on the weighted sample. The same script
+reproduces the 2.0 figures from the original sweep, which is how the method above was checked.
 
 ## What this does not establish
 

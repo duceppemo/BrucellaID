@@ -31,7 +31,7 @@ The reads share fewer than 150 of the reference's 1000 hashes. In order of likel
    k-mers. Trim the reads and run it again.
 4. **A sample is not what you think.** Check the `brucellaid_mash.tsv` rows: a sample that is *Brucella*
    but far from all 432 references is worth knowing about — the `Notes` column says so itself, as a loose
-   match, when the closest one is more than 0.005 away.
+   match, when the closest one is more than 0.001 away.
 
 ## The sequence type is `ND`
 At least one locus has no call. The `Notes` column of `brucellaid.tsv` and the `Note` column of

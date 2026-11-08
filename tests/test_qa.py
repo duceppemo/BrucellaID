@@ -20,7 +20,7 @@ REFERENCES = parse_references([
 ])
 
 
-def sample(name='s', hits='NC_006932-NC_006933.fasta\tq\t0.0012\t0\t950/1000\n', st='1', error=None,
+def sample(name='s', hits='NC_006932-NC_006933.fasta\tq\t0.00012\t0\t995/1000\n', st='1', error=None,
            min_hashes=150, files=()):
     found = Identification(parse_dist(hits), min_hashes=min_hashes)
     reference, notes = species_notes(found, REFERENCES)

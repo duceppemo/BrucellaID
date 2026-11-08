@@ -34,11 +34,26 @@ run is 141x. The new rule lands inside the measured plateau for 80 of the 81 cur
 The measurements are in `scripts/kmer_threshold_sweep.tsv` and the derivation is on the wiki under
 [The k-mer copy threshold](K-mer-threshold).
 
+* **`--loose-distance` is recalibrated, 0.005 to 0.001.** The threshold is, as before, the 95th
+  percentile of the MASH distance of calls that agree with the ENA submitter, taken to a round number —
+  but that percentile was measured on distances the old copy threshold had inflated. Re-measured on 207
+  public read sets under the new one it is 0.00066 rather than 0.00464, so the threshold follows it down.
+  The note stays about as rare as it was, flagging 4.0% of the 4,020 identified runs against 4.9% before,
+  and 98% of what it flags still agrees with its submitter. Left at 0.005 it would have missed the
+  thin-reference cases it exists to catch, a *B. pituitosa* run at 0.0029 among them.
+  `scripts/loose_distance_calibration.tsv` holds the measurements and
+  `scripts/recalibrate_loose_distance.py` derives the number from them; the same script reproduces the 2.0
+  figures from the original sweep.
+* **A claim behind the old calibration was circular, and is withdrawn.** The derivation offered, as
+  corroboration, that every agreeing call past the threshold shared fewer than 900 of its 1000 hashes.
+  MASH derives the distance from the shared-hash count — over the 4,042 runs of the sweep, 317 distinct
+  shared-hash values give 317 distinct distances and not one gives two — so that is the threshold restated
+  in another unit, not support for it. What does support leaving the species call alone is that agreement
+  with the submitter is flat in distance: 99.8% within 0.0005, and 95% to 100% in every band beyond, out
+  past 0.02. Both tables are on [Validation at scale](Validation-at-scale#the-loose-match-distance).
 * **Two of the four tutorial libraries no longer carry a loose-match note.** They were flagged only
   because their distance was inflated past `--loose-distance`; at 0.00012 and 0.00026 they are nowhere
-  near it. The note itself is unchanged, and `LOOSE_MATCH_DISTANCE` is still 0.005 — but that figure was
-  calibrated on distances measured under the old threshold, so it is now conservative and is due a
-  re-measurement against real libraries.
+  near even the new threshold.
 * **The loose-match note gives different advice**, because its old advice no longer fits the rule. It used
   to suggest `--min-kmer-copies` *above* the derived value, which made sense when the derived value was
   three times too low. Now that it sits on the measured plateau, the remaining cause of a loose match on a

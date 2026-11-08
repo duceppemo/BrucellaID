@@ -26,17 +26,37 @@ CLOSE_MATCH_MARGIN = 0.0005
 # More references than this within the margin means the margin is not separating anything: see
 # Identification.undiscriminating. The densest real case over the 432 packaged genomes is 15.
 MAX_CLOSE_MATCHES = 40
-# Beyond this distance the closest reference is reported as a loose match. It says nothing about which species
-# is right: it says the reads are not close to anything in the sketch, which happens when the library holds
-# more than one organism and when the sample belongs to a lineage the sketch has no near relative for. Measured
-# over every public Brucella read set in ENA: nine in ten calls that agreed with the submitter sat within
-# 0.002 and nineteen in twenty within 0.005, and of the 185 agreeing calls beyond 0.005, every single one
-# shared fewer than 900 of the 1000 hashes, median 696. So past 0.005 something is worth saying, whether or
-# not the species turns out to be right. Those figures were measured under the pre-2.1 copy threshold, which
-# inflated every read-derived distance, so 0.005 is now conservative and the note fires less often than the
-# 4.9% that sweep saw; re-measuring it is pending. The shared-hash half of the finding is what carries the
-# conclusion and is the part least likely to move.
-LOOSE_MATCH_DISTANCE = 0.005
+# Beyond this distance the closest reference is reported as a loose match. It says nothing about which
+# species is right: it says the reads are not close to anything in the sketch, which happens when the
+# library holds more than one organism and when the sample belongs to a lineage the sketch has no near
+# relative for.
+#
+# The rule is the 95th percentile of the distance of calls that AGREE with the ENA submitter, taken to a
+# round number: past that, the closest reference is further away than a correctly identified library
+# normally sits. Over the public sweep, re-measured under the copy threshold above, that percentile is
+# 0.00066 and this threshold flags 4.0% of the 4,020 identified runs -- as rare as the 4.9% the 2.0
+# calibration accepted, which had a percentile of 0.00464 and a threshold of 0.005. The old threshold was
+# not wrong for the sketches it was measured on; it was calibrated on distances the old copy threshold had
+# inflated about sevenfold, and left here it would have missed the thin-reference cases it exists to
+# catch -- a B. pituitosa run at 0.0029, for one.
+#
+# Two things say the choice is not on a knife edge. Everything from 0.0005 to 0.002 flags 2.8% to 6.6% of
+# runs with 96% to 98% of them still agreeing with the submitter, so the behaviour barely moves; and the
+# ordinary libraries are far below it -- the 3,226 runs already within 0.001 before now sit within
+# 0.00046, so this clears the clean bulk by better than a factor of two. Rounding the percentile to one
+# significant figure would give 0.0007 and behave the same; 0.001 is preferred for the headroom and
+# because it is a value a user may reasonably type.
+#
+# What justifies the note NOT changing the species is a separate finding, and the only non-circular one
+# here: agreement with the submitter is flat in distance (99.8%, 100%, 95.3%, 100%, 100% across the bands
+# in the data file), so a loose match does not predict a wrong species. Note that "the agreeing calls past
+# the threshold all shared few hashes", which earlier versions of this comment offered as corroboration,
+# is no evidence at all: mash derives the distance from the shared-hash count, so the two are one
+# measurement in different units and the claim is entailed by the threshold.
+#
+# scripts/loose_distance_calibration.tsv holds the measurements and
+# scripts/recalibrate_loose_distance.py prints the tables above from it.
+LOOSE_MATCH_DISTANCE = 0.001
 # How many copies of a k-mer the read set must hold before MASH sketches it. The point is to drop the
 # k-mers that only exist because of a sequencing error, and the right number grows with the coverage: a
 # k-mer seen once in a 5x library is almost certainly an error, while at 70x the errors reach several

@@ -33,7 +33,7 @@ DATA = [{'name': 'MASH sketch', 'path': '/pkg/references.msh', 'detail': '16 ref
         {'name': 'ST to species', 'path': '/mine/st.tsv', 'detail': '118 ST(s)', 'md5': '', 'packaged': False}]
 
 
-def good(name='ab1', hits='NC_006932-NC_006933.fasta\tq\t0.0012345\t0\t950/1000\n', st='1', files=()):
+def good(name='ab1', hits='NC_006932-NC_006933.fasta\tq\t0.0001234\t0\t995/1000\n', st='1', files=()):
     found = Identification(parse_dist(hits))
     reference, notes = species_notes(found, REFERENCES)
     # st=None stands for --no-mlst: there is no MlstResult at all, not one with an empty ST
@@ -352,7 +352,7 @@ def test_multiqc_file(tmp_path):
     assert set(content['data']) == {'ab1', 'canis', 'bad'}
     assert content['data']['ab1'] == {'Species': 'Brucella abortus',
                                       'SpeciesSource': 'MASH+ST (agree)', 'STSpecies': 'Brucella abortus',
-                                      'SequenceType': '1', 'SharedHashes': '950/1000',
+                                      'SequenceType': '1', 'SharedHashes': '995/1000',
                                       'ClosestReference': 'NC_006932-NC_006933.fasta', 'Status': 'ok'}
     # Nothing is left blank: MultiQC renders an empty cell as a hole in the table
     assert all(value for row in content['data'].values() for value in row.values())
