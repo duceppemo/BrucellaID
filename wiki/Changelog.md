@@ -60,6 +60,16 @@ The measurements are in `scripts/kmer_threshold_sweep.tsv` and the derivation is
   deep library is a minority *Brucella* population being filtered out along with the errors — and for that
   the threshold has to come *down*. `SRR24420453` is the worked example: at the derived 48 it shares 160 of
   1000 hashes, at 20 it shares 396. The note now says to try either side of the derived value.
+* **Three head-to-head figures of the public sweep are corrected**, and the evidence for them is now
+  shipped. They had been computed before the sweep's retry pass filled in its last runs and were never
+  recomputed: the extended set wins 94 of the 146 disagreements rather than 91, 89 of them are runs the
+  vSNP set cannot name rather than 72, and 21 of those are *B. intermedia* rather than 15. Every figure
+  moved in the extended set's favour. `scripts/public_sweep_disagreements.tsv` lists all 146 and
+  `scripts/score_public_sweep.py` derives the figures from it.
+* **The simulated-reads comparison is shipped too**, as `scripts/kmer_threshold_simulated.tsv`, and its
+  claim is corrected. It read "their plateau runs 3-20 at every depth above 50x"; that sweep stopped at
+  20 copies, so the upper edge was the edge of the measurement rather than a result. The uncensored point
+  is the lower edge, which stays at 3 or 4 from 50x to 400x where a real library of 420-535x needs 32.
 * **392 tests**, 100% statement and branch coverage.
 * `validation/check_results.py` restates the rule in its own arithmetic rather than importing it, so that
   a drift in the shipped formula fails the validation instead of being matched silently. It duly failed
@@ -73,7 +83,7 @@ The measurements are in `scripts/kmer_threshold_sweep.tsv` and the derivation is
 **The extended reference set is now the default, and that is a breaking change.** A run with no
 `--reference-set` identifies against 432 curated genomes covering all 30 named species of the *Brucella*
 clade instead of vSNP's 16 genomes and 8 species. Over every usable public *Brucella* read set in ENA —
-4,042 runs — the two sets disagree on 146, and the extended set is right on 91 of them and the 16 on
+4,042 runs — the two sets disagree on 146, and the extended set is right on 94 of them and the 16 on
 none; across the 2,018 *B. melitensis* and 1,118 *B. abortus* runs that carry most real traffic they agree,
 so the change adds coverage without disturbing the calls the smaller set already made well.
 

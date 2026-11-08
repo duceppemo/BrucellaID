@@ -70,14 +70,27 @@ automatically an error.
 | vSNP set (16 genomes, 8 species) | 3,890 (96.2%) | 152 |
 | Extended set (432 genomes) — **the default from 2.0** | 3,990 (98.7%) | 52 |
 
-The two sets disagree on 146 runs. **The extended set is right on 91 of them and the vSNP set on none** —
-there is no run in the sweep where the sixteen genomes gave a better answer. Seventy-two of those are
-species the vSNP set cannot name, which come back `ND` at 0.17–0.26: 35 *B. anthropi*, 15
-*B. intermedia*, and most of the rest of the former *Ochrobactrum* clade. Four of those runs re-measured
+The two sets disagree on 146 runs. **The extended set is right on 94 of them and the vSNP set on none** —
+there is no run in the sweep where the sixteen genomes gave a better answer. (Counted as the runs where the
+extended call matches the submitter and the vSNP call does not; it is 100 before setting aside six whose
+submitter label is only *Brucella* sp. and so has no species-level answer to be right about.)
+
+The 146 split two ways. **89 are runs the vSNP set could not name at all**, coming back `ND` at 0.15–0.30
+while the extended set names them: 35 *B. anthropi*, 21 *B. intermedia*, 7 *B. pituitosa*,
+7 *B. pseudogrignonensis* and the rest of the former *Ochrobactrum* clade. Four of those runs re-measured
 against the vSNP set under the 2.1.0 copy threshold sit at 0.168–0.244 and share 3 to 15 of 1000 hashes, so
-this band is one the threshold change leaves where it was. Nineteen are wrong-species calls
-the extended set corrects, most of them marine: the vSNP set scored **0 of 11** on *B. pinnipedialis*,
-sending six of them to *B. ceti*, where the extended set gets 8 of 11 with the other three not identified.
+this band is one the threshold change leaves where it was. **The other 57 are runs both sets named but
+named differently**, and the extended set corrects 19 of them, most of them marine: the vSNP set scored
+**0 of 11** on *B. pinnipedialis*, sending six of them to *B. ceti*, one to *B. melitensis*, one to
+*B. microti* and leaving three unidentified, where the extended set gets 8 of 11 with the other three not
+identified.
+
+All 146 are listed in
+[`scripts/public_sweep_disagreements.tsv`](https://github.com/duceppemo/BrucellaID/blob/main/scripts/public_sweep_disagreements.tsv),
+and `scripts/score_public_sweep.py` derives every figure in these two paragraphs from it. They are shipped
+because three of those figures had drifted: they were computed before the sweep's retry pass filled in its
+last runs and were never recomputed, which put the head-to-head win at 91 rather than 94, the unnameable
+runs at 72 rather than 89, and *B. intermedia* at 15 rather than 21.
 
 What the extended set's 52 non-matches are, one by one:
 

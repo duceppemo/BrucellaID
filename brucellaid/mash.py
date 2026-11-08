@@ -78,7 +78,7 @@ LOOSE_MATCH_DISTANCE = 0.001
 # Those three libraries stop at 70x, and the median public Brucella run is 141x, so a second set of 60 ENA
 # runs was swept at their own depth from 51x to 1903x, thresholds to 64. 81 curves from 63 libraries in
 # all. One more copy per 5x with a ceiling of 48 lands inside the plateau for 80 of the 81, recovering at
-# least 99.6% of the best for nine curves in ten and 100% at the median.
+# least 99.5% of the best for nine curves in ten (86% reach 99.6%) and 100% at the median.
 #
 #     depth      51-54x  101-112x  198-250x  420-535x  700-780x  1218-1903x
 #     plateau       6-24      3-48      6-64     32-64     12-64        20-64
@@ -88,8 +88,13 @@ LOOSE_MATCH_DISTANCE = 0.001
 # was measured with a sketch half full of error k-mers and its distance came out inflated -- ERR2136546 at
 # 47x read 0.00652 against 773/1000 hashes where it is really 0.00012 against 995. Per 4x and per 6x both
 # land outside more often than per 5x, and ceilings of 24, 32 and 40 all land outside more often than 48,
-# so neither number is a point on a flat surface. Simulated reads cannot settle any of this: uniform error
-# and no duplicates make their plateau 3-20 at every depth above 50x, which chooses nothing.
+# so neither number is a point on a flat surface. Simulated reads cannot settle any of this, and an
+# earlier derivation that rested on them got it wrong: with uniform error and no duplicates their plateau
+# begins at 3 or 4 at every depth from 50x to 400x, where a real library of 420-535x needs 32 copies to
+# reach its own. The lower edge does not move with depth, so it chooses nothing. (Their plateau also
+# reaches the top of the range swept, 20, at every one of those depths -- but that sweep stopped at 20,
+# so the upper edge is censored and is not evidence either way.)
+# scripts/kmer_threshold_simulated.tsv holds those 330 measurements.
 #
 # The single curve the rule misses is SRR24420453, and it is not a Brucella library: at a nominal 1482x it
 # never shares more than 396 of 1000 hashes with anything, its best distance is 0.027, and its recovery

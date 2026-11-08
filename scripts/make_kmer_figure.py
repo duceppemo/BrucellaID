@@ -55,13 +55,22 @@ def rule(depth, floor, slope, ceiling):
     return int(min(ceiling, max(floor, round(depth / slope))))
 
 
+# The figure is of the real-library sweep only. The simulated measurements live in their own file
+# (scripts/kmer_threshold_simulated.tsv) because they set nothing, and they are swept to a different
+# maximum threshold, so mixing them in would both change the curve count and censor the spans. This set is
+# stated rather than inferred so that adding a source to the data file cannot silently redraw the figure.
+REAL_SOURCES = ('subsample', 'ena')
+
+
 def read_sweep(path):
-    """[(library, depth, {copies: shared})] -- one entry per library per depth."""
+    """[(library, depth, {copies: shared})] -- one entry per library per depth, real libraries only."""
     curves = {}
     for line in path.read_text().splitlines():
         if line.startswith('#') or line.startswith('source\t'):
             continue
         source, library, depth, copies, shared, _total = line.split('\t')
+        if source not in REAL_SOURCES:
+            continue
         key = (source, library, round(float(depth)))
         curves.setdefault(key, [float(depth), {}])[1][int(copies)] = int(shared)
     out = []

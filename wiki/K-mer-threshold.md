@@ -40,7 +40,8 @@ each depth, which separates depth from library quality in a way that comparing t
 other 60 are public ENA runs stratified across the depth range, because the tutorial libraries stop at 70x
 and the median public *Brucella* run is 141x. Every measurement is in
 [`scripts/kmer_threshold_sweep.tsv`](https://github.com/duceppemo/BrucellaID/blob/main/scripts/kmer_threshold_sweep.tsv)
-and `scripts/make_kmer_figure.py` draws the figure from it.
+— 1,320 of them, real libraries only — and `scripts/make_kmer_figure.py` draws the figure from it. The
+simulated comparison below is kept in a file of its own, because it sets nothing.
 
 The left panel is why no single number works. A 53x library peaks between 6 and 20 copies and is down to
 **1%** of its own best by 64; a 500x library is still climbing at 20 and only arrives at 40. Ask too
@@ -62,8 +63,13 @@ both say so.
 ## What this does not establish
 
 * **Simulated reads cannot settle any of this**, which is worth saying because an earlier derivation
-  rested on them: with uniform error and no duplicates their plateau runs 3-20 at every depth above 50x,
-  so they cannot tell one candidate from another.
+  rested on them. With uniform error, no duplicates and no adapters, their plateau *begins* at 3 or 4 at
+  every depth from 50x to 400x — where a real library of 420-535x needs 32 copies before it reaches its
+  own plateau. The lower edge simply does not move with depth, so simulated reads give no signal about
+  where the threshold belongs. The 330 measurements are in
+  [`scripts/kmer_threshold_simulated.tsv`](https://github.com/duceppemo/BrucellaID/blob/main/scripts/kmer_threshold_simulated.tsv),
+  and note that sweep stopped at 20 copies, so where a plateau there reaches 20 it is censored at the edge
+  of the measurement rather than measured to its end.
 * **One genus, one platform.** All 63 libraries are *Brucella* and all are paired Illumina. Nothing here
   says what the rule should be for a different genome size — the coverage estimate assumes 3.3 Mb — or for
   a long-read library, whose error profile is not the one these curves were drawn from.

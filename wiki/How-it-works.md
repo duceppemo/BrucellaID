@@ -222,7 +222,7 @@ is still the species of the closest genome, the ST still arbitrates where two sp
 [no biovar](How-it-works#no-biovar).
 
 **Why the default moved.** Measured over every usable public *Brucella* read set in ENA — 4,042 runs — the
-two sets disagree on 146, and the extended set is right on 91 of them and vSNP's 16 on none. There is no
+two sets disagree on 146, and the extended set is right on 94 of them and vSNP's 16 on none. There is no
 run in that archive where the smaller set gave a better answer, and across the 2,018 *B. melitensis* and
 1,118 *B. abortus* runs that carry most real traffic the two return the same call, so the extra genomes add
 coverage without disturbing what the 16 already did well.
