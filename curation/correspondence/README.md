@@ -19,15 +19,15 @@ submitting group, and say "your records"; they are not interchangeable with the 
 | To the submitters | Records | Submitter | Status |
 | --- | --- | --- | --- |
 | `genbank_2026-11.txt` | 5 assemblies | GenBank | **sent 2026-11-07** |
-| `prjeb30030_2026-11.txt` | 11 BioSamples | Instituto Nacional de Saúde Dr. Ricardo Jorge | drafted |
-| `prjeb4782_2026-11.txt` | 3 BioSamples + 10 runs | Wellcome Sanger Institute | drafted |
-| `broad_2026-11.txt` | 2 BioSamples + 8 runs | Broad Institute | drafted |
-| `single_prjeb22377.txt` | `ERR3218177` | Wellcome Sanger Institute | drafted |
-| `single_prjna649281.txt` | `SRR31560207` | University of Pretoria | drafted |
-| `single_prjna610713.txt` | `SRR11526759` | Sardar Vallabhbhai Patel Univ. of Agriculture and Technology | drafted |
-| `single_prjna1183633.txt` | `SRR31357708` | Institute of Genetics and Developmental Biology | drafted |
-| `single_prjna1290416.txt` | `SRR35797377` | Shandong Center for Disease Control and Prevention | drafted — **not** a correction request |
-| `single_prjna945449.txt` | `SRR25828922` | NIAID | drafted |
+| `prjeb30030_2026-11.txt` | 11 BioSamples | Instituto Nacional de Saúde Dr. Ricardo Jorge | **sent 2026-11-07** |
+| `prjeb4782_2026-11.txt` | 3 BioSamples + 10 runs | Wellcome Sanger Institute | **sent 2026-11-07** |
+| `broad_2026-11.txt` | 2 BioSamples + 8 runs | Broad Institute | **sent 2026-11-07** |
+| `single_prjeb22377.txt` | `ERR3218177` | Wellcome Sanger Institute | **sent 2026-11-07** |
+| `single_prjna649281.txt` | `SRR31560207` | University of Pretoria | **sent 2026-11-07** |
+| `single_prjna610713.txt` | `SRR11526759` | Sardar Vallabhbhai Patel Univ. of Agriculture and Technology | **sent 2026-11-07** |
+| `single_prjna1183633.txt` | `SRR31357708` | Institute of Genetics and Developmental Biology | **sent 2026-11-07** |
+| `single_prjna1290416.txt` | `SRR35797377` | Shandong Center for Disease Control and Prevention | **sent 2026-11-07** — **not** a correction request |
+| `single_prjna945449.txt` | `SRR25828922` | NIAID | **sent 2026-11-07** |
 
 `SRR24420454` (PRJNA966239) gets no message: its library holds a third of a *Brucella* genome at 0.5× and
 nothing else, so there is nothing to report beyond insufficient depth.
@@ -53,9 +53,12 @@ than assuming the recipient knows it.
   sketch-based tools report the run as not identified, and the message explains that rather than asking
   for anything.
 
-## The sent letters are kept verbatim
+## Every letter here has been sent, and they are kept verbatim
 
-Three of the five letters already sent describe a "431-genome reference set". The set was 431 when they
-went out on 2026-11-07 and is 432 now, so the drafts still here were corrected and the sent files were
-not. They are left exactly as sent, because that is what the recipients hold; `../mislabelled_records.md`
-records the date each one went. Do not "fix" a figure in a sent letter.
+All fourteen went out on 2026-11-07: the five archive and GenBank letters first, then the nine
+per-submitter ones. Three of the first five describe a "431-genome reference set", because the set was 431
+when they went and is 432 now; the nine that went later were corrected to 432 before they were sent. The
+earlier three are left exactly as sent, because that is what their recipients hold.
+
+Do not "fix" a figure in any of these files. They are a record of what was sent, not a description of the
+current reference set, and `../mislabelled_records.md` records the date each one went.

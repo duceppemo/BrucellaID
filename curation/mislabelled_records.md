@@ -297,8 +297,9 @@ The curation decisions that excluded these genomes from the shipped set are in
 
 Drafts and sent messages live in [`correspondence/`](correspondence/), which splits them into two
 routes: the `archive_*` letters to the curation teams, which between them cover every record below, and
-the per-submitter letters. The archive route has been used; the submitter letters remain available for
-the records where a submitter is worth reaching directly.
+the per-submitter letters, which reach the submitting group directly for the records where that is worth
+doing. **Both routes have now been used**, so every record below has been reported at least once and
+most of them twice. Nothing here is awaiting a message; it is awaiting replies.
 
 | Records | Reported to | Date | Outcome |
 | --- | --- | --- | --- |
@@ -307,17 +308,18 @@ the records where a submitter is worth reaching directly.
 | 5 BioSamples to change, 10 to annotate, 3 marked as needing no action | the NCBI BioSample team | 2026-11-07 | **sent**, awaiting reply |
 | `SAMN07581394` and `SAMN13812480`, resolved by type-strain ANI after the first message | the NCBI BioSample team | 2026-11-07 | **sent**, awaiting reply |
 | `SAMEA114240991`, same | the ENA curation team | 2026-11-07 | **sent**, awaiting reply |
-| 11 BioSamples of PRJEB30030 | the study's submitters | — | drafted, not sent |
-| 3 BioSamples of PRJEB4782, plus 10 runs that hold no *Brucella* | the study's submitters | — | drafted, not sent |
+| 11 BioSamples of PRJEB30030 | the study's submitters | 2026-11-07 | **sent**, awaiting reply |
+| 3 BioSamples of PRJEB4782, plus 10 runs that hold no *Brucella* | the study's submitters | 2026-11-07 | **sent**, awaiting reply |
 | `GCA_000662015.2` | GenBank | earlier, separately | already reported before this work; the 2026-11-07 message supplies its swap partner |
-| 2 BioSamples of PRJNA173595/PRJNA173601, plus 8 runs across PRJNA52097, PRJNA197004, PRJNA77813 and PRJNA213741 | the Broad Institute | — | drafted, not sent |
+| 2 BioSamples of PRJNA173595/PRJNA173601, plus 8 runs across PRJNA52097, PRJNA197004, PRJNA77813 and PRJNA213741 | the Broad Institute | 2026-11-07 | **sent**, awaiting reply |
+| 6 single submissions: `ERR3218177`, `SRR31560207`, `SRR11526759`, `SRR31357708`, `SRR35797377`, `SRR25828922` | each study's submitters | 2026-11-07 | **sent**, awaiting reply. `SRR35797377` is not a correction request: its species is right and the message explains why a sketch reports the run as not identified |
 
 The nine unresolved assembly candidates and the four ex-*Ochrobactrum* read sets were
 deliberately left out of all of the above. The GenBank message offers the list if they want it.
 
-All seven single submissions are drafted (my earlier note said four; it was wrong). One of the seven,
-`SRR24420454` in PRJNA966239, got no message: its library holds a third of a *Brucella* genome at 0.5×
-and nothing else, so it is too shallow to say anything is wrong with it.
+Six of the seven single submissions have been written to (an earlier note said four; it was wrong). The
+seventh, `SRR24420454` in PRJNA966239, got no message: its library holds a third of a *Brucella* genome
+at 0.5× and nothing else, so it is too shallow to say anything is wrong with it.
 
 **The 22 "holds no *Brucella*" records were re-tested by containment**, which is the fairer measure for a
 minority organism than the shared-hash count that found them — a sketch of the reads measures what
