@@ -25,8 +25,8 @@ configure. Where two species are too close for a sketch to choose between them �
 ```
 $ brucellaid -i reads/ -o results/
 Sample      Species           SpeciesSource         ClosestReference                           SharedHashes  SequenceType  STSpecies
-ERR2136546  Brucella canis    MASH+ST (arbitrated)  GCA_000530495.1_Oliveri_genomic.fna.gz     773/1000      20            Brucella canis
-ERR3454415  Brucella abortus  MASH+ST (agree)       GCA_000742195.1_ASM74219v1_genomic.fna.gz  972/1000      1             Brucella abortus
+ERR2136546  Brucella canis    MASH+ST (arbitrated)  GCA_000530495.1_Oliveri_genomic.fna.gz     995/1000      20            Brucella canis
+ERR3454415  Brucella abortus  MASH+ST (agree)       GCA_000742195.1_ASM74219v1_genomic.fna.gz  994/1000      1             Brucella abortus
 ```
 (Two of the four [tutorial](Tutorial) read sets, against the 432-genome default set. Columns elided to
 fit; `brucellaid.tsv` also holds `MashDistance`, `AlleleProfile`, `Reads` and `Notes`.)
@@ -39,7 +39,8 @@ fit; `brucellaid.tsv` also holds `MashDistance`, `AlleleProfile`, `Reads` and `N
 
 ## Then
 * [How it works](How-it-works) — what the two calls rest on, and where each of them stops
-* [Validation](Validation) — 4,042 public read sets, and 16 genomes read for read
+* [Validation](Validation) — 1,543 held-out genomes, 4,042 public read sets, and a 22-sample suite you can
+  re-run, plus [the k-mer copy threshold](K-mer-threshold) and how it was measured
 * [Troubleshooting](Troubleshooting) and the [FAQ](FAQ)
 * [Changelog](Changelog)
 

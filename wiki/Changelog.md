@@ -1,5 +1,58 @@
 # Changelog
 
+## 2.1.0 (2026-11-08)
+
+**The k-mer copy threshold was re-derived, and reported distances change because of it.** Before MASH
+sketches a read set it drops every k-mer seen fewer than *m* times, to throw away the ones that exist only
+because of a sequencing error. *m* was one more copy per 20x of coverage, capped at 20; it is now one more
+copy per **5x**, capped at **48**. The floor of 2 is unchanged.
+
+No species call and no sequence type changes: the 2,022-sample simulated validation returns exactly the
+same 1,538 of 1,543 held-out named samples, with the same five mislabelled genomes, and the repository's
+own suite still passes 22 of 22. What changes is `MashDistance` and `SharedHashes`, on real libraries
+especially, because the old threshold was leaving error k-mers in the sketch:
+
+| library | depth | before | after |
+| --- | --- | --- | --- |
+| ERR2136546 | 47x | 0.00652, 773/1000 | **0.000119, 995/1000** |
+| ERR3454415 | 70x | 0.00068, 972/1000 | **0.000144, 994/1000** |
+| SRR19520329 | 53x | 0.00051, 979/1000 | **0.000119, 995/1000** |
+| SRR8550484 | 69x | 0.00645, 775/1000 | **0.000264, 989/1000** |
+
+Simulated samples of a genome the sketch holds now return 999 or 1000 of 1000 hashes, which is the correct
+answer for reads simulated from that genome.
+
+**If you compare distances across versions, they are not comparable.** A distance from 2.0.0 or earlier is
+larger than the same measurement today, by a factor that depends on the depth of the library — roughly 5
+at 50x and 25 at 70x on the libraries above. `--min-kmer-copies` pins any fixed value if you need to
+reproduce an old report: 2 gives a 1.1.0 report exactly.
+
+**What it was fitted on.** 81 threshold sweeps over 63 real libraries from 5x to 1903x: three tutorial
+libraries strided down to each depth, which separates depth from library quality, and 60 public ENA runs
+stratified across the range, because the tutorial libraries stop at 70x and the median public *Brucella*
+run is 141x. The new rule lands inside the measured plateau for 80 of the 81 curves; the old one for 26.
+The measurements are in `scripts/kmer_threshold_sweep.tsv` and the derivation is on the wiki under
+[The k-mer copy threshold](K-mer-threshold).
+
+* **Two of the four tutorial libraries no longer carry a loose-match note.** They were flagged only
+  because their distance was inflated past `--loose-distance`; at 0.00012 and 0.00026 they are nowhere
+  near it. The note itself is unchanged, and `LOOSE_MATCH_DISTANCE` is still 0.005 — but that figure was
+  calibrated on distances measured under the old threshold, so it is now conservative and is due a
+  re-measurement against real libraries.
+* **The loose-match note gives different advice**, because its old advice no longer fits the rule. It used
+  to suggest `--min-kmer-copies` *above* the derived value, which made sense when the derived value was
+  three times too low. Now that it sits on the measured plateau, the remaining cause of a loose match on a
+  deep library is a minority *Brucella* population being filtered out along with the errors — and for that
+  the threshold has to come *down*. `SRR24420453` is the worked example: at the derived 48 it shares 160 of
+  1000 hashes, at 20 it shares 396. The note now says to try either side of the derived value.
+* **392 tests**, 100% statement and branch coverage.
+* `validation/check_results.py` restates the rule in its own arithmetic rather than importing it, so that
+  a drift in the shipped formula fails the validation instead of being matched silently. It duly failed
+  when the rule changed, and was updated by hand.
+* **The validation pages are split by topic**: [Validation](Validation) is now a short hub over
+  [Validation suite](Validation-suite), [Validation at scale](Validation-at-scale) and
+  [The k-mer copy threshold](K-mer-threshold).
+
 ## 2.0.0 (2026-11-07)
 
 **The extended reference set is now the default, and that is a breaking change.** A run with no
@@ -17,7 +70,9 @@ What this means in practice:
   rather than silently changing behaviour.
 * `--reference-set vsnp` gives back 1.x's reference data exactly: the same 16 genomes, the same sketch,
   the same threshold, and therefore the same species, closest reference, distance, shared hashes and
-  sequence type. It is not a byte-for-byte 1.x run, because the 2.0 features that are independent of the
+  sequence type. (**The distance and shared-hash half of that is no longer true from 2.1.0**, which
+  re-derived the k-mer copy threshold: the species, closest reference and sequence type still match, but
+  the numbers behind them moved. See the 2.1.0 entry.) It is not a byte-for-byte 1.x run, because the 2.0 features that are independent of the
   reference set still apply: a library past `--loose-distance` gains a loose-match note, which is inserted
   first and so shifts the other notes down, and `Loose match beyond` is added to the run parameters.
 * **The `code` column changes with the set**, which matters for the legacy `--xlsx` report and for
@@ -117,7 +172,7 @@ None of these follows from the change of default; they were found reviewing it.
   *Ochrobactrum* included
   (*B. papionis* is labelled nowhere in INSDC: its genome was found under "Brucella sp." and relabelled on
   sequence-type and distance evidence, see curation/papionis/README.md), plus the
-  lineages with no name yet, which are reported honestly as *Brucella sp.*. Derived from the 2,022
+  lineages with no name yet, which are reported as *Brucella sp.*. Derived from the 2,022
   assemblies behind the mashID *Brucella* pack and curated genome by genome
   (`scripts/extended_references_curation.tsv` logs every exclusion and why); validated on simulated reads
   of all 2,022, every held-out sample of a named species right once five genomes mislabelled in NCBI --
@@ -131,7 +186,8 @@ None of these follows from the change of default; they were found reviewing it.
   It does not change the species: a sample can be the right species and still match loosely, because the
   library holds more than *Brucella*, because its lineage has no near relative in the sketch, or because
   the derived k-mer copy threshold is low for its depth — which is what two of the four tutorial
-  libraries turn out to be, see [Validation](Validation). The
+  libraries turned out to be under the 2.0 threshold, see
+  [The k-mer copy threshold](K-mer-threshold). The
   threshold comes from every public *Brucella* read set in ENA, where nineteen in twenty calls that agreed
   with the submitter sat within 0.005, and all 185 agreeing calls beyond it shared fewer than 900 of the
   1000 hashes.
@@ -140,7 +196,7 @@ None of these follows from the change of default; they were found reviewing it.
   call. A reference of another species is still named in full, with its shared hashes.
 
 ## 1.2.1 (2026-11-02)
-* **Concatenated gzip files are sized honestly.** The coverage estimate read the gzip trailer, which names
+* **Concatenated gzip files are sized correctly.** The coverage estimate read the gzip trailer, which names
   only the *last* member of a file, so lane files joined with `cat` and the 64 KB blocks `bgzip` writes
   were estimated at a fraction of their size -- a deep bgzipped library could read as under 1x, keep the
   k-mer copy threshold at 2, and let the error k-mers back into the sketch. The head of the file is now
@@ -194,7 +250,7 @@ the [Tutorial](Tutorial) run next to the simulated samples: each must give the s
 it, the reference and sequence type it is known to give, and the same species and reference as the
 simulated sample of its own reference genome. All 22 samples pass, and the fix shows on real data:
 SRR8550484 (~69x) moved from 422/1000 hashes at distance 0.0248 to 775/1000 at 0.0065, while ERR2136546
-(47x) stayed exactly where it was. See [Validation](Validation).
+(47x) stayed exactly where it was. See [The k-mer copy threshold](K-mer-threshold).
 
 **Upgrading:** no report or table changed shape. Results change only on read sets above about 50x, where
 they were the ones being distorted: distances shrink toward what an assembly would give, shared hashes
@@ -353,7 +409,7 @@ before. What changed is everything around that, and how the MLST is called.
 
 **Around the code**
 * 194 tests, 100% statement and branch coverage, run on Python 3.10, 3.12 and 3.14 by GitHub Actions.
-* A [Validation](Validation) page, and `validation/run_validation.sh`, which reproduces it from public
+* A [Validation suite](Validation-suite) page, and `validation/run_validation.sh`, which reproduces it from public
   genomes.
 * A [wiki](Home), a [tutorial](Tutorial) on public read sets, a bioconda recipe, `CITATION.cff`, and
   `examples/run_example.sh`, which runs in a few seconds on data it makes itself.

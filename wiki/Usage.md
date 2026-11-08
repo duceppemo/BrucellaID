@@ -49,9 +49,9 @@ Run `multiqc results/` on the output folder to fold the run into a MultiQC repor
 | --- | --- | --- |
 | `--min-hashes N` | 150 | Of the reference's 1000 min-hashes, how many the reads must share for a species to be reported |
 | `--loose-distance D` | 0.005 | MASH distance beyond which the closest reference is called a loose match, in a note. It does not change the species reported |
-| `--min-kmer-copies N` | from the coverage | Copies of a k-mer the reads must hold for MASH to sketch it. The default derives it from the number of bases in the files: one more copy per 20x, from 2 to 20 |
+| `--min-kmer-copies N` | from the coverage | Copies of a k-mer the reads must hold for MASH to sketch it. The default derives it from the number of bases in the files: one more copy per 5x, from 2 to 48. [How it was set](K-mer-threshold) |
 | `--min-reads N` | 5 | Reads behind an allele call for it to be kept |
-| `--no-mlst` | off | Identify the species only. The ST then takes no part in the species call either, so a sample with a second species inside the close-match margin is reported `MASH (unresolved)` and flagged for review instead of being arbitrated. Against the 432-genome default set that happens far more often than it did against vSNP's 16 |
+| `--no-mlst` | off | Identify the species only. The ST then takes no part in the species call either, so a sample with a second species inside the close-match margin is reported `MASH (unresolved)` and flagged for review instead of being arbitrated. That happens for a minority of samples under either reference set; see below |
 | `--no-st-species` | off | Do not let the ST take part in the species call: report the closest reference's species, whatever else was just as close |
 | `--min-st-purity F` | 0.95 | Share of the isolates of an ST that must carry the same species for that ST to take part |
 | `--min-st-isolates N` | 3 | Isolates an ST must rest on to take part |
@@ -68,7 +68,7 @@ vSNP's 16 across 8, so the default set widens the pairs it can involve without m
 the four tutorial read sets arbitrate identically under either set. `--no-st-species` restores the
 behaviour of version 1.0.0, where the closest
 reference decided alone. See
-[How it works](How-it-works) for what the `SpeciesSource` column reports.
+[How it works](How-it-works#the-species-call) for what the `SpeciesSource` column reports.
 
 Lowering `--min-hashes` reports a species for a sample that holds little *Brucella* (a mixed culture, a low
 yield extraction); the closest reference is then still only the closest of the set, which is not the same
@@ -78,7 +78,8 @@ as the right one. The `brucellaid_mash.tsv` report shows what the call rests on.
 is why it is derived from the input rather than fixed. Set it only to reproduce an older run
 (`--min-kmer-copies 2` is what versions up to 1.1.0 always used) or when the sample is not a single
 *Brucella* genome, so that coverage is not what the number of bases implies. See
-[How it works](How-it-works) for why the value has to move with the depth.
+[The k-mer copy threshold](K-mer-threshold) for why the value has to move with the depth, and how the rule
+was measured.
 
 ## Reference data
 The package ships all five files, and each can be replaced:

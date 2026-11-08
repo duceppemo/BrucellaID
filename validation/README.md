@@ -24,9 +24,9 @@ Nothing is written outside `validation/data` and `validation/results`, which are
 genome for genome, so the answers in `genomes.tsv` and `reads.tsv` are their sketch IDs, and the negative
 control is *B. anthropi* ATCC 49188, which comes back `ND` only because the vSNP set does not carry it —
 the extended set has it as a reference and names it correctly, the 2020 taxonomy having moved
-*Ochrobactrum* into the genus. What the default 432-genome set does is measured at scale instead, in the
-"At scale" and "On real public read sets" sections of the
-[Validation wiki page](https://github.com/duceppemo/BrucellaID/wiki/Validation).
+*Ochrobactrum* into the genus. What the default 432-genome set does is measured at scale instead, on the
+[Validation at scale](https://github.com/duceppemo/BrucellaID/wiki/Validation-at-scale) page: simulated
+reads of 2,022 assemblies, and every usable public *Brucella* read set in ENA.
 
 The species comes from `genomes.tsv`. The **sequence type is not listed anywhere**: `check_results.py`
 reads it off each genome by looking for an exact match of every MLST allele of the package, which is an
@@ -37,16 +37,16 @@ identified at all.
 Two things exercise the depth-adaptive k-mer copy threshold, which a run at the default 20x never would:
 
 * Two genomes are simulated deep no matter what `COVERAGE` asks for: one at **150x** and one, of another
-  species, at **250x**. At those depths the threshold must rise (about one more required copy per 20x) or
+  species, at **250x**. At those depths the threshold must rise (one more required copy per 5x) or
   the error k-mers crowd the bottom-1000 sketch, and `check_results.py` checks all of it: the estimated
   coverage is within 20% of the truth, the threshold fits the depth, and the sample keeps at least 950 of
   its 1000 sketch hashes. The floor comes from a sweep of four genomes at 150x and two at 250x: the
   derived threshold keeps 1000/1000 on all six, the old fixed threshold of 2 keeps 860-902 at 150x and
   728-748 at 250x, with the distance inflated to 0.0025-0.0082.
 * The **real read sets** run next to the simulated ones. Each is checked against the answer it is known to
-  give, a library estimated at 60x or more must have raised the threshold above the floor of 2, and each
+  give, a library estimated at 15x or more must have raised the threshold above the floor of 2, and each
   one is compared with the simulated sample of the same reference genome: real reads and simulated reads
   of one genome must agree on the species and on the reference.
 
-The results are on the [Validation](https://github.com/duceppemo/BrucellaID/wiki/Validation) page of the
+The results are on the [Validation suite](https://github.com/duceppemo/BrucellaID/wiki/Validation-suite) page of the
 wiki.

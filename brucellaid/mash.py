@@ -32,26 +32,53 @@ MAX_CLOSE_MATCHES = 40
 # over every public Brucella read set in ENA: nine in ten calls that agreed with the submitter sat within
 # 0.002 and nineteen in twenty within 0.005, and of the 185 agreeing calls beyond 0.005, every single one
 # shared fewer than 900 of the 1000 hashes, median 696. So past 0.005 something is worth saying, whether or
-# not the species turns out to be right.
+# not the species turns out to be right. Those figures were measured under the pre-2.1 copy threshold, which
+# inflated every read-derived distance, so 0.005 is now conservative and the note fires less often than the
+# 4.9% that sweep saw; re-measuring it is pending. The shared-hash half of the finding is what carries the
+# conclusion and is the part least likely to move.
 LOOSE_MATCH_DISTANCE = 0.005
 # How many copies of a k-mer the read set must hold before MASH sketches it. The point is to drop the
-# k-mers that only exist because of a sequencing error, and the right number depends on the coverage: an
-# error k-mer appears about depth * error_rate times, so at 30x a single copy is almost certainly an error
-# and two copies almost certainly real, while at 400x erroneous k-mers reach two copies routinely and flood
-# the sketch. Measured on 225 real runs plus one library strided from 5x to 92x, a fixed 2 starts losing the
-# true reference above about 240x (the shared hashes fall below the --min-hashes threshold and nothing is
-# reported) and a fixed 10 destroys a 5x sketch, so the value is derived from the coverage instead of being
-# a constant. One extra required copy per 20x fits the sweep those numbers came from.
+# k-mers that only exist because of a sequencing error, and the right number grows with the coverage: a
+# k-mer seen once in a 5x library is almost certainly an error, while at 70x the errors reach several
+# copies on their own and crowd the true k-mers out of the bottom-1000 sketch. So the threshold is derived
+# from the sample rather than fixed.
 #
-# It is not generous enough everywhere. Two of the four tutorial libraries keep recovering hashes when the
-# threshold is raised by hand well past the derived value: SRR8550484 at ~69x goes from 775/1000 at 0.0065
-# to 990/1000 at 0.00024 with 12 copies, and ERR2136546 at ~47x from 773/1000 at 0.0065 to 989/1000 at
-# 0.00026 with 4. The species and the ST are unaffected, and every validated figure rests on the values
-# below, so they stand for 2.0 -- but the derivation is due a second look, and a distance from a default
-# run is a floor on the match rather than a measurement of it.
-MIN_KMER_COPIES = 2             # Floor, and the usual value below about 50x
-MAX_KMER_COPIES = 20            # Ceiling: beyond about 400x the sketch is already stable
-DEPTH_PER_KMER_COPY = 20        # One more required copy per this much coverage
+# Re-derived by measurement. Three real libraries were subsampled by striding -- which separates depth from
+# library quality, as comparing two different libraries cannot -- and swept over every threshold from 1 to
+# 20 at each depth, against the reference each one matches. Recovery against depth is a single-peaked
+# curve, so the target is the PLATEAU: every threshold within 1% of the best recovery at that depth. The
+# plateau is narrow when the library is shallow and wide when it is deep, and it moves up with depth:
+#
+# Each cell below is the UNION of the plateaus of the curves at that depth, which is the rule used for
+# both tables here: the widest span any curve there allowed.
+#
+#     depth     5x   9x  14x  20x  28x  41x  46x  54x  68x
+#     plateau  2-2  2-2  2-3  4-4  3-9 6-11 4-13 6-15 7-20
+#
+# Those three libraries stop at 70x, and the median public Brucella run is 141x, so a second set of 60 ENA
+# runs was swept at their own depth from 51x to 1903x, thresholds to 64. 81 curves from 63 libraries in
+# all. One more copy per 5x with a ceiling of 48 lands inside the plateau for 80 of the 81, recovering at
+# least 99.6% of the best for nine curves in ten and 100% at the median.
+#
+#     depth      51-54x  101-112x  198-250x  420-535x  700-780x  1218-1903x
+#     plateau       6-24      3-48      6-64     32-64     12-64        20-64
+#
+# What this replaces was one more copy per 20x with a ceiling of 20, which lands outside for 55 of the 81
+# and as low as 63.6%. It was about three times too cautious in the middle of the range, so a deep library
+# was measured with a sketch half full of error k-mers and its distance came out inflated -- ERR2136546 at
+# 47x read 0.00652 against 773/1000 hashes where it is really 0.00012 against 995. Per 4x and per 6x both
+# land outside more often than per 5x, and ceilings of 24, 32 and 40 all land outside more often than 48,
+# so neither number is a point on a flat surface. Simulated reads cannot settle any of this: uniform error
+# and no duplicates make their plateau 3-20 at every depth above 50x, which chooses nothing.
+#
+# The single curve the rule misses is SRR24420453, and it is not a Brucella library: at a nominal 1482x it
+# never shares more than 396 of 1000 hashes with anything, its best distance is 0.027, and its recovery
+# peaks at 20 copies and then falls -- the signature of a minority Brucella population being filtered out
+# along with the errors. Its distance means nothing at any threshold, and both the shared-hash count and
+# the loose-match note say so.
+MIN_KMER_COPIES = 2             # Floor: the plateau is exactly 2-2 at every depth up to about 10x
+MAX_KMER_COPIES = 48            # Ceiling: it binds past 240x, where the plateau runs to 64
+DEPTH_PER_KMER_COPY = 5         # One more required copy per this much coverage
 KMER_COPIES_AUTO = 0            # "Derive it from the coverage", the default
 BRUCELLA_GENOME_SIZE = 3_300_000  # Used only to turn a number of bases into a coverage
 BASE_FRACTION_RECORDS = 1000    # Records read from the head of a file to measure its bases per byte

@@ -61,7 +61,8 @@ rather than mistakes, and both are genus-positive, so each does hold some classi
   threshold rejects. So: a trace of *B. melitensis* in a library that holds a little classical *Brucella*
   and a great deal of something else.
 
-Neither is a counter-example to the shared-hash verdict — 26 and 146 of 1000 hashes is what a minority
+Neither is a counter-example to the shared-hash verdict — 1 and 2 of 1000 hashes under the 2.1.0 copy
+threshold, 26 and 146 under the one in force when the sweep ran, is what a minority
 population looks like — but "mixed library" describes them better than "not *Brucella*".
 
 **For the former *Ochrobactrum* records this evidence is silent.** All four candidates are negative on

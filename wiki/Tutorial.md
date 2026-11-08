@@ -54,38 +54,41 @@ brucellaid -i reads -o results -t 8 -p 2
 4 sample(s), 2 at a time, 4 thread(s) each
 ERR2136546: identifying the species with MASH (2 file(s))
 ERR3454415: identifying the species with MASH (2 file(s))
-ERR3454415: about 230,479,484 bases, roughly 70x coverage: sketching the k-mers seen at least 3 time(s)
-ERR2136546: about 153,926,473 bases, roughly 47x coverage: sketching the k-mers seen at least 2 time(s)
-ERR2136546: Brucella canis str. Oliveri (GCA_000530495.1_Oliveri_genomic.fna.gz, MASH distance 0.00652, 773/1000 hashes)
+ERR3454415: about 230,479,484 bases, roughly 70x coverage: sketching the k-mers seen at least 14 time(s)
+ERR2136546: about 153,926,473 bases, roughly 47x coverage: sketching the k-mers seen at least 9 time(s)
+ERR2136546: Brucella canis str. Oliveri (GCA_000530495.1_Oliveri_genomic.fna.gz, MASH distance 0.00012, 995/1000 hashes)
 ERR2136546: calling the MLST alleles with Seal
 ERR2136546: ST 20 (profile 1-6-4-1-5-3-5-4-6)
 ERR2136546: Brucella canis (MASH+ST, arbitrated)
-ERR3454415: Brucella abortus str. 2308 (GCA_000742195.1_ASM74219v1_genomic.fna.gz, MASH distance 0.00068, 972/1000 hashes)
+ERR3454415: Brucella abortus str. 2308 (GCA_000742195.1_ASM74219v1_genomic.fna.gz, MASH distance 0.00014, 994/1000 hashes)
 ERR3454415: ST 1 (profile 2-1-1-2-1-3-1-1-1)
 ERR3454415: Brucella abortus (MASH+ST, agree)
-SRR19520329: Brucella melitensis str. 48_S36 (GCA_061325495.1_ASM6132549v1_genomic.fna.gz, MASH distance 0.00051, 979/1000 hashes)
+SRR19520329: about 174,716,055 bases, roughly 53x coverage: sketching the k-mers seen at least 11 time(s)
+SRR19520329: Brucella melitensis str. 48_S36 (GCA_061325495.1_ASM6132549v1_genomic.fna.gz, MASH distance 0.00012, 995/1000 hashes)
 SRR19520329: ST 11 (profile 3-2-3-2-1-5-3-2-10)
-SRR8550484: Brucella suis str. Thompsen (GCA_000742055.1_ASM74205v1_genomic.fna.gz, MASH distance 0.00645, 775/1000 hashes)
+SRR8550484: about 229,332,903 bases, roughly 69x coverage: sketching the k-mers seen at least 14 time(s)
+SRR8550484: Brucella suis str. Thompsen (GCA_000742055.1_ASM74205v1_genomic.fna.gz, MASH distance 0.00026, 989/1000 hashes)
 SRR8550484: ST 15 (profile 1-2-7-1-3-3-5-3-2)
 Done in 33s
 ```
 33 seconds on 8 threads, for 4.6 million read pairs. `-p 2` runs two samples at a time and gives each of
 them four of the eight threads. The `about ... coverage` line of each sample is the k-mer copy threshold being derived
-from each sample’s depth — 3 copies for the ~70x libraries, 2 for the 47x one — which is what keeps a deep
-read set’s sequencing errors out of the sketch. Section 6 shows what that is worth.
+from each sample’s depth — 14 copies for the ~70x libraries, 11 at 53x and 9 at 47x — which is what keeps
+a deep read set’s sequencing errors out of the sketch. Section 6 shows what that is worth, and
+[The k-mer copy threshold](K-mer-threshold) is where those numbers come from.
 
 ## 4. Read the main table
 `results/brucellaid.tsv`, also printed to the terminal:
 
 ```
 Sample       Species              SpeciesSource         ClosestReference                             SharedHashes  SequenceType  AlleleProfile       STSpecies            Reads
-ERR2136546   Brucella canis       MASH+ST (arbitrated)  GCA_000530495.1_Oliveri_genomic.fna.gz       773/1000      20            1-6-4-1-5-3-5-4-6   Brucella canis       625576
-ERR3454415   Brucella abortus     MASH+ST (agree)       GCA_000742195.1_ASM74219v1_genomic.fna.gz    972/1000      1             2-1-1-2-1-3-1-1-1   Brucella abortus     1175082
-SRR19520329  Brucella melitensis  MASH+ST (agree)       GCA_061325495.1_ASM6132549v1_genomic.fna.gz  979/1000      11            3-2-3-2-1-5-3-2-10  Brucella melitensis  1136924
-SRR8550484   Brucella suis        MASH+ST (agree)       GCA_000742055.1_ASM74205v1_genomic.fna.gz    775/1000      15            1-2-7-1-3-3-5-3-2   Brucella suis        1693672
+ERR2136546   Brucella canis       MASH+ST (arbitrated)  GCA_000530495.1_Oliveri_genomic.fna.gz       995/1000      20            1-6-4-1-5-3-5-4-6   Brucella canis       625576
+ERR3454415   Brucella abortus     MASH+ST (agree)       GCA_000742195.1_ASM74219v1_genomic.fna.gz    994/1000      1             2-1-1-2-1-3-1-1-1   Brucella abortus     1175082
+SRR19520329  Brucella melitensis  MASH+ST (agree)       GCA_061325495.1_ASM6132549v1_genomic.fna.gz  995/1000      11            3-2-3-2-1-5-3-2-10  Brucella melitensis  1136924
+SRR8550484   Brucella suis        MASH+ST (agree)       GCA_000742055.1_ASM74205v1_genomic.fna.gz    989/1000      15            1-2-7-1-3-3-5-3-2   Brucella suis        1693672
 ```
 Four species, four sequence types, and each species is the one the submitter labelled the run with.
-`MashDistance`, left out above to fit, reads 0.006524, 0.000681, 0.000508 and 0.006455. There is no biovar
+`MashDistance`, left out above to fit, reads 0.000119, 0.000144, 0.000119 and 0.000264. There is no biovar
 column: see [How it works](How-it-works#no-biovar).
 
 The reference names are GenBank accessions because a run identifies against the 432-genome clade set by
@@ -96,42 +99,38 @@ these four samples the same four species.
 also left out above, says why:
 
 ```
-loose match: the closest reference is 0.00652 away and shares 773/1000 hashes, where a read set of a
-species the sketch holds is expected to match within 0.005 (--loose-distance). The reads may hold more
-than Brucella, this lineage may have no near relative in the sketch, or the k-mer copy threshold may be
-low for this library (try --min-kmer-copies above the derived value); the species named is still the
-closest one; nearly as close: GCA_000741995.1_ASM74199v1_genomic.fna.gz (Brucella suis, 768/1000 hashes),
-3 other Brucella canis genome(s); MASH cannot separate Brucella canis and Brucella suis: ST 20 is
-Brucella canis in 70 of 70 isolate(s), which agrees with the closest reference
+nearly as close: GCA_000741995.1_ASM74199v1_genomic.fna.gz (Brucella suis, 986/1000 hashes), 3 other
+Brucella canis genome(s); MASH cannot separate Brucella canis and Brucella suis: ST 20 is Brucella canis
+in 70 of 70 isolate(s), which agrees with the closest reference
 ```
-Three things are being said there, and all three matter.
+Two things are being said there, and both matter.
 
-*B. canis* came first by **five hashes out of a thousand** — 0.006524 against 0.006698, a margin that is
+*B. canis* came first by **nine hashes out of a thousand** — 0.000119 against 0.000337, a margin that is
 noise, not a measurement. So the species was not decided by that margin: ST 20 was, and ST 20 is *B. canis*
 in all 70 isolates of the PubMLST isolate database that carry it, and never *B. suis*. Had the distances
 come out the other way round, as they easily could have, the answer would have been the same. See
 [How it works](How-it-works).
 
-The **loose match** note is separate, and it is about this library rather than about the species: 773 of
-1000 hashes at a distance of 0.0065 is far from the 0.0003 or so a clean read set of a species the set
-covers usually gives. The species is still the nearest genome's, but something about these reads — extra
-organisms, or a lineage with no close relative — is keeping them at arm's length from every reference.
-Both the *B. canis* and the *B. suis* sample here read that way, and they did so against vSNP's 16 genomes
-too, so it is the libraries, not the reference set.
-
 And **three other *B. canis* genomes were nearly as close as well**, counted rather than listed. In a set
 of 432 a cluster of same-species genomes crowds the top of the table and listing them all would bury the
-one line that matters, which is the *B. suis* genome 5 hashes behind.
+one line that matters, which is the *B. suis* genome nine hashes behind.
+
+None of these four samples carries a **loose match** note, which is the other note this column can hold:
+it appears when the closest reference is further than `--loose-distance`, 0.005 by default, and says that
+the reads are not close to anything in the set rather than that the species is wrong. Earlier versions of
+this page showed two of these libraries carrying one, at 0.0065. That was the k-mer copy threshold being
+too low rather than anything about the libraries, and
+[The k-mer copy threshold](K-mer-threshold) is what came of it.
 
 ## 5. Read what the calls rest on
 `results/brucellaid_mash.tsv` has every distance. For the *B. canis* sample, the first four:
 
 ```
 Sample      Reference                                    Species          Biovar  MashDistance  SharedHashes
-ERR2136546  GCA_000530495.1_Oliveri_genomic.fna.gz       Brucella canis           0.006524      773
-ERR2136546  GCA_000741995.1_ASM74199v1_genomic.fna.gz    Brucella suis            0.006698      768
-ERR2136546  GCA_056582615.1_ASM5658261v1_genomic.fna.gz  Brucella canis           0.006769      766
-ERR2136546  GCA_050496145.1_ASM5049614v1_genomic.fna.gz  Brucella canis           0.006981      760
+ERR2136546  GCA_000530495.1_Oliveri_genomic.fna.gz       Brucella canis           0.000119      995
+ERR2136546  GCA_000741995.1_ASM74199v1_genomic.fna.gz    Brucella suis            0.000337      986
+ERR2136546  GCA_056582615.1_ASM5658261v1_genomic.fna.gz  Brucella canis           0.000361      985
+ERR2136546  GCA_000367265.1_Bruc_cani_CNGB_1172_V1...    Brucella canis           0.000483      980
 ```
 The *B. suis* genome in second place is the whole reason this sample needs the sequence type. Rows three
 and four are the other *B. canis* genomes the note counted.
@@ -155,18 +154,26 @@ Each allele was the best match for more reads than any other allele of its locus
 is what a solid call looks like; a call one or two reads ahead of its runner-up is one to look at twice.
 
 ## 6. One sample that shows what the depth handling is worth
-`SRR8550484` is the deepest library here: 1.7 million read pairs, about 69x. At that depth, sequencing
-errors turn up often enough to pass a fixed two-copy filter, and BrucellaID 1.1.0 reported this very sample
-at a MASH distance of 0.0248, sharing 422 of 1000 hashes — a number that measured how deep the library was,
-not how far the genome is. Requiring three copies, as the estimated 69x asks, gives 775 of 1000 at
-0.006455.
+`SRR8550484` is the deepest library here: 1.7 million read pairs, about 69x. At that depth sequencing
+errors turn up often enough to pass a fixed two-copy filter, and the same reads against the same reference
+have been reported three different ways as that filter was corrected:
 
-The distance that remains is real. It is ten times that of the *B. abortus* and *B. melitensis* samples
-because this isolate genuinely sits that far from the *B. suis* str. Thompsen reference — just as the
-*B. canis* sample does from its own closest reference, at nearly the same distance. The identification and
-ST 15 would have been the same either way; what changed is that the number on the report is now a property
-of the sample rather than of how deeply it happened to be sequenced. The report says which threshold each
-sample got and the coverage it came from, and `--min-kmer-copies 2` reproduces an old report exactly.
+| what the threshold was | copies | shared hashes | distance |
+| --- | --- | --- | --- |
+| a fixed 2, up to 1.1.0 | 2 | 422/1000 | 0.0248 |
+| one more copy per 20x, 1.2.0 to 2.0.0 | 3 | 775/1000 | 0.006455 |
+| one more copy per 5x, from 2.1.0 | 14 | 989/1000 | 0.000264 |
+
+An earlier version of this page said the 0.0065 was real distance — that this isolate genuinely sat that
+far from *B. suis* str. Thompsen. It was not. It was still mostly error k-mers, and the threshold was
+re-derived because of it: see [The k-mer copy threshold](K-mer-threshold). The species and ST 15 were the
+same at every one of the three, which is the point worth keeping: the identification was never in doubt,
+but the *number beside it* measured how deeply the library happened to be sequenced rather than how far
+the genome is.
+
+Read a distance from this table the way the report means it — it is now a property of the sample. The
+report says which threshold each sample got and the coverage it came from, and `--min-kmer-copies 2`
+reproduces a 1.1.0 report exactly.
 
 ## 7. The quality assurance report
 `results/brucellaid_report.html` is the run with its evidence attached: open it in a browser, or print it
@@ -176,7 +183,7 @@ removed.
 The *B. canis* sample is the one to look at — its block lists the five closest references, with
 `GCA_000530495.1_Oliveri_genomic.fna.gz` highlighted as the closest and
 `GCA_000741995.1_ASM74199v1_genomic.fna.gz` shaded, because at
-0.006524 against 0.006698 the distance did not really choose. Beside them, **The species call** shows
+0.000119 against 0.000337 the distance did not really choose. Beside them, **The species call** shows
 what decided it:
 
 ```
@@ -226,4 +233,5 @@ vSNP's `ab1`, `mel3`, `suis2` with `--reference-set vsnp`) in the `species` colu
 ## Where to go next
 * [Output files](Output-files) — every column of every report
 * [How it works](How-it-works) — what the two calls rest on, and where each of them stops
-* [Validation](Validation) — the same pipeline against genomes whose answer is known
+* [Validation suite](Validation-suite) — the same pipeline against genomes whose answer is known, and
+  reproducible from the repository

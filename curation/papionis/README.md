@@ -15,7 +15,8 @@ evidence below.
 A read set is what led to it. `SRR4038994` (BioSample `SAMN05417907`, strain **B07-0026**, study
 `PRJNA251693`) was submitted as *B. papionis* and came back from the Phase 2 validation as
 *B. pinnipedialis* at 0.0028 with an `unresolved` flag — the only sensible answer available when the
-species has no reference. It was assembled here with SKESA 2.5.1 to fill that gap:
+species has no reference. (That distance is as the sweep measured it, under the pre-2.1 k-mer copy
+threshold; the run's distance to its own reference, re-measured, is below.) It was assembled here with SKESA 2.5.1 to fill that gap:
 
 ```
 skesa --reads SRR4038994_1.fastq.gz,SRR4038994_2.fastq.gz --cores 16 --memory 48 \
@@ -48,7 +49,7 @@ caller. The distances are what a species of the classical core looks like: near-
 named species and identical to none. A mislabelled member of one of those species would sit at 0.0002
 from it instead.
 
-With the genome in the set, `SRR4038994` reports *Brucella papionis* at 0.00083, 966 of 1000 hashes.
+With the genome in the set, `SRR4038994` reports *Brucella papionis* at 0.00010, 996 of 1000 hashes.
 
 **What this does not show.** One strain is all the species has, so this cannot demonstrate that a
 *different* *B. papionis* isolate would be identified correctly — the reference and the only test sample

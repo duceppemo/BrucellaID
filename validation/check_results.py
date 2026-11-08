@@ -32,14 +32,18 @@ UNCHECKED = '-'
 # with about fifty hashes of room on either side.
 MIN_CLEAN_HASHES = 950
 # The thresholds are this project's own arithmetic, kept apart from brucellaid.mash on purpose: if the
-# shipped formula drifts, the validation must notice, not drift along.
-DEPTH_PER_COPY, COPY_FLOOR, COPY_CEILING = 20, 2, 20
-# A real library at or above this estimated coverage must have raised the threshold above the floor
-ADAPTIVE_FROM = 60
+# shipped formula drifts, the validation must notice, not drift along. So these three are restated here
+# rather than imported, and they are changed by hand when the rule is re-derived -- which is what caught
+# this file the last time, when it still expected one copy per 20x and the rule had become one per 5x.
+# The derivation is on the wiki, under "The k-mer copy threshold".
+DEPTH_PER_COPY, COPY_FLOOR, COPY_CEILING = 5, 2, 48
+# A real library at or above this estimated coverage must have raised the threshold above the floor. One
+# copy per 5x clears a floor of 2 from about 13x, so any real library in reads.tsv is well past it.
+ADAPTIVE_FROM = 15
 
 
 def expected_copies(coverage):
-    """The k-mer copy threshold a read set of this coverage must get: one more copy per 20x, within [2, 20]."""
+    """The k-mer copy threshold a read set of this coverage must get: one more copy per 5x, within [2, 48]."""
     return min(COPY_CEILING, max(COPY_FLOOR, round(coverage / DEPTH_PER_COPY)))
 
 

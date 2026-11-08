@@ -5,8 +5,8 @@ title: "BrucellaID: Brucella species identification and MLST from sequencing rea
 authors:
   - family-names: Duceppe
     given-names: Marc-Olivier
-version: 2.0.0
-date-released: 2026-11-07
+version: 2.1.0
+date-released: 2026-11-08
 doi: 10.5281/zenodo.23845956
 identifiers:
   - type: doi

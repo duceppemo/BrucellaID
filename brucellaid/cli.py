@@ -138,7 +138,7 @@ def build_parser():
                          help='Number of copies of a k-mer the reads must hold for MASH to sketch it, which '
                               'is how the sequencing errors are kept out of the identification. The right '
                               'value rises with the coverage: the default, 0, derives it from the number of '
-                              'bases in the files (one more copy per 20x, from 2 to 20).')
+                              'bases in the files (one more copy per 5x, from 2 to 48).')
     calling.add_argument('--min-reads', metavar='N', type=int, default=DEFAULT_MIN_READS,
                          help='Minimum number of reads assigned to an MLST allele for the allele to be called. '
                               'Default: {}.'.format(DEFAULT_MIN_READS))

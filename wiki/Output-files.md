@@ -10,7 +10,7 @@ Also printed to standard output.
 | --- | --- |
 | `Sample` | The sample name |
 | `Species` | The species, or `ND`. Usually the closest reference genome's; see `SpeciesSource` |
-| `SpeciesSource` | What the species rests on: `MASH`, `MASH+ST (agree)`, `MASH+ST (arbitrated)`, `ST (arbitrated)`, `MASH (unresolved)` or `MASH (conflict)`. See [How it works](How-it-works) |
+| `SpeciesSource` | What the species rests on: `MASH`, `MASH+ST (agree)`, `MASH+ST (arbitrated)`, `ST (arbitrated)`, `MASH (unresolved)` or `MASH (conflict)`. See [How it works](How-it-works#the-species-call), and [Troubleshooting](Troubleshooting) for the last two |
 | `ClosestReference` | The reference genome the reads are closest to, whichever species is reported |
 | `MashDistance` | The MASH distance to it: roughly the fraction of positions that differ |
 | `SharedHashes` | How many of the reference's 1000 min-hashes the reads share |
@@ -18,32 +18,53 @@ Also printed to standard output.
 | `AlleleProfile` | The nine allele numbers in the order of the loci, `-` for a locus not called |
 | `STSpecies` | The species the isolates of that ST carry, empty when the ST could not be used (the note says why) |
 | `Reads` | Reads in the input |
-| `Notes` | Close matches, a closest reference that is not close, loci without a call, and why a sample was not identified |
+| `Notes` | Close matches, a closest reference that is not close, a distance too coarse to separate the references at all, loci without a call, and why a sample was not identified |
 | `Error` | Why the sample failed, when it did. The other samples are still reported |
 
 ```
 Sample      Species           SpeciesSource    ClosestReference                           MashDistance  SharedHashes  SequenceType  AlleleProfile      STSpecies         Reads    Notes  Error
-ERR3454415  Brucella abortus  MASH+ST (agree)  GCA_000742195.1_ASM74219v1_genomic.fna.gz  0.000681      972/1000      1             2-1-1-2-1-3-1-1-1  Brucella abortus  1175082
+ERR3454415  Brucella abortus  MASH+ST (agree)  GCA_000742195.1_ASM74219v1_genomic.fna.gz  0.000144      994/1000      1             2-1-1-2-1-3-1-1-1  Brucella abortus  1175082
             nearly as close: 9 other Brucella abortus genome(s)
 ```
 
 A *B. canis* sample, where the distance alone cannot choose and the ST does, with the notes it carries:
 
 ```
-ERR2136546  Brucella canis  MASH+ST (arbitrated)  GCA_000530495.1_Oliveri_genomic.fna.gz  0.006524  773/1000  20  1-6-4-1-5-3-5-4-6  Brucella canis  625576
-            loose match: the closest reference is 0.00652 away and shares 773/1000 hashes, where a read
-            set of a species the sketch holds is expected to match within 0.005 (--loose-distance). The
-            reads may hold more than Brucella, this lineage may have no near relative in the sketch, or
-            the k-mer copy threshold may be low for this library (try --min-kmer-copies above the derived
-            value); the species named is still the closest one; nearly as close:
-            GCA_000741995.1_ASM74199v1_genomic.fna.gz (Brucella suis, 768/1000 hashes), 3 other Brucella
-            canis genome(s); MASH cannot separate Brucella canis and Brucella suis: ST 20 is Brucella
-            canis in 70 of 70 isolate(s), which agrees with the closest reference
+ERR2136546  Brucella canis  MASH+ST (arbitrated)  GCA_000530495.1_Oliveri_genomic.fna.gz  0.000119  995/1000  20  1-6-4-1-5-3-5-4-6  Brucella canis  625576
+            nearly as close: GCA_000741995.1_ASM74199v1_genomic.fna.gz (Brucella suis, 986/1000 hashes),
+            3 other Brucella canis genome(s); MASH cannot separate Brucella canis and Brucella suis:
+            ST 20 is Brucella canis in 70 of 70 isolate(s), which agrees with the closest reference
 ```
 
 Both rows are from the [Tutorial](Tutorial) run, against the 432-genome default set, which is why the
 references are GCA accessions. With `--reference-set vsnp` the same samples name vSNP's own sketch IDs
 instead (`NC_006932-NC_006933.fasta`, `NC_010103-NC_010104.fasta`).
+
+And a sample whose closest reference is **not close**, which is the other note the column carries. This is
+`SRR24420453` from the ENA sweep, a library that holds a minority *Brucella* population among a great deal
+of something else:
+
+```
+SRR24420453  Brucella melitensis  MASH+ST (agree)  GCA_002191375.1_ASM219137v1_genomic.fna.gz  0.061326  160/1000  11  3-2-3-2-1-5-3-2-10  Brucella melitensis  53748612
+             loose match: the closest reference is 0.06133 away and shares 160/1000 hashes, where a read
+             set of a species the sketch holds is expected to match within 0.005 (--loose-distance). The
+             reads may hold more than Brucella, this lineage may have no near relative in the sketch, or
+             a minority Brucella population may be being filtered out with the sequencing errors (try
+             --min-kmer-copies either side of the derived value and see whether the distance moves); the
+             species named is still the closest one; nearly as close: 14 other Brucella melitensis
+             genome(s)
+```
+
+The species is still reported, and the nine loci still typed it as ST 11, which is *B. melitensis* and
+agrees — but 160 of 1000 hashes at 0.061 is nothing like the 989-to-996 a clean library of a species in the
+sketch returns, and the note is what says so. The three causes it lists are the three there are; see
+[The k-mer copy threshold](K-mer-threshold) for the third.
+
+**`Status`, not `Notes`, is the field to alert on.** Against the 432-genome default set the `Notes` column
+is populated on nearly every sample, because a sample's nearest neighbours are mostly other genomes of its
+own species and "nearly as close" is therefore the normal case. In 1.x the column was usually empty, so a
+rule of "a non-empty `Notes` means look at this one" fired rarely; it now fires on almost everything and
+needs replacing with a check on `Status`.
 
 **There is no biovar column.** BrucellaID reports the species and the sequence type, and does not claim a
 biovar: see [How it works](How-it-works#no-biovar). `brucellaid_mash.tsv` gives the biovar of each
@@ -62,7 +83,7 @@ What each allele call rests on.
 | `Note` | Why no allele was called: too few reads, or a tie |
 
 A call whose runner-up is close behind is still a call, but it is worth a look: see
-[How it works](How-it-works).
+[How it works](How-it-works#the-mlst-alleles), which gives the margins the validated calls had.
 
 ## `brucellaid_mash.tsv` — one row per sample and reference genome
 Every distance, closest first. This is the file to read when a species call surprises you, and the one the
@@ -100,7 +121,8 @@ status and the error, if any.
                        "st_species": "Brucella abortus", "st_purity": 0.994, "st_isolates": 466, "notes": []},
       "closest_reference": {"reference": "GCA_000742195.1_ASM74219v1_genomic.fna.gz",
                             "description": "Brucella abortus str. 2308",
-                            "mash_distance": 0.000680979, "shared_hashes": 972, "total_hashes": 1000},
+                            "mash_distance": 0.000143503, "shared_hashes": 994, "total_hashes": 1000,
+                            "min_kmer_copies": 14, "estimated_coverage": 69.84226787878788},
       "mlst": {"sequence_type": "1", "profile": "2-1-1-2-1-3-1-1-1", "complete": true}
     }
   ]

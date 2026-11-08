@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>BrucellaID quality assurance report</title>
-<meta name="generator" content="BrucellaID 2.0.0">
+<meta name="generator" content="BrucellaID 2.1.0">
 <style>
 :root {
   color-scheme: light dark;
@@ -234,14 +234,14 @@ footer {
 </svg>
 </div>
 <h1>Quality assurance report</h1>
-<p class="sub">4 sample(s): 4 ok, 0 with a warning, 0 failed. BrucellaID 2.0.0, run on 2026-11-07T18:53:07-05:00.</p>
+<p class="sub">4 sample(s): 4 ok, 0 with a warning, 0 failed. BrucellaID 2.1.0, run on 2026-11-08T10:55:07-05:00.</p>
 <div class="panel" style="border-color:var(--accent);background:var(--accent-soft)">This is an example report: a real run of the four public read sets of the BrucellaID tutorial, produced by scripts/make_example_report.py, which leaves out the computer it ran on. The user account, the host name, the operating system and the working directory read [removed], and the input and reference files are named without the folder they were in. Everything else is as BrucellaID wrote it. A report of your own names them all, which is what makes it worth signing.</div>
 <nav class="toc"><b>Contents</b><ol><li><a href="#summary">Summary</a></li><li><a href="#warnings">Notes, warnings and errors</a></li><li><a href="#samples">Samples</a></li><li><a href="#methods">Definitions and methods</a></li><li><a href="#run">Run information</a></li></ol></nav>
 <h2 id="summary" class="first"><span class="n">1</span> Summary</h2>
 <div class="chips"><span class="chip"><b>4</b> sample(s)</span><span class="chip ok"><b>4</b> ok</span></div>
 <dl class="facts">
-<dt>Run started</dt><dd class="wrap">2026-11-07T18:53:07-05:00</dd>
-<dt>Run finished</dt><dd class="wrap">2026-11-07T18:53:41-05:00</dd>
+<dt>Run started</dt><dd class="wrap">2026-11-08T10:55:07-05:00</dd>
+<dt>Run finished</dt><dd class="wrap">2026-11-08T10:55:47-05:00</dd>
 <dt>Operator</dt><dd class="wrap">M-O Duceppe</dd>
 <dt>Command</dt><dd class="wrap">python3 scripts/make_example_report.py reads</dd>
 </dl>
@@ -264,12 +264,10 @@ footer {
 <caption>Errors first, then the notes of each sample, in the order they were raised. A note on a sample whose status is &quot;ok&quot; is a remark, not a problem.</caption>
 <thead><tr><th>Sample</th><th>Status</th><th>What it says</th></tr></thead>
 <tbody>
-<tr><td>ERR2136546</td><td><span class="pill ok">ok</span></td><td>loose match: the closest reference is 0.00652 away and shares 773/1000 hashes, where a read set of a species the sketch holds is expected to match within 0.005 (--loose-distance). The reads may hold more than Brucella, this lineage may have no near relative in the sketch, or the k-mer copy threshold may be low for this library (try --min-kmer-copies above the derived value); the species named is still the closest one</td></tr>
-<tr><td>ERR2136546</td><td><span class="pill ok">ok</span></td><td>nearly as close: GCA_000741995.1_ASM74199v1_genomic.fna.gz (Brucella suis, 768/1000 hashes), 3 other Brucella canis genome(s)</td></tr>
+<tr><td>ERR2136546</td><td><span class="pill ok">ok</span></td><td>nearly as close: GCA_000741995.1_ASM74199v1_genomic.fna.gz (Brucella suis, 986/1000 hashes), 3 other Brucella canis genome(s)</td></tr>
 <tr><td>ERR2136546</td><td><span class="pill ok">ok</span></td><td>MASH cannot separate Brucella canis and Brucella suis: ST 20 is Brucella canis in 70 of 70 isolate(s), which agrees with the closest reference</td></tr>
 <tr><td>ERR3454415</td><td><span class="pill ok">ok</span></td><td>nearly as close: 9 other Brucella abortus genome(s)</td></tr>
 <tr><td>SRR19520329</td><td><span class="pill ok">ok</span></td><td>nearly as close: 6 other Brucella melitensis genome(s)</td></tr>
-<tr><td>SRR8550484</td><td><span class="pill ok">ok</span></td><td>loose match: the closest reference is 0.00645 away and shares 775/1000 hashes, where a read set of a species the sketch holds is expected to match within 0.005 (--loose-distance). The reads may hold more than Brucella, this lineage may have no near relative in the sketch, or the k-mer copy threshold may be low for this library (try --min-kmer-copies above the derived value); the species named is still the closest one</td></tr>
 <tr><td>SRR8550484</td><td><span class="pill ok">ok</span></td><td>nearly as close: 2 other Brucella suis genome(s)</td></tr>
 </tbody></table>
 <h2 id="samples"><span class="n">3</span> Samples</h2>
@@ -281,10 +279,10 @@ footer {
 <dt>Closest reference</dt><dd class="wrap">GCA_000742195.1_ASM74219v1_genomic.fna.gz</dd>
 <dt>What it is</dt><dd class="wrap">Brucella abortus str. 2308</dd>
 <dt>NCBI accessions</dt><dd class="wrap">GCA_000742195.1</dd>
-<dt>MASH distance</dt><dd class="wrap">0.000681</dd>
-<dt>Estimated identity</dt><dd class="wrap">99.932%</dd>
-<dt>Shared min-hashes</dt><dd class="wrap">972/1000 (at least 150 required)</dd>
-<dt>K-mer copies required</dt><dd class="wrap">3 (from the estimated 70x coverage)</dd>
+<dt>MASH distance</dt><dd class="wrap">0.000144</dd>
+<dt>Estimated identity</dt><dd class="wrap">99.986%</dd>
+<dt>Shared min-hashes</dt><dd class="wrap">994/1000 (at least 150 required)</dd>
+<dt>K-mer copies required</dt><dd class="wrap">14 (from the estimated 70x coverage)</dd>
 </dl>
 </div><div>
 <h4>The species call</h4>
@@ -302,16 +300,16 @@ footer {
 <caption>Closest first. A shaded row is too close to the first to be separated by distance alone. The other 422 reference(s) are further away; brucellaid_mash.tsv has every distance.</caption>
 <thead><tr><th>Reference genome</th><th>Species</th><th>Strain</th><th>Distance</th><th>Identity %</th><th>Shared hashes</th><th>p-value</th></tr></thead>
 <tbody>
-<tr class="best"><td>GCA_000742195.1_ASM74219v1_genomic.fna.gz</td><td>Brucella abortus</td><td>2308</td><td>0.000681</td><td>99.932</td><td>972/1000</td><td>0</td></tr>
-<tr class="close"><td>GCA_050497595.1_ASM5049759v1_genomic.fna.gz</td><td>Brucella abortus</td><td>Ba44</td><td>0.000881</td><td>99.912</td><td>964/1000</td><td>0</td></tr>
-<tr class="close"><td>GCA_000739315.1_ASM73931v1_genomic.fna.gz</td><td>Brucella abortus</td><td>544</td><td>0.000906</td><td>99.909</td><td>963/1000</td><td>0</td></tr>
-<tr class="close"><td>GCA_000370045.1_Bruc_abor_63_168_V1_genomic.fna.gz</td><td>Brucella abortus</td><td>63/168</td><td>0.000931</td><td>99.907</td><td>962/1000</td><td>0</td></tr>
-<tr class="close"><td>GCA_000472245.1_Denovo_assembly_genomic.fna.gz</td><td>Brucella abortus</td><td>S99</td><td>0.001058</td><td>99.894</td><td>957/1000</td><td>0</td></tr>
-<tr class="close"><td>GCA_039649615.1_ASM3964961v1_genomic.fna.gz</td><td>Brucella abortus</td><td>X20_S4</td><td>0.001058</td><td>99.894</td><td>957/1000</td><td>0</td></tr>
-<tr class="close"><td>GCA_050498085.1_ASM5049808v1_genomic.fna.gz</td><td>Brucella abortus</td><td>Ba732</td><td>0.001083</td><td>99.892</td><td>956/1000</td><td>0</td></tr>
-<tr class="close"><td>GCA_022426865.1_ASM2242686v1_genomic.fna.gz</td><td>Brucella abortus</td><td>BANDDB_5033</td><td>0.001109</td><td>99.889</td><td>955/1000</td><td>0</td></tr>
-<tr class="close"><td>GCA_022426825.1_ASM2242682v1_genomic.fna.gz</td><td>Brucella abortus</td><td>BANDDB_3995</td><td>0.001160</td><td>99.884</td><td>953/1000</td><td>0</td></tr>
-<tr class="close"><td>GCA_030761375.1_ASM3076137v1_genomic.fna.gz</td><td>Brucella abortus</td><td>LBAB008</td><td>0.001160</td><td>99.884</td><td>953/1000</td><td>0</td></tr>
+<tr class="best"><td>GCA_000742195.1_ASM74219v1_genomic.fna.gz</td><td>Brucella abortus</td><td>2308</td><td>0.000144</td><td>99.986</td><td>994/1000</td><td>0</td></tr>
+<tr class="close"><td>GCA_050497595.1_ASM5049759v1_genomic.fna.gz</td><td>Brucella abortus</td><td>Ba44</td><td>0.000337</td><td>99.966</td><td>986/1000</td><td>0</td></tr>
+<tr class="close"><td>GCA_000739315.1_ASM73931v1_genomic.fna.gz</td><td>Brucella abortus</td><td>544</td><td>0.000361</td><td>99.964</td><td>985/1000</td><td>0</td></tr>
+<tr class="close"><td>GCA_000370045.1_Bruc_abor_63_168_V1_genomic.fna.gz</td><td>Brucella abortus</td><td>63/168</td><td>0.000386</td><td>99.961</td><td>984/1000</td><td>0</td></tr>
+<tr class="close"><td>GCA_000472245.1_Denovo_assembly_genomic.fna.gz</td><td>Brucella abortus</td><td>S99</td><td>0.000533</td><td>99.947</td><td>978/1000</td><td>0</td></tr>
+<tr class="close"><td>GCA_039649615.1_ASM3964961v1_genomic.fna.gz</td><td>Brucella abortus</td><td>X20_S4</td><td>0.000533</td><td>99.947</td><td>978/1000</td><td>0</td></tr>
+<tr class="close"><td>GCA_050498085.1_ASM5049808v1_genomic.fna.gz</td><td>Brucella abortus</td><td>Ba732</td><td>0.000533</td><td>99.947</td><td>978/1000</td><td>0</td></tr>
+<tr class="close"><td>GCA_022426865.1_ASM2242686v1_genomic.fna.gz</td><td>Brucella abortus</td><td>BANDDB_5033</td><td>0.000582</td><td>99.942</td><td>976/1000</td><td>0</td></tr>
+<tr class="close"><td>GCA_030761375.1_ASM3076137v1_genomic.fna.gz</td><td>Brucella abortus</td><td>LBAB008</td><td>0.000607</td><td>99.939</td><td>975/1000</td><td>0</td></tr>
+<tr class="close"><td>GCA_022426825.1_ASM2242682v1_genomic.fna.gz</td><td>Brucella abortus</td><td>BANDDB_3995</td><td>0.000631</td><td>99.937</td><td>974/1000</td><td>0</td></tr>
 </tbody></table>
 <div class="cols"><div>
 <h4>MLST: the sequence type</h4>
@@ -358,10 +356,10 @@ footer {
 <dt>Closest reference</dt><dd class="wrap">GCA_000530495.1_Oliveri_genomic.fna.gz</dd>
 <dt>What it is</dt><dd class="wrap">Brucella canis str. Oliveri</dd>
 <dt>NCBI accessions</dt><dd class="wrap">GCA_000530495.1</dd>
-<dt>MASH distance</dt><dd class="wrap">0.006524</dd>
-<dt>Estimated identity</dt><dd class="wrap">99.348%</dd>
-<dt>Shared min-hashes</dt><dd class="wrap">773/1000 (at least 150 required)</dd>
-<dt>K-mer copies required</dt><dd class="wrap">2 (from the estimated 47x coverage)</dd>
+<dt>MASH distance</dt><dd class="wrap">0.000119</dd>
+<dt>Estimated identity</dt><dd class="wrap">99.988%</dd>
+<dt>Shared min-hashes</dt><dd class="wrap">995/1000 (at least 150 required)</dd>
+<dt>K-mer copies required</dt><dd class="wrap">9 (from the estimated 47x coverage)</dd>
 </dl>
 </div><div>
 <h4>The species call</h4>
@@ -378,11 +376,11 @@ footer {
 <caption>Closest first. A shaded row is too close to the first to be separated by distance alone. The other 427 reference(s) are further away; brucellaid_mash.tsv has every distance.</caption>
 <thead><tr><th>Reference genome</th><th>Species</th><th>Strain</th><th>Distance</th><th>Identity %</th><th>Shared hashes</th><th>p-value</th></tr></thead>
 <tbody>
-<tr class="best"><td>GCA_000530495.1_Oliveri_genomic.fna.gz</td><td>Brucella canis</td><td>Oliveri</td><td>0.006524</td><td>99.348</td><td>773/1000</td><td>0</td></tr>
-<tr class="close"><td>GCA_000741995.1_ASM74199v1_genomic.fna.gz</td><td>Brucella suis</td><td>BSQ</td><td>0.006698</td><td>99.330</td><td>768/1000</td><td>0</td></tr>
-<tr class="close"><td>GCA_056582615.1_ASM5658261v1_genomic.fna.gz</td><td>Brucella canis</td><td>M-24</td><td>0.006769</td><td>99.323</td><td>766/1000</td><td>0</td></tr>
-<tr class="close"><td>GCA_050496145.1_ASM5049614v1_genomic.fna.gz</td><td>Brucella canis</td><td>Bc1066</td><td>0.006981</td><td>99.302</td><td>760/1000</td><td>0</td></tr>
-<tr class="close"><td>GCA_000367265.1_Bruc_cani_CNGB_1172_V1_genomic.fna.gz</td><td>Brucella canis</td><td>CNGB 1172</td><td>0.007017</td><td>99.298</td><td>759/1000</td><td>0</td></tr>
+<tr class="best"><td>GCA_000530495.1_Oliveri_genomic.fna.gz</td><td>Brucella canis</td><td>Oliveri</td><td>0.000119</td><td>99.988</td><td>995/1000</td><td>0</td></tr>
+<tr class="close"><td>GCA_000741995.1_ASM74199v1_genomic.fna.gz</td><td>Brucella suis</td><td>BSQ</td><td>0.000337</td><td>99.966</td><td>986/1000</td><td>0</td></tr>
+<tr class="close"><td>GCA_056582615.1_ASM5658261v1_genomic.fna.gz</td><td>Brucella canis</td><td>M-24</td><td>0.000361</td><td>99.964</td><td>985/1000</td><td>0</td></tr>
+<tr class="close"><td>GCA_000367265.1_Bruc_cani_CNGB_1172_V1_genomic.fna.gz</td><td>Brucella canis</td><td>CNGB 1172</td><td>0.000483</td><td>99.952</td><td>980/1000</td><td>0</td></tr>
+<tr class="close"><td>GCA_050496145.1_ASM5049614v1_genomic.fna.gz</td><td>Brucella canis</td><td>Bc1066</td><td>0.000483</td><td>99.952</td><td>980/1000</td><td>0</td></tr>
 </tbody></table>
 <div class="cols"><div>
 <h4>MLST: the sequence type</h4>
@@ -418,8 +416,7 @@ footer {
 <tr><td>omp25</td><td>6</td><td>172</td><td>omp25_2 (98)</td><td>74</td><td>1.76</td><td></td></tr>
 </tbody></table>
 <h4>Notes</h4><ul>
-<li class="wrap">loose match: the closest reference is 0.00652 away and shares 773/1000 hashes, where a read set of a species the sketch holds is expected to match within 0.005 (--loose-distance). The reads may hold more than Brucella, this lineage may have no near relative in the sketch, or the k-mer copy threshold may be low for this library (try --min-kmer-copies above the derived value); the species named is still the closest one</li>
-<li class="wrap">nearly as close: GCA_000741995.1_ASM74199v1_genomic.fna.gz (Brucella suis, 768/1000 hashes), 3 other Brucella canis genome(s)</li>
+<li class="wrap">nearly as close: GCA_000741995.1_ASM74199v1_genomic.fna.gz (Brucella suis, 986/1000 hashes), 3 other Brucella canis genome(s)</li>
 <li class="wrap">MASH cannot separate Brucella canis and Brucella suis: ST 20 is Brucella canis in 70 of 70 isolate(s), which agrees with the closest reference</li>
 </ul>
 </section>
@@ -431,10 +428,10 @@ footer {
 <dt>Closest reference</dt><dd class="wrap">GCA_061325495.1_ASM6132549v1_genomic.fna.gz</dd>
 <dt>What it is</dt><dd class="wrap">Brucella melitensis str. 48_S36</dd>
 <dt>NCBI accessions</dt><dd class="wrap">GCA_061325495.1</dd>
-<dt>MASH distance</dt><dd class="wrap">0.000508</dd>
-<dt>Estimated identity</dt><dd class="wrap">99.949%</dd>
-<dt>Shared min-hashes</dt><dd class="wrap">979/1000 (at least 150 required)</dd>
-<dt>K-mer copies required</dt><dd class="wrap">3 (from the estimated 53x coverage)</dd>
+<dt>MASH distance</dt><dd class="wrap">0.000119</dd>
+<dt>Estimated identity</dt><dd class="wrap">99.988%</dd>
+<dt>Shared min-hashes</dt><dd class="wrap">995/1000 (at least 150 required)</dd>
+<dt>K-mer copies required</dt><dd class="wrap">11 (from the estimated 53x coverage)</dd>
 </dl>
 </div><div>
 <h4>The species call</h4>
@@ -452,13 +449,13 @@ footer {
 <caption>Closest first. A shaded row is too close to the first to be separated by distance alone. The other 425 reference(s) are further away; brucellaid_mash.tsv has every distance.</caption>
 <thead><tr><th>Reference genome</th><th>Species</th><th>Strain</th><th>Distance</th><th>Identity %</th><th>Shared hashes</th><th>p-value</th></tr></thead>
 <tbody>
-<tr class="best"><td>GCA_061325495.1_ASM6132549v1_genomic.fna.gz</td><td>Brucella melitensis</td><td>48_S36</td><td>0.000508</td><td>99.949</td><td>979/1000</td><td>0</td></tr>
-<tr class="close"><td>GCA_002191375.1_ASM219137v1_genomic.fna.gz</td><td>Brucella melitensis</td><td>BwIM_ITA_55</td><td>0.000656</td><td>99.934</td><td>973/1000</td><td>0</td></tr>
-<tr class="close"><td>GCA_006517305.1_ASM651730v1_genomic.fna.gz</td><td>Brucella melitensis</td><td>2011.TE.11844.1.1</td><td>0.000731</td><td>99.927</td><td>970/1000</td><td>0</td></tr>
-<tr class="close"><td>GCA_047040135.1_M2206_genomic.fna.gz</td><td>Brucella melitensis</td><td>M2206</td><td>0.000731</td><td>99.927</td><td>970/1000</td><td>0</td></tr>
-<tr class="close"><td>GCA_006506815.1_ASM650681v1_genomic.fna.gz</td><td>Brucella melitensis</td><td>2011.TE.6837.1.1</td><td>0.000806</td><td>99.919</td><td>967/1000</td><td>0</td></tr>
-<tr class="close"><td>GCA_006506735.1_ASM650673v1_genomic.fna.gz</td><td>Brucella melitensis</td><td>2013.TE.15003.1.1</td><td>0.000881</td><td>99.912</td><td>964/1000</td><td>0</td></tr>
-<tr class="close"><td>GCA_017177365.1_ASM1717736v1_genomic.fna.gz</td><td>Brucella melitensis</td><td>759</td><td>0.000957</td><td>99.904</td><td>961/1000</td><td>0</td></tr>
+<tr class="best"><td>GCA_061325495.1_ASM6132549v1_genomic.fna.gz</td><td>Brucella melitensis</td><td>48_S36</td><td>0.000119</td><td>99.988</td><td>995/1000</td><td>0</td></tr>
+<tr class="close"><td>GCA_002191375.1_ASM219137v1_genomic.fna.gz</td><td>Brucella melitensis</td><td>BwIM_ITA_55</td><td>0.000264</td><td>99.974</td><td>989/1000</td><td>0</td></tr>
+<tr class="close"><td>GCA_006517305.1_ASM651730v1_genomic.fna.gz</td><td>Brucella melitensis</td><td>2011.TE.11844.1.1</td><td>0.000337</td><td>99.966</td><td>986/1000</td><td>0</td></tr>
+<tr class="close"><td>GCA_047040135.1_M2206_genomic.fna.gz</td><td>Brucella melitensis</td><td>M2206</td><td>0.000361</td><td>99.964</td><td>985/1000</td><td>0</td></tr>
+<tr class="close"><td>GCA_006506815.1_ASM650681v1_genomic.fna.gz</td><td>Brucella melitensis</td><td>2011.TE.6837.1.1</td><td>0.000410</td><td>99.959</td><td>983/1000</td><td>0</td></tr>
+<tr class="close"><td>GCA_006506735.1_ASM650673v1_genomic.fna.gz</td><td>Brucella melitensis</td><td>2013.TE.15003.1.1</td><td>0.000483</td><td>99.952</td><td>980/1000</td><td>0</td></tr>
+<tr class="close"><td>GCA_017177365.1_ASM1717736v1_genomic.fna.gz</td><td>Brucella melitensis</td><td>759</td><td>0.000557</td><td>99.944</td><td>977/1000</td><td>0</td></tr>
 </tbody></table>
 <div class="cols"><div>
 <h4>MLST: the sequence type</h4>
@@ -505,10 +502,10 @@ footer {
 <dt>Closest reference</dt><dd class="wrap">GCA_000742055.1_ASM74205v1_genomic.fna.gz</dd>
 <dt>What it is</dt><dd class="wrap">Brucella suis str. Thompsen</dd>
 <dt>NCBI accessions</dt><dd class="wrap">GCA_000742055.1</dd>
-<dt>MASH distance</dt><dd class="wrap">0.006455</dd>
-<dt>Estimated identity</dt><dd class="wrap">99.355%</dd>
-<dt>Shared min-hashes</dt><dd class="wrap">775/1000 (at least 150 required)</dd>
-<dt>K-mer copies required</dt><dd class="wrap">3 (from the estimated 69x coverage)</dd>
+<dt>MASH distance</dt><dd class="wrap">0.000264</dd>
+<dt>Estimated identity</dt><dd class="wrap">99.974%</dd>
+<dt>Shared min-hashes</dt><dd class="wrap">989/1000 (at least 150 required)</dd>
+<dt>K-mer copies required</dt><dd class="wrap">14 (from the estimated 69x coverage)</dd>
 </dl>
 </div><div>
 <h4>The species call</h4>
@@ -526,11 +523,11 @@ footer {
 <caption>Closest first. A shaded row is too close to the first to be separated by distance alone. The other 427 reference(s) are further away; brucellaid_mash.tsv has every distance.</caption>
 <thead><tr><th>Reference genome</th><th>Species</th><th>Strain</th><th>Distance</th><th>Identity %</th><th>Shared hashes</th><th>p-value</th></tr></thead>
 <tbody>
-<tr class="best"><td>GCA_000742055.1_ASM74205v1_genomic.fna.gz</td><td>Brucella suis</td><td>Thompsen</td><td>0.006455</td><td>99.355</td><td>775/1000</td><td>0</td></tr>
-<tr class="close"><td>GCA_000365565.1_Bruc_suis_F8_06-2_V1_genomic.fna.gz</td><td>Brucella suis</td><td>F8/06-2</td><td>0.006663</td><td>99.334</td><td>769/1000</td><td>0</td></tr>
-<tr class="close"><td>GCA_014884445.1_ASM1488444v1_genomic.fna.gz</td><td>Brucella suis</td><td>CVI_105</td><td>0.006839</td><td>99.316</td><td>764/1000</td><td>0</td></tr>
-<tr><td>GCA_000292105.2_ASM29210v2_genomic.fna.gz</td><td>Brucella suis</td><td>BCB032</td><td>0.008118</td><td>99.188</td><td>729/1000</td><td>0</td></tr>
-<tr><td>GCA_055657665.1_ASM5565766v1_genomic.fna.gz</td><td>Brucella suis</td><td>25Ref0017</td><td>0.008118</td><td>99.188</td><td>729/1000</td><td>0</td></tr>
+<tr class="best"><td>GCA_000742055.1_ASM74205v1_genomic.fna.gz</td><td>Brucella suis</td><td>Thompsen</td><td>0.000264</td><td>99.974</td><td>989/1000</td><td>0</td></tr>
+<tr class="close"><td>GCA_000365565.1_Bruc_suis_F8_06-2_V1_genomic.fna.gz</td><td>Brucella suis</td><td>F8/06-2</td><td>0.000459</td><td>99.954</td><td>981/1000</td><td>0</td></tr>
+<tr class="close"><td>GCA_014884445.1_ASM1488444v1_genomic.fna.gz</td><td>Brucella suis</td><td>CVI_105</td><td>0.000582</td><td>99.942</td><td>976/1000</td><td>0</td></tr>
+<tr><td>GCA_000292105.2_ASM29210v2_genomic.fna.gz</td><td>Brucella suis</td><td>BCB032</td><td>0.001839</td><td>99.816</td><td>927/1000</td><td>0</td></tr>
+<tr><td>GCA_055657665.1_ASM5565766v1_genomic.fna.gz</td><td>Brucella suis</td><td>25Ref0017</td><td>0.001839</td><td>99.816</td><td>927/1000</td><td>0</td></tr>
 </tbody></table>
 <div class="cols"><div>
 <h4>MLST: the sequence type</h4>
@@ -566,7 +563,6 @@ footer {
 <tr><td>omp25</td><td>2</td><td>330</td><td>omp25_21 (250)</td><td>80</td><td>1.32</td><td></td></tr>
 </tbody></table>
 <h4>Notes</h4><ul>
-<li class="wrap">loose match: the closest reference is 0.00645 away and shares 775/1000 hashes, where a read set of a species the sketch holds is expected to match within 0.005 (--loose-distance). The reads may hold more than Brucella, this lineage may have no near relative in the sketch, or the k-mer copy threshold may be low for this library (try --min-kmer-copies above the derived value); the species named is still the closest one</li>
 <li class="wrap">nearly as close: 2 other Brucella suis genome(s)</li>
 </ul>
 </section>
@@ -585,15 +581,15 @@ footer {
 <dt>Computer</dt><dd class="wrap">[removed]</dd>
 <dt>Operating system</dt><dd class="wrap">[removed]</dd>
 <dt>Working directory</dt><dd class="wrap">[removed]</dd>
-<dt>Started</dt><dd class="wrap">2026-11-07T18:53:07-05:00</dd>
-<dt>Finished</dt><dd class="wrap">2026-11-07T18:53:41-05:00</dd>
+<dt>Started</dt><dd class="wrap">2026-11-08T10:55:07-05:00</dd>
+<dt>Finished</dt><dd class="wrap">2026-11-08T10:55:47-05:00</dd>
 <dt>Command</dt><dd class="wrap">python3 scripts/make_example_report.py reads</dd>
 </dl>
 <h3>Software</h3>
 <table>
 <thead><tr><th>Program</th><th>Version</th></tr></thead>
 <tbody>
-<tr><td>brucellaid</td><td>2.0.0</td></tr>
+<tr><td>brucellaid</td><td>2.1.0</td></tr>
 <tr><td>Python</td><td>3.12.16</td></tr>
 <tr><td>MASH</td><td>2.3</td></tr>
 <tr><td>BBTools</td><td>40.05</td></tr>
@@ -625,7 +621,7 @@ footer {
 <li class="wrap">Jolley KA, Bray JE, Maiden MCJ. Open-access bacterial population genomics: BIGSdb software, the PubMLST.org website and their applications. Wellcome Open Research 2018;3:124. doi:10.12688/wellcomeopenres.14826.1</li>
 <li class="wrap">Bushnell B. BBTools. https://sourceforge.net/projects/bbmap/</li>
 </ol>
-<footer>BrucellaID 2.0.0 &middot; 2026-11-07T18:53:07-05:00 &middot; [removed]@[removed] &middot; this report is self-contained: it needs no network to render.</footer>
+<footer>BrucellaID 2.1.0 &middot; 2026-11-08T10:55:07-05:00 &middot; [removed]@[removed] &middot; this report is self-contained: it needs no network to render.</footer>
 </main>
 </body>
 </html>

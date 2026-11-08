@@ -9,7 +9,7 @@ report holds the same information and needs nothing.
 
 ## pip, with the tools from conda (recommended)
 ```bash
-conda create -n brucellaid -c conda-forge -c bioconda mash "gsl=2.7.0" bbmap python">=3.10"
+conda create -n brucellaid -c conda-forge -c bioconda mash "gsl=2.7.0" bbmap "python>=3.10"
 conda activate brucellaid
 pip install brucellaid
 brucellaid --version
@@ -37,7 +37,7 @@ cd BrucellaID
 conda env create -f environment.yml
 conda activate brucellaid
 pip install --no-deps -e .
-pytest            # optional: 390 tests
+pytest            # optional: 392 tests
 ```
 `python -m brucellaid` works too, and takes the same arguments as the `brucellaid` command.
 

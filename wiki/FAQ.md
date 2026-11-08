@@ -9,15 +9,22 @@ assembly, [brucetyper](https://github.com/duceppemo/brucetyper) does *in silico*
 against `brucellaid/data/references_extended.msh` identifies a genome directly.
 
 ### Nanopore or PacBio reads?
-They work. The reads are long enough to cover a whole locus, which helps, but their error rate costs k-mers:
+**Untested.** Nothing in the validation is a long read: the suite simulates 150 bp paired-end, and the
+at-scale sweep is filtered to paired Illumina WGS runs, so there is no measurement behind an answer either
+way. In principle they should work, and the reads are long enough to cover a whole locus, which helps — but
+their error rate costs k-mers:
 `hdist=0` means a read with an error in a 25-mer loses that k-mer for every allele at once, so the ranking
 holds while the counts drop. Use reads that have been corrected or basecalled with a recent model, and check
 the margins in `brucellaid_mlst.tsv`.
 
 ### How much coverage do I need?
-About 10x is comfortable, 20x is plenty. Below 5x, loci start coming back as ties, which BrucellaID reports
-rather than guesses. The species identification is the more forgiving of the two: at 5x the sketch still
-shares most of its hashes with the right reference.
+20x is plenty and 10x is comfortable, and the two answers give out at different depths. The species
+identification is the more forgiving: striding three real libraries down depth by depth, the sketch still
+shares 834 to 950 of its 1000 hashes with the right reference at 5x to 7x, and 983 or more from 14x up — the
+figures are on [The k-mer copy threshold](K-mer-threshold). The allele calls go first, as loci start coming
+back as ties, which BrucellaID reports rather than guesses. How shallow that begins is not measured here:
+the suite simulates 20x and the shallowest real library in it is 47x, so run
+`COVERAGE=5 bash validation/run_validation.sh` to see where the ties start on data like yours.
 
 ### What does `SpeciesSource` mean, and can the ST overrule MASH?
 It says what the species rests on. `MASH` is the distance alone, `MASH+ST (agree)` is both saying the same
@@ -28,10 +35,15 @@ over 14 species pairs — *canis*/*suis*, *ceti*/*pinnipedialis* and the former 
 them — and for 7 of vSNP's 16 over 8 pairs. The classical *canis*/*suis* case is the one that comes up in
 practice, and it comes up the same way under either set.
 
+`MASH (unresolved)` is the same situation as `(arbitrated)` with the arbitration missing: two species were
+within reach and the ST could not choose, so the species is the closest reference's and the sample is
+flagged for review. [Troubleshooting](Troubleshooting#speciessource-says-mash-unresolved) lists the seven
+reasons an ST cannot be used.
+
 The ST cannot overrule a species MASH picked cleanly. An ST pointing at a species that was nowhere near the
 closest reference is reported as `MASH (conflict)`, with the MASH call kept: a thousand min-hashes against
 nine loci. `--no-st-species` leaves the ST out of it entirely. See
-[How it works](How-it-works).
+[How it works](How-it-works#the-species-call).
 
 ### Why not just add more reference genomes instead?
 More references fix a different problem than the one the ST fixes. *B. canis* and *B. suis* bv. 4 are
@@ -52,8 +64,8 @@ set could carry it — but the genome is there under *Brucella* sp., and
 [`curation/papionis/README.md`](https://github.com/duceppemo/BrucellaID/blob/main/curation/papionis/README.md)
 records how it was identified and relabelled.
 [How it works](How-it-works#the-reference-sets) says where it comes from and
-[Validation](Validation#at-scale-the-extended-reference-set) what it does on simulated reads of 2,022
-assemblies and [on every public *Brucella* read set in ENA](Validation#on-real-public-read-sets-the-whole-archive).
+[Validation](Validation-at-scale#simulated-reads-of-2022-assemblies) what it does on simulated reads of 2,022
+assemblies and [on every public *Brucella* read set in ENA](Validation-at-scale#every-usable-public-read-set-in-ena).
 The 16 vSNP genomes are still a run away, as `--reference-set vsnp`.
 
 ### Where did the biovar column go?
@@ -75,9 +87,14 @@ That the closest reference is further than `--loose-distance` (0.005 by default)
 something, but not closely. It is **not** a claim that the species is wrong, and BrucellaID does not change
 the call: over every public *Brucella* read set in ENA, 185 of the 195 calls past 0.005 agreed with the
 submitter anyway. What they had in common was a diluted sketch — every one of those 185 shared fewer than
-900 of the 1000 hashes, against the 900-plus a clean library shares. So a loose match usually means the
-reads hold more than *Brucella*, and sometimes means the sample is a lineage with no near relative in the
-reference set. Read the note's distance and shared hashes, and `brucellaid_mash.tsv` for the runners-up.
+900 of the 1000 hashes, against the 900-plus a clean library shares. (Those figures were measured before
+2.1.0 changed the k-mer copy threshold; [the derivation](Validation-at-scale#the-loose-match-distance) says
+what that means for them.) The note names three causes: the reads
+hold more than *Brucella*, which is the usual one; the sample is a lineage with no near relative in the
+reference set; or a minority *Brucella* population is being filtered out along with the sequencing errors,
+which `--min-kmer-copies` either side of the derived value will show — see
+[The k-mer copy threshold](K-mer-threshold). Read the note's distance and
+shared hashes, and `brucellaid_mash.tsv` for the runners-up.
 
 ### Why 150 shared hashes?
 It is the threshold the first version of BrucellaID used, and it separates "this read set is *Brucella*"

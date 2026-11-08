@@ -27,8 +27,8 @@ The reads share fewer than 150 of the reference's 1000 hashes. In order of likel
 2. **There is too little of it**: a mixed sample, a low yield extraction, or a very shallow run. Check the
    `Reads` column. Below roughly 5x, both the sketch and the allele calls get thin.
 3. **The reads are of poor quality.** MASH drops the k-mers seen fewer times than the copy threshold
-   (2 at low coverage, one more per 20x), so a read set full of errors loses most of its k-mers. Trim the
-   reads and run it again.
+   ([2 at low coverage, one more per 5x](K-mer-threshold)), so a read set full of errors loses most of its
+   k-mers. Trim the reads and run it again.
 4. **A sample is not what you think.** Check the `brucellaid_mash.tsv` rows: a sample that is *Brucella*
    but far from all 432 references is worth knowing about — the `Notes` column says so itself, as a loose
    match, when the closest one is more than 0.005 away.
@@ -69,6 +69,28 @@ thousand min-hashes rather than nine loci, but the sample is worth a look:
 * **A genuinely new combination**, for an ST seen so far in one species only.
 
 `--no-st-species` reports the MASH species without consulting the ST at all.
+
+## `SpeciesSource` says `MASH (unresolved)`
+Two species were within reach of the distance and the sequence type could not choose between them, so the
+species reported is the closest reference's and the sample is flagged `warning`. Nothing contradicts
+anything here — unlike `MASH (conflict)`, this is a missing answer rather than a disagreeing one — but the
+species rests on a margin the evidence did not resolve, so it is worth confirming.
+
+The note on the sample says *why* the ST was no help, and there are seven reasons it can give:
+
+* **The sample has no ST**, or its profile has no ST yet (`new`). Fix the allele calls first: see
+  [The sequence type is `ND`](#the-sequence-type-is-nd) above.
+* **The ST is recorded as *Brucella* sp.** in PubMLST, with no species named, so it cannot name one here.
+* **The ST rests on too few isolates** — fewer than `--min-st-isolates`.
+* **The isolates of the ST do not agree** on a species to within `--min-st-purity`, 95% by default.
+  `brucellaid/data/mlst_st_species.tsv` has the species and the count behind every ST, so the evidence the
+  note quotes can be read directly.
+* **The distance separated nothing.** Where so many references sit within the close-match margin that the
+  margin is measuring noise rather than ambiguity — which happens when the sketch shares too few hashes for
+  the distance to be fine-grained — the note says `the distance cannot separate N of the references`. Raise
+  the depth, or trim the reads; `brucellaid_mash.tsv` has every distance.
+* **The MLST was not run** (`--no-mlst`), or **the ST table is not in use** (`--no-st-species`). Then the
+  ST takes no part by request, and this verdict is the expected one rather than a problem.
 
 ## The biovar is not the one the laboratory reported
 BrucellaID reports no biovar, and 1.1.0 removed the column that used to hold one: it was the biovar of the

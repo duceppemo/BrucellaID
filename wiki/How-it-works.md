@@ -6,6 +6,8 @@ rests on, and a third step puts them together only where it has to — for the o
 of any size cannot separate. When they disagree anywhere else, both numbers are in the reports and the
 disagreement is the finding.
 
+<a name="the-mash-distance"></a>
+
 ## 1. Which species: the MASH distance to 432 reference genomes
 
 The reads of a sample — R1 and R2 together, as one read set — are piped into
@@ -15,13 +17,15 @@ hashes the two share.
 
 * `-m N` drops the k-mers the read set holds fewer than N times. Most of those are sequencing errors, and
   they would otherwise fill the sketch with noise. **N rises with the coverage** and BrucellaID derives it
-  from the size of the input: one more required copy per 20x, from 2 to 20
+  from the size of the input: one more required copy per 5x, from 2 to 48
   (`--min-kmer-copies` overrides it). An error k-mer turns up about `depth x error rate` times, so at 30x a
   single copy is almost certainly an error and two copies almost certainly real, while at 400x erroneous
-  k-mers reach two copies routinely. A fixed `-m 2`, which versions up to 1.1.0 used, starts losing the
-  true reference above roughly 240x: the shared hashes fall under `--min-hashes` and nothing is reported,
-  on a sample that has more data than it needs. A fixed high value is no better, because it empties the
-  sketch of a shallow sample. The report says which value was used.
+  k-mers reach two copies routinely. Measured over 63 real libraries, a fixed `-m 2` — which versions up to
+  1.1.0 used — keeps a median 896 of the 1000 hashes below 100x, 477 from 100x to 250x, and 174 above that;
+  on four libraries past 1400x it falls under the 150 that `--min-hashes` asks for, so nothing is reported
+  at all on a sample that has more data than it needs. A fixed high value is no better, because it empties
+  the sketch of a shallow sample. The report says which value was used, and
+  [The k-mer copy threshold](K-mer-threshold) is how the rule was arrived at.
 * `-r` tells MASH the input is reads, so the genome size is estimated from k-mer multiplicity.
 * The k-mer size and the sketch size are inherited from the reference sketch, which is why a custom sketch
   has to keep MASH's defaults.
@@ -37,14 +41,25 @@ over 99% identical — so a MASH distance separates them by a small margin. Read
 `brucellaid_mash.tsv` lists every distance, and a note on the sample says when another reference was
 nearly as close.
 
+What the distance does **not** tell you is how much to trust the ranking. It orders the references; it
+carries no confidence, and against the 432-genome default set the second line is usually close behind the
+first, because a sample's nearest neighbours are mostly other genomes of its own species. A note that
+another reference was nearly as close is therefore the normal case, not a warning — the field to alert on
+is `Status`, not `Notes`.
+
 A second note says when the closest reference is **not close at all**. Being the nearest of several
 hundred genomes is not the same as being a good match, and the distance says which: past
 `--loose-distance`, 0.005 by default, the call carries a note with the distance and the shared hashes.
 It does not change the species, because a loose match is usually not a wrong species — over every public
 *Brucella* read set in ENA, 185 of the 195 calls past 0.005 agreed with the submitter anyway, and every
-one of those 185 shared fewer than 900 of the 1000 hashes, median 696. What a loose match means is that
-the reads hold more than *Brucella*, or that the sample belongs to a lineage with no near relative in the
-sketch. Either is worth knowing, and neither is visible from the species name alone.
+one of those 185 shared fewer than 900 of the 1000 hashes, median 696 — figures measured before 2.1.0, so
+see [the derivation](Validation-at-scale#the-loose-match-distance) for what the new threshold does to
+them. A loose match has three causes, and
+the note names all three: the reads hold more than *Brucella*; the sample belongs to a lineage with no near
+relative in the sketch; or a minority *Brucella* population is being filtered out along with the
+sequencing errors, which `--min-kmer-copies` either side of the derived value will show — see
+[The k-mer copy threshold](K-mer-threshold). Any of the three is worth knowing, and none is visible from
+the species name alone.
 
 <a name="no-biovar"></a>
 
@@ -81,6 +96,8 @@ within either species. Which of the two a *canis* or a *suis* read set lands on 
 sketch, at any size, with any number of references, will change that: they are that close. The three
 closest pairs of different species in the default set are all *canis*–*suis*; the closest that is not,
 *B. ceti* against *B. pinnipedialis*, is 0.00058. Step 3 is about the *canis*–*suis* pair.
+
+<a name="the-mlst-alleles"></a>
 
 ## 2. Which sequence type: the nine MLST alleles, called with Seal
 
@@ -119,10 +136,15 @@ shows up as a lower count and a close runner-up, and often as a `new` profile. B
 so it cannot tell you the new sequence: assemble the sample and submit the locus to
 [PubMLST](https://pubmlst.org/organisms/brucella-spp) if you suspect one.
 
-**Depth.** The alleles are 422 to 589 bp long. At 20x, a locus is covered by roughly 80 reads and the margin
-over the runner-up is comfortable; below about 5x the ties start, and they are reported as ties rather than
+**Depth, and what a comfortable margin looks like.** The alleles are 422 to 589 bp long, so at 20x a locus
+is covered by roughly 80 reads. Across the 20x simulated samples of the
+[validation suite](Validation-suite), every called allele had 64 to 150 reads behind it (median 108) and
+beat its runner-up by 14 reads at the narrowest, median 34 — that is the scale "close behind" should be read
+against. Below about 5x the ties start, and they are reported as ties rather than
 guessed. Coverage at the very ends of a locus matters as much as in the middle: two alleles differing at a
 single position near one end can only be told apart by a read that reaches it.
+
+<a name="the-species-call"></a>
 
 ## 3. Which species, when the distance cannot say: the sequence type
 
@@ -192,7 +214,7 @@ atypical lineages, so a sample of any of the other 22 species could only land on
 
 With it, a *B. anthropi* or *B. intermedia* sample is named instead of coming back `ND`, a marine-mammal
 or vole-adjacent species lands on its own references instead of the nearest classical one, and an isolate
-of a lineage that has no name yet is reported as *Brucella sp.* — an honest "inside the clade, outside the
+of a lineage that has no name yet is reported as *Brucella sp.* — "inside the clade, outside the
 named species" — rather than forced onto the closest named species. What does **not** change: the species
 is still the species of the closest genome, the ST still arbitrates where two species are within reach
 (*B. canis* sits inside *B. suis* whichever set measures it), and there is still
@@ -203,7 +225,7 @@ two sets disagree on 146, and the extended set is right on 91 of them and vSNP's
 run in that archive where the smaller set gave a better answer, and across the 2,018 *B. melitensis* and
 1,118 *B. abortus* runs that carry most real traffic the two return the same call, so the extra genomes add
 coverage without disturbing what the 16 already did well.
-[Validation](Validation#on-real-public-read-sets-the-whole-archive) has the numbers.
+[Validation](Validation-at-scale#every-usable-public-read-set-in-ena) has the numbers.
 
 **Why `vsnp` is still there.** It is what every answer from this tool before 2.0 was measured against, it
 is the set vSNP itself uses, and its `code` column carries vSNP's own species codes (`ab1`, `mel1`), which
@@ -215,7 +237,7 @@ The set is derived from the 2,022 *Brucella* (NCBI taxon 234) assemblies behind 
 twins of named species were dropped, and one cluster got the label its neighbours agree on. Every decision,
 with its reason, is
 [`scripts/extended_references_curation.tsv`](https://github.com/duceppemo/BrucellaID/blob/main/scripts/extended_references_curation.tsv),
-and [Validation](Validation#at-scale-the-extended-reference-set) shows what the set does on simulated
+and [Validation](Validation-at-scale#simulated-reads-of-2022-assemblies) shows what the set does on simulated
 reads of all 2,022 assemblies and on every usable public *Brucella* read set in ENA.
 
 One of the thirty was nearly missed. Nothing in INSDC is labelled *B. papionis*, the species described
@@ -230,9 +252,5 @@ tested.
 
 ## Why not an assembly?
 
-Both steps count reads. MASH sketches a read set and filters the k-mers seen fewer times than the copy
-threshold derived from the coverage, and the allele calling
-works because a locus is covered by many reads that each vote for an allele; a contig votes once, and a
-contig holding several loci would be assigned to one of them. A fasta file is refused rather than quietly
-mis-typed. For assemblies, [brucetyper](https://github.com/duceppemo/brucetyper) does *in silico* PCR
-instead.
+Both steps count reads, so a fasta file is refused rather than quietly mis-typed: see
+[the FAQ](FAQ#can-it-read-assemblies), which also gives the two things to use on an assembly instead.

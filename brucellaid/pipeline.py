@@ -94,9 +94,10 @@ def species_notes(identification, references, loose_distance=LOOSE_MATCH_DISTANC
         notes.append('loose match: the closest reference is {:.5f} away and shares {}/{} hashes, where a read '
                      'set of a species the sketch holds is expected to match within {:g} (--loose-distance). '
                      'The reads may hold more '
-                     'than Brucella, this lineage may have no near relative in the sketch, or the k-mer copy '
-                     'threshold may be low for this library (try --min-kmer-copies above the derived value); '
-                     'the species named is still the closest one'
+                     'than Brucella, this lineage may have no near relative in the sketch, or a minority '
+                     'Brucella population may be being filtered out with the sequencing errors (try '
+                     '--min-kmer-copies either side of the derived value and see whether the distance '
+                     'moves); the species named is still the closest one'
                      .format(best.distance, best.shared_hashes, best.total_hashes, loose_distance))
     if identification.undiscriminating:
         notes.append('the distance cannot separate the references here: {} of them sit within {:g} of the '

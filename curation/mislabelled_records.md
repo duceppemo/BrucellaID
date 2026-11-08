@@ -152,22 +152,23 @@ first one to raise.
 
 | Run | BioSample | Submitted as | Both methods say | Distance | ST | PubMLST species of that ST |
 | --- | --- | --- | --- | --- | --- | --- |
-| `ERR2938660` | `SAMEA5145035` | *B. ovis* | *B. suis* | 0.00081 | 15 | *B. suis*, 96.1% of 103 isolates |
-| `ERR2938669` | `SAMEA5145008` | *B. melitensis* | *B. suis* | 0.00181 | 15 | *B. suis*, 96.1% of 103 isolates |
-| `ERR2938678` | `SAMEA5145000` | *B. melitensis* | *B. abortus* | 0.00111 | 5 | *B. abortus*, 98.6% of 71 isolates |
-| `ERR2938687` | `SAMEA5145007` | *B. melitensis* | *B. suis* | 0.00591 | 15 | *B. suis*, 96.1% of 103 isolates |
-| `ERR2938695` | `SAMEA5145011` | *B. melitensis* | *B. suis* | 0.00244 | 15 | *B. suis*, 96.1% of 103 isolates |
-| `ERR2993134` | `SAMEA5176151` | *B. melitensis* | *B. pinnipedialis* | 0.00026 | 25 | *B. pinnipedialis*, 95.0% of 80 isolates |
-| `ERR2993138` | `SAMEA5176141` | *B. melitensis* | *B. suis* | 0.00014 | 19 | *B. suis*, 100% of 6 isolates |
-| `ERR2993140` | `SAMEA5176147` | *B. melitensis* | *B. neotomae* | 0.00012 | 22 | *B. neotomae*, 100% of 9 isolates |
-| `ERR2993145` | `SAMEA5176140` | *B. melitensis* | *B. suis* | 0.00007 | — | no ST; **both reference sets agree independently** |
-| `ERR2993152` | `SAMEA5176142` | *B. melitensis* | *B. abortus* | 0.00014 | 1 | *B. abortus*, 99.4% of 466 isolates |
-| `ERR2993155` | `SAMEA5176143` | *B. melitensis* | *B. suis* | 0.00014 | 14 | *B. suis*, 96.4% of 140 isolates |
+| `ERR2938660` | `SAMEA5145035` | *B. ovis* | *B. suis* | 0.00041 | 15 | *B. suis*, 96.1% of 103 isolates |
+| `ERR2938669` | `SAMEA5145008` | *B. melitensis* | *B. suis* | 0.00043 | 15 | *B. suis*, 96.1% of 103 isolates |
+| `ERR2938678` | `SAMEA5145000` | *B. melitensis* | *B. abortus* | 0.00019 | 5 | *B. abortus*, 98.6% of 71 isolates |
+| `ERR2938687` | `SAMEA5145007` | *B. melitensis* | *B. suis* | 0.00155 | 15 | *B. suis*, 96.1% of 103 isolates |
+| `ERR2938695` | `SAMEA5145011` | *B. melitensis* | *B. suis* | 0.00073 | 15 | *B. suis*, 96.1% of 103 isolates |
+| `ERR2993134` | `SAMEA5176151` | *B. melitensis* | *B. pinnipedialis* | 0.00010 | 25 | *B. pinnipedialis*, 95.0% of 80 isolates |
+| `ERR2993138` | `SAMEA5176141` | *B. melitensis* | *B. suis* | 0.00002 | 19 | *B. suis*, 100% of 6 isolates |
+| `ERR2993140` | `SAMEA5176147` | *B. melitensis* | *B. neotomae* | 0.00010 | 22 | *B. neotomae*, 100% of 9 isolates |
+| `ERR2993145` | `SAMEA5176140` | *B. melitensis* | *B. suis* | 0.00000 | — | no ST; **both reference sets agree independently** |
+| `ERR2993152` | `SAMEA5176142` | *B. melitensis* | *B. abortus* | 0.00007 | 1 | *B. abortus*, 99.4% of 466 isolates |
+| `ERR2993155` | `SAMEA5176143` | *B. melitensis* | *B. suis* | 0.00000 | 14 | *B. suis*, 96.4% of 140 isolates |
 
-Several of these are 0.0001–0.0003 from the species the sequence says they are, which is as close as two
-genomes of one species ever get. `ERR2993134` is the most striking: submitted as *B. melitensis*, 0.00026
-from *B. pinnipedialis* and carrying ST 25, a marine-mammal sequence type. `ERR2938687` is the weakest of
-the eleven, because its distance of 0.0059 is large enough that the species rests mainly on the ST.
+Seven of these are 0.0001 or closer to the species the sequence says they are, and two of them are at
+zero: closer than two genomes of one species normally get. `ERR2993134` is the most striking: submitted as
+*B. melitensis*, 0.0001 from *B. pinnipedialis* and carrying ST 25, a marine-mammal sequence type.
+`ERR2938687` is still the weakest of the eleven on distance at 0.00155, though at 938 of 1000 shared hashes
+it is no longer a case where the species rests mainly on the ST.
 
 ### PRJEB4782 — three read sets, Wellcome Sanger Institute
 
@@ -196,13 +197,13 @@ so a wrong label here travels further than an ordinary isolate's would.
 | Run | BioSample | Study | Submitted as | Both methods say | Distance | ST | PubMLST species of that ST |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `SRR31560207` | `SAMN15685105` | PRJNA649281 | *B. abortus* | *B. melitensis* | 0.00056 | 7 | *B. melitensis*, 98.6% of 72 isolates |
-| `SRR11526759` | `SAMN14309819` | PRJNA610713 | *B. abortus* | *B. melitensis* | 0.00098 | 8 | *B. melitensis*, 98.3% of 862 isolates |
+| `SRR11526759` | `SAMN14309819` | PRJNA610713 | *B. abortus* | *B. melitensis* | 0.00005 | 8 | *B. melitensis*, 98.3% of 862 isolates |
 
 `SRR31357708` (`SAMN44729562`, PRJNA1183633), submitted as *B. cytisi*, belongs with these although no ST
 is available: the former *Ochrobactrum* species do not carry the classical MLST alleles, and six of the
 nine loci got no read at all. The distance evidence is decisive on its own — 0.0076 from the nearest
-*B. anthropi* against 0.0381–0.0394 from the three deposits of the *cytisi* type strain, which rank 89th,
-90th and 91st of the 432 references. Every one of its top eight hits is *anthropi*. Status: to report.
+*B. anthropi* against 0.0366–0.0463 from the seven deposits of the *cytisi* type strain, the nearest of
+which ranks well down the 432 references. Every one of its top eight hits is *anthropi*. Status: to report.
 
 ## Read sets that contain no *Brucella* sequence
 
@@ -211,7 +212,7 @@ the clade. These are not identification failures — BrucellaID refused to name 
 threshold of 150 shared hashes is for — but they are worth reporting, because a reader searching the
 archive for *B. abortus* reads will find them.
 
-A real *Brucella* read set at usable depth shares 900 or more of the 1000 hashes with its own species.
+A real *Brucella* read set at usable depth shares 980 or more of the 1000 hashes with its own species.
 
 | Study | Runs | Submitted as | Shared hashes |
 | --- | --- | --- | --- |
@@ -219,14 +220,27 @@ A real *Brucella* read set at usable depth shares 900 or more of the 1000 hashes
 | PRJNA52097 (Broad) | `SRR825216`, `SRR825217`, `SRR825218` | *B. pinnipedialis* | **0 of 1000** |
 | PRJNA197004 (Broad) | `SRR886241`, `SRR886242`, `SRR886243` | *B. ceti* | 1 of 1000 |
 | PRJNA77813 (Broad) | `SRR848042` | *B. abortus* | **0 of 1000** |
-| PRJNA213741 (Broad) | `SRR952243` | *B. abortus* | 146 of 1000 — just under the threshold, the one borderline case |
+| PRJNA213741 (Broad) | `SRR952243` | *B. abortus* | 2 of 1000 |
 | PRJEB22377 (Sanger) | `ERR3218177` | *B. abortus* | 6 of 1000 |
-| PRJNA1290416 | `SRR35797377` | *B. melitensis* | 26 of 1000 |
-| PRJNA966239 | `SRR24420454` | *B. melitensis* | 105 of 1000 |
+| PRJNA1290416 | `SRR35797377` | *B. melitensis* | 1 of 1000 |
+| PRJNA966239 | `SRR24420454` | *B. melitensis* | 1 of 1000 |
 | PRJNA945449 | `SRR25828922` | *B. pseudogrignonensis* | 5 of 1000 |
 
 The four runs sharing **zero** hashes are the clearest: whatever those files hold, it is not *Brucella*.
-`SRR952243` at 146 of 1000 is the only one near the line and deserves a second look before it is reported.
+None of the 22 comes within 140 hashes of the threshold of 150, so none is a borderline case.
+
+> **These counts were re-measured under the 2.1.0 k-mer copy threshold**, and three of them moved a long
+> way down: `SRR952243` from 146 of 1000 to 2, `SRR24420454` from 105 to 1, and `SRR35797377` from 26 to 1.
+> That is the re-derivation working as intended on exactly the samples it was meant to separate. These are
+> mixed libraries at high depth, where the old threshold of one copy per 20x was low enough that error
+> k-mers and a trace population both survived into the sketch; asking one copy per 5x of a 150x library
+> removes both. `SRR952243` was previously flagged in this file as the one case that "deserves a second
+> look before it is reported" — it no longer does.
+>
+> The cost of that sharpening is the other side of the same coin: a genuine minority *Brucella* population
+> in a mixed library is now less likely to be seen at all. `SRR24420453`, the one library the threshold
+> sweep could not fit, is the worked example — see
+> [The k-mer copy threshold](https://github.com/duceppemo/BrucellaID/wiki/K-mer-threshold).
 
 ## Read sets: candidates
 
@@ -240,13 +254,15 @@ BrucellaID could not place the sample because the extended set has no suitable r
 * `SRR4038994` (`SAMN05417907`, PRJNA251693), submitted as *B. papionis* — **resolved.** The submitter was
   right, and chasing this run is what turned up `GCA_000163135.1` above: the species' genome was in NCBI
   under *Brucella* sp. all along. With that genome relabelled and added, the run now reports *B. papionis*
-  at 0.00083. See [`papionis/README.md`](papionis/README.md).
+  at 0.00010. See [`papionis/README.md`](papionis/README.md).
 * `SRR12605656` (*B. haematophila*, 0.0201, 488/1000) and `SRR25828932`, `SRR25828924` (*B. anthropi*,
-  0.014 and 0.008) — reported as *Brucella* sp. because the nearest named genome is far away. With three
+  0.014 and 0.008) — reported as *Brucella* sp. because the nearest named genome is far away. These three
+  distances are as the sweep measured them, under the pre-2.1 copy threshold, and were not re-measured;
+  expect them to be smaller now, and the shared-hash count higher. With three
   *haematophila* genomes in existence, one of them itself a candidate mislabel, the reference side is too
   thin to call these either way.
 * `SRR31481153`, submitted as *B. inopinata*, reported as *Brucella* sp. at 0.00053 with 978 of 1000 hashes
-  and a `new` sequence type. It sits beside an unnamed lineage representative rather than an *inopinata*
+  and a `new` sequence type — again as the sweep measured it, not re-measured since. It sits beside an unnamed lineage representative rather than an *inopinata*
   genome, which probably says more about how few *inopinata* genomes exist than about the label.
 
 ## PCR evidence

@@ -26,8 +26,8 @@ Identify the *Brucella* species of a fastq sample by its [MASH](https://github.c
 ```
 $ brucellaid -i reads/ -o results/
 Sample      Species           SpeciesSource         ClosestReference                           SharedHashes  SequenceType  STSpecies
-ERR2136546  Brucella canis    MASH+ST (arbitrated)  GCA_000530495.1_Oliveri_genomic.fna.gz     773/1000      20            Brucella canis
-ERR3454415  Brucella abortus  MASH+ST (agree)       GCA_000742195.1_ASM74219v1_genomic.fna.gz  972/1000      1             Brucella abortus
+ERR2136546  Brucella canis    MASH+ST (arbitrated)  GCA_000530495.1_Oliveri_genomic.fna.gz     995/1000      20            Brucella canis
+ERR3454415  Brucella abortus  MASH+ST (agree)       GCA_000742195.1_ASM74219v1_genomic.fna.gz  994/1000      1             Brucella abortus
 ```
 (Two of the four [tutorial](https://github.com/duceppemo/BrucellaID/wiki/Tutorial) read sets, against the
 432-genome default set. Columns elided to fit; `brucellaid.tsv` also holds `MashDistance`,
@@ -48,9 +48,11 @@ configure.
   leaves both within reach, the ST chooses, from a table of the species of every ST counted over the 3,403
   PubMLST isolates that carry one. A `SpeciesSource` column says what each call rested on, and an ST that contradicts a
   species MASH picked cleanly is reported, never obeyed.
-* **Nothing is hidden**: the distance to every reference, the reads behind every allele call and the
-  runner-up that call had to beat, a note when a second reference was nearly as close, a note when the
-  closest one is not close at all, and a tie reported as a tie rather than broken by a coin toss.
+* **Every answer comes with its evidence**: the distance to every reference, the reads behind every allele
+  call and the runner-up that call had to beat, a note when a second reference was nearly as close, a note
+  when the closest one is not close at all, and a tie reported as a tie rather than broken by a coin toss.
+  Where a note would have to list a hundred near-identical genomes it gives a count instead, and
+  `brucellaid_mash.tsv` still holds every distance.
 * **A quality assurance report you can sign**: every run writes `brucellaid_report.html`, one
   self-contained file — no script, no stylesheet, nothing fetched from anywhere — holding the closest
   reference genomes and not only the winning one, how the species was decided, every allele call with the
@@ -73,25 +75,40 @@ configure.
   an atypical isolate is reported as *Brucella sp.* rather than forced onto the nearest classical species.
   Nothing in INSDC is *labelled* *B. papionis*, the thirtieth species — its genome sits there under
   *Brucella* sp., which is [how we found it](https://github.com/duceppemo/BrucellaID/blob/main/curation/papionis/README.md).
-  [Validated](https://github.com/duceppemo/BrucellaID/wiki/Validation) twice: on simulated reads of 2,022
-  NCBI assemblies, every held-out sample of a named species right once five genomes mislabelled in NCBI —
-  which the curation itself caught — are accounted for; and on **every usable public *Brucella* read set in
-  ENA**, 4,042 real libraries, where it matches the submitter on 98.7% against the vSNP set's 96.2%, and
-  wins all 91 of the disagreements that have a right answer without losing one.
+  [Validated](https://github.com/duceppemo/BrucellaID/wiki/Validation-at-scale) twice. On simulated reads
+  of 2,022 NCBI assemblies: scored against what the sequences demonstrably are, the extended set got
+  **every one of the 1,543 held-out named samples right** — five of them are mislabelled in NCBI, which the
+  curation itself caught, and scored against the labels as written it is 1,538 of 1,543. And on **every
+  usable public *Brucella* read set in ENA**, 4,042 real libraries, where it matches the submitter on 98.7%
+  against the vSNP set's 96.2%, and wins all 91 of the disagreements that have a right answer without
+  losing one.
 * **Backwards compatible where it counts**: the MASH identification is vSNP's, down to the threshold of
   150 shared hashes (`--no-st-species` reports it alone), and `--xlsx` still writes the
   `stat_alignment_summary_<date>.xlsx` of the first version.
-* **Nothing to configure**: only the Python standard library, plus MASH and BBTools. The two optional
-  output formats, xlsx and PDF, are the only things that want a package, and neither is needed.
-* **Tested**: 390 tests, 100% coverage, end to end on a synthetic genome and on reads tiled over the real
+* **A short dependency list**: the Python standard library, plus MASH and BBTools. The two optional output
+  formats, xlsx and PDF, are the only things that want a package, and neither is needed.
+* **Tested**: 392 tests, 100% coverage, end to end on a synthetic genome and on reads tiled over the real
   MLST alleles.
-* **Validated** against the vSNP reference set, genome for genome (`--reference-set vsnp`): reads
+* **Validated genome for genome against the vSNP set** (`--reference-set vsnp`), by a suite you can
+  re-run yourself (`validation/run_validation.sh`): reads
   simulated from 13 of its 16 genomes, 7 of its 8 species, with every species and closest reference right
   and all 14 sequence types the one the genome carries — read off the assembly by exact match, which
   shares no code with the read-based caller. The *B. canis* genome is the one call the distance did not
   make on its own, and the ST made it; not one came back as a disagreement. The nearest neighbouring
   species shares 4 of 1000 hashes and comes back as not identified
-  ([Validation](https://github.com/duceppemo/BrucellaID/wiki/Validation)).
+  ([Validation suite](https://github.com/duceppemo/BrucellaID/wiki/Validation-suite)).
+
+## What it does not do
+Assembly, SNP calling, phylogeny, AMR, biovar typing and MLVA. It names the species and the sequence type,
+and writes down what both answers rest on — and there is no biovar column, because the reference genomes
+cannot support one ([why](https://github.com/duceppemo/BrucellaID/wiki/How-it-works#no-biovar)).
+
+Two limits of the validation are worth knowing before you rely on it. **No mixed or metagenomic sample is
+tested anywhere**: every measurement is a single isolate, so a sample holding two organisms is outside what
+has been measured, and the loose-match note is the only warning you get. And **every validated run is
+paired Illumina WGS** — nothing here measures a long-read library. The
+[Validation](https://github.com/duceppemo/BrucellaID/wiki/Validation) pages state the limits of each
+measurement under their own heading.
 
 ## Installation
 ```

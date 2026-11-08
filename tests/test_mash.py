@@ -225,12 +225,22 @@ def test_run_dist_when_mash_compares_nothing(monkeypatch, sketch, genome_reads):
 # --- the depth-aware k-mer copy threshold ---
 
 @pytest.mark.parametrize('depth, copies', [
-    (0, MIN_KMER_COPIES),      # Nothing readable: fall back to the floor
-    (5, 2), (30, 2), (50, 2),  # Shallow: a fixed 10 would destroy these sketches
-    (92, 5), (174, 9), (250, 12),
-    (380, 19), (536, MAX_KMER_COPIES), (1801, MAX_KMER_COPIES),  # The ceiling holds
+    (0, MIN_KMER_COPIES),              # Nothing readable: fall back to the floor
+    (5, 2), (9, 2), (10, 2),           # The measured plateau is exactly 2-2 up to about 10x
+    (14, 3), (20, 4),                  # 14x wants 3 and 20x wants 4, measured on three real libraries
+    (47, 9), (70, 14),                 # The two tutorial libraries the old rule got most wrong
+    (141, 28),                         # The median public Brucella run
+    (240, MAX_KMER_COPIES),            # Where the ceiling starts to bind
+    (500, MAX_KMER_COPIES), (2756, MAX_KMER_COPIES),  # The deepest run in ENA
 ])
 def test_min_kmer_copies_follows_the_coverage(depth, copies):
+    """
+    One more copy per 5x, floored at 2 and capped at 48.
+
+    Every pair here is on the plateau measured for that depth -- the thresholds within 1% of the best
+    recovery a sweep from 1 to 64 found -- over 81 curves from 63 real libraries. See the comment on
+    MIN_KMER_COPIES for the measurement and for what the previous rule got wrong.
+    """
     assert min_kmer_copies(depth * BRUCELLA_GENOME_SIZE) == copies
 
 
