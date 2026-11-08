@@ -42,8 +42,9 @@ The measurements are in `scripts/kmer_threshold_sweep.tsv` and the derivation is
   and 98% of what it flags still agrees with its submitter. Left at 0.005 it would have missed the
   thin-reference cases it exists to catch, a *B. pituitosa* run at 0.0029 among them.
   `scripts/loose_distance_calibration.tsv` holds the measurements and
-  `scripts/recalibrate_loose_distance.py` derives the number from them; the same script reproduces the 2.0
-  figures from the original sweep.
+  `scripts/recalibrate_loose_distance.py` derives the number from them, and also applies the same
+  weighting to the pre-2.1 distances it ships, which gives 0.00496 and 4.8% against the 0.00464 and 4.9%
+  measured over all 4,020 runs — the gap being the sampling error of 207 runs standing for 4,020.
 * **A claim behind the old calibration was circular, and is withdrawn.** The derivation offered, as
   corroboration, that every agreeing call past the threshold shared fewer than 900 of its 1000 hashes.
   MASH derives the distance from the shared-hash count — over the 4,042 runs of the sweep, 317 distinct
