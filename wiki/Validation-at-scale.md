@@ -60,133 +60,118 @@ sides of the measurement. That is what the next section is for.
 
 Simulated reads cannot show how a reference set behaves on real libraries, so both sets were run over
 **every usable public *Brucella* read set in ENA**: each paired Illumina WGS run under NCBI taxon 234,
-filtered to a proper `_1`/`_2` pair between 10 MB and 6 GB — 4,044 runs, 1.6 TB of reads, of which 4,042
-were analysed. The two that are missing could not be downloaded after two passes; none failed to analyse.
-These are other people's samples with other people's labels, so a disagreement is a question rather than
-automatically an error.
+filtered to a proper `_1`/`_2` pair between 10 MB and 6 GB — 4,044 runs, 1.6 TB of reads. These are other
+people's samples with other people's labels, so a disagreement is a question rather than automatically an
+error.
+
+**4,024 of the 4,044 were analysed.** Twenty could not be completed: 18 never finished downloading a
+second mate after two passes, and two of the manifest's runs were already unavailable. A run with only one
+mate is left out rather than analysed half-depth, because the k-mer copy threshold is derived from
+coverage and a half pair would read as a shallow library.
 
 | Reference set | Matches the submitter | Does not |
 | --- | --- | --- |
-| vSNP set (16 genomes, 8 species) | 3,890 (96.2%) | 152 |
-| Extended set (432 genomes) — **the default from 2.0** | 3,990 (98.7%) | 52 |
+| vSNP set (16 genomes, 8 species) | 3,871 (96.2%) | 153 |
+| Extended set (432 genomes) — **the default from 2.0** | 3,972 (98.7%) | 52 |
 
-The two sets disagree on 146 runs. **The extended set is right on 94 of them and the vSNP set on none** —
-there is no run in the sweep where the sixteen genomes gave a better answer. (Counted as the runs where the
-extended call matches the submitter and the vSNP call does not; it is 100 before setting aside six whose
-submitter label is only *Brucella* sp. and so has no species-level answer to be right about.)
+The two sets disagree on 168 runs. **The extended set is right on 95 of them and the vSNP set on none** —
+there is no run in the sweep where the sixteen genomes gave a better answer. (Counted as the runs where
+the extended call matches the submitter and the vSNP call does not; it is 101 before setting aside six
+whose submitter label is only *Brucella* sp. and so has no species-level answer to be right about.)
 
-The 146 split two ways. **89 are runs the vSNP set could not name at all**, coming back `ND` at 0.15–0.30
+The 168 split two ways. **89 are runs the vSNP set could not name at all**, coming back `ND` at 0.15–0.30
 while the extended set names them: 35 *B. anthropi*, 21 *B. intermedia*, 7 *B. pituitosa*,
-7 *B. pseudogrignonensis* and the rest of the former *Ochrobactrum* clade. Four of those runs re-measured
-against the vSNP set under the 2.1.0 copy threshold sit at 0.168–0.244 and share 3 to 15 of 1000 hashes, so
-this band is one the threshold change leaves where it was. **The other 57 are runs both sets named but
-named differently**, and the extended set corrects 19 of them, most of them marine: the vSNP set scored
-**0 of 11** on *B. pinnipedialis*, sending six of them to *B. ceti*, one to *B. melitensis*, one to
-*B. microti* and leaving three unidentified, where the extended set gets 8 of 11 with the other three not
-identified.
+7 *B. pseudogrignonensis* and the rest of the former *Ochrobactrum* clade. **The other 79 are runs both
+sets named but named differently**, and the extended set corrects 20 of them, most of them marine: the
+vSNP set scored **0 of 11** on *B. pinnipedialis*, sending six of them to *B. ceti*, one to
+*B. melitensis*, one to *B. microti* and leaving three unidentified, where the extended set gets 8 of 11
+with the other three not identified.
 
-All 146 are listed in
+All 168 are listed in
 [`scripts/public_sweep_disagreements.tsv`](https://github.com/duceppemo/BrucellaID/blob/main/scripts/public_sweep_disagreements.tsv),
-and `scripts/score_public_sweep.py` derives every figure in these two paragraphs from it. They are shipped
-because three of those figures had drifted: they were computed before the sweep's retry pass filled in its
-last runs and were never recomputed, which put the head-to-head win at 91 rather than 94, the unnameable
-runs at 72 rather than 89, and *B. intermedia* at 15 rather than 21.
+and `scripts/score_public_sweep.py` derives every figure in these two paragraphs from it.
 
-What the extended set's 52 non-matches are, one by one:
+What the extended set's 52 non-matches are:
 
-* **20 are mislabelled read sets.** For 19 of them the MASH distance and the sequence type — which share
-  no code and no reference data — both contradict the submitted species and agree with each other; for the
-  twentieth, both reference sets agree independently. Re-measured under the 2.1.0 threshold, several sit at
-  0.0001 or closer to the species the sequence says they are, and two sit at zero. Eleven come from a
-  single submission.
-* **22 contain little or no *Brucella*.** Re-measured under the 2.1.0 copy threshold they share 0 to 6 of
-  1000 hashes with every genome of the clade, four of them exactly zero, against the 980 or more a real
-  *Brucella* library shares with its own species. BrucellaID named none of them, which is what the
-  threshold of 150 shared hashes is for. Under the threshold the sweep ran with, the range was 0 to 146 and
-  one run sat 4 hashes under the cut; the re-derivation took that borderline case to 2 of 1000, because
-  asking one copy per 5x of a deep mixed library removes a trace population along with the errors.
-* **10 are the honest limits of the set.** Eight are former *Ochrobactrum* species whose nearest reference
-  is far enough away to be a thin reference side rather than a wrong answer; one is the *B. papionis* read
-  set, which had no reference to match at the time; one is an *inopinata*-adjacent lineage that landed on
-  an unnamed representative. The sweep measured that band at 0.005–0.02; across the four of them
-  re-measured under the 2.1.0 threshold it is 0.0029–0.0088. All four are still flagged, because
-  `--loose-distance` came down with them — at the old 0.005 the *B. pituitosa* run at 0.0029 would have
-  been missed, which is what the recalibration below exists to prevent.
+* **23 share too little with the clade to be named.** They hold 0 to 8 of 1000 hashes against every genome
+  of the set, four of them exactly zero, where a real *Brucella* library shares 980 or more with its own
+  species. BrucellaID named none of them, which is what the threshold of 150 shared hashes is for. Twenty
+  of the twenty-three come from a handful of submissions and are tracked with their evidence in
+  [`curation/mislabelled_records.md`](https://github.com/duceppemo/BrucellaID/blob/main/curation/mislabelled_records.md).
+* **29 are named, but not as the submitter labelled them.** For most the MASH distance and the sequence
+  type — which share no code and no reference data — both contradict the submitted species and agree with
+  each other. Several sit at 0.0001 or closer to the species the sequence says they are, two of them at
+  zero. Eleven come from a single submission. The rest are the honest limits of the set: former
+  *Ochrobactrum* species whose nearest reference is far enough away to be a thin reference side rather
+  than a wrong answer, and an *inopinata*-adjacent lineage that lands on an unnamed representative.
 
-The sweep ran before the *B. papionis* genome was added. Re-running that one read set with it in the set
-reports *B. papionis* at 0.00010, which would make the extended figure 3,991 of 4,042; most of the other
-runs were not re-measured, so the table above is what was actually measured. The 48 read sets behind
-[`curation/mislabelled_records.md`](https://github.com/duceppemo/BrucellaID/blob/main/curation/mislabelled_records.md)
-have since been re-measured under the 2.1.0 threshold: every species call is unchanged, and every distance
-is smaller.
-
-**Not one of the 52 is a case where the set held the right reference and named the wrong species.** Scored
-against what the sequences demonstrably are, the extended set is right on 4,032 of 4,042.
+**Not one of the 52 is a case where the set held the right reference and named the wrong species.**
 
 What this does establish is that the extended set costs nothing on the species the vSNP set already
-covers: across 2,018 *B. melitensis* and 1,118 *B. abortus* runs — the bulk of real traffic — the two sets
-return the same answer, so the extra 416 genomes add coverage without disturbing the two most common
-species in the archive.
-
-This sweep also found the gap it needed to: for the diverse part of the clade there was no distance-based
-caution at all. A sample 0.0089 from its nearest *B. anthropi* was reported as a plain `MASH` call with the
-same confidence as one at 0.0003, and only one of those ten limit cases carried any flag. That is now
-fixed. Past `--loose-distance`, 0.001 by default, the call carries a note giving the distance and the
-shared hashes.
+covers: across 2,038 *B. melitensis* and 1,122 *B. abortus* runs — the bulk of real traffic — the two sets
+return the same answer on all but two, so the extra 416 genomes add coverage without disturbing the two
+most common species in the archive.
 
 ### The loose-match distance
 
 `--loose-distance` came out of this sweep rather than out of a guess, and the rule is one line: **the
 threshold is the 95th percentile of the distance of calls that agree with the submitter**, taken to a
-round number. Past that, the closest reference is further away than a correctly identified library normally
-sits, which is worth a note.
+round number. Past that, the closest reference is further away than a correctly identified library
+normally sits, which is worth a note.
 
 It was **0.005 in 2.0 and is 0.001 from 2.1.0**, because the re-derived
 [k-mer copy threshold](K-mer-threshold) shrank every read-derived distance by about sevenfold and the old
-value was calibrated on the inflated ones. Re-measured against the current threshold:
+value had been calibrated on the inflated ones. Measured over all 4,001 identified runs:
 
-| | 2.0 | 2.1.0 |
+| | 2.0 | 2.1.0 onwards |
 | --- | --- | --- |
-| 95th percentile of agreeing calls | 0.00464 | **0.00066** |
+| 95th percentile of agreeing calls | 0.00464 | **0.00068** |
 | threshold taken from it | 0.005 | **0.001** |
-| share of the 4,020 identified runs it flags | 4.9% | 4.0% |
-| of those, still agreeing with the submitter | 96% | 98% |
+| share of identified runs it flags | 4.9% | 3.4% |
+| of those, still agreeing with the submitter | 96% | 92% |
 
-So the note stays as rare as it was, and the old value left where it was would have missed the
-thin-reference cases it exists to catch — the *B. pituitosa* run two bullets up, at 0.0029, among them.
-The choice is not on a knife edge: anything from 0.0005 to 0.002 flags 2.8% to 6.6% of runs with 96% to 98%
-of them still agreeing, and ordinary libraries are nowhere near it, the 3,226 runs already inside 0.001
-before now sitting inside 0.00046.
+So the note stays rare, and the old value left where it was would have missed the thin-reference cases it
+exists to catch — a *B. pituitosa* run at 0.0029 among them. The choice is not on a knife edge: every
+threshold from 0.0005 to 0.002 flags 2.0% to 8.2% of runs, and ordinary libraries are nowhere near it.
 
 **What says the note should not change the species call** is a separate measurement, and the only one here
-that is not a restatement of the threshold: agreement with the submitter is flat in distance.
+that is not a restatement of the threshold: how often a call at a given distance is still the submitter's
+species.
 
 | distance | runs | agree with submitter |
 | --- | --- | --- |
-| 0 – 0.0005 | 3,756 | 99.8% |
-| 0.0005 – 0.001 | 103 | 100% |
-| 0.001 – 0.005 | 85 | 95.3% |
-| 0.005 – 0.02 | 53 | 100% |
-| past 0.02 | 23 | 100% |
+| 0 – 0.0005 | 3,673 | 99.5% |
+| 0.0005 – 0.001 | 191 | 99.5% |
+| 0.001 – 0.005 | 87 | 95.4% |
+| 0.005 – 0.02 | 32 | 81.2% |
+| past 0.02 | 18 | 94.4% |
 
-A loose match is a diluted library or a thin reference side; it does not predict a wrong species, which is
-why it is reported and not acted on.
+**Agreement falls with distance rather than staying flat.** A loose match therefore does carry some signal
+that the species is wrong — a run between 0.005 and 0.02 matches its submitter 81% of the time against
+99.5% for a close one. The signal is weak, and the worst band is still mostly right, which is why the note
+is reported rather than acted on; but it is not nothing, and an earlier version of this page said
+agreement was flat across every band. That was measured on a 207-run sample and the full sweep does not
+support it.
 
-> Earlier versions of this page offered a second fact as corroboration — that the agreeing calls past the
-> threshold all shared fewer than 900 of their 1000 hashes. **That was not evidence.** MASH derives the
-> distance from the shared-hash count, so the two are one measurement in different units: over these 4,042
-> runs, 317 distinct shared-hash values map to 317 distinct distances and not one maps to two. "Past 0.005"
-> and "sharing fewer than about 820" are the same statement, so the shared-hash version is entailed by the
-> threshold rather than supporting it. The flat agreement rate above is what does the work.
+> Two cautions on this table. The denominator is the submitter's label, not the truth, so some of the
+> disagreement in the loose bands is the submitter being wrong rather than BrucellaID — the former
+> *Ochrobactrum* runs cluster there, and they are thin-reference cases, not errors. And the bands beyond
+> 0.005 hold 32 and 18 runs, so a few samples move them by several points.
 
-The 207 re-measured runs are in
+The 4,001 identified runs are in
 [`scripts/loose_distance_calibration.tsv`](https://github.com/duceppemo/BrucellaID/blob/main/scripts/loose_distance_calibration.tsv),
-and `scripts/recalibrate_loose_distance.py` prints both tables from it. Measuring all 4,020 again was not
-practical, so the population was binned by each run's old distance, a sample drawn from each bin, and every
-row carries its bin's weight; the percentiles are computed on the weighted sample. The method was checked
-by re-deriving the 2.0 figures from the original sweep with it, which gave back the published 0.00464 and
-4.9%. The script also applies the same weighting to the pre-2.1 distances it ships, which gives 0.00496 and
-4.8% — the gap from those published figures is the sampling error of 207 runs standing for 4,020.
+and `scripts/recalibrate_loose_distance.py` prints both tables from it. Until the sweep was re-run under
+the current threshold that file held a weighted 207-run sample instead, which put the 95th percentile at
+0.00066 against the 0.00068 measured here — close enough that the threshold chosen from the sample needed
+no change.
+
+### What the sweep could not type
+
+Eighteen runs have **unequal numbers of reads in their two mates**, as published: both files match the
+md5 ENA records for them, so this is the archive's data rather than a bad download. MASH is unaffected and
+named all eighteen, sharing 995 to 997 of 1000 hashes, but Seal refuses an unequal pair, so they carry no
+sequence type. They are reported with their error, which is why the species figures above cover them and
+nothing resting on an ST does.
 
 ## What this does not establish
 

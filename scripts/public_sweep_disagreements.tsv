@@ -1,158 +1,179 @@
-# The 146 public ENA read sets the two reference sets called differently, out of the 4,042 of the
-# at-scale sweep. This is the population behind every head-to-head figure on the wiki's "Validation at
-# scale" page, shipped so those figures can be checked -- three of them had drifted from it.
+# The public ENA read sets the two reference sets called differently, out of the 4,024 of the at-scale
+# sweep, measured under the shipped k-mer copy threshold. This is the population behind every head-to-head
+# figure on the wiki's "Validation at scale" page.
 #
 # submitted      the ENA submitter label, normalised to a binomial. "Brucella sp." means the submitter
 #                named no species, so neither call can be judged right or wrong at species level.
-# vsnp_*         what --reference-set vsnp called it, and the distance and shared hashes behind that
+# vsnp_*         what --reference-set vsnp called it, with the distance and shared hashes behind it
 # extended_*     the same for the 432-genome default set
 #
-# Distances are as the sweep measured them, under the pre-2.1 k-mer copy threshold.
 # scripts/score_public_sweep.py derives the figures from this file.
 run	submitted	vsnp_call	vsnp_distance	vsnp_shared	extended_call	extended_distance	extended_shared
 DRR488535	Brucella intermedia	ND	0.167688	15	Brucella intermedia	0.003697	861
-DRR532594	Brucella intermedia	ND	0.182269	11	Brucella intermedia	0.006698	768
-DRR532669	Brucella anthropi	ND	0.230110	4	Brucella anthropi	0.002135	916
-ERR11269021	Brucella pinnipedialis	Brucella ceti	0.001366	945	Brucella pinnipedialis	0.000337	986
-ERR11269022	Brucella pinnipedialis	Brucella ceti	0.001211	951	Brucella pinnipedialis	0.000192	992
-ERR11481566	Brucella suis	Brucella microti	0.001653	934	Brucella suis	0.000144	994
-ERR11807265	Brucella anthropi	ND	0.174408	13	Brucella intermedia	0.005576	801
-ERR12757064	Brucella intermedia	ND	0.170926	14	Brucella intermedia	0.005411	806
-ERR12757113	Brucella intermedia	ND	0.186761	10	Brucella intermedia	0.008577	717
-ERR15002230	Brucella pituitosa	ND	0.243761	3	Brucella pituitosa	0.000781	968
-ERR15002231	Brucella pituitosa	ND	0.210897	6	Brucella pituitosa	0.000024	999
-ERR15002232	Brucella pituitosa	ND	0.210897	6	Brucella pituitosa	0.000781	968
-ERR15107402	Brucella pituitosa	ND	0.219531	5	Brucella pituitosa	0.000168	993
-ERR16686376	Brucella anthropi	ND	0.243761	3	Brucella anthropi	0.002658	897
-ERR2993134	Brucella melitensis	Brucella ceti	0.001237	950	Brucella pinnipedialis	0.000264	989
-ERR2993138	Brucella melitensis	Brucella microti	0.001653	934	Brucella suis	0.000144	994
+DRR532594	Brucella intermedia	ND	0.182269	11	Brucella intermedia	0.006559	772
+DRR532669	Brucella anthropi	ND	0.219531	5	Brucella anthropi	0.001706	932
+ERR11269021	Brucella pinnipedialis	Brucella ceti	0.001160	953	Brucella pinnipedialis	0.000144	994
+ERR11269022	Brucella pinnipedialis	Brucella ceti	0.001058	957	Brucella pinnipedialis	0.000048	998
+ERR11481566	Brucella suis	Brucella microti	0.001548	938	Brucella suis	0.000048	998
+ERR11807265	Brucella anthropi	ND	0.174408	13	Brucella intermedia	0.005249	811
+ERR12757064	Brucella intermedia	ND	0.164662	16	Brucella intermedia	0.002714	895
+ERR12757113	Brucella intermedia	ND	0.174408	13	Brucella intermedia	0.008384	722
+ERR15002230	Brucella pituitosa	ND	0.243761	3	Brucella pituitosa	0.000656	973
+ERR15002231	Brucella pituitosa	ND	0.210897	6	Brucella pituitosa	0.000000	1000
+ERR15002232	Brucella pituitosa	ND	0.210897	6	Brucella pituitosa	0.000386	984
+ERR15107402	Brucella pituitosa	ND	0.219531	5	Brucella pituitosa	0.000024	999
+ERR16686376	Brucella anthropi	ND	0.243761	3	Brucella anthropi	0.002686	896
+ERR2993134	Brucella melitensis	Brucella ceti	0.001109	955	Brucella pinnipedialis	0.000096	996
+ERR2993138	Brucella melitensis	Brucella microti	0.001522	939	Brucella suis	0.000024	999
 ERR3330957	Brucella anthropi	ND	0.230110	4	Brucella anthropi	0.000168	993
-ERR471328	Brucella pinnipedialis	Brucella ceti	0.001263	949	Brucella pinnipedialis	0.000240	990
-ERR471330	Brucella ceti	Brucella microti	0.001211	951	Brucella ceti	0.000240	990
-ERR471331	Brucella pinnipedialis	Brucella melitensis	0.001706	932	Brucella pinnipedialis	0.001340	946
-ERR471332	Brucella pinnipedialis	Brucella ceti	0.000881	964	Brucella pinnipedialis	0.000508	979
-ERR485947	Brucella ceti	Brucella microti	0.001263	949	Brucella ceti	0.000337	986
-ERR485948	Brucella ceti	Brucella microti	0.001288	948	Brucella ceti	0.000410	983
-ERR485949	Brucella ceti	Brucella microti	0.001237	950	Brucella ceti	0.000313	987
-ERR485950	Brucella pinnipedialis	Brucella ceti	0.001340	946	Brucella pinnipedialis	0.000313	987
-ERR554829	Brucella ceti	Brucella microti	0.001444	942	Brucella ceti	0.000582	976
-SRR10094523	Brucella anthropi	ND	0.263022	2	Brucella anthropi	0.001186	952
-SRR10127767	Brucella anthropi	ND	0.230110	4	Brucella anthropi	0.000119	995
-SRR10127774	Brucella intermedia	ND	0.182269	11	Brucella intermedia	0.000337	986
-SRR10810417	Brucella sp.	Brucella microti	0.030480	358	Brucella sp.	0.008232	726
-SRR10917769	Brucella pecoris	ND	0.182269	11	Brucella pecoris	0.000168	993
-SRR10917800	Brucella daejeonensis	ND	0.170926	14	Brucella daejeonensis	0.000508	979
-SRR10948139	Brucella anthropi	ND	0.167688	15	Brucella intermedia	0.008732	713
-SRR11297150	Brucella anthropi	ND	0.243761	3	Brucella anthropi	0.004800	825
-SRR11607802	Brucella intermedia	ND	0.174408	13	Brucella intermedia	0.000048	998
-SRR12012440	Brucella haematophila	ND	0.203604	7	Brucella haematophila	0.000216	991
-SRR12012441	Brucella grignonensis	ND	0.210897	6	Brucella grignonensis	0.000240	990
-SRR12012443	Brucella daejeonensis	ND	0.170926	14	Brucella daejeonensis	0.000048	998
-SRR12012444	Brucella cytisi	ND	0.263022	2	Brucella cytisi	0.000000	1000
-SRR12012445	Brucella ciceri	ND	0.167688	15	Brucella ciceri	0.000119	995
-SRR12012455	Brucella thiophenivorans	ND	0.263022	2	Brucella thiophenivorans	0.000072	997
-SRR12012456	Brucella rhizosphaerae	ND	0.219531	5	Brucella rhizosphaerae	0.000072	997
-SRR12012457	Brucella pseudogrignonensis	ND	0.219531	5	Brucella pseudogrignonensis	0.000072	997
-SRR12012458	Brucella pituitosa	ND	0.230110	4	Brucella pituitosa	0.000096	996
-SRR12012459	Brucella oryzae	ND	0.174408	13	Brucella oryzae	0.000119	995
-SRR12012460	Brucella lupini	ND	0.295981	1	Brucella lupini	0.000072	997
-SRR12224742	Brucella sp.	Brucella microti	0.022638	451	Brucella inopinata	0.000192	992
-SRR12605656	Brucella haematophila	ND	0.203604	7	Brucella sp.	0.020082	488
-SRR12630907	Brucella sp.	Brucella microti	0.022784	449	Brucella sp.	0.000024	999
-SRR12825308	Brucella anthropi	ND	0.230110	4	Brucella anthropi	0.000264	989
-SRR13073604	Brucella intermedia	ND	0.164662	16	Brucella intermedia	0.004118	847
-SRR13073607	Brucella intermedia	ND	0.167688	15	Brucella intermedia	0.019627	495
-SRR13170268	Brucella sp.	Brucella microti	0.022205	457	Brucella sp.	0.000168	993
-SRR14074356	Brucella sp.	Brucella microti	0.021920	461	Brucella sp.	0.000168	993
-SRR15853869	Brucella intermedia	ND	0.164662	16	Brucella intermedia	0.000048	998
-SRR1798201	Brucella lupini	ND	0.219531	5	Brucella anthropi	0.008928	708
-SRR19891260	Brucella pseudintermedia	ND	0.154223	20	Brucella pseudintermedia	0.000288	988
-SRR21472591	Brucella intermedia	ND	0.174408	13	Brucella intermedia	0.000856	965
-SRR21472855	Brucella anthropi	ND	0.230110	4	Brucella anthropi	0.000831	966
-SRR21472975	Brucella anthropi	ND	0.263022	2	Brucella anthropi	0.000781	968
-SRR21472983	Brucella anthropi	ND	0.263022	2	Brucella anthropi	0.000781	968
-SRR21473060	Brucella anthropi	ND	0.243761	3	Brucella anthropi	0.000533	978
-SRR21473089	Brucella anthropi	ND	0.243761	3	Brucella anthropi	0.000582	976
-SRR22424313	Brucella sp.	Brucella microti	0.002000	921	Brucella pinnipedialis	0.001627	935
-SRR22424314	Brucella sp.	Brucella microti	0.002027	920	Brucella pinnipedialis	0.001653	934
-SRR22426907	Brucella inopinata	Brucella microti	0.023376	441	Brucella inopinata	0.001892	925
-SRR24962337	Brucella anthropi	ND	0.263022	2	Brucella anthropi	0.012872	617
-SRR25607712	Brucella intermedia	ND	0.174408	13	Brucella intermedia	0.000119	995
-SRR25627036	Brucella pseudogrignonensis	ND	0.243761	3	Brucella pseudogrignonensis	0.002189	914
-SRR25828924	Brucella anthropi	ND	0.219531	5	Brucella sp.	0.008043	731
-SRR25828932	Brucella anthropi	ND	0.219531	5	Brucella sp.	0.014201	590
-SRR27218464	Brucella intermedia	ND	0.197292	8	Brucella intermedia	0.014976	575
-SRR28257783	Brucella anthropi	ND	0.243761	3	Brucella anthropi	0.005152	814
-SRR28444315	Brucella anthropi	ND	0.263022	2	Brucella anthropi	0.011802	640
-SRR28730334	Brucella cytisi	ND	0.263022	2	Brucella cytisi	0.000024	999
-SRR2887151	Brucella suis	Brucella microti	0.002436	905	Brucella suis	0.000931	962
-SRR28969979	Brucella sp.	Brucella neotomae	0.023526	439	Brucella sp.	0.000483	980
-SRR2906957	Brucella anthropi	ND	0.243761	3	Brucella anthropi	0.000508	979
-SRR2961886	Brucella intermedia	ND	0.170926	14	Brucella intermedia	0.001340	946
-SRR29855765	Brucella pituitosa	ND	0.219531	5	Brucella pituitosa	0.000386	984
-SRR30984947	Brucella anthropi	ND	0.263022	2	Brucella anthropi	0.008043	731
-SRR31059639	Brucella intermedia	ND	0.167688	15	Brucella intermedia	0.003026	884
+ERR471328	Brucella pinnipedialis	Brucella ceti	0.001007	959	Brucella pinnipedialis	0.000000	1000
+ERR471330	Brucella ceti	Brucella microti	0.001007	959	Brucella ceti	0.000048	998
+ERR471331	Brucella pinnipedialis	Brucella ceti	0.001237	950	Brucella pinnipedialis	0.000264	989
+ERR471332	Brucella pinnipedialis	Brucella ceti	0.000731	970	Brucella pinnipedialis	0.000361	985
+ERR485947	Brucella ceti	Brucella microti	0.000957	961	Brucella ceti	0.000048	998
+ERR485948	Brucella ceti	Brucella microti	0.000931	962	Brucella ceti	0.000072	997
+ERR485949	Brucella ceti	Brucella microti	0.000957	961	Brucella ceti	0.000048	998
+ERR485950	Brucella pinnipedialis	Brucella ceti	0.001007	959	Brucella pinnipedialis	0.000000	1000
+ERR554829	Brucella ceti	Brucella microti	0.000982	960	Brucella ceti	0.000119	995
+ERR775238	Brucella sp.	Brucella microti	0.002189	914	Brucella sp.	0.000192	992
+SRR10094523	Brucella anthropi	ND	0.263022	2	Brucella anthropi	0.000731	970
+SRR10127767	Brucella anthropi	ND	0.230110	4	Brucella anthropi	0.000072	997
+SRR10127774	Brucella intermedia	ND	0.182269	11	Brucella intermedia	0.000168	993
+SRR10810417	Brucella sp.	Brucella microti	0.022493	453	Brucella sp.	0.000288	988
+SRR10917769	Brucella pecoris	ND	0.182269	11	Brucella pecoris	0.000072	997
+SRR10917800	Brucella daejeonensis	ND	0.170926	14	Brucella daejeonensis	0.000144	994
+SRR10948139	Brucella anthropi	ND	0.167688	15	Brucella intermedia	0.008538	718
+SRR11297150	Brucella anthropi	ND	0.243761	3	Brucella anthropi	0.004832	824
+SRR11607802	Brucella intermedia	ND	0.174408	13	Brucella intermedia	0.000000	1000
+SRR12012440	Brucella haematophila	ND	0.210897	6	Brucella haematophila	0.000313	987
+SRR12012441	Brucella grignonensis	ND	0.219531	5	Brucella grignonensis	0.000313	987
+SRR12012443	Brucella daejeonensis	ND	0.170926	14	Brucella daejeonensis	0.000288	988
+SRR12012444	Brucella cytisi	ND	0.243761	3	Brucella cytisi	0.000168	993
+SRR12012445	Brucella ciceri	ND	0.164662	16	Brucella ciceri	0.000119	995
+SRR12012455	Brucella thiophenivorans	ND	0.295981	1	Brucella thiophenivorans	0.000119	995
+SRR12012456	Brucella rhizosphaerae	ND	0.219531	5	Brucella rhizosphaerae	0.000119	995
+SRR12012457	Brucella pseudogrignonensis	ND	0.230110	4	Brucella pseudogrignonensis	0.000264	989
+SRR12012458	Brucella pituitosa	ND	0.243761	3	Brucella pituitosa	0.000072	997
+SRR12012459	Brucella oryzae	ND	0.174408	13	Brucella oryzae	0.000681	972
+SRR12012460	Brucella lupini	ND	0.295981	1	Brucella lupini	0.000731	970
+SRR12224742	Brucella sp.	Brucella microti	0.022638	451	Brucella inopinata	0.000119	995
+SRR12605656	Brucella haematophila	ND	0.203604	7	Brucella sp.	0.020017	489
+SRR12630907	Brucella sp.	Brucella microti	0.022784	449	Brucella sp.	0.000072	997
+SRR12825308	Brucella anthropi	ND	0.230110	4	Brucella anthropi	0.000216	991
+SRR13073604	Brucella intermedia	ND	0.164662	16	Brucella intermedia	0.004179	845
+SRR13073607	Brucella intermedia	ND	0.167688	15	Brucella intermedia	0.019886	491
+SRR13170268	Brucella sp.	Brucella microti	0.022062	459	Brucella sp.	0.000192	992
+SRR14074356	Brucella sp.	Brucella microti	0.021850	462	Brucella sp.	0.000096	996
+SRR15853869	Brucella intermedia	ND	0.164662	16	Brucella intermedia	0.000168	993
+SRR1798201	Brucella lupini	ND	0.219531	5	Brucella anthropi	0.008771	712
+SRR19147295	Brucella sp.	Brucella microti	0.002162	915	Brucella sp.	0.000000	1000
+SRR19147296	Brucella sp.	Brucella microti	0.002162	915	Brucella sp.	0.000000	1000
+SRR19147297	Brucella sp.	Brucella microti	0.002162	915	Brucella sp.	0.000000	1000
+SRR19147298	Brucella sp.	Brucella microti	0.002162	915	Brucella sp.	0.000000	1000
+SRR19147299	Brucella sp.	Brucella microti	0.002162	915	Brucella sp.	0.000000	1000
+SRR19147300	Brucella sp.	Brucella microti	0.002162	915	Brucella sp.	0.000000	1000
+SRR19147301	Brucella sp.	Brucella microti	0.002162	915	Brucella sp.	0.000000	1000
+SRR19147302	Brucella sp.	Brucella microti	0.002162	915	Brucella sp.	0.000000	1000
+SRR19147303	Brucella sp.	Brucella microti	0.002162	915	Brucella sp.	0.000000	1000
+SRR19147304	Brucella sp.	Brucella microti	0.002162	915	Brucella sp.	0.000000	1000
+SRR19147305	Brucella sp.	Brucella microti	0.002162	915	Brucella sp.	0.000000	1000
+SRR19147306	Brucella sp.	Brucella microti	0.002189	914	Brucella sp.	0.000024	999
+SRR19147307	Brucella sp.	Brucella microti	0.002162	915	Brucella sp.	0.000000	1000
+SRR19147308	Brucella sp.	Brucella microti	0.002162	915	Brucella sp.	0.000000	1000
+SRR19147309	Brucella sp.	Brucella microti	0.002189	914	Brucella sp.	0.000024	999
+SRR19147310	Brucella sp.	Brucella microti	0.002162	915	Brucella sp.	0.000000	1000
+SRR19147311	Brucella sp.	Brucella microti	0.002162	915	Brucella sp.	0.000000	1000
+SRR19147312	Brucella sp.	Brucella microti	0.002162	915	Brucella sp.	0.000000	1000
+SRR19147313	Brucella sp.	Brucella microti	0.002162	915	Brucella sp.	0.000000	1000
+SRR19147314	Brucella sp.	Brucella microti	0.002162	915	Brucella sp.	0.000000	1000
+SRR19891260	Brucella pseudintermedia	ND	0.154223	20	Brucella pseudintermedia	0.000000	1000
+SRR21472591	Brucella intermedia	ND	0.174408	13	Brucella intermedia	0.000483	980
+SRR21472855	Brucella anthropi	ND	0.230110	4	Brucella anthropi	0.000361	985
+SRR21472975	Brucella anthropi	ND	0.243761	3	Brucella anthropi	0.000459	981
+SRR21472983	Brucella anthropi	ND	0.243761	3	Brucella anthropi	0.000313	987
+SRR21473060	Brucella anthropi	ND	0.243761	3	Brucella anthropi	0.000216	991
+SRR21473089	Brucella anthropi	ND	0.243761	3	Brucella anthropi	0.000144	994
+SRR22424313	Brucella sp.	Brucella microti	0.001627	935	Brucella pinnipedialis	0.001263	949
+SRR22424314	Brucella sp.	Brucella microti	0.001706	932	Brucella pinnipedialis	0.001340	946
+SRR22426907	Brucella inopinata	Brucella microti	0.022062	459	Brucella inopinata	0.000781	968
+SRR24962337	Brucella anthropi	ND	0.243761	3	Brucella anthropi	0.003846	856
+SRR25607712	Brucella intermedia	ND	0.170926	14	Brucella intermedia	0.000410	983
+SRR25627036	Brucella pseudogrignonensis	ND	0.219531	5	Brucella pseudogrignonensis	0.001033	958
+SRR25828924	Brucella anthropi	ND	0.210897	6	Brucella sp.	0.007670	741
+SRR25828932	Brucella anthropi	ND	0.210897	6	Brucella sp.	0.013749	599
+SRR27218464	Brucella intermedia	ND	0.197292	8	Brucella intermedia	0.012214	631
+SRR28257783	Brucella anthropi	ND	0.243761	3	Brucella anthropi	0.005119	815
+SRR28444315	Brucella anthropi	ND	0.243761	3	Brucella anthropi	0.010784	663
+SRR28730334	Brucella cytisi	ND	0.263022	2	Brucella cytisi	0.000000	1000
+SRR2887151	Brucella suis	Brucella microti	0.001759	930	Brucella suis	0.000240	990
+SRR28969979	Brucella sp.	Brucella neotomae	0.022931	447	Brucella sp.	0.000048	998
+SRR2906957	Brucella anthropi	ND	0.230110	4	Brucella anthropi	0.000119	995
+SRR2961886	Brucella intermedia	ND	0.167688	15	Brucella intermedia	0.000168	993
+SRR29855765	Brucella pituitosa	ND	0.219531	5	Brucella pituitosa	0.000119	995
+SRR30984947	Brucella anthropi	ND	0.263022	2	Brucella anthropi	0.007523	745
+SRR31059639	Brucella intermedia	ND	0.167688	15	Brucella intermedia	0.002998	885
 SRR31302163	Brucella sp.	ND	0.170926	14	Brucella intermedia	0.002027	920
-SRR31302164	Brucella sp.	ND	0.170926	14	Brucella intermedia	0.002054	919
-SRR31302165	Brucella sp.	ND	0.170926	14	Brucella intermedia	0.002054	919
-SRR31343758	Brucella anthropi	ND	0.230110	4	Brucella anthropi	0.002827	891
+SRR31302164	Brucella sp.	ND	0.170926	14	Brucella intermedia	0.002027	920
+SRR31302165	Brucella sp.	ND	0.170926	14	Brucella intermedia	0.002027	920
+SRR31343758	Brucella anthropi	ND	0.219531	5	Brucella anthropi	0.002855	890
 SRR31343759	Brucella anthropi	ND	0.230110	4	Brucella anthropi	0.002827	891
 SRR31357614	Brucella anthropi	ND	0.230110	4	Brucella anthropi	0.002827	891
 SRR31357708	Brucella cytisi	ND	0.243761	3	Brucella anthropi	0.007633	742
 SRR31358051	Brucella anthropi	ND	0.230110	4	Brucella anthropi	0.002827	891
-SRR31358052	Brucella anthropi	ND	0.230110	4	Brucella anthropi	0.002855	890
+SRR31358052	Brucella anthropi	ND	0.230110	4	Brucella anthropi	0.002827	891
 SRR31358147	Brucella anthropi	ND	0.243761	3	Brucella anthropi	0.005708	797
-SRR31358592	Brucella anthropi	ND	0.243761	3	Brucella anthropi	0.005741	796
-SRR31481153	Brucella inopinata	Brucella microti	0.021780	463	Brucella sp.	0.000533	978
-SRR32608878	Brucella anthropi	ND	0.230110	4	Brucella anthropi	0.007304	751
-SRR32956714	Brucella anthropi	ND	0.243761	3	Brucella anthropi	0.009406	696
-SRR33001684	Brucella sp.	Brucella microti	0.024604	425	Brucella sp.	0.004087	848
-SRR33001685	Brucella sp.	Brucella ceti	0.021086	473	Brucella sp.	0.002491	903
-SRR33001687	Brucella sp.	Brucella ceti	0.019499	497	Brucella sp.	0.001653	934
-SRR33001689	Brucella sp.	Brucella microti	0.022565	452	Brucella inopinata	0.001575	937
-SRR33001690	Brucella sp.	Brucella ceti	0.018435	514	Brucella sp.	0.000264	989
-SRR33001693	Brucella sp.	Brucella microti	0.022493	453	Brucella sp.	0.001946	923
-SRR33001698	Brucella sp.	Brucella microti	0.022348	455	Brucella sp.	0.001058	957
-SRR33388651	Brucella intermedia	ND	0.167688	15	Brucella intermedia	0.003285	875
-SRR34942215	Brucella sp.	ND	0.210897	6	Brucella pseudogrignonensis	0.011938	637
+SRR31358592	Brucella anthropi	ND	0.243761	3	Brucella anthropi	0.005708	797
+SRR31481153	Brucella inopinata	Brucella microti	0.021639	465	Brucella sp.	0.000434	982
+SRR32608878	Brucella anthropi	ND	0.230110	4	Brucella anthropi	0.007450	747
+SRR32956714	Brucella anthropi	ND	0.243761	3	Brucella anthropi	0.009206	701
+SRR33001684	Brucella sp.	Brucella microti	0.022134	458	Brucella sp.	0.001496	940
+SRR33001685	Brucella sp.	Brucella ceti	0.018192	518	Brucella sp.	0.000048	998
+SRR33001687	Brucella sp.	Brucella ceti	0.018313	516	Brucella sp.	0.000119	995
+SRR33001689	Brucella sp.	Brucella microti	0.022134	458	Brucella inopinata	0.001548	938
+SRR33001690	Brucella sp.	Brucella ceti	0.018071	520	Brucella sp.	0.000048	998
+SRR33001693	Brucella sp.	Brucella microti	0.022134	458	Brucella sp.	0.001444	942
+SRR33001698	Brucella sp.	Brucella microti	0.022205	457	Brucella sp.	0.001058	957
+SRR33388651	Brucella intermedia	ND	0.167688	15	Brucella intermedia	0.003026	884
+SRR34942215	Brucella sp.	ND	0.210897	6	Brucella pseudogrignonensis	0.011397	649
 SRR35152203	Brucella cytisi	ND	0.263022	2	Brucella cytisi	0.000024	999
-SRR35181652	Brucella pseudogrignonensis	ND	0.210897	6	Brucella pseudogrignonensis	0.000168	993
-SRR35575525	Brucella sp.	ND	0.263022	2	Brucella anthropi	0.025566	413
-SRR36317655	Brucella anthropi	ND	0.219531	5	Brucella anthropi	0.003344	873
-SRR3745442	Brucella sp.	Brucella microti	0.022565	452	Brucella sp.	0.000313	987
-SRR37705155	Brucella anthropi	ND	0.230110	4	Brucella anthropi	0.000168	993
-SRR37705156	Brucella anthropi	ND	0.230110	4	Brucella anthropi	0.000168	993
-SRR37939507	Brucella sp.	ND	0.210897	6	Brucella lupini	0.004394	838
-SRR39504104	Brucella anthropi	ND	0.243761	3	Brucella anthropi	0.000119	995
-SRR39504105	Brucella anthropi	ND	0.243761	3	Brucella anthropi	0.000144	994
-SRR4038982	Brucella inopinata	Brucella microti	0.021991	460	Brucella inopinata	0.000434	982
-SRR4038983	Brucella sp.	Brucella microti	0.022348	455	Brucella sp.	0.000313	987
-SRR4038994	Brucella papionis	Brucella microti	0.002827	891	Brucella pinnipedialis	0.002771	893
-SRR4038995	Brucella pinnipedialis	Brucella microti	0.001237	950	Brucella pinnipedialis	0.000361	985
-SRR4038996	Brucella pinnipedialis	Brucella ceti	0.001340	946	Brucella pinnipedialis	0.000313	987
-SRR4038997	Brucella sp.	Brucella microti	0.022711	450	Brucella sp.	0.000459	981
-SRR4039002	Brucella suis	Brucella microti	0.001973	922	Brucella suis	0.000434	982
-SRR4039008	Brucella ceti	Brucella microti	0.001470	941	Brucella ceti	0.000508	979
-SRR5003446	Brucella cytisi	ND	0.219531	5	Brucella cytisi	0.000386	984
-SRR538762	Brucella sp.	Brucella microti	0.001470	941	Brucella pinnipedialis	0.000631	974
-SRR538770	Brucella sp.	Brucella microti	0.001733	931	Brucella ceti	0.000881	964
-SRR6003449	Brucella pseudogrignonensis	ND	0.219531	5	Brucella pseudogrignonensis	0.000410	983
-SRR6003466	Brucella pseudogrignonensis	ND	0.210897	6	Brucella pseudogrignonensis	0.000168	993
-SRR6003475	Brucella thiophenivorans	ND	0.219531	5	Brucella pituitosa	0.002855	890
+SRR35181652	Brucella pseudogrignonensis	ND	0.210897	6	Brucella pseudogrignonensis	0.000119	995
+SRR35575525	Brucella sp.	ND	0.243761	3	Brucella anthropi	0.000557	977
+SRR36317655	Brucella anthropi	ND	0.219531	5	Brucella anthropi	0.002941	887
+SRR3745442	Brucella sp.	Brucella microti	0.022205	457	Brucella sp.	0.000048	998
+SRR37705155	Brucella anthropi	ND	0.243761	3	Brucella anthropi	0.000607	975
+SRR37705156	Brucella anthropi	ND	0.243761	3	Brucella anthropi	0.000313	987
+SRR37939507	Brucella sp.	ND	0.210897	6	Brucella lupini	0.004332	840
+SRR39504104	Brucella anthropi	ND	0.243761	3	Brucella anthropi	0.000410	983
+SRR39504105	Brucella anthropi	ND	0.210897	6	Brucella anthropi	0.003637	863
+SRR4038982	Brucella inopinata	Brucella microti	0.021500	467	Brucella inopinata	0.000096	996
+SRR4038983	Brucella sp.	Brucella microti	0.022134	458	Brucella sp.	0.000072	997
+SRR4038994	Brucella papionis	Brucella microti	0.002027	920	Brucella papionis	0.000096	996
+SRR4038995	Brucella pinnipedialis	Brucella microti	0.000906	963	Brucella pinnipedialis	0.000048	998
+SRR4038996	Brucella pinnipedialis	Brucella ceti	0.001033	958	Brucella pinnipedialis	0.000024	999
+SRR4038997	Brucella sp.	Brucella microti	0.022638	451	Brucella sp.	0.000072	997
+SRR4039002	Brucella suis	Brucella microti	0.001496	940	Brucella suis	0.000000	1000
+SRR4039008	Brucella ceti	Brucella microti	0.001007	959	Brucella ceti	0.000096	996
+SRR5003446	Brucella cytisi	ND	0.219531	5	Brucella cytisi	0.000313	987
+SRR538762	Brucella sp.	Brucella microti	0.001186	952	Brucella pinnipedialis	0.000337	986
+SRR538770	Brucella sp.	Brucella microti	0.001522	939	Brucella ceti	0.000656	973
+SRR5927194	Brucella sp.	Brucella microti	0.002519	902	Brucella sp.	0.000557	977
+SRR6003449	Brucella pseudogrignonensis	ND	0.210897	6	Brucella pseudogrignonensis	0.000168	993
+SRR6003466	Brucella pseudogrignonensis	ND	0.210897	6	Brucella pseudogrignonensis	0.000216	991
+SRR6003475	Brucella thiophenivorans	ND	0.219531	5	Brucella pituitosa	0.002941	887
 SRR6003478	Brucella pseudogrignonensis	ND	0.210897	6	Brucella pseudogrignonensis	0.000119	995
-SRR641721	Brucella sp.	Brucella ceti	0.001627	935	Brucella pinnipedialis	0.000607	975
-SRR641723	Brucella sp.	Brucella ceti	0.002081	918	Brucella pinnipedialis	0.001058	957
-SRR642160	Brucella sp.	Brucella microti	0.001601	936	Brucella ceti	0.000731	970
-SRR642174	Brucella sp.	Brucella microti	0.002630	898	Brucella pinnipedialis	0.002381	907
-SRR642194	Brucella sp.	Brucella microti	0.002054	919	Brucella pinnipedialis	0.000806	967
-SRR642799	Brucella sp.	Brucella microti	0.002408	906	Brucella ceti	0.001548	938
-SRR642807	Brucella sp.	Brucella microti	0.001812	928	Brucella ceti	0.000931	962
-SRR642831	Brucella sp.	Brucella microti	0.001759	930	Brucella pinnipedialis	0.000856	965
-SRR647550	Brucella sp.	Brucella microti	0.002464	904	Brucella pinnipedialis	0.002216	913
-SRR647559	Brucella sp.	Brucella ceti	0.001892	925	Brucella pinnipedialis	0.000881	964
-SRR647562	Brucella sp.	Brucella microti	0.001786	929	Brucella ceti	0.000931	962
-SRR651190	Brucella sp.	Brucella ceti	0.001575	937	Brucella pinnipedialis	0.000582	976
-SRR651195	Brucella sp.	Brucella ceti	0.002162	915	Brucella pinnipedialis	0.000982	960
-SRR7459269	Brucella anthropi	ND	0.263022	2	Brucella anthropi	0.001786	929
-SRR7959001	Brucella intermedia	ND	0.182269	11	Brucella intermedia	0.000192	992
-SRR9620238	Brucella sp.	Brucella microti	0.023227	443	Brucella sp.	0.000024	999
+SRR641721	Brucella sp.	Brucella ceti	0.001033	958	Brucella pinnipedialis	0.000024	999
+SRR641723	Brucella sp.	Brucella ceti	0.001109	955	Brucella pinnipedialis	0.000096	996
+SRR642160	Brucella sp.	Brucella microti	0.001033	958	Brucella ceti	0.000168	993
+SRR642174	Brucella sp.	Brucella microti	0.002081	918	Brucella sp.	0.000168	993
+SRR642194	Brucella sp.	Brucella ceti	0.001263	949	Brucella pinnipedialis	0.000048	998
+SRR642799	Brucella sp.	Brucella microti	0.001418	943	Brucella ceti	0.000533	978
+SRR642807	Brucella sp.	Brucella microti	0.001237	950	Brucella ceti	0.000361	985
+SRR642831	Brucella sp.	Brucella microti	0.001058	957	Brucella pinnipedialis	0.000192	992
+SRR647550	Brucella sp.	Brucella microti	0.002081	918	Brucella sp.	0.000168	993
+SRR647559	Brucella sp.	Brucella ceti	0.001058	957	Brucella pinnipedialis	0.000048	998
+SRR647562	Brucella sp.	Brucella microti	0.001007	959	Brucella ceti	0.000144	994
+SRR651190	Brucella sp.	Brucella ceti	0.001058	957	Brucella pinnipedialis	0.000048	998
+SRR651195	Brucella sp.	Brucella ceti	0.001288	948	Brucella pinnipedialis	0.000072	997
+SRR7459269	Brucella anthropi	ND	0.263022	2	Brucella anthropi	0.000168	993
+SRR7959001	Brucella intermedia	ND	0.182269	11	Brucella intermedia	0.000024	999
+SRR9620238	Brucella sp.	Brucella microti	0.023376	441	Brucella sp.	0.000144	994

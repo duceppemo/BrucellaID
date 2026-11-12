@@ -79,10 +79,11 @@ section the long one. For a biovar, use classical biotyping or
 ### What does "loose match" in the notes mean?
 That the closest reference is further than `--loose-distance` (0.001 by default) — the sample matched
 something, but not closely. It is **not** a claim that the species is wrong, and BrucellaID does not change
-the call: over every public *Brucella* read set in ENA, agreement with the submitter barely moves with
-distance — 99.8% of calls within 0.0005 agree, and so do 95% to 100% of those in every band beyond it. The
-note flags about 4% of identified runs, and 98% of those still agree with their submitter, so it marks a
-library worth a second look rather than a species worth doubting;
+the call. Over every public *Brucella* read set in ENA the note flags 3.4% of identified runs, and 92% of
+what it flags still agrees with its submitter — so it marks a library worth a second look rather than a
+species worth doubting. Agreement does fall as the distance grows, from 99.5% on close calls to 81% in the
+0.005–0.02 band, so the note is not noise; it is just far too weak to override a call on, and some of
+that fall is the submitters' own mislabels rather than BrucellaID's;
 [the derivation](Validation-at-scale#the-loose-match-distance) has the figures. The note names three
 causes: the reads
 hold more than *Brucella*, which is the usual one; the sample is a lineage with no near relative in the

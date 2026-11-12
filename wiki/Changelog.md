@@ -1,5 +1,42 @@
 # Changelog
 
+## Unreleased
+
+**The at-scale validation is re-measured under the shipped k-mer copy threshold.** Every figure on
+[Validation at scale](Validation-at-scale) came from the sweep that ran before 2.1.0 re-derived the
+threshold, and was carried with a caveat saying so. All 4,024 usable public ENA read sets were swept again
+against both reference sets, with MLST, and the page now states measurements rather than caveats.
+
+**The headline figures are unchanged**: the extended set matches the submitter on 98.7% and the vSNP set
+on 96.2%, the same percentages as before. Not one of the extended set's 52 non-matches is a case where it
+held the right reference and named the wrong species.
+
+**`--loose-distance 0.001` is confirmed.** It had been set from a weighted 207-run sample that put the
+95th percentile of agreeing calls at 0.00066; over all 4,001 identified runs it is **0.00068**, so the
+constant needs no change. `scripts/loose_distance_calibration.tsv` now holds every identified run instead
+of the sample, so the percentiles carry no sampling error.
+
+**One claim is withdrawn.** The sample supported "agreement with the submitter is flat in distance", and
+the full sweep does not: it falls from 99.5% on close calls to **81.2%** between 0.005 and 0.02. A loose
+match does carry some signal that the species is wrong. The signal is weak — the worst band is still
+mostly right, and part of the fall is the submitters' own mislabels, since the thin-reference former
+*Ochrobactrum* runs cluster there — so the note is still reported rather than acted on, which is what the
+claim was supporting. Corrected in `brucellaid/mash.py`, [How it works](How-it-works), the
+[FAQ](FAQ) and on the page.
+
+* Head-to-head figures re-measured: the two sets disagree on **168** runs rather than 146, the extended set
+  is right on **95** of them and the vSNP set on none, and **89** are runs the vSNP set cannot name at all.
+* **23 runs share too little with the clade to be named**, holding 0 to 8 of 1000 hashes, where the
+  pre-2.1 sweep saw 22 runs spanning 0 to 146. The difference is the re-derived threshold removing a trace
+  population from deep mixed libraries, which is what the one borderline case at 146 hashes turned out to
+  be.
+* **Eighteen runs cannot be typed**, because their two mates hold unequal numbers of reads as published —
+  both files match ENA's own md5, so it is the archive's data and not a bad download. MASH named all
+  eighteen at 995 to 997 of 1000 hashes; Seal refuses an unequal pair, so they carry no sequence type.
+* 20 of the 4,044 runs were not analysed: 18 never finished downloading a second mate, and two were
+  already unavailable. A run with one mate is left out rather than analysed half-depth, since the copy
+  threshold is derived from coverage.
+
 ## 2.1.1 (2026-11-08)
 
 **The reports no longer show the biovars recorded for a sample's sequence type.** The quality assurance
@@ -74,9 +111,13 @@ The measurements are in `scripts/kmer_threshold_sweep.tsv` and the derivation is
   corroboration, that every agreeing call past the threshold shared fewer than 900 of its 1000 hashes.
   MASH derives the distance from the shared-hash count — over the 4,042 runs of the sweep, 317 distinct
   shared-hash values give 317 distinct distances and not one gives two — so that is the threshold restated
-  in another unit, not support for it. What does support leaving the species call alone is that agreement
-  with the submitter is flat in distance: 99.8% within 0.0005, and 95% to 100% in every band beyond, out
-  past 0.02. Both tables are on [Validation at scale](Validation-at-scale#the-loose-match-distance).
+  in another unit, not support for it. What does support reporting the note rather than acting on it is how
+  often a call at a given distance is still the submitter's species. Both tables are on
+  [Validation at scale](Validation-at-scale#the-loose-match-distance). (This entry first said that
+  agreement was flat in distance. It is not: measured over all 4,001 identified runs it falls from 99.5%
+  on close calls to 81.2% between 0.005 and 0.02. The flat reading came from a 207-run sample. The
+  conclusion is unchanged, because the worst band is still mostly right and some of the fall is the
+  submitters' own mislabels, but the signal is not absent.)
 * **Two of the four tutorial libraries no longer carry a loose-match note.** They were flagged only
   because their distance was inflated past `--loose-distance`; at 0.00012 and 0.00026 they are nowhere
   near even the new threshold.

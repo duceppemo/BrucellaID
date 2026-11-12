@@ -47,12 +47,17 @@ MAX_CLOSE_MATCHES = 40
 # significant figure would give 0.0007 and behave the same; 0.001 is preferred for the headroom and
 # because it is a value a user may reasonably type.
 #
-# What justifies the note NOT changing the species is a separate finding, and the only non-circular one
-# here: agreement with the submitter is flat in distance (99.8%, 100%, 95.3%, 100%, 100% across the bands
-# in the data file), so a loose match does not predict a wrong species. Note that "the agreeing calls past
-# the threshold all shared few hashes", which earlier versions of this comment offered as corroboration,
-# is no evidence at all: mash derives the distance from the shared-hash count, so the two are one
-# measurement in different units and the claim is entailed by the threshold.
+# What justifies the note being REPORTED rather than acted on is a separate measurement, and the only
+# non-circular one here: how often a call at a given distance is still the submitter's species. Over the
+# 4,001 identified runs that is 99.5% within 0.0005, 99.5% to 0.001, 95.4% to 0.005, 81.2% to 0.02 and
+# 94.4% beyond. Agreement FALLS with distance, so a loose match does carry some signal that the species is
+# wrong -- weak, since the worst band is still mostly right, and partly the submitters' own errors, since
+# the thin-reference former Ochrobactrum runs cluster there. Earlier versions of this comment called the
+# agreement flat; that was a 207-run sample and the full sweep does not support it.
+#
+# Note also that "the agreeing calls past the threshold all shared few hashes", offered as corroboration
+# before that, is no evidence at all: mash derives the distance from the shared-hash count, so the two are
+# one measurement in different units and the claim is entailed by the threshold.
 #
 # scripts/loose_distance_calibration.tsv holds the measurements and
 # scripts/recalibrate_loose_distance.py prints the tables above from it.

@@ -50,11 +50,12 @@ is `Status`, not `Notes`.
 A second note says when the closest reference is **not close at all**. Being the nearest of several
 hundred genomes is not the same as being a good match, and the distance says which: past
 `--loose-distance`, 0.001 by default, the call carries a note with the distance and the shared hashes.
-It does not change the species, because a loose match does not predict a wrong one: over every public
-*Brucella* read set in ENA, agreement with the submitter is flat in distance — 99.8% within 0.0005 and
-between 95% and 100% in every band above it, out to past 0.02. The threshold itself is the 95th percentile
-of the distance of agreeing calls, which is 0.00066, and
-[the derivation](Validation-at-scale#the-loose-match-distance) has both tables. A loose match has three
+It does not change the species, because the signal is far too weak to override a call on: over every
+public *Brucella* read set in ENA, agreement with the submitter falls from 99.5% on close calls to 81% in
+the 0.005–0.02 band, and the worst band is still mostly right. Part of that fall is the submitters' own
+mislabels. The threshold itself is the 95th percentile of the distance of agreeing calls, 0.00068 over the
+4,001 identified runs, and [the derivation](Validation-at-scale#the-loose-match-distance) has both
+tables. A loose match has three
 causes, and
 the note names all three: the reads hold more than *Brucella*; the sample belongs to a lineage with no near
 relative in the sketch; or a minority *Brucella* population is being filtered out along with the

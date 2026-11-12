@@ -255,15 +255,16 @@ BrucellaID could not place the sample because the extended set has no suitable r
   right, and chasing this run is what turned up `GCA_000163135.1` above: the species' genome was in NCBI
   under *Brucella* sp. all along. With that genome relabelled and added, the run now reports *B. papionis*
   at 0.00010. See [`papionis/README.md`](papionis/README.md).
-* `SRR12605656` (*B. haematophila*, 0.0201, 488/1000) and `SRR25828932`, `SRR25828924` (*B. anthropi*,
-  0.014 and 0.008) — reported as *Brucella* sp. because the nearest named genome is far away. These three
-  distances are as the sweep measured them, under the pre-2.1 copy threshold, and were not re-measured;
-  expect them to be smaller now, and the shared-hash count higher. With three
-  *haematophila* genomes in existence, one of them itself a candidate mislabel, the reference side is too
-  thin to call these either way.
-* `SRR31481153`, submitted as *B. inopinata*, reported as *Brucella* sp. at 0.00053 with 978 of 1000 hashes
-  and a `new` sequence type — again as the sweep measured it, not re-measured since. It sits beside an unnamed lineage representative rather than an *inopinata*
-  genome, which probably says more about how few *inopinata* genomes exist than about the label.
+* `SRR12605656` (*B. haematophila*, 0.0200, 489/1000) and `SRR25828932`, `SRR25828924` (*B. anthropi*,
+  0.0137 at 599/1000 and 0.0077 at 741/1000) — reported as *Brucella* sp. because the nearest named genome
+  is far away. With three *haematophila* genomes in existence, one of them itself a candidate mislabel,
+  the reference side is too thin to call these either way. These three barely moved when the copy
+  threshold was re-derived, which is what a genuinely distant reference looks like: the distance was real,
+  not inflated.
+* `SRR31481153`, submitted as *B. inopinata*, reported as *Brucella* sp. at 0.00043 with 982 of 1000
+  hashes and a `new` sequence type. It sits beside an unnamed lineage representative rather than an
+  *inopinata* genome, which probably says more about how few *inopinata* genomes exist than about the
+  label.
 
 ## PCR evidence
 
