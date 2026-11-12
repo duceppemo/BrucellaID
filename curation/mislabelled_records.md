@@ -260,7 +260,8 @@ BrucellaID could not place the sample because the extended set has no suitable r
   entry used to say the reference side was too thin to call them either way. Assembled and compared by
   ANI, all three are 83–90% from the type strain of the species they were deposited as and 98.0–99.1%
   from the type strains of *Ochrobactrum teleogrylli* and *O. soli*, a species NCBI files outside genus
-  *Brucella* and the set holds only as *Brucella* sp. See
+  *Brucella*. The set held it only as *Brucella* sp. and now carries it under its name, so all three are
+  reported as *Ochrobactrum teleogrylli*. See
   [`unnamed_lineages.md`](unnamed_lineages.md). Status: to report; nothing has been sent. They barely
   moved when the copy threshold was re-derived because the distance is real: the species' own members
   are 97.6–99.5% ANI apart.

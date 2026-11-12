@@ -1672,7 +1672,7 @@ SRR12368052	Brucella melitensis	Brucella melitensis	yes	0.000144	994
 SRR12420833	Brucella melitensis	Brucella melitensis	yes	0.000144	994
 SRR12420834	Brucella melitensis	Brucella melitensis	yes	0.000168	993
 SRR12467571	Brucella melitensis	Brucella melitensis	yes	0.000096	996
-SRR12605656	Brucella haematophila	Brucella sp.	no	0.020017	489
+SRR12605656	Brucella haematophila	Ochrobactrum teleogrylli	no	0.020017	489
 SRR12630907	Brucella sp.	Brucella sp.	yes	0.000072	997
 SRR12825308	Brucella anthropi	Brucella anthropi	yes	0.000216	991
 SRR1283956	Brucella suis	Brucella suis	yes	0.000216	991
@@ -2357,8 +2357,8 @@ SRR25461383	Brucella ceti	Brucella ceti	yes	0.000337	986
 SRR25461384	Brucella ceti	Brucella ceti	yes	0.000337	986
 SRR25607712	Brucella intermedia	Brucella intermedia	yes	0.000410	983
 SRR25627036	Brucella pseudogrignonensis	Brucella pseudogrignonensis	yes	0.001033	958
-SRR25828924	Brucella anthropi	Brucella sp.	no	0.007670	741
-SRR25828932	Brucella anthropi	Brucella sp.	no	0.013749	599
+SRR25828924	Brucella anthropi	Ochrobactrum teleogrylli	no	0.007670	741
+SRR25828932	Brucella anthropi	Ochrobactrum teleogrylli	no	0.013749	599
 SRR26349181	Brucella abortus	Brucella abortus	yes	0.000072	997
 SRR26349182	Brucella abortus	Brucella abortus	yes	0.000072	997
 SRR26349183	Brucella abortus	Brucella abortus	yes	0.000096	996

@@ -59,6 +59,8 @@ What more references *do* fix is coverage, which is why the extended set is the 
 ### What is the extended reference set?
 432 curated genomes covering all 30 named species of the *Brucella* clade (the 2020 taxonomy moved
 *Ochrobactrum* into it) plus the lineages that have no name yet. It is what a run uses from 2.0.
+Five of its genomes carry a name outside the genus, *Ochrobactrum teleogrylli* or *O. chromiisoli*: two
+species described after the move that have no *Brucella* name, so a sample can be reported under either.
 One of the 30 took some finding. Nothing in INSDC is labelled *B. papionis*, so it looked as though no
 set could carry it — but the genome is there under *Brucella* sp., and
 [`curation/papionis/README.md`](https://github.com/duceppemo/BrucellaID/blob/main/curation/papionis/README.md)

@@ -38,9 +38,11 @@ contradict, so they can be reported rather than only excluded.
 
 Scored against what those five genomes demonstrably are, the extended set got **every one of the 1,543
 held-out named samples right**, including all 69 *B. canis*, all 24 *B. ceti* and all 8
-*B. pinnipedialis* — the boundaries the distance alone cannot draw. Of the 95 *Brucella sp.* samples, 53
-were reported as *Brucella sp.*, 40 as the named species they sit next to (36 of them with a note saying
-how close the call was), and the two genomes that are nowhere near the clade came back `ND`.
+*B. pinnipedialis* — the boundaries the distance alone cannot draw. Of the 95 *Brucella sp.* samples, 50
+are reported as *Brucella sp.* and 43 under a name: 37 as the *Brucella* species they sit next to and 6
+as *Ochrobactrum teleogrylli* or *O. chromiisoli*, the two species of the set that have no *Brucella*
+name. Seven of the 43 carry a note, five that the match is loose and two that a second species is within
+reach. The two genomes that are nowhere near the clade came back `ND`.
 
 The set was revised after this was measured, and the figures above are recomputed against the set as it
 now stands: three genomes were added (the *B. papionis* reference and two unnamed lineages the curation
@@ -51,6 +53,17 @@ sp. in NCBI**, so none was ever in the named universe. The six relabels move no 
 either, because no such sample has one of them as its closest reference. The two neighbours with the
 least margin, a *B. microti* and a *B. pinnipedialis* read set, return the same species, closest
 reference and distance before and after.
+
+Seven labels changed after that, with no genome added or removed, and the 95 unnamed samples were run
+again under them. `GCA_900095155.1` went from *B. inopinata* to *Brucella* sp., and five genomes NCBI
+holds as *Brucella* sp. took the names *O. teleogrylli* and *O. chromiisoli* on 98.1–99.2% ANI to the
+type strains. Seven of the 2,022 samples change their call and none changes its distance: the six
+relabelled genomes themselves, and `GCA_033799005.1`, a second deposit of one of them. Six of the seven
+are labelled *Brucella* sp. in NCBI and the seventh is a reference, so again **no held-out named sample
+moves**. An earlier version of this page gave the unnamed samples as 53 reported *Brucella* sp. and 40
+named, 36 of them with a note. Measured against the 432 genomes before these relabels the split was 56
+and 37, which is that figure plus the three samples that moved when the two unnamed lineages were
+restored, so it had probably not been recomputed then.
 
 What this does not establish is everything the [validation suite](Validation-suite#what-it-does-not-establish) does not, plus one thing: the reads were simulated from the very
 collection the set was curated from, so a lineage absent from GenBank in October 2026 is absent from both
@@ -103,9 +116,10 @@ What the extended set's 52 non-matches are:
 * **29 are named, but not as the submitter labelled them.** For most the MASH distance and the sequence
   type — which share no code and no reference data — both contradict the submitted species and agree with
   each other. Several sit at 0.0001 or closer to the species the sequence says they are, two of them at
-  zero. Eleven come from a single submission. The rest are the honest limits of the set: former
-  *Ochrobactrum* species whose nearest reference is far enough away to be a thin reference side rather
-  than a wrong answer, and an *inopinata*-adjacent lineage that lands on an unnamed representative.
+  zero. Eleven come from a single submission. Three are former *Ochrobactrum* runs deposited as
+  *B. haematophila* and *B. anthropi* and reported as *Ochrobactrum teleogrylli*: their assemblies are
+  98.0–99.1% ANI from that species' type strains and 83–90% from the type of the species on the label.
+  One is an *inopinata*-adjacent lineage that lands on an unnamed representative.
 
 **Not one of the 52 is a case where the set held the right reference and named the wrong species.**
 

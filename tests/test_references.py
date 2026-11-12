@@ -120,10 +120,17 @@ def test_the_extended_table_of_the_package():
     assert len(references) == 432
     assert all(r.code and r.species for r in references.values())
     species = {r.species for r in references.values()}
-    # All 30 named species, and "Brucella sp." for the unnamed lineages.
-    assert len(species) == 31
+    # All 30 named Brucella species, "Brucella sp." for the unnamed lineages, and the two species of the
+    # former Ochrobactrum group that have no Brucella name: they are the only labels outside the genus.
+    assert len(species) == 33
     assert 'Brucella sp.' in species
     assert 'Brucella anthropi' in species  # The clade formerly known as Ochrobactrum
+    assert {s for s in species if not s.startswith('Brucella ')} == {'Ochrobactrum teleogrylli',
+                                                                      'Ochrobactrum chromiisoli'}
+    assert sum(r.species == 'Brucella sp.' for r in references.values()) == 44
+    teleogrylli = references['GCA_030063905.1_ASM3006390v1_genomic.fna.gz']
+    assert teleogrylli.code == 'teleogrylli'
+    assert teleogrylli.description == 'Ochrobactrum teleogrylli str. NM4'
     abortus5 = references['GCA_000163115.1_ASM16311v1_genomic.fna.gz']
     assert abortus5.label == 'Brucella abortus bv. 5'
     assert abortus5.description == 'Brucella abortus bv. 5 str. B3196'

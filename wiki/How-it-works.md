@@ -254,6 +254,15 @@ distances, which
 lays out. Only one *B. papionis* strain has ever been sequenced, so the species is covered rather than
 tested.
 
+Two species of the set are not named in *Brucella* at all. *Ochrobactrum teleogrylli* and
+*O. chromiisoli* were described after the genus was moved, nobody has published a *Brucella* combination
+for either, and NCBI files both under *Ochrobactrum*, outside the taxon the set was curated from. Five
+of the set's genomes are theirs — NCBI holds them as *Brucella* sp. — and they sit 98.1–99.2% ANI from
+the type strains, so they are labelled with the names the species have instead of with none. A sample
+that matches one is reported as *Ochrobactrum teleogrylli* or *Ochrobactrum chromiisoli*: the only two
+calls this tool makes that do not begin with *Brucella*. The evidence is in
+[`curation/unnamed_lineages.md`](https://github.com/duceppemo/BrucellaID/blob/main/curation/unnamed_lineages.md).
+
 ## Why not an assembly?
 
 Both steps count reads, so a fasta file is refused rather than quietly mis-typed: see

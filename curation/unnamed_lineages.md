@@ -5,12 +5,13 @@ clade, matching no named species. *B. papionis* was found by chasing exactly tha
 ([`papionis/README.md`](papionis/README.md)), so all 43 were chased the same way: assembled, grouped,
 and compared by ANI with the type strains, with the nearest named genomes and with each other.
 
-**One label in the reference set was changed on this evidence, and no genome was added:**
-`GCA_900095155.1` is now carried as *Brucella* sp. instead of *B. inopinata* — see
-[What was changed](#what-was-changed). Two further relabels the evidence would support are listed under
-[What was not changed](#what-was-not-changed) for a decision, because a relabel changes what a sample is
-called. Everything below describes the sweep as it was measured, before that relabel: with it, the
-count of runs reported as *Brucella* sp. is 44.
+**Six labels in the reference set were changed on this evidence, and no genome was added or removed:**
+`GCA_900095155.1` is now carried as *Brucella* sp. instead of *B. inopinata*, and five genomes that were
+*Brucella* sp. now carry the names *Ochrobactrum teleogrylli* and *O. chromiisoli* — see
+[What was changed](#what-was-changed). What the evidence would support and was left alone is under
+[What was not changed](#what-was-not-changed). Everything between here and those two sections describes
+the sweep as it was measured, before any relabel: with them, 41 runs are reported as *Brucella* sp., not
+43.
 
 | Verdict | Lineages | Runs |
 | --- | --- | --- |
@@ -228,11 +229,14 @@ describe species whose members are 0.02 apart.
 
 ## What was changed
 
-`GCA_900095155.1` (strain 141012304) is relabelled from *B. inopinata* to *Brucella* sp. in
-`brucellaid/data/references_extended.tsv`, and the decision is a `RELABEL` row in
-`scripts/extended_references_curation.tsv`. The sketch is untouched: a label is a row of the table, not
-part of the sketch. The set now holds two *B. inopinata* genomes, BO1 and `GCA_030270765.1`, and 49
-unnamed ones.
+Six labels, in two steps. Each is a row of `brucellaid/data/references_extended.tsv` and a `RELABEL` row
+in `scripts/extended_references_curation.tsv`. The sketch is untouched: a label is a row of the table,
+not part of the sketch. The set holds 432 genomes as before: 30 named *Brucella* species, two
+*Ochrobactrum* species, and 44 unnamed genomes.
+
+### `GCA_900095155.1`, from *B. inopinata* to *Brucella* sp.
+
+The set now holds two *B. inopinata* genomes, BO1 and `GCA_030270765.1`.
 
 What it moves was measured before it was made:
 
@@ -249,6 +253,45 @@ early-diverging lineage *inopinata* while calling three lineages nearer the type
 ST 86 does not argue otherwise — PubMLST has three isolates of it, two recorded as *Brucella* sp. and one
 as *B. inopinata*.
 
+### Five genomes, from *Brucella* sp. to *Ochrobactrum teleogrylli* and *O. chromiisoli*
+
+| Genome | Strain | Now | ANI to the type strain |
+| --- | --- | --- | --- |
+| `GCA_030063905.1` | NM4 | *O. teleogrylli* | 99.17% *O. soli* BO-7, 98.15% *O. teleogrylli* CGMCC 1.13984 |
+| `GCA_040372265.1` | NBRC 113783 | *O. teleogrylli* | 98.99%, 98.16% |
+| `GCA_040391195.1` | — | *O. teleogrylli* | 98.90%, 98.53%, on 636 and 629 of 686 fragments |
+| `GCA_039674265.1` | TWI559 | *O. chromiisoli* | 98.52% *O. chromiisoli* YY2X |
+| `GCA_039674445.1` | TWI432 | *O. chromiisoli* | 98.47% |
+
+The alternative considered for the three *teleogrylli* genomes was removing them, since the species is
+outside NCBI's genus *Brucella*. The sweep's own distances rule that out: without them the best match for
+`SRR25828924`, `SRR25828932` and `SRR12605656` is 94, 93 and 95 of 1000 shared hashes, under the 150
+needed to name anything, so three libraries of a species nested in the former *Ochrobactrum* group would
+come back as not *Brucella* at all.
+
+*O. chromiisoli* Yang *et al.* 2024 is validly published and, like *O. teleogrylli*, has no *Brucella*
+combination (LPSN, 2026-11-12). Its type strain is under 90% ANI from every other type strain of the
+clade, so there is no synonymy to weigh. The two genomes were relabelled with the other three so that the
+set does not name one such species and leave the other unnamed.
+
+**These are the only names in the set outside genus *Brucella*.** They are carried as published because
+no other name exists. A sample matching one of the five is reported as *Ochrobactrum teleogrylli* or
+*Ochrobactrum chromiisoli*.
+
+| Population | Samples whose call changes |
+| --- | --- |
+| The 4,024 public read sets | three: `SRR12605656`, `SRR25828924` and `SRR25828932`, each re-run and each reporting *O. teleogrylli* with the reference, distance, shared hashes and alleles it had. No run lands on a *chromiisoli* genome. The only other runs with one of the five at or near the top are unidentified ones sharing 0 to 8 hashes with everything. |
+| The 2,022 assemblies, as simulated reads | six, every one labelled *Brucella* sp. in NCBI: the five genomes and `GCA_033799005.1`, a second deposit of NBRC 113783. All 95 unnamed samples were re-run: 50 are reported as *Brucella* sp., 43 under a name and 2 as `ND`, and no distance moved. No sample of a named species has one of the five as its best match or within the close-match margin of it. |
+| The figures `scripts/score_public_sweep.py` derives | one line: the three runs are tallied under *O. teleogrylli* instead of *Brucella* sp. among the 89 the vSNP set cannot name. Every count is the same. `scripts/recalibrate_loose_distance.py` prints the same output. |
+
+Re-running the unnamed samples showed that a sentence on the wiki's validation page was stale before any
+of this: it gave them as 53 reported *Brucella* sp. and 40 named, where the full run against the
+432-genome set had measured 56 and 37. It is corrected there.
+
+`GCA_040391195.1` is relabelled, not vouched for. It is a 2.1 Mb partial genome of a species of about
+5 Mb, no run of the sweep has it as its best match, and whether it should be in the set at all is a
+separate question that needs the sketch rebuilt.
+
 ## What was not changed
 
 A reference's label decides what a sample is called, so each of these is a release-level decision and
@@ -256,9 +299,9 @@ none was made here.
 
 | Change | Evidence | What it would do |
 | --- | --- | --- |
-| Label `GCA_030063905.1`, `GCA_040372265.1` and `GCA_040391195.1` as *O. teleogrylli*, with or without adding the type strain `GCA_042681285.1` | 98.9–99.2% ANI to the *soli* type, 98.1–98.5% to the *teleogrylli* type | Three runs of the sweep would get a species. It would be the set's first name outside genus *Brucella*, since no *Brucella* combination exists. |
+| Add the *O. teleogrylli* type strain `GCA_042681285.1` | It would anchor the name on type material | No run changes: `SRR12605656` is 97.99% from the type against 97.85% from NM4. It needs the sketch rebuilt. |
 | Label `GCA_030157885.1` as "*B. nosferati*" | A lineage of species rank with a published name | 22 runs would get that name. The set would then carry a name NCBI does not have. *B. amazoniensis* is a partial precedent: LPSN has no entry for it either, but NCBI has a taxon. |
-| Name the 16 other unnamed references that clear 95% to a type strain | `unnamed_lineages/unnamed_references_vs_types.tsv` | No run of the sweep changes. |
+| Name the 14 other unnamed references that clear 95% to a type strain, each to a named *Brucella* species | `unnamed_lineages/unnamed_references_vs_types.tsv` | No run of the sweep changes. |
 
 ## Reproducing the evidence
 

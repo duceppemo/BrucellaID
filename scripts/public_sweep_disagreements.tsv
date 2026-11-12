@@ -57,7 +57,7 @@ SRR12012458	Brucella pituitosa	ND	0.243761	3	Brucella pituitosa	0.000072	997
 SRR12012459	Brucella oryzae	ND	0.174408	13	Brucella oryzae	0.000681	972
 SRR12012460	Brucella lupini	ND	0.295981	1	Brucella lupini	0.000731	970
 SRR12224742	Brucella sp.	Brucella microti	0.022638	451	Brucella sp.	0.000119	995
-SRR12605656	Brucella haematophila	ND	0.203604	7	Brucella sp.	0.020017	489
+SRR12605656	Brucella haematophila	ND	0.203604	7	Ochrobactrum teleogrylli	0.020017	489
 SRR12630907	Brucella sp.	Brucella microti	0.022784	449	Brucella sp.	0.000072	997
 SRR12825308	Brucella anthropi	ND	0.230110	4	Brucella anthropi	0.000216	991
 SRR13073604	Brucella intermedia	ND	0.164662	16	Brucella intermedia	0.004179	845
@@ -99,8 +99,8 @@ SRR22426907	Brucella inopinata	Brucella microti	0.022062	459	Brucella inopinata	
 SRR24962337	Brucella anthropi	ND	0.243761	3	Brucella anthropi	0.003846	856
 SRR25607712	Brucella intermedia	ND	0.170926	14	Brucella intermedia	0.000410	983
 SRR25627036	Brucella pseudogrignonensis	ND	0.219531	5	Brucella pseudogrignonensis	0.001033	958
-SRR25828924	Brucella anthropi	ND	0.210897	6	Brucella sp.	0.007670	741
-SRR25828932	Brucella anthropi	ND	0.210897	6	Brucella sp.	0.013749	599
+SRR25828924	Brucella anthropi	ND	0.210897	6	Ochrobactrum teleogrylli	0.007670	741
+SRR25828932	Brucella anthropi	ND	0.210897	6	Ochrobactrum teleogrylli	0.013749	599
 SRR27218464	Brucella intermedia	ND	0.197292	8	Brucella intermedia	0.012214	631
 SRR28257783	Brucella anthropi	ND	0.243761	3	Brucella anthropi	0.005119	815
 SRR28444315	Brucella anthropi	ND	0.243761	3	Brucella anthropi	0.010784	663

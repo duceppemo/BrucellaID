@@ -12,13 +12,41 @@ A sample that matches this genome is reported as *Brucella* sp. where it was rep
 That is one of the 4,024 public read sets, `SRR12224742`, whose submitter named no species, and none of
 the 2,022 assemblies but the genome itself; its distance, shared hashes and sequence type are unchanged,
 and so is every figure on [Validation at scale](Validation-at-scale). The sketch is not rebuilt — the
-label is a row of `references_extended.tsv`. The set holds 432 genomes as before, 49 of them unnamed.
+label is a row of `references_extended.tsv`, and the set holds 432 genomes as before.
 
-This came out of chasing all 43 public read sets reported as *Brucella* sp., written up in
-`curation/unnamed_lineages.md`. That note also records what was left alone: three of those runs are
-*Ochrobactrum teleogrylli*, a species NCBI files outside the genus and the set carries only as
-*Brucella* sp., and 22 are the vampire-bat lineage published as "*B. nosferati*", a name that is not
-validly published.
+**Five genomes of the extended set take a name outside the genus: *Ochrobactrum teleogrylli* and
+*Ochrobactrum chromiisoli*.** They were *Brucella* sp. Both species were described after *Ochrobactrum*
+was moved into *Brucella*, neither has a *Brucella* combination, and NCBI files both outside taxon 234,
+so the collection the set was curated from held some of their genomes and none of their type strains.
+By ANI to those type strains:
+
+* `GCA_030063905.1`, `GCA_040372265.1` and `GCA_040391195.1` are *O. teleogrylli*: 98.9–99.2% from the
+  *O. soli* type strain and 98.1–98.5% from the *O. teleogrylli* one. The two types are 98.16% apart, so
+  one species, and *teleogrylli* (2020) has priority over *soli* (validated 2024).
+* `GCA_039674265.1` and `GCA_039674445.1` are *O. chromiisoli*: 98.5% from its type strain.
+
+**A sample can now be reported under a species name that does not begin with *Brucella*.** Anything that
+parses the `Species` column on that assumption should be checked. Three of the 4,024 public read sets
+change: `SRR12605656`, `SRR25828924` and `SRR25828932`, deposited as *B. haematophila* and *B. anthropi*,
+go from *Brucella* sp. to *O. teleogrylli* with every measurement unchanged, and their assemblies are
+83–90% ANI from the type strains of the species on their labels. No run matches a *chromiisoli* genome.
+Removing the three *teleogrylli* genomes was considered and rejected: without them those libraries share
+93 to 95 of 1000 hashes with their best match and would be reported as not *Brucella*.
+
+With both changes the set is 432 genomes as before: 30 named *Brucella* species, the two *Ochrobactrum*
+ones, and 44 unnamed genomes. No held-out named sample of the simulated-read validation moves, and no
+count on [Validation at scale](Validation-at-scale) that `scripts/score_public_sweep.py` derives changes.
+
+**One sentence on that page was stale and is corrected.** It gave the 95 unnamed simulated samples as 53
+reported *Brucella* sp. and 40 named, 36 of them with a note. The full run against the 432-genome set
+gave 56 and 37, which is the old figure plus the three samples that moved when two unnamed lineages were
+restored to the set, so it had probably not been recomputed since. After these relabels it is
+**50 and 43**, seven of the 43 with a note.
+
+All of this came out of chasing the 43 public read sets reported as *Brucella* sp., written up in
+`curation/unnamed_lineages.md`. That note also records what was left alone: 22 of those runs are the
+vampire-bat lineage published as "*B. nosferati*", a name that is not validly published, and it stays
+*Brucella* sp.
 
 **The at-scale validation is re-measured under the shipped k-mer copy threshold.** Every figure on
 [Validation at scale](Validation-at-scale) came from the sweep that ran before 2.1.0 re-derived the
