@@ -50,3 +50,7 @@ Two things exercise the depth-adaptive k-mer copy threshold, which a run at the 
 
 The results are on the [Validation suite](https://github.com/duceppemo/BrucellaID/wiki/Validation-suite) page of the
 wiki.
+
+The at-scale measurement is a different thing and is not reproducible from here: see
+[`at-scale-notes.md`](at-scale-notes.md) for which scripts derive which published figure, where the 1.6 TB
+of reads was kept, and the handful of mistakes worth not repeating.
