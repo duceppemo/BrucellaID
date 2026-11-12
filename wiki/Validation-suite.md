@@ -77,7 +77,7 @@ which is the only unit the estimate is for.
 
 Every simulated *Brucella* sample now keeps 999 or 1000 of its 1000 hashes, which is the right answer for
 reads simulated from a genome the sketch holds, and the four real libraries keep 989 to 996 where they
-kept 773 to 976 before. That is the re-derived copy threshold:
+kept 773 to 979 before. That is the re-derived copy threshold:
 [The k-mer copy threshold](K-mer-threshold) is where it comes from.
 
 ## What that establishes

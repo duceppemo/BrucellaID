@@ -39,7 +39,7 @@ fit; `brucellaid.tsv` also holds `MashDistance`, `AlleleProfile`, `Reads` and `N
 
 ## Then
 * [How it works](How-it-works) — what the two calls rest on, and where each of them stops
-* [Validation](Validation) — 1,543 held-out genomes, 4,042 public read sets, and a 22-sample suite you can
+* [Validation](Validation) — 1,543 held-out genomes, 4,024 public read sets, and a 22-sample suite you can
   re-run, plus [the k-mer copy threshold](K-mer-threshold) and how it was measured
 * [Troubleshooting](Troubleshooting) and the [FAQ](FAQ)
 * [Changelog](Changelog)

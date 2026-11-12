@@ -134,8 +134,10 @@ def check_depth(row, record, problems):
     # already tolerates that being 20% out -- which at one copy per 5x is six copies at 150x, so comparing
     # with expected_copies(depth) would fail a sample whose coverage it had just accepted. What is being
     # checked here is that the shipped formula was applied, so the formula's own input is what to apply it
-    # to. (The tolerance of 1 absorbs the rounding of a fractional estimate.)
-    elif abs(copies - expected_copies(estimated)) > 1:
+    # to -- and EXACTLY, with no tolerance: brucellaid.json carries the unrounded coverage it derived from,
+    # so this arithmetic reproduces the tool's own value to the integer. A slack of even one would let an
+    # off-by-one drift through, such as a truncation where there should be a round, or a ceiling of 47.
+    elif copies is None or copies != expected_copies(estimated):
         problems.append('the k-mer copy threshold is {}, expected {} at the {:.0f}x estimated'.format(
             copies, expected_copies(estimated), estimated))
     if shared is not None and shared < MIN_CLEAN_HASHES:

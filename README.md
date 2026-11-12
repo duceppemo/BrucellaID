@@ -79,8 +79,8 @@ configure.
   of 2,022 NCBI assemblies: scored against what the sequences demonstrably are, the extended set got
   **every one of the 1,543 held-out named samples right** — five of them are mislabelled in NCBI, which the
   curation itself caught, and scored against the labels as written it is 1,538 of 1,543. And on **every
-  usable public *Brucella* read set in ENA**, 4,042 real libraries, where it matches the submitter on 98.7%
-  against the vSNP set's 96.2%, and wins all 94 of the disagreements that have a right answer without
+  usable public *Brucella* read set in ENA**, 4,024 real libraries, where it matches the submitter on 98.7%
+  against the vSNP set's 96.2%, and wins all 95 of the disagreements that have a right answer without
   losing one.
 * **Backwards compatible where it counts**: the MASH identification is vSNP's, down to the threshold of
   150 shared hashes (`--no-st-species` reports it alone), and `--xlsx` still writes the

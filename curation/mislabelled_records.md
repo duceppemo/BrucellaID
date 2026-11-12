@@ -135,7 +135,7 @@ Kept here so they are not re-flagged by the next automated pass.
 
 ## Read sets: the submitted species is contradicted by two independent methods
 
-From the Phase 2 validation, which measured **4,042 of the 4,044 usable public *Brucella* read sets in ENA**
+From the public ENA sweep, which measured **4,024 of the 4,044 usable public *Brucella* read sets in ENA**
 against both reference sets. For each of these the MASH identification and the nine-locus MLST — which share no
 code and no reference data — both point away from the submitted label and at the same species. Distances
 are to the closest genome of the extended set. The `PubMLST species` column gives the species that database
@@ -174,9 +174,9 @@ it is no longer a case where the species rests mainly on the ST.
 
 | Run | BioSample | Submitted as | Both methods say | Distance | ST | PubMLST species of that ST |
 | --- | --- | --- | --- | --- | --- | --- |
-| `ERR471314` | `SAMEA2266858` | *B. ceti* | *B. abortus* | 0.00017 | 5 | *B. abortus*, 98.6% of 71 isolates |
-| `ERR471315` | `SAMEA2266859` | *B. ceti* | *B. abortus* | 0.00017 | 5 | *B. abortus*, 98.6% of 71 isolates |
-| `ERR473742` | `SAMEA2266954` | *B. abortus* | *B. neotomae* | 0.00034 | 22 | *B. neotomae*, 100% of 9 isolates |
+| `ERR471314` | `SAMEA2266858` | *B. ceti* | *B. abortus* | 0.00002 | 5 | *B. abortus*, 98.6% of 71 isolates |
+| `ERR471315` | `SAMEA2266859` | *B. ceti* | *B. abortus* | 0.00005 | 5 | *B. abortus*, 98.6% of 71 isolates |
+| `ERR473742` | `SAMEA2266954` | *B. abortus* | *B. neotomae* | 0.00005 | 22 | *B. neotomae*, 100% of 9 isolates |
 
 The same study also contributed ten read sets that contain no *Brucella* sequence at all — see the section
 below. Both findings are worth raising together.
@@ -185,8 +185,8 @@ below. Both findings are worth raising together.
 
 | BioSample | Runs | Submitted as | Both methods say | Distance | ST | PubMLST species of that ST |
 | --- | --- | --- | --- | --- | --- | --- |
-| `SAMN00811170` | `SRR642185`, `SRR651210`, `SRR867710` | *B. abortus* 63/183 | *B. suis* | 0.0022–0.0023 | 14, 16 | *B. suis* (ST 16 is 100% of 15 isolates) |
-| `SAMN00811205` | `SRR867711` | *B. melitensis* 63/227 | *B. suis* | 0.00205 | 14 | *B. suis*, 96.4% of 140 isolates |
+| `SAMN00811170` | `SRR642185`, `SRR651210`, `SRR867710` | *B. abortus* 63/183 | *B. suis* | 0.00019–0.00181 | 14, 16 | *B. suis* (ST 16 is 100% of 15 isolates) |
+| `SAMN00811205` | `SRR867711` | *B. melitensis* 63/227 | *B. suis* | 0.00158 | 14 | *B. suis*, 96.4% of 140 isolates |
 
 The first row is **one BioSample sequenced in three runs**, not three records: all three agree, which is a
 consistency check rather than three independent findings. Both carry strain designations (63/183, 63/227),
@@ -196,7 +196,7 @@ so a wrong label here travels further than an ordinary isolate's would.
 
 | Run | BioSample | Study | Submitted as | Both methods say | Distance | ST | PubMLST species of that ST |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `SRR31560207` | `SAMN15685105` | PRJNA649281 | *B. abortus* | *B. melitensis* | 0.00056 | 7 | *B. melitensis*, 98.6% of 72 isolates |
+| `SRR31560207` | `SAMN15685105` | PRJNA649281 | *B. abortus* | *B. melitensis* | 0.00029 | 7 | *B. melitensis*, 98.6% of 72 isolates |
 | `SRR11526759` | `SAMN14309819` | PRJNA610713 | *B. abortus* | *B. melitensis* | 0.00005 | 8 | *B. melitensis*, 98.3% of 862 isolates |
 
 `SRR31357708` (`SAMN44729562`, PRJNA1183633), submitted as *B. cytisi*, belongs with these although no ST
@@ -212,7 +212,7 @@ the clade. These are not identification failures — BrucellaID refused to name 
 threshold of 150 shared hashes is for — but they are worth reporting, because a reader searching the
 archive for *B. abortus* reads will find them.
 
-A real *Brucella* read set at usable depth shares 980 or more of the 1000 hashes with its own species.
+A real *Brucella* read set at usable depth shares a median 994 of the 1000 hashes, and all but 2% of them more than 900 with its own species.
 
 | Study | Runs | Submitted as | Shared hashes |
 | --- | --- | --- | --- |
@@ -402,11 +402,12 @@ distance as before.
 
 ## Scope
 
-The read-set tables cover the completed Phase 2 sweep: every usable paired Illumina WGS run under NCBI
-taxon 234 in ENA as of 2026-11-03, **4,042 of 4,044 analysed**. The two that are missing,
-`SRR9831875` and `SRR3096373`, could not be downloaded from ENA after two passes; neither failed to
-analyse. Fifty-two runs failed on the first pass and a retry recovered fifty of them, which added one
-finding: `SRR886241`, included above.
+The read-set tables cover every usable paired Illumina WGS run under NCBI taxon 234 in ENA as of
+2026-11-03, **4,024 of 4,044 analysed**, re-measured under the 2.1.0 k-mer copy threshold. Twenty are
+missing: `SRR9831875` and `SRR3096373` were already unavailable from ENA, and eighteen never finished
+downloading a second mate. A run with one mate is left out rather than analysed half-depth, because the
+copy threshold is derived from coverage. A separate eighteen runs were analysed but could not be typed,
+their two mates holding unequal numbers of reads as published.
 
 The assembly tables come from the curation of the extended reference set and cover the 454 dereplicated
 representatives of the mashID pack source collection, not all 2,022 assemblies, so the assembly side is

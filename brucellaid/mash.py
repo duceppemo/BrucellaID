@@ -33,19 +33,20 @@ MAX_CLOSE_MATCHES = 40
 #
 # The rule is the 95th percentile of the distance of calls that AGREE with the ENA submitter, taken to a
 # round number: past that, the closest reference is further away than a correctly identified library
-# normally sits. Over the public sweep, re-measured under the copy threshold above, that percentile is
-# 0.00066 and this threshold flags 4.0% of the 4,020 identified runs -- as rare as the 4.9% the 2.0
-# calibration accepted, which had a percentile of 0.00464 and a threshold of 0.005. The old threshold was
-# not wrong for the sketches it was measured on; it was calibrated on distances the old copy threshold had
-# inflated about sevenfold, and left here it would have missed the thin-reference cases it exists to
-# catch -- a B. pituitosa run at 0.0029, for one.
+# normally sits. Over all 4,001 identified runs of the public sweep, measured under the copy threshold
+# above, that percentile is 0.00068 and this threshold flags 3.4% of them -- about as rare as the 4.9% the
+# 2.0 calibration accepted, which had a percentile of 0.00464 and a threshold of 0.005. The old threshold
+# was not wrong for the sketches it was measured on; it was calibrated on distances the old copy threshold
+# had inflated, and left here it would have missed the thin-reference cases it exists to catch -- a
+# B. pituitosa run at 0.0029, for one.
 #
-# Two things say the choice is not on a knife edge. Everything from 0.0005 to 0.002 flags 2.8% to 6.6% of
-# runs with 96% to 98% of them still agreeing with the submitter, so the behaviour barely moves; and the
-# ordinary libraries are far below it -- the 3,226 runs already within 0.001 before now sit within
-# 0.00046, so this clears the clean bulk by better than a factor of two. Rounding the percentile to one
-# significant figure would give 0.0007 and behave the same; 0.001 is preferred for the headroom and
-# because it is a value a user may reasonably type.
+# The choice is not on a knife edge: everything from 0.0005 to 0.002 flags between 2.0% and 8.2% of runs,
+# and ordinary libraries are far below it -- 3,864 of the 4,001 sit within 0.001. Rounding the percentile
+# to one significant figure would give 0.0007 and behave much the same; 0.001 is preferred for the
+# headroom and because it is a value a user may reasonably type.
+#
+# These figures were first set from a weighted 207-run sample, which put the percentile at 0.00066; the
+# full sweep moved it to 0.00068, so the constant chosen from the sample needed no change.
 #
 # What justifies the note being REPORTED rather than acted on is a separate measurement, and the only
 # non-circular one here: how often a call at a given distance is still the submitter's species. Over the
@@ -83,7 +84,10 @@ LOOSE_MATCH_DISTANCE = 0.001
 # Those three libraries stop at 70x, and the median public Brucella run is 141x, so a second set of 60 ENA
 # runs was swept at their own depth from 51x to 1903x, thresholds to 64. 81 curves from 63 libraries in
 # all. One more copy per 5x with a ceiling of 48 lands inside the plateau for 80 of the 81, recovering at
-# least 99.5% of the best for nine curves in ten and 100% at the median.
+# least 99.5% of the best for nine curves in ten and 100% at the median. For 23 of the 81 the rule's
+# exact value was never swept (the ENA runs were measured at 1,2,3,4,6,8,12,16,20,24,28,32,40,48,64),
+# so "inside the plateau" there is read off the nearest measured threshold rather than measured at the
+# value itself; over the 58 where it was swept directly the recovery figures are the same.
 #
 #     depth      51-54x  101-112x  198-250x  420-535x  700-780x  1218-1903x
 #     plateau       6-24      3-48      6-64     32-64     12-64        16-64

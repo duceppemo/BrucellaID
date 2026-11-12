@@ -83,9 +83,9 @@ The 168 split two ways. **89 are runs the vSNP set could not name at all**, comi
 while the extended set names them: 35 *B. anthropi*, 21 *B. intermedia*, 7 *B. pituitosa*,
 7 *B. pseudogrignonensis* and the rest of the former *Ochrobactrum* clade. **The other 79 are runs both
 sets named but named differently**, and the extended set corrects 20 of them, most of them marine: the
-vSNP set scored **0 of 11** on *B. pinnipedialis*, sending six of them to *B. ceti*, one to
-*B. melitensis*, one to *B. microti* and leaving three unidentified, where the extended set gets 8 of 11
-with the other three not identified.
+vSNP set scored **0 of 11** on *B. pinnipedialis*, sending seven of them to *B. ceti*, one to
+*B. microti* and leaving three unidentified, where the extended set gets 8 of 11 with the other three not
+identified.
 
 All 168 are listed in
 [`scripts/public_sweep_disagreements.tsv`](https://github.com/duceppemo/BrucellaID/blob/main/scripts/public_sweep_disagreements.tsv),
@@ -94,10 +94,12 @@ and `scripts/score_public_sweep.py` derives every figure in these two paragraphs
 What the extended set's 52 non-matches are:
 
 * **23 share too little with the clade to be named.** They hold 0 to 8 of 1000 hashes against every genome
-  of the set, four of them exactly zero, where a real *Brucella* library shares 980 or more with its own
-  species. BrucellaID named none of them, which is what the threshold of 150 shared hashes is for. Twenty
+  of the set, four of them exactly zero, where a correctly identified library shares a median 994 and all
+  but 2% of them more than 900. BrucellaID named none of them, which is what the threshold of 150 shared
+  hashes is for. Twenty-two
   of the twenty-three come from a handful of submissions and are tracked with their evidence in
-  [`curation/mislabelled_records.md`](https://github.com/duceppemo/BrucellaID/blob/main/curation/mislabelled_records.md).
+  [`curation/mislabelled_records.md`](https://github.com/duceppemo/BrucellaID/blob/main/curation/mislabelled_records.md);
+  only `SRR35815234` is not yet listed there.
 * **29 are named, but not as the submitter labelled them.** For most the MASH distance and the sequence
   type — which share no code and no reference data — both contradict the submitted species and agree with
   each other. Several sit at 0.0001 or closer to the species the sequence says they are, two of them at
@@ -120,8 +122,9 @@ round number. Past that, the closest reference is further away than a correctly 
 normally sits, which is worth a note.
 
 It was **0.005 in 2.0 and is 0.001 from 2.1.0**, because the re-derived
-[k-mer copy threshold](K-mer-threshold) shrank every read-derived distance by about sevenfold and the old
-value had been calibrated on the inflated ones. Measured over all 4,001 identified runs:
+[k-mer copy threshold](K-mer-threshold) shrank the read-derived distances — the typical run by about
+2.4x and the tail that this threshold is drawn from by nearly 7x — and the old value had been calibrated
+on the inflated ones. Measured over all 4,001 identified runs:
 
 | | 2.0 | 2.1.0 onwards |
 | --- | --- | --- |
