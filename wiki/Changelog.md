@@ -37,6 +37,14 @@ claim was supporting. Corrected in `brucellaid/mash.py`, [How it works](How-it-w
   *B. microti* ST 53, each agreeing with the species MASH called, whose distances moved by at most one
   shared hash. `find_samples()` now warns when a `_3` file sits beside a pair it has formed, since that is
   the only point at which the layout is visible.
+* **A false `new` sequence type, found by the independent check.** `SRR27874758` is a mixture — 230 of
+  1000 shared hashes, distance 0.047, 7.8 Mb of assembly against 3.3 Mb of genome — and its reads give a
+  profile that is not in the table, reported as `new`. The type read off its own assembly is ST 8, a
+  common *B. melitensis* type agreeing with the species call. Every locus had a runner-up 20 to 54 reads
+  behind a winner with hundreds, which is what a mixture looks like and the opposite of what a novel
+  allele looks like. Written up under
+  [The sequence type is `new`](Troubleshooting#the-sequence-type-is-new); no code changed, since the
+  sample was already flagged by the loose-match note and its shared-hash count.
 * 20 of the 4,044 runs were not analysed: 18 never finished downloading a second mate, and two were
   already unavailable. A run with one mate is left out rather than analysed half-depth, since the copy
   threshold is derived from coverage.

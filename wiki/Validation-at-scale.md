@@ -199,3 +199,14 @@ reminder that the denominator has errors in it too. Every one is listed with its
 It also establishes nothing about read sets that are not paired Illumina WGS of a single isolate: that is
 what the run selection filtered to, so no long-read, metagenomic or deliberately mixed library is measured
 anywhere here.
+
+**And it found one thing the MLST caller gets wrong, which the species figures above do not show.**
+`SRR27874758` shares 230 of 1000 hashes at distance 0.047 and assembles to 7.8 Mb against *Brucella*'s
+3.3 Mb, so it is a mixture. Its reads gave the profile `11-2-3-2-1-5-3-2-23`, reported as a `new` sequence
+type; the type read off its own assembly by exact allele match is **ST 8**, a common *B. melitensis* type
+that agrees with the species MASH called. Every locus had hundreds of reads behind the winning allele and
+a runner-up only 20 to 54 reads back, so two organisms were contributing at each one and the profile is a
+chimera rather than a discovery. The sample was already flagged — the loose-match note fired and the
+shared-hash count is far below a clean library's — so nothing silently went wrong, but a `new` sequence
+type on a flagged sample should be assembled before it is believed. See
+[Troubleshooting](Troubleshooting#the-sequence-type-is-new).

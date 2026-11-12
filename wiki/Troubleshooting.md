@@ -55,6 +55,29 @@ python3 scripts/make_mlst_data.py
 Check the per-locus margins in `brucellaid_mlst.tsv` first: a call whose runner-up is one or two reads
 behind is the kind of call a novel allele produces.
 
+**And check `Notes` and `SharedHashes` before believing it.** A mixed library can manufacture a `new`
+profile that is not new at all. `SRR27874758` of the public sweep is the worked example: it shares 230 of
+1000 hashes at distance 0.047, so it already carries a loose-match note, and it assembles to 7.8 Mb in
+1,540 contigs against *Brucella*'s 3.3 Mb. Its reads gave `11-2-3-2-1-5-3-2-23`, which is not in the
+table, while the sequence type read off its own assembly by exact allele match is **ST 8** — a common
+*B. melitensis* type, agreeing with the species MASH called.
+
+The tell is in the margins, and it is the opposite of a novel allele:
+
+| locus | allele | reads | runner-up | its reads |
+| --- | --- | --- | --- | --- |
+| `gap` | 11 | 458 | 24 | 420 |
+| `omp25` | 23 | 272 | 39 | 232 |
+| `int_hyp` | 2 | 336 | 29 | 282 |
+
+Every locus has hundreds of reads behind the winner and a runner-up only 20 to 54 reads back — roughly a
+tenth, where a clean library at 20x wins by about a third on a tenth of the depth
+([How it works](How-it-works#the-mlst-alleles)). Two organisms are both contributing reads at every locus,
+and the per-locus winner can come from either, so the profile is a chimera. **A `new` sequence type on a
+sample that also carries a loose-match note, or shares well under 900 hashes, is more likely a mixture
+than a discovery.** Assemble the reads and read the type off the contigs before submitting anything to
+PubMLST.
+
 ## `SpeciesSource` says `MASH (conflict)`
 The sequence type belongs to a species that was not among the ones the MASH distance left within reach, and
 the two statements cannot both be right. The species reported is the MASH one, because it rests on a
