@@ -256,15 +256,21 @@ BrucellaID could not place the sample because the extended set has no suitable r
   under *Brucella* sp. all along. With that genome relabelled and added, the run now reports *B. papionis*
   at 0.00010. See [`papionis/README.md`](papionis/README.md).
 * `SRR12605656` (*B. haematophila*, 0.0200, 489/1000) and `SRR25828932`, `SRR25828924` (*B. anthropi*,
-  0.0137 at 599/1000 and 0.0077 at 741/1000) — reported as *Brucella* sp. because the nearest named genome
-  is far away. With three *haematophila* genomes in existence, one of them itself a candidate mislabel,
-  the reference side is too thin to call these either way. These three barely moved when the copy
-  threshold was re-derived, which is what a genuinely distant reference looks like: the distance was real,
-  not inflated.
+  0.0137 at 599/1000 and 0.0077 at 741/1000) — **no longer in this group: the labels are wrong.** This
+  entry used to say the reference side was too thin to call them either way. Assembled and compared by
+  ANI, all three are 83–90% from the type strain of the species they were deposited as and 98.0–99.1%
+  from the type strains of *Ochrobactrum teleogrylli* and *O. soli*, a species NCBI files outside genus
+  *Brucella* and the set holds only as *Brucella* sp. See
+  [`unnamed_lineages.md`](unnamed_lineages.md). Status: to report; nothing has been sent. They barely
+  moved when the copy threshold was re-derived because the distance is real: the species' own members
+  are 97.6–99.5% ANI apart.
 * `SRR31481153`, submitted as *B. inopinata*, reported as *Brucella* sp. at 0.00043 with 982 of 1000
-  hashes and a `new` sequence type. It sits beside an unnamed lineage representative rather than an
-  *inopinata* genome, which probably says more about how few *inopinata* genomes exist than about the
-  label.
+  hashes and a `new` sequence type. It is 99.98% ANI from the unnamed strain 191011898 and 97.84% from
+  the *inopinata* type strain BO1, which is no nearer than the unnamed lineages sit to BO1. That is not
+  a mislabel ANI can establish, since everything in the classical clade clears 95% against BO1; it is
+  "*inopinata*" used for early-diverging *Brucella* in general. See
+  [`unnamed_lineages.md`](unnamed_lineages.md), which also covers the other 39 runs reported as
+  *Brucella* sp.
 
 ## PCR evidence
 

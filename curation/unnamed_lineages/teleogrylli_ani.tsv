@@ -1,0 +1,112 @@
+query	query_label	reference	reference_label	ani	fragments_mapped	fragments
+GCA_030063905.1	Brucella sp. NM4 (in the set)	GCA_030067775.1	Ochrobactrum sp. SSR SSR (nearest non-type)	99.98	1686	1725
+GCA_030063905.1	Brucella sp. NM4 (in the set)	SRR25828924	read set, submitted as B. anthropi	99.24	1505	1725
+GCA_030063905.1	Brucella sp. NM4 (in the set)	GCA_040372265.1	Brucella sp. NBRC 113783 (in the set)	99.21	1482	1725
+GCA_030063905.1	Brucella sp. NM4 (in the set)	GCA_003664555.1	Ochrobactrum soli BO-7 (type)	99.17	1541	1725
+GCA_030063905.1	Brucella sp. NM4 (in the set)	GCA_033799005.1	Brucella sp. NBRC 113783	99.13	1403	1725
+GCA_030063905.1	Brucella sp. NM4 (in the set)	SRR25828932	read set, submitted as B. anthropi	98.80	1478	1725
+GCA_030063905.1	Brucella sp. NM4 (in the set)	GCA_040391195.1	Brucella sp. (in the set; 2.1 Mb, partial)	98.36	623	1725
+GCA_030063905.1	Brucella sp. NM4 (in the set)	GCA_042681285.1	Ochrobactrum teleogrylli CGMCC 1.13984 (type)	98.15	1426	1725
+GCA_030063905.1	Brucella sp. NM4 (in the set)	GCA_006376685.1	Ochrobactrum teleogrylli LCB8 (type)	98.15	1420	1725
+GCA_030063905.1	Brucella sp. NM4 (in the set)	SRR12605656	read set, submitted as B. haematophila	97.82	1455	1725
+GCA_030063905.1	Brucella sp. NM4 (in the set)	GCA_023650615.1	Ochrobactrum gambitense (SeqCode)  (type)	91.14	770	1725
+GCA_030063905.1	Brucella sp. NM4 (in the set)	GCA_037479355.1	Ochrobactrum vermis MYb71 (type)	83.70	1020	1725
+GCA_030063905.1	Brucella sp. NM4 (in the set)	GCA_002975205.1	Ochrobactrum vermis MYb71 (type)	83.70	1020	1725
+GCA_030063905.1	Brucella sp. NM4 (in the set)	GCA_026241335.1	Ochrobactrum chromiisoli YY2X (type)	80.54	705	1725
+GCA_030063905.1	Brucella sp. NM4 (in the set)	GCA_002278035.1	Ochrobactrum quorumnocens A44 (type)	80.40	803	1725
+GCA_040372265.1	Brucella sp. NBRC 113783 (in the set)	GCA_033799005.1	Brucella sp. NBRC 113783	99.91	1603	1749
+GCA_040372265.1	Brucella sp. NBRC 113783 (in the set)	GCA_062042947.1	Ochrobactrum teleogrylli OP-FW39-A5 (nearest non-type)	99.80	1590	1749
+GCA_040372265.1	Brucella sp. NBRC 113783 (in the set)	SRR25828924	read set, submitted as B. anthropi	99.44	1498	1749
+GCA_040372265.1	Brucella sp. NBRC 113783 (in the set)	GCA_030063905.1	Brucella sp. NM4 (in the set)	99.19	1486	1749
+GCA_040372265.1	Brucella sp. NBRC 113783 (in the set)	GCA_003664555.1	Ochrobactrum soli BO-7 (type)	98.99	1491	1749
+GCA_040372265.1	Brucella sp. NBRC 113783 (in the set)	SRR25828932	read set, submitted as B. anthropi	98.79	1467	1749
+GCA_040372265.1	Brucella sp. NBRC 113783 (in the set)	GCA_040391195.1	Brucella sp. (in the set; 2.1 Mb, partial)	98.34	629	1749
+GCA_040372265.1	Brucella sp. NBRC 113783 (in the set)	GCA_042681285.1	Ochrobactrum teleogrylli CGMCC 1.13984 (type)	98.16	1424	1749
+GCA_040372265.1	Brucella sp. NBRC 113783 (in the set)	GCA_006376685.1	Ochrobactrum teleogrylli LCB8 (type)	98.13	1433	1749
+GCA_040372265.1	Brucella sp. NBRC 113783 (in the set)	SRR12605656	read set, submitted as B. haematophila	97.79	1444	1749
+GCA_040372265.1	Brucella sp. NBRC 113783 (in the set)	GCA_023650615.1	Ochrobactrum gambitense (SeqCode)  (type)	91.09	771	1749
+GCA_040372265.1	Brucella sp. NBRC 113783 (in the set)	GCA_037479355.1	Ochrobactrum vermis MYb71 (type)	83.70	1027	1749
+GCA_040372265.1	Brucella sp. NBRC 113783 (in the set)	GCA_002975205.1	Ochrobactrum vermis MYb71 (type)	83.70	1027	1749
+GCA_040372265.1	Brucella sp. NBRC 113783 (in the set)	GCA_026241335.1	Ochrobactrum chromiisoli YY2X (type)	80.86	710	1749
+GCA_040372265.1	Brucella sp. NBRC 113783 (in the set)	GCA_002278035.1	Ochrobactrum quorumnocens A44 (type)	80.39	793	1749
+GCA_033799005.1	Brucella sp. NBRC 113783	GCA_040372265.1	Brucella sp. NBRC 113783 (in the set)	99.99	1624	1626
+GCA_033799005.1	Brucella sp. NBRC 113783	GCA_062042915.1	Ochrobactrum teleogrylli OP-FW39-C7 (nearest non-type)	99.84	1511	1626
+GCA_033799005.1	Brucella sp. NBRC 113783	SRR25828924	read set, submitted as B. anthropi	99.44	1437	1626
+GCA_033799005.1	Brucella sp. NBRC 113783	GCA_030063905.1	Brucella sp. NM4 (in the set)	99.15	1414	1626
+GCA_033799005.1	Brucella sp. NBRC 113783	GCA_003664555.1	Ochrobactrum soli BO-7 (type)	98.94	1424	1626
+GCA_033799005.1	Brucella sp. NBRC 113783	SRR25828932	read set, submitted as B. anthropi	98.86	1390	1626
+GCA_033799005.1	Brucella sp. NBRC 113783	GCA_040391195.1	Brucella sp. (in the set; 2.1 Mb, partial)	98.40	617	1626
+GCA_033799005.1	Brucella sp. NBRC 113783	GCA_042681285.1	Ochrobactrum teleogrylli CGMCC 1.13984 (type)	98.16	1369	1626
+GCA_033799005.1	Brucella sp. NBRC 113783	GCA_006376685.1	Ochrobactrum teleogrylli LCB8 (type)	98.15	1370	1626
+GCA_033799005.1	Brucella sp. NBRC 113783	SRR12605656	read set, submitted as B. haematophila	97.79	1384	1626
+GCA_033799005.1	Brucella sp. NBRC 113783	GCA_023650615.1	Ochrobactrum gambitense (SeqCode)  (type)	91.16	729	1626
+GCA_033799005.1	Brucella sp. NBRC 113783	GCA_037479355.1	Ochrobactrum vermis MYb71 (type)	83.79	971	1626
+GCA_033799005.1	Brucella sp. NBRC 113783	GCA_002975205.1	Ochrobactrum vermis MYb71 (type)	83.79	971	1626
+GCA_033799005.1	Brucella sp. NBRC 113783	GCA_026241335.1	Ochrobactrum chromiisoli YY2X (type)	80.72	680	1626
+GCA_033799005.1	Brucella sp. NBRC 113783	GCA_002278035.1	Ochrobactrum quorumnocens A44 (type)	80.35	742	1626
+GCA_040391195.1	Brucella sp. (in the set; 2.1 Mb, partial)	GCA_022627935.1	Ochrobactrum sp. C6C9 C6C9 (nearest non-type)	99.02	631	686
+GCA_040391195.1	Brucella sp. (in the set; 2.1 Mb, partial)	GCA_040372265.1	Brucella sp. NBRC 113783 (in the set)	98.96	637	686
+GCA_040391195.1	Brucella sp. (in the set; 2.1 Mb, partial)	SRR25828932	read set, submitted as B. anthropi	98.93	626	686
+GCA_040391195.1	Brucella sp. (in the set; 2.1 Mb, partial)	SRR25828924	read set, submitted as B. anthropi	98.93	634	686
+GCA_040391195.1	Brucella sp. (in the set; 2.1 Mb, partial)	GCA_033799005.1	Brucella sp. NBRC 113783	98.90	624	686
+GCA_040391195.1	Brucella sp. (in the set; 2.1 Mb, partial)	GCA_003664555.1	Ochrobactrum soli BO-7 (type)	98.90	636	686
+GCA_040391195.1	Brucella sp. (in the set; 2.1 Mb, partial)	GCA_030063905.1	Brucella sp. NM4 (in the set)	98.86	636	686
+GCA_040391195.1	Brucella sp. (in the set; 2.1 Mb, partial)	GCA_042681285.1	Ochrobactrum teleogrylli CGMCC 1.13984 (type)	98.53	629	686
+GCA_040391195.1	Brucella sp. (in the set; 2.1 Mb, partial)	GCA_006376685.1	Ochrobactrum teleogrylli LCB8 (type)	98.53	631	686
+GCA_040391195.1	Brucella sp. (in the set; 2.1 Mb, partial)	SRR12605656	read set, submitted as B. haematophila	98.13	631	686
+GCA_040391195.1	Brucella sp. (in the set; 2.1 Mb, partial)	GCA_023650615.1	Ochrobactrum gambitense (SeqCode)  (type)	89.63	286	686
+GCA_040391195.1	Brucella sp. (in the set; 2.1 Mb, partial)	GCA_037479355.1	Ochrobactrum vermis MYb71 (type)	81.13	375	686
+GCA_040391195.1	Brucella sp. (in the set; 2.1 Mb, partial)	GCA_002975205.1	Ochrobactrum vermis MYb71 (type)	81.13	375	686
+GCA_040391195.1	Brucella sp. (in the set; 2.1 Mb, partial)	GCA_002278035.1	Ochrobactrum quorumnocens A44 (type)	78.62	280	686
+GCA_040391195.1	Brucella sp. (in the set; 2.1 Mb, partial)	GCA_026241335.1	Ochrobactrum chromiisoli YY2X (type)	78.42	254	686
+SRR12605656	read set, submitted as B. haematophila	GCA_042681285.1	Ochrobactrum teleogrylli CGMCC 1.13984 (type)	97.99	1443	1604
+SRR12605656	read set, submitted as B. haematophila	GCA_006376685.1	Ochrobactrum teleogrylli LCB8 (type)	97.97	1437	1604
+SRR12605656	read set, submitted as B. haematophila	GCA_062014234.1	Ochrobactrum teleogrylli (nearest non-type)	97.95	1184	1604
+SRR12605656	read set, submitted as B. haematophila	SRR25828932	read set, submitted as B. anthropi	97.89	1391	1604
+SRR12605656	read set, submitted as B. haematophila	GCA_003664555.1	Ochrobactrum soli BO-7 (type)	97.87	1438	1604
+SRR12605656	read set, submitted as B. haematophila	GCA_030063905.1	Brucella sp. NM4 (in the set)	97.85	1455	1604
+SRR12605656	read set, submitted as B. haematophila	SRR25828924	read set, submitted as B. anthropi	97.85	1431	1604
+SRR12605656	read set, submitted as B. haematophila	GCA_033799005.1	Brucella sp. NBRC 113783	97.81	1369	1604
+SRR12605656	read set, submitted as B. haematophila	GCA_040372265.1	Brucella sp. NBRC 113783 (in the set)	97.79	1452	1604
+SRR12605656	read set, submitted as B. haematophila	GCA_040391195.1	Brucella sp. (in the set; 2.1 Mb, partial)	97.60	617	1604
+SRR12605656	read set, submitted as B. haematophila	GCA_023650615.1	Ochrobactrum gambitense (SeqCode)  (type)	91.07	764	1604
+SRR12605656	read set, submitted as B. haematophila	GCA_012103105.1	Brucella haematophila CIP 109452 (type)	89.86	1325	1604
+SRR12605656	read set, submitted as B. haematophila	GCA_037479355.1	Ochrobactrum vermis MYb71 (type)	83.65	959	1604
+SRR12605656	read set, submitted as B. haematophila	GCA_002975205.1	Ochrobactrum vermis MYb71 (type)	83.65	959	1604
+SRR12605656	read set, submitted as B. haematophila	GCA_012103185.1	Brucella anthropi ATCC 49188 (type)	82.84	953	1604
+SRR12605656	read set, submitted as B. haematophila	GCA_002278035.1	Ochrobactrum quorumnocens A44 (type)	80.26	756	1604
+SRR12605656	read set, submitted as B. haematophila	GCA_026241335.1	Ochrobactrum chromiisoli YY2X (type)	80.19	695	1604
+SRR25828924	read set, submitted as B. anthropi	GCA_062042947.1	Ochrobactrum teleogrylli OP-FW39-A5 (nearest non-type)	99.52	1496	1672
+SRR25828924	read set, submitted as B. anthropi	GCA_040372265.1	Brucella sp. NBRC 113783 (in the set)	99.48	1505	1672
+SRR25828924	read set, submitted as B. anthropi	GCA_033799005.1	Brucella sp. NBRC 113783	99.42	1429	1672
+SRR25828924	read set, submitted as B. anthropi	GCA_030063905.1	Brucella sp. NM4 (in the set)	99.24	1512	1672
+SRR25828924	read set, submitted as B. anthropi	SRR25828932	read set, submitted as B. anthropi	99.13	1472	1672
+SRR25828924	read set, submitted as B. anthropi	GCA_003664555.1	Ochrobactrum soli BO-7 (type)	99.05	1497	1672
+SRR25828924	read set, submitted as B. anthropi	GCA_040391195.1	Brucella sp. (in the set; 2.1 Mb, partial)	98.35	625	1672
+SRR25828924	read set, submitted as B. anthropi	GCA_042681285.1	Ochrobactrum teleogrylli CGMCC 1.13984 (type)	98.14	1428	1672
+SRR25828924	read set, submitted as B. anthropi	GCA_006376685.1	Ochrobactrum teleogrylli LCB8 (type)	98.12	1423	1672
+SRR25828924	read set, submitted as B. anthropi	SRR12605656	read set, submitted as B. haematophila	97.81	1425	1672
+SRR25828924	read set, submitted as B. anthropi	GCA_023650615.1	Ochrobactrum gambitense (SeqCode)  (type)	91.07	759	1672
+SRR25828924	read set, submitted as B. anthropi	GCA_012103105.1	Brucella haematophila CIP 109452 (type)	90.03	1344	1672
+SRR25828924	read set, submitted as B. anthropi	GCA_037479355.1	Ochrobactrum vermis MYb71 (type)	83.62	993	1672
+SRR25828924	read set, submitted as B. anthropi	GCA_002975205.1	Ochrobactrum vermis MYb71 (type)	83.62	993	1672
+SRR25828924	read set, submitted as B. anthropi	GCA_012103185.1	Brucella anthropi ATCC 49188 (type)	83.00	985	1672
+SRR25828924	read set, submitted as B. anthropi	GCA_026241335.1	Ochrobactrum chromiisoli YY2X (type)	80.59	692	1672
+SRR25828924	read set, submitted as B. anthropi	GCA_002278035.1	Ochrobactrum quorumnocens A44 (type)	80.35	778	1672
+SRR25828932	read set, submitted as B. anthropi	GCA_022627935.1	Ochrobactrum sp. C6C9 C6C9 (nearest non-type)	99.57	1465	1750
+SRR25828932	read set, submitted as B. anthropi	SRR25828924	read set, submitted as B. anthropi	99.07	1478	1750
+SRR25828932	read set, submitted as B. anthropi	GCA_003664555.1	Ochrobactrum soli BO-7 (type)	98.95	1465	1750
+SRR25828932	read set, submitted as B. anthropi	GCA_040372265.1	Brucella sp. NBRC 113783 (in the set)	98.82	1468	1750
+SRR25828932	read set, submitted as B. anthropi	GCA_030063905.1	Brucella sp. NM4 (in the set)	98.82	1484	1750
+SRR25828932	read set, submitted as B. anthropi	GCA_033799005.1	Brucella sp. NBRC 113783	98.81	1389	1750
+SRR25828932	read set, submitted as B. anthropi	GCA_040391195.1	Brucella sp. (in the set; 2.1 Mb, partial)	98.33	619	1750
+SRR25828932	read set, submitted as B. anthropi	GCA_006376685.1	Ochrobactrum teleogrylli LCB8 (type)	98.20	1386	1750
+SRR25828932	read set, submitted as B. anthropi	GCA_042681285.1	Ochrobactrum teleogrylli CGMCC 1.13984 (type)	98.14	1390	1750
+SRR25828932	read set, submitted as B. anthropi	SRR12605656	read set, submitted as B. haematophila	97.90	1405	1750
+SRR25828932	read set, submitted as B. anthropi	GCA_023650615.1	Ochrobactrum gambitense (SeqCode)  (type)	91.09	754	1750
+SRR25828932	read set, submitted as B. anthropi	GCA_012103105.1	Brucella haematophila CIP 109452 (type)	89.98	1341	1750
+SRR25828932	read set, submitted as B. anthropi	GCA_037479355.1	Ochrobactrum vermis MYb71 (type)	83.65	1020	1750
+SRR25828932	read set, submitted as B. anthropi	GCA_002975205.1	Ochrobactrum vermis MYb71 (type)	83.65	1020	1750
+SRR25828932	read set, submitted as B. anthropi	GCA_012103185.1	Brucella anthropi ATCC 49188 (type)	83.03	998	1750
+SRR25828932	read set, submitted as B. anthropi	GCA_026241335.1	Ochrobactrum chromiisoli YY2X (type)	80.47	714	1750
+SRR25828932	read set, submitted as B. anthropi	GCA_002278035.1	Ochrobactrum quorumnocens A44 (type)	80.18	789	1750

@@ -1,0 +1,26 @@
+reference	ncbi_label	strain	best_type_strain	ani	fragments_mapped	fragments	at_or_above_95
+GCA_048799565.1	Brucella sp.		Brucella tritici DSM 13340	99.34	1490	1784	yes
+GCA_030063905.1	Brucella sp. NM4	NM4	Ochrobactrum soli BO-7	99.17	1541	1725	yes
+GCA_026014005.1	Brucella sp. JSBI001	JSBI001	Brucella lupini CB1	98.99	1434	1627	yes
+GCA_040372265.1	Brucella sp. NBRC 113783	NBRC 113783	Ochrobactrum soli BO-7	98.99	1491	1749	yes
+GCA_040370055.1	Brucella sp. NBRC 13694	NBRC 13694	Brucella lupini CB1	98.94	1445	1702	yes
+GCA_040391195.1	Brucella sp.		Ochrobactrum soli BO-7	98.90	636	686	yes
+GCA_039674265.1	Brucella sp. TWI559	TWI559	Ochrobactrum chromiisoli YY2X	98.52	1120	1336	yes
+GCA_039674445.1	Brucella sp. TWI432	TWI432	Ochrobactrum chromiisoli YY2X	98.47	1125	1437	yes
+GCA_025908475.1	Brucella sp. MAB-22	MAB-22	Brucella anthropi ATCC 49188	98.20	1476	1606	yes
+GCA_032085995.1	Brucella sp.		Brucella pseudogrignonensis CIP 109451	98.05	859	871	yes
+GCA_052246815.1	Brucella sp. RRSP16	RRSP16	Brucella ciceri DSM 22292	97.79	1394	1553	yes
+GCA_032066345.1	Brucella sp.		Brucella pseudogrignonensis CIP 109451	97.53	1555	1667	yes
+GCA_040371715.1	Brucella sp. NBRC 14130	NBRC 14130	Brucella ciceri DSM 22292	97.47	1377	1799	yes
+GCA_031987745.1	Brucella sp.		Brucella haematophila CIP 109452	97.42	1363	1451	yes
+GCA_032007605.1	Brucella sp.		Brucella pseudogrignonensis CIP 109451	97.41	1436	1490	yes
+GCA_032114075.1	Brucella sp.		Brucella pseudogrignonensis CIP 109451	96.80	1252	1392	yes
+GCA_032104425.1	Brucella sp.		Brucella pseudogrignonensis CIP 109451	96.45	424	452	yes
+GCA_040369775.1	Brucella sp. NBRC 12953	NBRC 12953	Brucella pseudogrignonensis CIP 109451	96.18	1482	1662	yes
+GCA_054871705.1	Brucella sp. LJL56	LJL56	Brucella pecoris DSM 23868	95.23	1361	1542	yes
+GCA_052045675.1	Brucella sp. 22210	22210	Brucella haematophila CIP 109452	94.57	1470	1812	no
+GCA_030268145.1	Brucella sp. NBRC 12950	NBRC 12950	Brucella pseudogrignonensis CIP 109451	94.43	1304	1943	no
+GCA_061339055.1	Brucella sp. RCAD1684	RCAD1684	Brucella pseudintermedia CCUG 34735	91.66	1167	1533	no
+GCA_062042698.1	Brucella sp. OP-FW9-E3	OP-FW9-E3	Brucella ciceri DSM 22292	90.39	1264	1564	no
+GCA_028621035.1	Brucella gallinifaecis	IPG27	Brucella pseudogrignonensis CIP 109451	87.34	1007	1455	no
+GCA_047308065.1	Brucella sp. H1_1004	H1_1004	Brucella pseudogrignonensis CIP 109451	85.66	1033	1484	no
