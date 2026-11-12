@@ -30,9 +30,13 @@ claim was supporting. Corrected in `brucellaid/mash.py`, [How it works](How-it-w
   pre-2.1 sweep saw 22 runs spanning 0 to 146. The difference is the re-derived threshold removing a trace
   population from deep mixed libraries, which is what the one borderline case at 146 hashes turned out to
   be.
-* **Eighteen runs cannot be typed**, because their two mates hold unequal numbers of reads as published —
-  both files match ENA's own md5, so it is the archive's data and not a bad download. MASH named all
-  eighteen at 995 to 997 of 1000 hashes; Seal refuses an unequal pair, so they carry no sequence type.
+* **Eighteen runs publish three fastq files**, which is how ENA presents a run holding both paired and
+  unpaired reads: `_1` is the unpaired ones and `_2`/`_3` are the mates. The sweep's staging paired `_1`
+  with `_2`, feeding the orphan file in as R1, so Seal refused the pair and all eighteen came back with no
+  sequence type. Re-run on `_2`/`_3` they type cleanly — seventeen *B. melitensis* ST 8 and one
+  *B. microti* ST 53, each agreeing with the species MASH called, whose distances moved by at most one
+  shared hash. `find_samples()` now warns when a `_3` file sits beside a pair it has formed, since that is
+  the only point at which the layout is visible.
 * 20 of the 4,044 runs were not analysed: 18 never finished downloading a second mate, and two were
   already unavailable. A run with one mate is left out rather than analysed half-depth, since the copy
   threshold is derived from coverage.

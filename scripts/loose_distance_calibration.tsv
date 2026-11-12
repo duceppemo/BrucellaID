@@ -179,7 +179,7 @@ ERR10445432	Brucella melitensis	Brucella melitensis	yes	0.000096	996
 ERR10445433	Brucella melitensis	Brucella melitensis	yes	0.000096	996
 ERR10445434	Brucella melitensis	Brucella melitensis	yes	0.000096	996
 ERR10445435	Brucella melitensis	Brucella melitensis	yes	0.000072	997
-ERR10445436	Brucella melitensis	Brucella melitensis	yes	0.000096	996
+ERR10445436	Brucella melitensis	Brucella melitensis	yes	0.000072	997
 ERR10445437	Brucella melitensis	Brucella melitensis	yes	0.000072	997
 ERR10445438	Brucella melitensis	Brucella melitensis	yes	0.000072	997
 ERR10445439	Brucella melitensis	Brucella melitensis	yes	0.000072	997
@@ -228,7 +228,7 @@ ERR10445481	Brucella melitensis	Brucella melitensis	yes	0.000192	992
 ERR10445482	Brucella melitensis	Brucella melitensis	yes	0.000192	992
 ERR10445483	Brucella melitensis	Brucella melitensis	yes	0.000119	995
 ERR10445484	Brucella melitensis	Brucella melitensis	yes	0.000168	993
-ERR10445485	Brucella melitensis	Brucella melitensis	yes	0.000096	996
+ERR10445485	Brucella melitensis	Brucella melitensis	yes	0.000119	995
 ERR10445486	Brucella melitensis	Brucella melitensis	yes	0.000240	990
 ERR10445487	Brucella melitensis	Brucella melitensis	yes	0.000264	989
 ERR10445488	Brucella melitensis	Brucella melitensis	yes	0.000192	992
@@ -3895,7 +3895,7 @@ SRR867711	Brucella melitensis	Brucella suis	no	0.001575	937
 SRR8749595	Brucella abortus	Brucella abortus	yes	0.000240	990
 SRR8790675	Brucella melitensis	Brucella melitensis	yes	0.000706	971
 SRR8983080	Brucella abortus	Brucella abortus	yes	0.000144	994
-SRR9164843	Brucella microti	Brucella microti	yes	0.000119	995
+SRR9164843	Brucella microti	Brucella microti	yes	0.000168	993
 SRR960759	Brucella abortus	Brucella abortus	yes	0.000483	980
 SRR960771	Brucella abortus	Brucella abortus	yes	0.000337	986
 SRR960772	Brucella abortus	Brucella abortus	yes	0.000557	977

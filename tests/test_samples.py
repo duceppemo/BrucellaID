@@ -50,6 +50,34 @@ def test_find_samples_pairs_and_singles(tmp_path):
     assert [f.endswith('A_R1.fastq.gz') for f in samples[0].files] == [True, False]
 
 
+def test_find_samples_warns_about_the_ena_three_file_layout(tmp_path, caplog):
+    """
+    ENA publishes a run holding both paired and unpaired reads as _1 (unpaired) and _2/_3 (the mates).
+
+    Pairing _1 with _2 then feeds the orphan file in as R1 and the real R1 as R2, which hold different
+    numbers of reads, so Seal refuses the pair and the sample gets no sequence type with nothing to say
+    why. Nothing here can tell that layout from an ordinary pair with an unrelated _3 beside it, so the
+    pairing is left alone and a warning names the possibility instead.
+    """
+    import logging
+    reads = touch(tmp_path / 'reads', 'SRR1_1.fastq.gz', 'SRR1_2.fastq.gz', 'SRR1_3.fastq.gz')
+    with caplog.at_level(logging.WARNING):
+        samples = find_samples(reads)
+    # The pairing is NOT silently reinterpreted: _1/_2 stay a pair and _3 stays a single-end sample.
+    assert [s.name for s in samples] == ['SRR1', 'SRR1_3']
+    assert [s.paired for s in samples] == [True, False]
+    assert 'SRR1_3' in caplog.text and 'unpaired' in caplog.text
+
+
+def test_find_samples_says_nothing_when_there_is_no_third_file(tmp_path, caplog):
+    """The warning must not fire on an ordinary pair, which is almost every sample."""
+    import logging
+    reads = touch(tmp_path / 'reads', 'SRR1_1.fastq.gz', 'SRR1_2.fastq.gz')
+    with caplog.at_level(logging.WARNING):
+        find_samples(reads)
+    assert 'unpaired' not in caplog.text
+
+
 def test_find_samples_skips_what_is_not_a_regular_file(tmp_path, caplog):
     """
     A FIFO blocks the run forever on open(), and a link to a device reads without end.

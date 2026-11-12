@@ -138,6 +138,19 @@ def find_samples(folder, exclude=()):
     if errors:
         raise BrucellaIDError('Several files give the same sample name. Rename, move or remove them:\n  '
                               + '\n  '.join(errors))
+    # ENA publishes a run that holds both paired and unpaired reads as THREE files: "_1" is the unpaired
+    # ones and "_2"/"_3" are the mates. Nothing here can tell that apart from an ordinary "_1"/"_2" pair
+    # with an unrelated "_3" beside it, so the pairing is left as it is -- but when it is the ENA layout
+    # the pairing is wrong, and silently so: the orphan file goes in as R1, the real R1 as R2, and the two
+    # hold different numbers of reads. Seal then refuses the pair and the sample gets no sequence type,
+    # with nothing to say why. So say it here.
+    named = {sample.name for sample in samples}
+    for sample in samples:
+        if len(sample.files) == 2 and '{}_3'.format(sample.name) in named:
+            log.warning('%s: a "%s_3" file sits beside this pair. ENA publishes a run holding both paired '
+                        'and unpaired reads that way, "_1" being the unpaired ones and "_2"/"_3" the '
+                        'mates. If that is what these are, the pair is "_2" and "_3": pass them with '
+                        '-r1/-r2, or move "_1" out of the folder.', sample.name, sample.name)
     if assemblies:
         log.warning('%d fasta file(s) in %s were skipped. %s', len(assemblies), folder, ASSEMBLY_MESSAGE)
     if not samples:

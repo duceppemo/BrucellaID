@@ -406,8 +406,10 @@ The read-set tables cover every usable paired Illumina WGS run under NCBI taxon 
 2026-11-03, **4,024 of 4,044 analysed**, re-measured under the 2.1.0 k-mer copy threshold. Twenty are
 missing: `SRR9831875` and `SRR3096373` were already unavailable from ENA, and eighteen never finished
 downloading a second mate. A run with one mate is left out rather than analysed half-depth, because the
-copy threshold is derived from coverage. A separate eighteen runs were analysed but could not be typed,
-their two mates holding unequal numbers of reads as published.
+copy threshold is derived from coverage. A separate eighteen runs publish three fastq files, which is how
+ENA presents a run holding both paired and unpaired reads: `_1` is the unpaired ones and `_2`/`_3` are the
+mates. The first pass staged them as `_1` plus `_2` and so mis-paired them; re-run on `_2`/`_3` all
+eighteen type cleanly.
 
 The assembly tables come from the curation of the extended reference set and cover the 454 dereplicated
 representatives of the mashID pack source collection, not all 2,022 assemblies, so the assembly side is

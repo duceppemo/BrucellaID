@@ -168,13 +168,27 @@ the current threshold that file held a weighted 207-run sample instead, which pu
 0.00066 against the 0.00068 measured here — close enough that the threshold chosen from the sample needed
 no change.
 
-### What the sweep could not type
+### The three-file runs, and a staging mistake worth recording
 
-Eighteen runs have **unequal numbers of reads in their two mates**, as published: both files match the
-md5 ENA records for them, so this is the archive's data rather than a bad download. MASH is unaffected and
-named all eighteen, sharing 995 to 997 of 1000 hashes, but Seal refuses an unequal pair, so they carry no
-sequence type. They are reported with their error, which is why the species figures above cover them and
-nothing resting on an ST does.
+Eighteen of these runs publish **three** fastq files rather than two. That is how ENA presents a run
+holding both paired and unpaired reads: `_1` is the unpaired ones and `_2`/`_3` are the mates, which carry
+identical read counts. On `ERR10445439` the three hold 16,700, 1,163,751 and 1,163,751 reads.
+
+The first pass of this sweep staged every run as `_1` plus `_2`, so for these eighteen it fed the orphan
+file in as R1 and the real R1 as R2. The two then held different numbers of reads, Seal refused the pair,
+and all eighteen came back with an error and no sequence type. An earlier version of this page reported
+that as a property of the archive — "unequal numbers of reads in their two mates, as published" — which
+was wrong. All three files match the md5 ENA publishes because there is nothing wrong with them.
+
+Re-run on `_2`/`_3`, **all eighteen type cleanly**: seventeen as *B. melitensis* ST 8 and one,
+`SRR9164843`, as *B. microti* ST 53, each agreeing with the species MASH called. The species figures above
+are unaffected, because MASH had named all eighteen correctly either way and their distances moved by at
+most one shared hash.
+
+The lesson is about the denominator rather than the tool: a sweep that globs `_1` and assumes `_2` is its
+mate will mis-pair exactly the runs that carry unpaired reads, and it will do so silently. BrucellaID now
+warns when a `_3` file sits beside a pair it has formed, which is the only point at which the layout is
+visible.
 
 ## What this does not establish
 
