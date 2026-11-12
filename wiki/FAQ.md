@@ -30,7 +30,7 @@ the suite simulates 20x and the shallowest real library in it is 47x, so run
 It says what the species rests on. `MASH` is the distance alone, `MASH+ST (agree)` is both saying the same
 thing, and `(arbitrated)` means a reference of a second species was within 0.0005 of the closest one — so
 MASH had not really chosen — and the sequence type chose among those species. Comparing each packaged
-genome with all the others, a second species falls inside the margin for 38 of the 432 default references
+genome with all the others, a second species falls inside the margin for 38 of the 431 default references
 over 14 species pairs — *canis*/*suis*, *ceti*/*pinnipedialis* and the former *Ochrobactrum* ones among
 them — and for 7 of vSNP's 16 over 8 pairs. The classical *canis*/*suis* case is the one that comes up in
 practice, and it comes up the same way under either set.
@@ -47,7 +47,7 @@ nine loci. `--no-st-species` leaves the ST out of it entirely. See
 
 ### Why not just add more reference genomes instead?
 More references fix a different problem than the one the ST fixes. *B. canis* and *B. suis* bv. 4 are
-0.00024 apart, which is inside the variation within either species: in the 432-genome default set the
+0.00024 apart, which is inside the variation within either species: in the 431-genome default set the
 nearest pair of *canis* and *suis* genomes is 0.000264 apart, still the closest pair of different species
 in the sketch. More references move that boundary around; they do not create one, and the MLST loci, which
 do separate the two, are what settles it.
@@ -57,9 +57,9 @@ What more references *do* fix is coverage, which is why the extended set is the 
 `--reference-set vsnp` is still there for the runs that want the old 16, and nothing else.
 
 ### What is the extended reference set?
-432 curated genomes covering all 30 named species of the *Brucella* clade (the 2020 taxonomy moved
+431 curated genomes covering all 30 named species of the *Brucella* clade (the 2020 taxonomy moved
 *Ochrobactrum* into it) plus the lineages that have no name yet. It is what a run uses from 2.0.
-Five of its genomes carry a name outside the genus, *Ochrobactrum teleogrylli* or *O. chromiisoli*: two
+Four of its genomes carry a name outside the genus, *Ochrobactrum teleogrylli* or *O. chromiisoli*: two
 species described after the move that have no *Brucella* name, so a sample can be reported under either.
 One of the 30 took some finding. Nothing in INSDC is labelled *B. papionis*, so it looked as though no
 set could carry it — but the genome is there under *Brucella* sp., and

@@ -40,7 +40,7 @@ The reference data in `brucellaid/data/`, plus the logo the reports carry:
 
 | File | What it is |
 | --- | --- |
-| `references_extended.msh` | The MASH sketch of the 432 curated genomes a run identifies against by default from 2.0: all 30 named species of the clade, plus the lineages with no name yet |
+| `references_extended.msh` | The MASH sketch of the 431 curated genomes a run identifies against by default from 2.0: all 30 named species of the clade, plus the lineages with no name yet |
 | `references_extended.tsv` | What each of those genomes is. Its `code` is the species epithet (`abortus5`, `anthropi`), not a vSNP code |
 | `references.msh` | The MASH sketch of the 16 *Brucella* reference genomes, as vSNP assembled it. `--reference-set vsnp` selects it; it was the default before 2.0 |
 | `references.tsv` | What each genome of that sketch is: vSNP species code, species, biovar, strain, NCBI accessions |
@@ -51,7 +51,7 @@ The reference data in `brucellaid/data/`, plus the logo the reports carry:
 
 `scripts/make_mlst_data.py` rebuilds the two MLST files from PubMLST and `scripts/make_st_species.py` rebuilds
 the ST to species table from PubMLST's isolate database. The two sketches have a script each, and they are not
-interchangeable: `scripts/make_extended_references.py` rebuilds the 432-genome default from the accessions of
+interchangeable: `scripts/make_extended_references.py` rebuilds the 431-genome default from the accessions of
 `references_extended.tsv`, and `scripts/make_reference_data.py` rebuilds the 16-genome vSNP sketch from the
 accessions of `references.tsv`. Run them, check what changed, and say in the pull request which
 day the data was downloaded; `wiki/Changelog.md` records it too. A sketch must keep MASH's defaults (k = 21,

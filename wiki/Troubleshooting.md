@@ -30,7 +30,7 @@ The reads share fewer than 150 of the reference's 1000 hashes. In order of likel
    ([2 at low coverage, one more per 5x](K-mer-threshold)), so a read set full of errors loses most of its
    k-mers. Trim the reads and run it again.
 4. **A sample is not what you think.** Check the `brucellaid_mash.tsv` rows: a sample that is *Brucella*
-   but far from all 432 references is worth knowing about — the `Notes` column says so itself, as a loose
+   but far from all 431 references is worth knowing about — the `Notes` column says so itself, as a loose
    match, when the closest one is more than 0.001 away.
 
 ## The sequence type is `ND`

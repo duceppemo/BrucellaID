@@ -5,9 +5,10 @@ clade, matching no named species. *B. papionis* was found by chasing exactly tha
 ([`papionis/README.md`](papionis/README.md)), so all 43 were chased the same way: assembled, grouped,
 and compared by ANI with the type strains, with the nearest named genomes and with each other.
 
-**Six labels in the reference set were changed on this evidence, and no genome was added or removed:**
-`GCA_900095155.1` is now carried as *Brucella* sp. instead of *B. inopinata*, and five genomes that were
-*Brucella* sp. now carry the names *Ochrobactrum teleogrylli* and *O. chromiisoli* — see
+**Five labels in the reference set were changed on this evidence and one genome was removed:**
+`GCA_900095155.1` is now carried as *Brucella* sp. instead of *B. inopinata*, four genomes that were
+*Brucella* sp. now carry the names *Ochrobactrum teleogrylli* and *O. chromiisoli*, and
+`GCA_040391195.1`, a partial genome, is out of the set, which now holds 431 — see
 [What was changed](#what-was-changed). What the evidence would support and was left alone is under
 [What was not changed](#what-was-not-changed). Everything between here and those two sections describes
 the sweep as it was measured, before any relabel: with them, 41 runs are reported as *Brucella* sp., not
@@ -229,10 +230,11 @@ describe species whose members are 0.02 apart.
 
 ## What was changed
 
-Six labels, in two steps. Each is a row of `brucellaid/data/references_extended.tsv` and a `RELABEL` row
-in `scripts/extended_references_curation.tsv`. The sketch is untouched: a label is a row of the table,
-not part of the sketch. The set holds 432 genomes as before: 30 named *Brucella* species, two
-*Ochrobactrum* species, and 44 unnamed genomes.
+Five labels and one removal, in three steps. Each relabel is a row of
+`brucellaid/data/references_extended.tsv` and a `RELABEL` row in
+`scripts/extended_references_curation.tsv`, and needs no new sketch: a label is a row of the table. The
+removal is an `EXCLUDE` row and a rebuilt sketch. The set now holds 431 genomes: 30 named *Brucella*
+species, two *Ochrobactrum* species in four genomes, and 44 unnamed genomes.
 
 ### `GCA_900095155.1`, from *B. inopinata* to *Brucella* sp.
 
@@ -259,7 +261,7 @@ as *B. inopinata*.
 | --- | --- | --- | --- |
 | `GCA_030063905.1` | NM4 | *O. teleogrylli* | 99.17% *O. soli* BO-7, 98.15% *O. teleogrylli* CGMCC 1.13984 |
 | `GCA_040372265.1` | NBRC 113783 | *O. teleogrylli* | 98.99%, 98.16% |
-| `GCA_040391195.1` | — | *O. teleogrylli* | 98.90%, 98.53%, on 636 and 629 of 686 fragments |
+| `GCA_040391195.1` | — | *O. teleogrylli*, then removed (below) | 98.90%, 98.53%, on 636 and 629 of 686 fragments |
 | `GCA_039674265.1` | TWI559 | *O. chromiisoli* | 98.52% *O. chromiisoli* YY2X |
 | `GCA_039674445.1` | TWI432 | *O. chromiisoli* | 98.47% |
 
@@ -275,7 +277,7 @@ clade, so there is no synonymy to weigh. The two genomes were relabelled with th
 set does not name one such species and leave the other unnamed.
 
 **These are the only names in the set outside genus *Brucella*.** They are carried as published because
-no other name exists. A sample matching one of the five is reported as *Ochrobactrum teleogrylli* or
+no other name exists. A sample matching one of these genomes is reported as *Ochrobactrum teleogrylli* or
 *Ochrobactrum chromiisoli*.
 
 | Population | Samples whose call changes |
@@ -288,9 +290,25 @@ Re-running the unnamed samples showed that a sentence on the wiki's validation p
 of this: it gave them as 53 reported *Brucella* sp. and 40 named, where the full run against the
 432-genome set had measured 56 and 37. It is corrected there.
 
-`GCA_040391195.1` is relabelled, not vouched for. It is a 2.1 Mb partial genome of a species of about
-5 Mb, no run of the sweep has it as its best match, and whether it should be in the set at all is a
-separate question that needs the sketch rebuilt.
+### `GCA_040391195.1`, removed
+
+It was relabelled with the other four and then taken out. It is *O. teleogrylli* by ANI, but it is
+2.1 Mb of a species of about 5 Mb, and a reference holding two fifths of its genome cannot be matched
+closely by a complete library of its own species: the three *O. teleogrylli* runs share 301 to 362 of
+1000 hashes with it against 489 to 741 with the genome they do match. The two complete genomes carry the
+species.
+
+| Check | Result |
+| --- | --- |
+| The rebuilt sketch against the one it replaces | 431 genomes, each with the same length and the same 1000 hashes as before; `GCA_040391195.1` is the only difference |
+| The 4,024 public read sets | none changes. No run had it as its best match, and the only runs with it near the top are the three above, where it ranked third, and unidentified runs sharing 0 to 8 hashes with everything. The three were run against the new sketch and are identical in every column. |
+| The 2,022 assemblies, as simulated reads | one changes, its own: still reported as *O. teleogrylli*, now against `GCA_040372265.1` at 0.031 and 353 of 1000 hashes with a loose-match note, where it matched itself at 0.0003. The 95 unnamed samples are 50, 43 and 2 as before, eight of the 43 now with a note. |
+| Figures that count neighbours inside the close-match margin | unchanged, recomputed: 38 references have a second species within the margin, the densest case is 15 and the 99th percentile 12. Its nearest genome in the set was 0.031 away, so it was in nobody's margin. |
+
+A distance between a sample and a reference does not depend on what else the sketch holds, so a removal
+can only move a sample that had the removed genome as its best match or inside the margin of it. That is
+why two populations of thousands can be cleared by looking for it in their hit lists rather than by
+running them again.
 
 ## What was not changed
 

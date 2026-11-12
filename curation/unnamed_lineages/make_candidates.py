@@ -21,7 +21,7 @@ A = "/media/8tb/analyses"
 def table(path):
     with open(path, newline="") as handle:
         rows = [r for r in csv.reader(handle, delimiter="\t") if r and not r[0].startswith("#")]
-    return [dict(zip(rows[0], r)) for r in rows[1:]]
+    return [dict(zip(rows[0], r, strict=False)) for r in rows[1:]]
 
 
 def assembly_stats(fasta):

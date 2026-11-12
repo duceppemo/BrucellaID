@@ -203,7 +203,7 @@ so a wrong label here travels further than an ordinary isolate's would.
 is available: the former *Ochrobactrum* species do not carry the classical MLST alleles, and six of the
 nine loci got no read at all. The distance evidence is decisive on its own — 0.0076 from the nearest
 *B. anthropi* against 0.0366–0.0463 from the seven deposits of the *cytisi* type strain, the nearest of
-which ranks well down the 432 references. Every one of its top eight hits is *anthropi*. Status: to report.
+which ranks well down the references. Every one of its top eight hits is *anthropi*. Status: to report.
 
 ## Read sets that contain no *Brucella* sequence
 
@@ -310,7 +310,7 @@ mash dist curation.msh curation.msh > allvsall.tsv
 
 # a read set against the extended reference set, keeping every per-reference distance
 brucellaid -r1 RUN_1.fastq.gz -r2 RUN_2.fastq.gz -o out --reference-set extended
-#   out/brucellaid_mash.tsv holds the distance to all 432 references, ranked
+#   out/brucellaid_mash.tsv holds the distance to every reference, ranked
 #   out/brucellaid_mlst.tsv holds every allele call with the margin it had
 ```
 
@@ -400,7 +400,7 @@ lands on *Brucella* sp. instead of a confident wrong name. Dropping them worked 
 the simulated-read validation both were reported as a named species, *B. microti* and *B. pinnipedialis*,
 each with a `MASH (unresolved)` flag, rather than as *Brucella* sp.
 
-Both are now back in the set, which stands at 432 genomes. Measured against all 2,022 assemblies, exactly
+Both are now back in the set, which then stood at 432 genomes. Measured against all 2,022 assemblies, exactly
 three samples change, every one of them labelled *Brucella* sp. in NCBI: the two genomes themselves, and
 `GCA_002994775.1`, which stops being called *B. microti* at 0.00224 and matches the bbatCR03 lineage at
 0.00019 — reported as *Brucella* sp., which is the honest answer. **No sample of a named species moves at

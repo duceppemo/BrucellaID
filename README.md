@@ -19,7 +19,7 @@
 </p>
 
 Identify the *Brucella* species of a fastq sample by its [MASH](https://github.com/marbl/mash) distance to
-432 curated reference genomes, covering all 30 named species of the clade, and type it with the nine-locus
+431 curated reference genomes, covering all 30 named species of the clade, and type it with the nine-locus
 [Whatmore MLST scheme](https://doi.org/10.1186/1471-2180-7-34), whose alleles are called from the reads with
 [Seal](https://sourceforge.net/projects/bbmap/) from BBTools. Point it at a sample, or a folder of samples.
 
@@ -30,19 +30,19 @@ ERR2136546  Brucella canis    MASH+ST (arbitrated)  GCA_000530495.1_Oliveri_geno
 ERR3454415  Brucella abortus  MASH+ST (agree)       GCA_000742195.1_ASM74219v1_genomic.fna.gz  994/1000      1             Brucella abortus
 ```
 (Two of the four [tutorial](https://github.com/duceppemo/BrucellaID/wiki/Tutorial) read sets, against the
-432-genome default set. Columns elided to fit; `brucellaid.tsv` also holds `MashDistance`,
+431-genome default set. Columns elided to fit; `brucellaid.tsv` also holds `MashDistance`,
 `AlleleProfile`, `Reads` and `Notes`.)
 
 Both the reference sketch and the MLST database come with the package: nothing to download, index or
 configure.
 
 ## Features
-* **Two independent answers**: the species, from the closest of 432 curated *Brucella* genomes covering
+* **Two independent answers**: the species, from the closest of 431 curated *Brucella* genomes covering
   all 30 named species of the clade, and the
   sequence type, from the nine MLST alleles. Both come with the numbers they rest on, and neither is
   quietly rewritten by the other.
 * **The ST decides the one pair a distance cannot.** *B. canis* and *B. suis* bv. 4 are 0.00024 apart —
-  closer than two *B. suis* references are to each other, and in the 432-genome default set the nearest
+  closer than two *B. suis* references are to each other, and in the 431-genome default set the nearest
   *canis*–*suis* pair, at 0.000264, is still the closest pair of different species there is — so which one a
   *canis* read set lands on first is noise. The two species share no sequence type at all, so where MASH
   leaves both within reach, the ST chooses, from a table of the species of every ST counted over the 3,403
@@ -68,9 +68,9 @@ configure.
   run at a time. A sample that fails leaves the others readable.
 * **Current reference data**: the MLST database is PubMLST's, 309 alleles and 122 sequence types, plus the
   species of 118 of them counted over PubMLST's isolate database — all rebuilt by scripts in the
-  repository. Two sketches ship: the 432-genome clade set that 2.0 uses by default, and vSNP's 16 genomes
+  repository. Two sketches ship: the 431-genome clade set that 2.0 uses by default, and vSNP's 16 genomes
   under `--reference-set vsnp`, each with the species, biovar, strain and accession of every genome.
-* **The whole clade, by default**: from 2.0 a run measures against 432 curated genomes
+* **The whole clade, by default**: from 2.0 a run measures against 431 curated genomes
   covering **all 30 named species** — the former *Ochrobactrum* included — plus the unnamed lineages, so
   an atypical isolate is reported as *Brucella sp.* rather than forced onto the nearest classical species.
   Nothing in INSDC is *labelled* *B. papionis*, the thirtieth species — its genome sits there under
@@ -175,7 +175,7 @@ This DOI always points to the latest version; each release also has its own DOI,
 > PubMLST.org website and their applications. *Wellcome Open Research* 2018;3:124.
 > https://doi.org/10.12688/wellcomeopenres.14826.1
 
-The 432 genomes of the default reference set are curated representatives of the assembly collection behind
+The 431 genomes of the default reference set are curated representatives of the assembly collection behind
 the mashID *Brucella* pack, which has its own DOI:
 
 > Duceppe M-O. *Brucella* database for mashID. figshare 2026. https://doi.org/10.6084/m9.figshare.33970168

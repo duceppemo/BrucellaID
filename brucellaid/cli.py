@@ -100,7 +100,7 @@ def build_parser():
     max_cpu = available_cpus()
     parser = ArgumentParser(prog='brucellaid', formatter_class=RawDescriptionHelpFormatter, epilog=EPILOG,
                             description='Identify the Brucella species of sequencing reads by their MASH distance\n'
-                                        'to 432 curated reference genomes covering all 30 named species of the\n'
+                                        'to 431 curated reference genomes covering all 30 named species of the\n'
                                         'clade, and type them with the nine-locus MLST scheme.\n'
                                         'Where two species are too close for MASH to choose, the sequence type\n'
                                         'chooses between them.')
@@ -173,7 +173,7 @@ def build_parser():
 
     data = parser.add_argument_group('reference data (the package ships all of it)')
     data.add_argument('--reference-set', choices=('vsnp', 'extended'), default=None, dest='reference_set',
-                      help='Which packaged reference set to identify against. "extended", the default, is 432 '
+                      help='Which packaged reference set to identify against. "extended", the default, is 431 '
                            'curated genomes covering the whole Brucella clade, all 30 named species plus the '
                            'unnamed lineages; "vsnp" is the 16 genomes of vSNP, 8 species, which was the default '
                            'before 2.0. Neither can be combined with --sketch or --references.')

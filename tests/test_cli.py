@@ -230,7 +230,7 @@ def test_main_identifies_against_the_extended_set_by_default(tmp_path, monkeypat
     paths, detail = reference_paths(tmp_path / 'out')
     assert paths['MASH sketch'].endswith('references_extended.msh')
     assert paths['Reference table'].endswith('references_extended.tsv')
-    assert '432 genome(s)' in detail
+    assert '431 genome(s)' in detail
 
 
 def test_main_with_the_vsnp_reference_set(tmp_path, monkeypatch):

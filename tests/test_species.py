@@ -28,7 +28,7 @@ from brucellaid.species import (
 
 # B. canis and B. suis bv. 4 are the pair of the vSNP sketch MASH cannot separate (0.00024 apart); these
 # fixtures are vSNP sketch IDs. B. abortus is far enough from both to be decided on its own. The default
-# 432-genome set has the same canis/suis problem at 0.000264 and 13 other pairs besides; see species.py.
+# 431-genome set has the same canis/suis problem at 0.000264 and 13 other pairs besides; see species.py.
 CANIS = 'NC_010103-NC_010104.fasta'
 SUIS4 = 'B-REF-BS4-40.fasta'
 ABORTUS = 'NC_006932-NC_006933.fasta'

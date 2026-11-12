@@ -46,7 +46,7 @@ test:
     - seal.sh --version
     # The reference data has to be in the package, not only in the repository
     # (no ": " anywhere in these lines, YAML would read a plain scalar containing one as a mapping)
-    - python -c "from brucellaid.references import load_references; assert len(load_references()) == 432"
+    - python -c "from brucellaid.references import load_references; assert len(load_references()) == 431"
     - python -c "from brucellaid.references import VSNP_REFERENCES_FILE, data_path, load_references; assert len(load_references(data_path(VSNP_REFERENCES_FILE))) == 16"
     - python -c "from brucellaid.mlst import load_profiles; assert len(load_profiles()[1]) == 122"
     # Two copies of one read that matches nothing, to run MASH, Seal and the reports end to end. Two,
@@ -71,7 +71,7 @@ about:
   license_file: LICENSE
   summary: Identify the Brucella species of a read set with MASH, and type it with MLST
   description: |
-    BrucellaID reads a fastq sample, compares it with MASH to 432 curated Brucella reference genomes
+    BrucellaID reads a fastq sample, compares it with MASH to 431 curated Brucella reference genomes
     covering all 30 named species of the clade to name the species and the closest reference, and calls the
     nine alleles of the Whatmore MLST scheme with Seal from
     BBTools to give the sequence type. It takes single-end or paired-end reads, or a folder of samples, and

@@ -9,7 +9,7 @@
 
 BrucellaID reads a *Brucella* fastq sample and answers two questions:
 
-* **Which species is it?** The reads are compared with [MASH](https://github.com/marbl/mash) to 432 curated
+* **Which species is it?** The reads are compared with [MASH](https://github.com/marbl/mash) to 431 curated
   *Brucella* genomes covering all 30 named species of the clade, *Ochrobactrum* included, and the closest
   one names the species and the reference itself. `--reference-set vsnp` measures against vSNP's 16 genomes
   instead, which was the default before 2.0 ([How it works](How-it-works#the-reference-sets)).
@@ -28,7 +28,7 @@ Sample      Species           SpeciesSource         ClosestReference            
 ERR2136546  Brucella canis    MASH+ST (arbitrated)  GCA_000530495.1_Oliveri_genomic.fna.gz     995/1000      20            Brucella canis
 ERR3454415  Brucella abortus  MASH+ST (agree)       GCA_000742195.1_ASM74219v1_genomic.fna.gz  994/1000      1             Brucella abortus
 ```
-(Two of the four [tutorial](Tutorial) read sets, against the 432-genome default set. Columns elided to
+(Two of the four [tutorial](Tutorial) read sets, against the 431-genome default set. Columns elided to
 fit; `brucellaid.tsv` also holds `MashDistance`, `AlleleProfile`, `Reads` and `Notes`.)
 
 ## Start here

@@ -40,7 +40,7 @@ def test_the_vsnp_table_of_the_package():
         'Brucella ceti', 'Brucella microti', 'Brucella neotomae'}
     # Every vSNP code is unique, one per genome, which is what the legacy xlsx report was written against.
     # The extended table does not share that property and is not meant to: its codes are species
-    # epithets, so 432 genomes carry 37 distinct codes (80 of them "anthropi").
+    # epithets, so 431 genomes carry 39 distinct codes (80 of them "anthropi").
     assert len({r.code for r in references.values()}) == len(references)
 
 
@@ -102,7 +102,7 @@ def test_compare_with_sketch():
 
 
 def test_compare_with_sketch_counts_the_names_it_does_not_list():
-    """A lone --sketch of a few genomes disagrees with 424 of the 432, which is not a log line."""
+    """A lone --sketch of a few genomes disagrees with 423 of the 431, which is not a log line."""
     rows = ['g{:03d}.fasta\tc{:03d}\tBrucella x'.format(i, i) for i in range(30)]
     references = parse_references(table(*rows))
     message = compare_with_sketch(['g000.fasta'], references)[0]
@@ -117,7 +117,7 @@ def test_compare_with_sketch_counts_the_names_it_does_not_list():
 
 def test_the_extended_table_of_the_package():
     references = load_references(data_path(EXTENDED_REFERENCES_FILE))
-    assert len(references) == 432
+    assert len(references) == 431
     assert all(r.code and r.species for r in references.values())
     species = {r.species for r in references.values()}
     # All 30 named Brucella species, "Brucella sp." for the unnamed lineages, and the two species of the
@@ -139,14 +139,14 @@ def test_the_extended_table_of_the_package():
 
 def test_the_extended_sketch_matches_the_extended_table():
     ids = sketch_references(reference_sketch(data_path(EXTENDED_SKETCH_FILE)))
-    assert len(ids) == 432
+    assert len(ids) == 431
     references = load_references(data_path(EXTENDED_REFERENCES_FILE))
     assert compare_with_sketch(ids, references) == []
 
 
 def test_the_default_set_of_the_package_is_the_extended_one():
     # From 2.0, and at this level rather than only in the command line: a caller that reaches
-    # analyse_samples() directly, as scripts/make_example_report.py does, measures against the 432 genomes.
+    # analyse_samples() directly, as scripts/make_example_report.py does, measures against the 431 genomes.
     assert reference_sketch(None) == data_path(EXTENDED_SKETCH_FILE)
-    assert len(load_references()) == 432
+    assert len(load_references()) == 431
     assert load_references() == load_references(data_path(EXTENDED_REFERENCES_FILE))
