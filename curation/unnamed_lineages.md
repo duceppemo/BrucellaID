@@ -5,9 +5,12 @@ clade, matching no named species. *B. papionis* was found by chasing exactly tha
 ([`papionis/README.md`](papionis/README.md)), so all 43 were chased the same way: assembled, grouped,
 and compared by ANI with the type strains, with the nearest named genomes and with each other.
 
-**Nothing in the reference set was changed by this work.** Two findings would justify a change, and
-both are relabels rather than additions; they are listed under [What was not changed](#what-was-not-changed)
-for a decision, because a relabel changes what a sample is called.
+**One label in the reference set was changed on this evidence, and no genome was added:**
+`GCA_900095155.1` is now carried as *Brucella* sp. instead of *B. inopinata* — see
+[What was changed](#what-was-changed). Two further relabels the evidence would support are listed under
+[What was not changed](#what-was-not-changed) for a decision, because a relabel changes what a sample is
+called. Everything below describes the sweep as it was measured, before that relabel: with it, the
+count of runs reported as *Brucella* sp. is 44.
 
 | Verdict | Lineages | Runs |
 | --- | --- | --- |
@@ -182,9 +185,10 @@ Neither concerns the 43 candidates directly; both came out of the same measureme
 `GCA_900095155.1` (strain 141012304) is 97.87% ANI and 0.0212 from BO1. The unnamed BO2, 2280 and BO3
 references are 98.24%, 98.08% and 98.01% from BO1, so three genomes the set calls *Brucella* sp. are
 closer to the *inopinata* type than a genome it calls *inopinata*. The third *inopinata* genome,
-`GCA_030270765.1`, is a real one: 99.88% and 0.0017 from BO1. The label has a consequence in the sweep:
-`SRR12224742`, submitted as *Brucella* sp. DSM 103976, is reported as *B. inopinata* at 0.00012 because
-`GCA_900095155.1` is what it matches. `SRR31481153`, submitted as *B. inopinata*, is the mirror image —
+`GCA_030270765.1`, is a real one: 99.88% and 0.0017 from BO1. The label had a consequence in the sweep:
+`SRR12224742`, submitted as *Brucella* sp. DSM 103976, was reported as *B. inopinata* at 0.00012 because
+`GCA_900095155.1` is what it matches. The genome has since been relabelled; see
+[What was changed](#what-was-changed). `SRR31481153`, submitted as *B. inopinata*, is the mirror image —
 97.84% from BO1 and 99.98% from the unnamed 191011898. "*inopinata*" is evidently being used in the
 archive for early-diverging *Brucella* generally, and the set has inherited one instance of that.
 
@@ -222,6 +226,29 @@ describe species whose members are 0.02 apart.
 * **The assemblies were built from reads subsampled to 100x and are unpolished.** That is ample for ANI
   and for the distances quoted, and none of the verdicts rests on a margin an assembly error could close.
 
+## What was changed
+
+`GCA_900095155.1` (strain 141012304) is relabelled from *B. inopinata* to *Brucella* sp. in
+`brucellaid/data/references_extended.tsv`, and the decision is a `RELABEL` row in
+`scripts/extended_references_curation.tsv`. The sketch is untouched: a label is a row of the table, not
+part of the sketch. The set now holds two *B. inopinata* genomes, BO1 and `GCA_030270765.1`, and 49
+unnamed ones.
+
+What it moves was measured before it was made:
+
+| Population | Samples whose call changes |
+| --- | --- |
+| The 2,022 assemblies of the source collection | one, the genome itself. No other assembly is within 0.005 of it, and its nearest genome in the set is 0.0158 away, so no arbitration between species involves it. |
+| The 4,024 public read sets | one, `SRR12224742`. Re-run against the relabelled set it reports *Brucella* sp. with the same reference, distance (0.000119), shared hashes (995 of 1000) and ST 86 as before. |
+| The figures `scripts/score_public_sweep.py` and `scripts/recalibrate_loose_distance.py` derive | none. Both print the same output before and after; the run's submitter named no species, so it was never scored right or wrong. |
+
+**What this relabel does not claim.** It does not say `GCA_900095155.1` is mislabelled in NCBI, and it is
+not in `mislabelled_records.md`. ANI cannot exclude a classical-clade genome from *B. inopinata*, since
+everything there clears 95% against BO1. The claim is narrower: the set should not call one
+early-diverging lineage *inopinata* while calling three lineages nearer the type strain *Brucella* sp.
+ST 86 does not argue otherwise — PubMLST has three isolates of it, two recorded as *Brucella* sp. and one
+as *B. inopinata*.
+
 ## What was not changed
 
 A reference's label decides what a sample is called, so each of these is a release-level decision and
@@ -231,7 +258,6 @@ none was made here.
 | --- | --- | --- |
 | Label `GCA_030063905.1`, `GCA_040372265.1` and `GCA_040391195.1` as *O. teleogrylli*, with or without adding the type strain `GCA_042681285.1` | 98.9–99.2% ANI to the *soli* type, 98.1–98.5% to the *teleogrylli* type | Three runs of the sweep would get a species. It would be the set's first name outside genus *Brucella*, since no *Brucella* combination exists. |
 | Label `GCA_030157885.1` as "*B. nosferati*" | A lineage of species rank with a published name | 22 runs would get that name. The set would then carry a name NCBI does not have. *B. amazoniensis* is a partial precedent: LPSN has no entry for it either, but NCBI has a taxon. |
-| Relabel `GCA_900095155.1` from *B. inopinata* to *Brucella* sp. | 97.87% from BO1, further than three unnamed references | `SRR12224742` would be reported as *Brucella* sp., as submitted. |
 | Name the 16 other unnamed references that clear 95% to a type strain | `unnamed_lineages/unnamed_references_vs_types.tsv` | No run of the sweep changes. |
 
 ## Reproducing the evidence

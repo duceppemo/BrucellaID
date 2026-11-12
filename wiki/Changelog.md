@@ -2,6 +2,24 @@
 
 ## Unreleased
 
+**One genome of the extended set changes label: `GCA_900095155.1` is now *Brucella* sp., not
+*B. inopinata*.** Strain 141012304 is 97.87% ANI and 0.0212 from the *B. inopinata* type strain BO1, which
+is further than three references the set already calls *Brucella* sp. (BO2 at 98.24%, 2280 at 98.08%, BO3
+at 98.01%). The other *inopinata* genome beside the type, `GCA_030270765.1`, is 99.88% from it. The set
+was calling one early-diverging lineage *inopinata* and three nearer ones unnamed, and now does not.
+
+A sample that matches this genome is reported as *Brucella* sp. where it was reported as *B. inopinata*.
+That is one of the 4,024 public read sets, `SRR12224742`, whose submitter named no species, and none of
+the 2,022 assemblies but the genome itself; its distance, shared hashes and sequence type are unchanged,
+and so is every figure on [Validation at scale](Validation-at-scale). The sketch is not rebuilt — the
+label is a row of `references_extended.tsv`. The set holds 432 genomes as before, 49 of them unnamed.
+
+This came out of chasing all 43 public read sets reported as *Brucella* sp., written up in
+`curation/unnamed_lineages.md`. That note also records what was left alone: three of those runs are
+*Ochrobactrum teleogrylli*, a species NCBI files outside the genus and the set carries only as
+*Brucella* sp., and 22 are the vampire-bat lineage published as "*B. nosferati*", a name that is not
+validly published.
+
 **The at-scale validation is re-measured under the shipped k-mer copy threshold.** Every figure on
 [Validation at scale](Validation-at-scale) came from the sweep that ran before 2.1.0 re-derived the
 threshold, and was carried with a caveat saying so. All 4,024 usable public ENA read sets were swept again
