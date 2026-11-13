@@ -10,8 +10,8 @@ The [extended reference set](How-it-works#the-reference-sets) was validated sepa
 the repository's script is not meant for: 150 bp paired-end reads simulated at 20x (0.2% substitutions)
 from **all 2,022 *Brucella* assemblies** of the collection it was curated from, identified against three
 reference sets on the same machine. Of the 2,022, 95 are labelled *Brucella sp.* in NCBI and have no right
-answer to score, and 431 are genomes of the extended set itself, where a self-match tells us nothing. Those
-two exclusions overlap by 47, the unnamed genomes that are themselves references, so what is left is
+answer to score, and 429 are genomes of the extended set itself, where a self-match tells us nothing. Those
+two exclusions overlap by 45, the unnamed genomes that are themselves references, so what is left is
 **1,543 held-out samples carrying a named species** (2,022 − 95 unnamed − 384 named references), and the
 numbers below are theirs.
 
@@ -19,7 +19,7 @@ numbers below are theirs.
 | --- | --- | --- | --- |
 | vSNP set (16 genomes, 8 species) | 1,451 (94.0%) | 25 | 67 |
 | mashID pack as published (389 genomes) | 1,532 (99.3%) | 11 | 0 |
-| Extended set (431 genomes, curated) — **the default from 2.0** | 1,538 (99.68%) | 5 | 0 |
+| Extended set (429 genomes, curated) — **the default from 2.0** | 1,538 (99.68%) | 5 | 0 |
 
 The vSNP set's misses are the species it does not carry — *B. pinnipedialis* and the porpoise lineage
 of *B. ceti* land on *B. ceti* or *B. microti*, the whole former *Ochrobactrum* clade comes back `ND` —
@@ -38,10 +38,11 @@ contradict, so they can be reported rather than only excluded.
 
 Scored against what those five genomes demonstrably are, the extended set got **every one of the 1,543
 held-out named samples right**, including all 69 *B. canis*, all 24 *B. ceti* and all 8
-*B. pinnipedialis* — the boundaries the distance alone cannot draw. Of the 95 *Brucella sp.* samples, 50
-are reported as *Brucella sp.* and 43 under a name: 37 as the *Brucella* species they sit next to and 6
-as *Ochrobactrum teleogrylli* or *O. chromiisoli*, the two species of the set that have no *Brucella*
-name. Eight of the 43 carry a note, six that the match is loose and two that a second species is within
+*B. pinnipedialis* — the boundaries the distance alone cannot draw. Of the 95 *Brucella sp.* samples, 37
+are reported as *Brucella sp.* and 56 under a name. 39 of those are the *Brucella* species they sit next
+to, 11 are genomes of the set that ANI to the type strain places in a named *Brucella* species, and 6 are
+*Ochrobactrum teleogrylli* or *O. chromiisoli*, the two species of the set that have no *Brucella* name.
+Ten of the 56 carry a note, eight that the match is loose and two that a second species is within
 reach. The two genomes that are nowhere near the clade came back `ND`.
 
 The set was revised after this was measured, and the figures above are recomputed against the set as it
@@ -65,19 +66,28 @@ named, 36 of them with a note. Measured against the 432 genomes before these rel
 and 37, which is that figure plus the three samples that moved when the two unnamed lineages were
 restored, so it had probably not been recomputed then.
 
-One genome was then removed, which is why the set is 431 and the tables on this page say so although
-both were measured against 432. `GCA_040391195.1` is 2.1 Mb of an *O. teleogrylli* genome of about 5 Mb,
-and a reference that holds two fifths of its genome cannot be matched closely by a complete library of
-its own species. A distance between a sample and a reference does not depend on what else the sketch
-holds, so removing a genome can only change a sample that had it as its best match or within the
-close-match margin of it. No sample of a named species did, and no public read set did: it was the best
-match of nothing but its own simulated reads, and ranked third, at 301 to 362 of 1000 hashes, for the
-three *O. teleogrylli* runs. The rebuilt sketch holds the other 431 genomes with exactly the hashes they
-had. The three runs and the 95 unnamed samples were run against it: all three runs are identical, and
-one unnamed sample changes, the removed genome's own, still reported as *O. teleogrylli* but now at
-0.031 with a loose-match note where it used to match itself. The held-out count is unchanged for a
-reason worth stating: the genome leaves the references but was already among the 95 unnamed samples, so
-it is excluded either way.
+Three genomes were then removed, which is why the set is 429 and the tables on this page say so although
+both were measured against 432. Each is a partial genome of a species the set holds complete genomes of:
+`GCA_040391195.1` is 2.1 Mb of *O. teleogrylli*, and `GCA_032085995.1` and `GCA_032104425.1` are 3.2 and
+3.7 Mb of *B. pseudogrignonensis*, species of about 5 Mb. A reference that holds part of its genome cannot
+be matched closely by a complete library of its own species. A distance between a sample and a reference
+does not depend on what else the sketch holds, so removing a genome can only change a sample that had it
+as its best match or within the close-match margin of it. No sample of a named species did, and no
+identified public read set did: each was the best match of nothing but its own simulated reads, and the
+nearest any came to a real library was third place, at 301 to 362 of 1000 hashes, for the three
+*O. teleogrylli* runs. Both rebuilt sketches hold the remaining genomes with exactly the hashes they had.
+Those three runs were run against the 431-genome sketch and are identical in every column, and the 95
+unnamed samples were run against the final one: three change, the removed genomes' own, each still
+reported under the same species but now at 0.017 to 0.031 with a loose-match note where it used to match
+itself. The held-out count is unchanged for a reason worth stating: the three leave the references but
+were already among the 95 unnamed samples, so they are excluded either way.
+
+Eleven more genomes of the set that NCBI holds as *Brucella* sp. were given the name of the species whose
+type strain they match, at 96.2–99.3% ANI measured in both directions: one *B. tritici*, three
+*B. anthropi*, two *B. intermedia*, one *B. haematophila* and four *B. pseudogrignonensis*. No public read
+set has any of them as its best match or inside the close-match margin. Among the simulated samples only
+their own change, all labelled *Brucella* sp. in NCBI, which is what moved the split of the unnamed
+samples from 50 and 43 to 37 and 56. No distance moved and no held-out named sample did.
 
 What this does not establish is everything the [validation suite](Validation-suite#what-it-does-not-establish) does not, plus one thing: the reads were simulated from the very
 collection the set was curated from, so a lineage absent from GenBank in October 2026 is absent from both
@@ -99,7 +109,7 @@ coverage and a half pair would read as a shallow library.
 | Reference set | Matches the submitter | Does not |
 | --- | --- | --- |
 | vSNP set (16 genomes, 8 species) | 3,871 (96.2%) | 153 |
-| Extended set (431 genomes) — **the default from 2.0** | 3,972 (98.7%) | 52 |
+| Extended set (429 genomes) — **the default from 2.0** | 3,972 (98.7%) | 52 |
 
 The two sets disagree on 168 runs. **The extended set is right on 95 of them and the vSNP set on none** —
 there is no run in the sweep where the sixteen genomes gave a better answer. (Counted as the runs where

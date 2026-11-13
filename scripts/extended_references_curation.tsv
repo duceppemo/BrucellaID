@@ -1,11 +1,12 @@
-# How the 431 genomes of the extended reference set were chosen, from the 454 dereplicated
+# How the 429 genomes of the extended reference set were chosen, from the 454 dereplicated
 # representatives of the mashID Brucella pack's source collection (figshare article 33970168, version 4;
 # 2,022 NCBI taxon-234 assemblies, dereplicated at a MASH distance of 0.0003).
 # Validated on simulated reads of all 2,022 assemblies: 1543/1543 held-out samples of a named species
 # right once the five mislabelled truth genomes below are accounted for -- the five EXCLUDE rows whose
 # reason is a contradicted label, not the two excluded for being too far from the clade to be a
-# reference at all (wiki, Validation), nor GCA_040391195.1, excluded for being two fifths of a genome.
-# 454 - 15 DROP-SP - 8 EXCLUDE = 431.
+# reference at all (wiki, Validation), nor the three excluded for being partial genomes of species
+# the set holds complete ones of: GCA_040391195.1, GCA_032085995.1 and GCA_032104425.1.
+# 454 - 15 DROP-SP - 10 EXCLUDE = 429.
 # Every genome not listed here was kept as it was.
 # The DROP-SP cutoff of 0.004 was set on the classical species and does not transfer: it dropped three
 # genomes that are not twins at all. GCA_000163135.1 is B. papionis (now a RELABEL), and
@@ -70,3 +71,16 @@ DROP-SP	GCA_047708795.1	Brucella sp	0.00258 from Brucella anthropi: covered by i
 DROP-SP	GCA_049065885.1	Brucella sp	0.00000 from Brucella ciceri: covered by its own representatives
 DROP-SP	GCA_058796175.1	Brucella sp	0.00277 from Brucella anthropi: covered by its own representatives
 EXCLUDE	GCA_000661995.2	Brucella suis	labelled suis bv. 4 str. 40; genome 0.0004 from inopinata BO1 and 0.022 from every suis — batch swap
+RELABEL	GCA_048799565.1	Brucella sp. -> Brucella tritici	99.34% to the tritici type strain DSM 13340 (99.35% the other way), and under 94% to every other type strain. curation/unnamed_lineages.md
+RELABEL	GCA_026014005.1	Brucella sp. -> Brucella anthropi	98.99% to the lupini type strain CB1 (99.00% the other way); 97.21% to the anthropi type strain ATCC 49188 (97.16% the other way); 95.75% to the cytisi type strain DSM 19778 (95.75% the other way). Anthropi, lupini and cytisi are one species by the 95% criterion and anthropi (1988) is the senior name, as for GCA_059995225.1; its nearest named genomes in the set are anthropi. curation/unnamed_lineages.md
+RELABEL	GCA_040370055.1	Brucella sp. -> Brucella anthropi	98.94% to the lupini type strain CB1 (98.94% the other way); 97.49% to the anthropi type strain ATCC 49188 (97.49% the other way); 95.77% to the cytisi type strain DSM 19778 (95.87% the other way). Anthropi, lupini and cytisi are one species by the 95% criterion and anthropi (1988) is the senior name, as for GCA_059995225.1; its nearest named genomes in the set are anthropi. curation/unnamed_lineages.md
+RELABEL	GCA_025908475.1	Brucella sp. -> Brucella anthropi	98.20% to the anthropi type strain ATCC 49188 (98.21% the other way); 97.55% to the lupini type strain CB1 (97.50% the other way); 95.67% to the cytisi type strain DSM 19778 (95.69% the other way). Anthropi, lupini and cytisi are one species by the 95% criterion and anthropi (1988) is the senior name, as for GCA_059995225.1; its nearest named genomes in the set are anthropi. curation/unnamed_lineages.md
+RELABEL	GCA_052246815.1	Brucella sp. -> Brucella intermedia	97.79% to the ciceri type strain DSM 22292 (97.82% the other way); 97.48% to the intermedia type strain CIP 105838 (97.57% the other way). Intermedia and ciceri are one species by the 95% criterion (type strains 98.26%) and intermedia is the senior name, as for GCA_049065255.1; its nearest named genomes in the set are intermedia. curation/unnamed_lineages.md
+RELABEL	GCA_040371715.1	Brucella sp. -> Brucella intermedia	97.47% to the ciceri type strain DSM 22292 (97.52% the other way); 97.39% to the intermedia type strain CIP 105838 (97.44% the other way). Intermedia and ciceri are one species by the 95% criterion (type strains 98.26%) and intermedia is the senior name, as for GCA_049065255.1; its nearest named genomes in the set are intermedia. curation/unnamed_lineages.md
+RELABEL	GCA_031987745.1	Brucella sp. -> Brucella haematophila	97.42% to the haematophila type strain CIP 109452 (97.33% the other way), and under 94% to every other type strain. curation/unnamed_lineages.md
+EXCLUDE	GCA_032085995.1	Brucella sp.	a partial genome: 3.2 Mb in 488 contigs of a species of about 5 Mb. It is Brucella pseudogrignonensis by ANI (98.05% to the type strain CIP 109451, 97.73% the other way) and was briefly carried under that name. No run among 4,024 public read sets has it as its best match or within the close-match margin, and removing it changes the call of no simulated sample: its own is still pseudogrignonensis, against GCA_062023071.1 at 0.0201; curation/unnamed_lineages.md
+RELABEL	GCA_032066345.1	Brucella sp. -> Brucella pseudogrignonensis	97.53% to the pseudogrignonensis type strain CIP 109451 (97.52% the other way), and under 94% to every other type strain. curation/unnamed_lineages.md
+RELABEL	GCA_032007605.1	Brucella sp. -> Brucella pseudogrignonensis	97.41% to the pseudogrignonensis type strain CIP 109451 (97.36% the other way), and under 94% to every other type strain. curation/unnamed_lineages.md
+RELABEL	GCA_032114075.1	Brucella sp. -> Brucella pseudogrignonensis	96.80% to the pseudogrignonensis type strain CIP 109451 (96.72% the other way), and under 94% to every other type strain. curation/unnamed_lineages.md
+EXCLUDE	GCA_032104425.1	Brucella sp.	a partial genome: 3.7 Mb in 2,927 contigs of a species of about 5 Mb, of which only 452 fragments could be compared by ANI. It is Brucella pseudogrignonensis by ANI (96.45% to the type strain CIP 109451, 95.62% the other way) and was briefly carried under that name. Its sub-lineage stays in the set as GCA_040369775.1, a 21-contig assembly 0.0162 away. No run among 4,024 public read sets has it as its best match or within the close-match margin, and removing it changes the call of no simulated sample; curation/unnamed_lineages.md
+RELABEL	GCA_040369775.1	Brucella sp. -> Brucella pseudogrignonensis	96.18% to the pseudogrignonensis type strain CIP 109451 (96.22% the other way), and under 94% to every other type strain. curation/unnamed_lineages.md

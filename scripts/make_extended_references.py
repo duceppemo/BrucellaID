@@ -4,12 +4,12 @@ Rebuild the extended MASH sketch from the accessions of the extended reference t
 
     python3 scripts/make_extended_references.py --genomes /tmp/extended_refs
 
-Each of the 431 genomes is downloaded from the NCBI assembly FTP into the folder given by --genomes,
+Each of the 429 genomes is downloaded from the NCBI assembly FTP into the folder given by --genomes,
 under exactly the name the reference table gives it, and "mash sketch" is run from inside that folder:
 the ID MASH stores is the file name it was given, and that ID is what the reference table keys on.
 A genome already in the folder is not downloaded again, so an interrupted run resumes where it stopped.
 
-How the 431 were chosen is scripts/extended_references_curation.tsv: the dereplicated representatives
+How the 429 were chosen is scripts/extended_references_curation.tsv: the dereplicated representatives
 of the 2,022 NCBI taxon-234 assemblies behind the mashID Brucella pack (figshare article 33970168,
 version 4), minus the genomes whose NCBI label their own sequence contradicts, minus the unlabelled
 twins of named species, with one cluster-consensus relabel.

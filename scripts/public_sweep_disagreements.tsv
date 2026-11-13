@@ -5,9 +5,9 @@
 # submitted      the ENA submitter label, normalised to a binomial. "Brucella sp." means the submitter
 #                named no species, so neither call can be judged right or wrong at species level.
 # vsnp_*         what --reference-set vsnp called it, with the distance and shared hashes behind it
-# extended_*     the same for the default extended set. It held 432 genomes when this was measured; one
-#                partial genome that no run matched, GCA_040391195.1, has been removed since, so the
-#                calls are those of the 431-genome set as well
+# extended_*     the same for the default extended set. It held 432 genomes when this was measured;
+#                three partial genomes that no run matched have been removed since (GCA_040391195.1,
+#                GCA_032085995.1, GCA_032104425.1), so the calls are those of the 429-genome set as well
 #
 # scripts/score_public_sweep.py derives the figures from this file.
 run	submitted	vsnp_call	vsnp_distance	vsnp_shared	extended_call	extended_distance	extended_shared

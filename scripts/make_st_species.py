@@ -12,7 +12,7 @@ carries the species and the biovar the submitter gave it, and the ST the curator
 isolates of each ST gives the species that ST is seen in, and how consistently.
 
 That is what lets the ST arbitrate an identification MASH cannot make. The classical Brucella species are
-0.02 to 0.4% apart: in the 431-genome reference set BrucellaID identifies against by default, the nearest
+0.02 to 0.4% apart: in the 429-genome reference set BrucellaID identifies against by default, the nearest
 B. canis and B. suis references are 0.000264 apart, and in vSNP's 16 the pair is 0.00024 apart. Either way
 that is inside the variation within either species, so no sketch separates them. The ST does,
 where an ST belongs to one species only -- which is exactly what the "purity" column of this table reports, and

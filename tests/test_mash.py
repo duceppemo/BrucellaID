@@ -85,7 +85,7 @@ def test_a_sample_that_matches_nothing_has_no_close_matches():
     """
     Every reference ties at distance 1 when no hash is shared, and none of them is a close match.
 
-    Without the guard this is one close match per reference -- 430 of them against the 431-genome
+    Without the guard this is one close match per reference -- 428 of them against the 429-genome
     default set -- and qa.top_hits shows every close match, so the report holds a reference table
     instead of the evidence for a call that was not made.
     """

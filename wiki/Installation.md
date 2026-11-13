@@ -55,7 +55,7 @@ extended sketch:
 
 | File | What it is |
 | --- | --- |
-| `references_extended.msh` | The MASH sketch of the 431 *Brucella* reference genomes a run uses by default from 2.0 |
+| `references_extended.msh` | The MASH sketch of the 429 *Brucella* reference genomes a run uses by default from 2.0 |
 | `references_extended.tsv` | What each of those genomes is: code, species, biovar, strain, NCBI accession |
 | `references.msh` | The MASH sketch of vSNP's 16 *Brucella* reference genomes, reached with `--reference-set vsnp` |
 | `references.tsv` | What each of those genomes is: vSNP species code, species, biovar, strain, NCBI accessions |

@@ -255,7 +255,7 @@ def hits_caption(rows, hidden):
 
     "Closest first", and "the rest are further away", are untrue whenever more references tie at the best
     distance than the table has room for. That happens two ways, both of them from a coarse distance: a
-    read set sharing no hashes sits at distance 1 from all 431 of the default set, and one sharing a few
+    read set sharing no hashes sits at distance 1 from all 429 of the default set, and one sharing a few
     hashes ties every reference that shares the same few. Either way the rows shown are an arbitrary slice
     of the tie, and the ones left out are not further away. Saying so is the point of the table.
 
@@ -287,7 +287,7 @@ def top_hits(rows, top=TOP_HITS):
     The hits a report shows: the closest few, and any other that is near enough to be in the running.
 
     A report that lists every reference would run to pages of rows saying the sample is not Brucella ovis,
-    and the default set has 431 of them. The ones that matter are the closest handful and anything inside
+    and the default set has 429 of them. The ones that matter are the closest handful and anything inside
     the close-match
     margin, which is the evidence for the species call; the rest are in brucellaid_mash.tsv, which holds
     every distance.

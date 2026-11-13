@@ -141,7 +141,7 @@ def test_failed_sample_exits_with_an_error(tmp_path, sketch):
 
 
 @requires_mash
-@pytest.mark.parametrize(('which', 'genomes'), [('EXTENDED', 431), ('VSNP', 16)])
+@pytest.mark.parametrize(('which', 'genomes'), [('EXTENDED', 429), ('VSNP', 16)])
 def test_the_sketch_and_the_reference_table_of_the_package_match(which, genomes):
     """Every genome of each packaged sketch is named in its reference table, and the other way round."""
     from brucellaid import references as refs

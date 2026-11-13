@@ -188,8 +188,8 @@ def test_hits_caption_does_not_claim_a_ranking_the_distances_do_not_support():
     """
     A read set that shares no hashes sits at distance 1 from every reference.
 
-    "Closest first" and "the others are further away" are then both false: with the 431-genome default
-    set the five rows shown are an arbitrary slice of a 431-way tie.
+    "Closest first" and "the others are further away" are then both false: with the 429-genome default
+    set the five rows shown are an arbitrary slice of a 429-way tie.
     """
     from brucellaid.mash import MashHit
     from brucellaid.qa import hits_caption
@@ -198,9 +198,9 @@ def test_hits_caption_does_not_claim_a_ranking_the_distances_do_not_support():
         return [(MashHit('r{}.fna.gz'.format(i), d, 0.0, 0, 1000), None, False)
                 for i, d in enumerate(distances)]
 
-    tied = hits_caption(rows(*([1.0] * 431)), 426)
+    tied = hits_caption(rows(*([1.0] * 429)), 424)
     assert 'arbitrary few of a tie' in tied
-    assert 'these 431 reference genomes is the same distance' in tied
+    assert 'these 429 reference genomes is the same distance' in tied
     assert 'further away' not in tied
     assert 'brucellaid_mash.tsv has every distance' in tied
 

@@ -5,11 +5,12 @@ clade, matching no named species. *B. papionis* was found by chasing exactly tha
 ([`papionis/README.md`](papionis/README.md)), so all 43 were chased the same way: assembled, grouped,
 and compared by ANI with the type strains, with the nearest named genomes and with each other.
 
-**Five labels in the reference set were changed on this evidence and one genome was removed:**
+**Sixteen labels in the reference set were changed on this evidence and three genomes were removed:**
 `GCA_900095155.1` is now carried as *Brucella* sp. instead of *B. inopinata*, four genomes that were
-*Brucella* sp. now carry the names *Ochrobactrum teleogrylli* and *O. chromiisoli*, and
-`GCA_040391195.1`, a partial genome, is out of the set, which now holds 431 — see
-[What was changed](#what-was-changed). What the evidence would support and was left alone is under
+*Brucella* sp. now carry the names *Ochrobactrum teleogrylli* and *O. chromiisoli*, eleven more carry
+the name of the *Brucella* species whose type strain they match, and three partial genomes are out of
+the set, which now holds 429 — see [What was changed](#what-was-changed). What the evidence would
+support and was left alone is under
 [What was not changed](#what-was-not-changed). Everything between here and those two sections describes
 the sweep as it was measured, before any relabel: with them, 41 runs are reported as *Brucella* sp., not
 43.
@@ -230,11 +231,11 @@ describe species whose members are 0.02 apart.
 
 ## What was changed
 
-Five labels and one removal, in three steps. Each relabel is a row of
-`brucellaid/data/references_extended.tsv` and a `RELABEL` row in
-`scripts/extended_references_curation.tsv`, and needs no new sketch: a label is a row of the table. The
-removal is an `EXCLUDE` row and a rebuilt sketch. The set now holds 431 genomes: 30 named *Brucella*
-species, two *Ochrobactrum* species in four genomes, and 44 unnamed genomes.
+Sixteen labels and three removals, in five steps, set out below in the order they were made. Each
+relabel is a row of `brucellaid/data/references_extended.tsv` and a `RELABEL` row in
+`scripts/extended_references_curation.tsv`, and needs no new sketch: a label is a row of the table. Each
+removal is an `EXCLUDE` row and a rebuilt sketch. The set now holds 429 genomes: 30 named *Brucella*
+species, two *Ochrobactrum* species in four genomes, and 31 unnamed genomes.
 
 ### `GCA_900095155.1`, from *B. inopinata* to *Brucella* sp.
 
@@ -310,6 +311,72 @@ can only move a sample that had the removed genome as its best match or inside t
 why two populations of thousands can be cleared by looking for it in their hit lists rather than by
 running them again.
 
+### Thirteen genomes, from *Brucella* sp. to a named *Brucella* species, two of them then removed
+
+These are the unnamed former-*Ochrobactrum* references that clear 95% ANI against a type strain, from
+[Two things found on the way](#two-things-found-on-the-way). ANI was measured in both directions
+([`unnamed_lineages/unnamed_references_two_way_ani.tsv`](unnamed_lineages/unnamed_references_two_way_ani.tsv));
+the figure after the slash is the type strain as query.
+
+| Genome | Strain | Now | ANI to the type strain |
+| --- | --- | --- | --- |
+| `GCA_048799565.1` | — | *B. tritici* | 99.34 / 99.35% DSM 13340 |
+| `GCA_025908475.1` | MAB-22 | *B. anthropi* | 98.20 / 98.21% *anthropi* ATCC 49188; 97.55% *lupini*, 95.67% *cytisi* |
+| `GCA_026014005.1` | JSBI001 | *B. anthropi* | 98.99 / 99.00% *lupini* CB1; 97.21% *anthropi*, 95.75% *cytisi* |
+| `GCA_040370055.1` | NBRC 13694 | *B. anthropi* | 98.94 / 98.94% *lupini* CB1; 97.49% *anthropi*, 95.77% *cytisi* |
+| `GCA_052246815.1` | RRSP16 | *B. intermedia* | 97.79 / 97.82% *ciceri* DSM 22292; 97.48 / 97.57% *intermedia* CIP 105838 |
+| `GCA_040371715.1` | NBRC 14130 | *B. intermedia* | 97.47 / 97.52% *ciceri*; 97.39 / 97.44% *intermedia* |
+| `GCA_031987745.1` | — | *B. haematophila* | 97.42 / 97.33% CIP 109452 |
+| `GCA_032085995.1` | — | *B. pseudogrignonensis*, then removed (below) | 98.05 / 97.73% CIP 109451 |
+| `GCA_032066345.1` | — | *B. pseudogrignonensis* | 97.53 / 97.52% |
+| `GCA_032007605.1` | — | *B. pseudogrignonensis* | 97.41 / 97.36% |
+| `GCA_032114075.1` | — | *B. pseudogrignonensis* | 96.80 / 96.72% |
+| `GCA_032104425.1` | — | *B. pseudogrignonensis*, then removed (below) | 96.45 / 95.62% |
+| `GCA_040369775.1` | NBRC 12953 | *B. pseudogrignonensis* | 96.18 / 96.22% |
+
+**Four of the thirteen take a senior name and not their nearest type strain's.** Two of the *anthropi*
+genomes are nearest the *lupini* type and both *intermedia* genomes are nearest the *ciceri* type.
+*B. anthropi*, *B. lupini* and *B. cytisi* are one species by the 95% criterion, and so are
+*B. intermedia* and *B. ciceri*; inside such a group the senior name has priority, which is the rule
+already applied to `GCA_059995225.1` and `GCA_049065255.1` in
+[`mislabelled_records.md`](mislabelled_records.md). The set agrees with it independently: the nearest
+named genomes to all four are *anthropi* and *intermedia* ones, at 0.0050 to 0.0122.
+
+**Two of the six *pseudogrignonensis* genomes are the weakest evidence here.** `GCA_032104425.1` and
+`GCA_040369775.1` are a sub-lineage of their own, 0.0162 from each other and 0.024 or more from any other
+genome of the species, at 96.2–96.5% from the type. The first is a 2,927-contig assembly of which only
+452 fragments could be compared; the second is a 21-contig assembly that gives the same answer in both
+directions, and it is what the pair rests on. The same species was assigned at 96.31% and 96.81% in
+`mislabelled_records.md`.
+
+**One was left unnamed.** `GCA_054871705.1` (LJL56) is 95.23% from the *B. pecoris* type strain and
+95.22% the other way, and 0.0455 from every *pecoris* genome in the set. That clears the criterion by a
+fifth of a point, which is inside what the method can resolve, so it stays *Brucella* sp.
+
+| Population | Samples whose call changes |
+| --- | --- |
+| The 4,024 public read sets | none. No identified run has any of the thirteen as its best match or within the close-match margin of it. |
+| The 2,022 assemblies, as simulated reads | thirteen, their own, every one labelled *Brucella* sp. in NCBI. All 95 unnamed samples were re-run: 37 are reported as *Brucella* sp., 56 under a name and 2 as `ND`, and no distance moved. |
+| Genome against genome, a second species inside the close-match margin | **33 of the references across 10 species pairs, where it was 38 across 14.** Four of the fourteen pairs were a named species against one of its own unnamed genomes (*anthropi*, *ciceri*, *haematophila* and *pseudogrignonensis*, each paired with *Brucella* sp.), and five references are no longer counted. The densest case is still 15. |
+
+### `GCA_032085995.1` and `GCA_032104425.1`, removed
+
+Two of the thirteen were partial genomes of *B. pseudogrignonensis*, a species of about 5 Mb the set
+holds 29 other genomes of: 3.2 Mb in 488 contigs, and 3.7 Mb in 2,927 contigs. They were named with the
+rest and then taken out, for the reason `GCA_040391195.1` was. The sub-lineage `GCA_032104425.1`
+belonged to stays in the set as `GCA_040369775.1`, the 21-contig assembly 0.0162 from it.
+
+| Check | Result |
+| --- | --- |
+| The rebuilt sketch against the one it replaces | 429 genomes, each with the same length and the same 1000 hashes as before; the two removed genomes are the only difference |
+| The 4,024 public read sets | none changes. No identified run has either as its best match or within the close-match margin of it. |
+| The 2,022 assemblies, as simulated reads | two change, their own, and neither changes species: `GCA_032085995.1` is *B. pseudogrignonensis* against `GCA_062023071.1` at 0.0201 and 488 of 1000 hashes, and `GCA_032104425.1` against `GCA_040369775.1` at 0.0170 and 538, each with a loose-match note. The 95 unnamed samples are 37, 56 and 2 as before, ten of the 56 now with a note. |
+| Figures that count neighbours inside the close-match margin | unchanged, recomputed over the 429: 33 references with a second species in reach across 10 pairs, a densest case of 15 and a 99th percentile of 12 |
+
+`GCA_031987745.1`, now *B. haematophila*, is the one fragmented genome left among the eleven: 4.7 Mb in
+786 contigs, of a species of about 5.5 Mb, and 84.5% complete by CheckM. It is one of only four genomes
+of that species in the set, so it stays; whether 85% is whole enough is a judgement, not a measurement.
+
 ## What was not changed
 
 A reference's label decides what a sample is called, so each of these is a release-level decision and
@@ -319,7 +386,7 @@ none was made here.
 | --- | --- | --- |
 | Add the *O. teleogrylli* type strain `GCA_042681285.1` | It would anchor the name on type material | No run changes: `SRR12605656` is 97.99% from the type against 97.85% from NM4. It needs the sketch rebuilt. |
 | Label `GCA_030157885.1` as "*B. nosferati*" | A lineage of species rank with a published name | 22 runs would get that name. The set would then carry a name NCBI does not have. *B. amazoniensis* is a partial precedent: LPSN has no entry for it either, but NCBI has a taxon. |
-| Name the 14 other unnamed references that clear 95% to a type strain, each to a named *Brucella* species | `unnamed_lineages/unnamed_references_vs_types.tsv` | No run of the sweep changes. |
+| Name `GCA_054871705.1` as *B. pecoris* | 95.23% to the type strain, 95.22% the other way | No run of the sweep changes. It is too close to the boundary to call. |
 
 ## Reproducing the evidence
 
@@ -353,5 +420,6 @@ that carries the BO1 label on a *suis*/*canis* genome.
 | `candidates_ani.tsv` | each candidate against every type strain and named genome of the panel, and every unnamed genome at 99% or above |
 | `lineage_matrix.tsv` | ANI and Mash distance, all against all, for 27 type strains and lineage representatives |
 | `teleogrylli_ani.tsv` | the three former *Ochrobactrum* runs and the set's three genomes of that species against the *Ochrobactrum* type strains |
-| `unnamed_references_vs_types.tsv` | the set's 25 unnamed former-*Ochrobactrum* references against the type strains |
+| `unnamed_references_vs_types.tsv` | the set's 25 unnamed former-*Ochrobactrum* references against the type strains, as they stood before any relabel |
+| `unnamed_references_two_way_ani.tsv` | the fourteen of those that clear 95% to a *Brucella* type strain, in both directions, with what was decided |
 | `make_candidates.py` | rebuilds the candidate list |

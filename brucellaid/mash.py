@@ -24,7 +24,7 @@ DEFAULT_MIN_HASHES = 150
 # differ by little, and the biovar references in particular are nearly identical.
 CLOSE_MATCH_MARGIN = 0.0005
 # More references than this within the margin means the margin is not separating anything: see
-# Identification.undiscriminating. The densest real case over the 431 packaged genomes is 15.
+# Identification.undiscriminating. The densest real case over the 429 packaged genomes is 15.
 MAX_CLOSE_MATCHES = 40
 # Beyond this distance the closest reference is reported as a loose match. It says nothing about which
 # species is right: it says the reads are not close to anything in the sketch, which happens when the
@@ -457,7 +457,7 @@ class Identification:
         been seen to tie 127 references across twelve species, which is not ambiguity between two
         candidates but an absence of measurement.
 
-        The cap is set against the densest real case: over the 431 genomes of the default set, comparing
+        The cap is set against the densest real case: over the 429 genomes of the default set, comparing
         each with all the others, at most 15 others ever fall within the margin of a genome's closest
         hit, and the 99th percentile is 12. (Counting the closest hit itself gives 16 and 13; this
         property counts the others, as within_margin does.) Anything past 40 is the degenerate kind.
@@ -471,7 +471,7 @@ class Identification:
         The other references within CLOSE_MATCH_MARGIN of the closest one, closest first.
 
         Empty when the sample was not identified, because a read set that shares no hashes sits at
-        distance 1 from every reference and would tie with all 431 others; and empty when the margin is
+        distance 1 from every reference and would tie with all 428 others; and empty when the margin is
         not discriminating, which `undiscriminating` explains. Either way the report says so in words
         instead of printing a reference table, and brucellaid_mash.tsv still holds every distance.
         """

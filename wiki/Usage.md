@@ -63,7 +63,7 @@ would match the called allele and its neighbours alike. Raising it makes the all
 reliable.
 
 The ST is only consulted where the MASH distance leaves two species within reach. Genome against genome
-that is a second species for 38 of the 431 default references across 14 species pairs, and for 7 of
+that is a second species for 33 of the 429 default references across 10 species pairs, and for 7 of
 vSNP's 16 across 8, so the default set widens the pairs it can involve without making it more frequent:
 the four tutorial read sets arbitrate identically under either set. `--no-st-species` restores the
 behaviour of version 1.0.0, where the closest
@@ -86,7 +86,7 @@ The package ships all five files, and each can be replaced:
 
 | Option | What it takes |
 | --- | --- |
-| `--reference-set NAME` | Which packaged reference set to identify against. `extended`, the default, is 431 curated genomes covering the whole *Brucella* clade; `vsnp` is the 16 genomes of vSNP, 8 species, which was the default before 2.0. See [How it works](How-it-works#the-reference-sets) |
+| `--reference-set NAME` | Which packaged reference set to identify against. `extended`, the default, is 429 curated genomes covering the whole *Brucella* clade; `vsnp` is the 16 genomes of vSNP, 8 species, which was the default before 2.0. See [How it works](How-it-works#the-reference-sets) |
 | `--sketch FILE` | A MASH sketch of reference genomes. Keep MASH's defaults (k = 21, 1000 hashes) |
 | `--references FILE` | The table saying what each genome of the sketch is |
 | `--alleles FILE` | A fasta file of MLST alleles, named `<locus>_<number>` |

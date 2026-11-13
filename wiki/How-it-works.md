@@ -1,6 +1,6 @@
 # How it works
 
-A run does two independent things to the same reads: it measures the distance to 431 reference genomes, and
+A run does two independent things to the same reads: it measures the distance to 429 reference genomes, and
 it calls the nine MLST alleles. The two answers are kept apart in the reports, with the numbers each one
 rests on, and a third step puts them together only where it has to — for the one pair of species a sketch
 of any size cannot separate. When they disagree anywhere else, both numbers are in the reports and the
@@ -8,7 +8,7 @@ disagreement is the finding.
 
 <a name="the-mash-distance"></a>
 
-## 1. Which species: the MASH distance to 431 reference genomes
+## 1. Which species: the MASH distance to 429 reference genomes
 
 The reads of a sample — R1 and R2 together, as one read set — are piped into
 `mash dist -r -m N references.msh -`. MASH reduces the read set to the 1000 smallest hashes of its 21-mers
@@ -42,7 +42,7 @@ over 99% identical — so a MASH distance separates them by a small margin. Read
 nearly as close.
 
 What the distance does **not** tell you is how much to trust the ranking. It orders the references; it
-carries no confidence, and against the 431-genome default set the second line is usually close behind the
+carries no confidence, and against the 429-genome default set the second line is usually close behind the
 first, because a sample's nearest neighbours are mostly other genomes of its own species. A note that
 another reference was nearly as close is therefore the normal case, not a warning — the field to alert on
 is `Status`, not `Notes`.
@@ -87,14 +87,14 @@ gives is each *reference genome's* own biovar, which is a fact about the referen
 [brucetyper](https://github.com/duceppemo/brucetyper), which reads the Bruce-ladder and Suis-ladder assays
 *in silico*.
 
-The 431 genomes of the default set are all NCBI assemblies, named in `references_extended.tsv` by the GCA
+The 429 genomes of the default set are all NCBI assemblies, named in `references_extended.tsv` by the GCA
 accession they were downloaded under. Of vSNP's 16, two (*B. ceti* Cudo and *B. suis* bv. 4 strain 40) come
 from vSNP under its own names rather than from an accession; the other 14 are NCBI genomes, listed in
 `references.tsv`.
 
 **One pair this cannot decide.** *B. canis* and *B. suis* are closer to each other than either is to
 anything else, in both sets: *B. canis* ATCC 23365 and *B. suis* bv. 4 strain 40 are **0.00024** apart in
-vSNP's 16, and the closest *canis*–*suis* pair of the 431 is **0.000264** — the closest pair of different
+vSNP's 16, and the closest *canis*–*suis* pair of the 429 is **0.000264** — the closest pair of different
 species in either sketch, closer than two *B. suis* references are to each other, and inside the variation
 within either species. Which of the two a *canis* or a *suis* read set lands on first is noise, and no
 sketch, at any size, with any number of references, will change that: they are that close. The three
@@ -194,7 +194,7 @@ it is worth looking into.
 
 | File | Source |
 | --- | --- |
-| `references_extended.msh`, `references_extended.tsv` | 431 curated genomes of the whole clade, the set a run uses by default from 2.0: dereplicated representatives of the assemblies behind the [mashID *Brucella* pack](https://doi.org/10.6084/m9.figshare.33970168), rebuilt with `scripts/make_extended_references.py` |
+| `references_extended.msh`, `references_extended.tsv` | 429 curated genomes of the whole clade, the set a run uses by default from 2.0: dereplicated representatives of the assemblies behind the [mashID *Brucella* pack](https://doi.org/10.6084/m9.figshare.33970168), rebuilt with `scripts/make_extended_references.py` |
 | `references.msh`, `references.tsv` | The *Brucella* part of [vSNP](https://github.com/USDA-VS/vsnp)'s reference set, 16 genomes, reached with `--reference-set vsnp` and rebuilt with `scripts/make_reference_data.py` |
 | `mlst_alleles.fasta`, `mlst_profiles.tsv` | The MLST (9 locus) scheme of [PubMLST](https://pubmlst.org/organisms/brucella-spp), downloaded with `scripts/make_mlst_data.py` |
 | `mlst_st_species.tsv` | The species of each ST, counted over the 3,403 isolates of the PubMLST *Brucella* isolate database that carry an ST, with `scripts/make_st_species.py` |
@@ -207,14 +207,14 @@ nine loci, 4,396 bp in all.
 The package ships two, and **the extended set is the default from 2.0**:
 
 ```bash
-brucellaid -i reads/ -o results/                      # 431 genomes, all 30 named species
+brucellaid -i reads/ -o results/                      # 429 genomes, all 30 named species
 brucellaid -i reads/ -o results/ --reference-set vsnp # vSNP's 16 genomes, 8 species
 ```
 
 vSNP's 16 genomes cover 8 species — the classical six plus *B. microti* and *B. neotomae*. The 2020
 taxonomy moved the genus *Ochrobactrum* into *Brucella*, and sequencing keeps finding isolates of the
 atypical lineages, so a sample of any of the other 22 species could only land on a wrong neighbour or on
-`ND`. The extended set is 431 curated genomes covering all 30 named species of the clade.
+`ND`. The extended set is 429 curated genomes covering all 30 named species of the clade.
 
 With it, a *B. anthropi* or *B. intermedia* sample is named instead of coming back `ND`, a marine-mammal
 or vole-adjacent species lands on its own references instead of the nearest classical one, and an isolate

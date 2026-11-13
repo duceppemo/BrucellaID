@@ -33,26 +33,39 @@ go from *Brucella* sp. to *O. teleogrylli* with every measurement unchanged, and
 Removing the species from the set was considered and rejected: without its genomes those libraries share
 93 to 95 of 1000 hashes with their best match and would be reported as not *Brucella*.
 
-**The extended set is 431 genomes, not 432: `GCA_040391195.1` is removed and the sketch rebuilt.** It is a
-third *O. teleogrylli* genome, but only 2.1 Mb of a species of about 5 Mb, and a reference holding two
-fifths of its genome cannot be matched closely by a complete library of its own species. None did: it was
-the best match of no run among the 4,024 public read sets, and ranked third at 301 to 362 of 1000 hashes
-for the three *O. teleogrylli* runs. The other 431 genomes are in the rebuilt sketch with exactly the
-hashes they had, so every distance to them is what it was, and the three runs re-measured against it are
-identical in every column. A custom `--references` table written against the 432 will name one genome the
-sketch no longer holds, which BrucellaID reports at start-up.
+**The extended set is 429 genomes, not 432: three partial genomes are removed and the sketch rebuilt.**
+`GCA_040391195.1` is 2.1 Mb of *O. teleogrylli*, and `GCA_032085995.1` and `GCA_032104425.1` are 3.2 and
+3.7 Mb of *B. pseudogrignonensis*, all species of about 5 Mb that the set holds complete genomes of. A
+reference holding part of its genome cannot be matched closely by a complete library of its own species,
+and none was: not one of the three is the best match of any identified run among the 4,024 public read
+sets, or within the close-match margin of one. The other 429 genomes are in the rebuilt sketch with
+exactly the hashes they had, so every distance to them is what it was. A custom `--references` table
+written against the 432 will name three genomes the sketch no longer holds, which BrucellaID reports at
+start-up.
+
+**Eleven more unnamed genomes of the set take the name of the *Brucella* species they belong to.** They
+were *Brucella* sp. and are 96.2–99.3% ANI from a type strain, measured in both directions: one
+*B. tritici*, three *B. anthropi*, two *B. intermedia*, one *B. haematophila* and four
+*B. pseudogrignonensis*. Four of them take the senior name of a group ANI cannot separate, not the name
+of their nearest type strain, which is the rule the set already used. A sample matching one of the
+eleven was reported as *Brucella* sp. and is now reported under its species. No public read set matches
+any of them, so no call in the sweep changes. `GCA_054871705.1` was left unnamed: at 95.2% from the
+*B. pecoris* type strain it is too near the boundary to call.
+
+**Arbitration reaches fewer references: a second species is within the close-match margin of 33 of the
+429, across 10 species pairs, where it was 38 across 14.** Four of the fourteen pairs were a named species
+against one of its own unnamed genomes, so a sample between them would have been reported as
+unresolved between *B. anthropi* and *Brucella* sp. when both genomes were *B. anthropi*. The densest case is still 15.
 
 With all of this the set is 30 named *Brucella* species, the two *Ochrobactrum* ones in four genomes, and
-44 unnamed genomes. No held-out named sample of the simulated-read validation moves, and no count on
-[Validation at scale](Validation-at-scale) that `scripts/score_public_sweep.py` derives changes. The
-figures that count neighbours inside the close-match margin were recomputed and are the same: 38
-references with a second species in reach, a densest case of 15.
+31 unnamed genomes. No held-out named sample of the simulated-read validation moves, and no count on
+[Validation at scale](Validation-at-scale) that `scripts/score_public_sweep.py` derives changes.
 
 **One sentence on that page was stale and is corrected.** It gave the 95 unnamed simulated samples as 53
 reported *Brucella* sp. and 40 named, 36 of them with a note. The full run against the 432-genome set
 gave 56 and 37, which is the old figure plus the three samples that moved when two unnamed lineages were
-restored to the set, so it had probably not been recomputed since. After these relabels it is
-**50 and 43**, eight of the 43 with a note.
+restored to the set, so it had probably not been recomputed since. After all the relabels above it is
+**37 and 56**, ten of the 56 with a note.
 
 All of this came out of chasing the 43 public read sets reported as *Brucella* sp., written up in
 `curation/unnamed_lineages.md`. That note also records what was left alone: 22 of those runs are the

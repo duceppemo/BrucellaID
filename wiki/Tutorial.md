@@ -47,7 +47,7 @@ The `_1` and `_2` files are paired automatically, and the sample name is what is
 brucellaid -i reads -o results -t 8 -p 2
 ```
 ```
-431 reference genome(s) in .../brucellaid/data/references_extended.msh
+429 reference genome(s) in .../brucellaid/data/references_extended.msh
 9 MLST locus/loci: gap, aroA, glk, dnaK, gyrB, trpE, cobQ, int_hyp, omp25
 118 sequence type(s) with a species, to decide the species MASH cannot
 4 sample(s) found in reads
@@ -91,7 +91,7 @@ Four species, four sequence types, and each species is the one the submitter lab
 `MashDistance`, left out above to fit, reads 0.000119, 0.000144, 0.000119 and 0.000264. There is no biovar
 column: see [How it works](How-it-works#no-biovar).
 
-The reference names are GenBank accessions because a run identifies against the 431-genome clade set by
+The reference names are GenBank accessions because a run identifies against the 429-genome clade set by
 default from 2.0. `--reference-set vsnp` gives vSNP's 16 genomes and its own file names instead, and on
 these four samples the same four species.
 
@@ -112,7 +112,7 @@ come out the other way round, as they easily could have, the answer would have b
 [How it works](How-it-works).
 
 And **three other *B. canis* genomes were nearly as close as well**, counted rather than listed. In a set
-of 431 a cluster of same-species genomes crowds the top of the table and listing them all would bury the
+of 429 a cluster of same-species genomes crowds the top of the table and listing them all would bury the
 one line that matters, which is the *B. suis* genome nine hashes behind.
 
 None of these four samples carries a **loose match** note, which is the other note this column can hold:

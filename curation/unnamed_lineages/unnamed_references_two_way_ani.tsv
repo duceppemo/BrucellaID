@@ -1,0 +1,23 @@
+reference	ncbi_label	strain	assembly_mb	contigs	type_strain	ani_reference_to_type	fragments	ani_type_to_reference	fragments_reverse	decision
+GCA_048799565.1	Brucella sp.		5.50	99	Brucella tritici DSM 13340	99.34	1490/1784	99.35	1487/1841	relabelled Brucella tritici
+GCA_026014005.1	Brucella sp. JSBI001	JSBI001	4.88	2	Brucella lupini CB1	98.99	1434/1627	99.00	1430/1557	relabelled Brucella anthropi
+GCA_026014005.1	Brucella sp. JSBI001	JSBI001	4.88	2	Brucella anthropi ATCC 49188	97.21	1416/1627	97.16	1423/1793	relabelled Brucella anthropi
+GCA_026014005.1	Brucella sp. JSBI001	JSBI001	4.88	2	Brucella cytisi DSM 19778	95.75	1412/1627	95.75	1410/1897	relabelled Brucella anthropi
+GCA_040370055.1	Brucella sp. NBRC 13694	NBRC 13694	5.17	44	Brucella lupini CB1	98.94	1445/1702	98.94	1447/1557	relabelled Brucella anthropi
+GCA_040370055.1	Brucella sp. NBRC 13694	NBRC 13694	5.17	44	Brucella anthropi ATCC 49188	97.49	1485/1702	97.49	1483/1793	relabelled Brucella anthropi
+GCA_040370055.1	Brucella sp. NBRC 13694	NBRC 13694	5.17	44	Brucella cytisi DSM 19778	95.77	1415/1702	95.87	1404/1897	relabelled Brucella anthropi
+GCA_025908475.1	Brucella sp. MAB-22	MAB-22	4.83	4	Brucella anthropi ATCC 49188	98.20	1476/1606	98.21	1469/1793	relabelled Brucella anthropi
+GCA_025908475.1	Brucella sp. MAB-22	MAB-22	4.83	4	Brucella lupini CB1	97.55	1366/1606	97.50	1369/1557	relabelled Brucella anthropi
+GCA_025908475.1	Brucella sp. MAB-22	MAB-22	4.83	4	Brucella cytisi DSM 19778	95.67	1347/1606	95.69	1363/1897	relabelled Brucella anthropi
+GCA_052246815.1	Brucella sp. RRSP16	RRSP16	4.74	74	Brucella ciceri DSM 22292	97.79	1394/1553	97.82	1383/1504	relabelled Brucella intermedia
+GCA_052246815.1	Brucella sp. RRSP16	RRSP16	4.74	74	Brucella intermedia CIP 105838	97.48	1414/1553	97.57	1410/1626	relabelled Brucella intermedia
+GCA_040371715.1	Brucella sp. NBRC 14130	NBRC 14130	5.50	68	Brucella ciceri DSM 22292	97.47	1377/1799	97.52	1370/1504	relabelled Brucella intermedia
+GCA_040371715.1	Brucella sp. NBRC 14130	NBRC 14130	5.50	68	Brucella intermedia CIP 105838	97.39	1379/1799	97.44	1376/1626	relabelled Brucella intermedia
+GCA_031987745.1	Brucella sp.		4.68	786	Brucella haematophila CIP 109452	97.42	1363/1451	97.33	1340/1846	relabelled Brucella haematophila
+GCA_032085995.1	Brucella sp.		3.18	488	Brucella pseudogrignonensis CIP 109451	98.05	859/871	97.73	835/1890	Brucella pseudogrignonensis by ANI; removed from the set as a partial genome
+GCA_032066345.1	Brucella sp.		5.06	52	Brucella pseudogrignonensis CIP 109451	97.53	1555/1667	97.52	1539/1890	relabelled Brucella pseudogrignonensis
+GCA_032007605.1	Brucella sp.		4.80	219	Brucella pseudogrignonensis CIP 109451	97.41	1436/1490	97.36	1417/1890	relabelled Brucella pseudogrignonensis
+GCA_032114075.1	Brucella sp.		4.67	421	Brucella pseudogrignonensis CIP 109451	96.80	1252/1392	96.72	1216/1890	relabelled Brucella pseudogrignonensis
+GCA_032104425.1	Brucella sp.		3.65	2927	Brucella pseudogrignonensis CIP 109451	96.45	424/452	95.62	420/1890	Brucella pseudogrignonensis by ANI; removed from the set as a partial genome
+GCA_040369775.1	Brucella sp. NBRC 12953	NBRC 12953	5.02	21	Brucella pseudogrignonensis CIP 109451	96.18	1482/1662	96.22	1483/1890	relabelled Brucella pseudogrignonensis
+GCA_054871705.1	Brucella sp. LJL56	LJL56	4.65	22	Brucella pecoris DSM 23868	95.23	1361/1542	95.22	1358/1744	left as Brucella sp.

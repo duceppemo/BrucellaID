@@ -130,7 +130,7 @@ def names(items, listed=NAMES_LISTED):
     """
     Some of a list of genome names, for a log line: all of them when there are few, else a few and a count.
 
-    A lone --sketch of eight genomes against the 431-genome default table disagrees on 423 of them, and
+    A lone --sketch of eight genomes against the 429-genome default table disagrees on 421 of them, and
     naming every one makes a single 19 kB log line. The count is the useful part.
     """
     if len(items) <= listed:

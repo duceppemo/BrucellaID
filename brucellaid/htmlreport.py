@@ -591,7 +591,7 @@ METHODS = [
      'answer. The reference data table above says which set this run measured against.'),
     ('Why there is no biovar in this report',
      'BrucellaID does not report a biovar, because it cannot measure one. Three things stand in the way. '
-     'Hardly any reference carries a biovar at all: 7 of the 431 genomes of the default set do, because '
+     'Hardly any reference carries a biovar at all: 7 of the 429 genomes of the default set do, because '
      'the NCBI records of the rest carry none, so 93% of the biovar-labelled B. abortus isolates of the '
      'PubMLST isolate database are of a biovar no reference has. The distance cannot separate the biovars '
      'that are there: the two B. suis biovar 2 genomes are 0.00163 apart, further than the biovar 3 genome '
@@ -619,7 +619,7 @@ METHODS = [
     ('How the species is decided when two are equally close',
      'Some Brucella species are closer to each other than the variation within either of them: in the '
      'sketches that ship with BrucellaID, the closest pair of different species is always a B. canis and a '
-     'B. suis: 0.00024 apart in the 16 genomes of vSNP, 0.000264 in the 431 of the default set. Where a '
+     'B. suis: 0.00024 apart in the 16 genomes of vSNP, 0.000264 in the 429 of the default set. Where a '
      'reference of a second species is within the close-match margin of the closest '
      'one, the distance has not really chosen, and the sequence type chooses among those species, because '
      'the two share no ST. An ST is only used when enough of its isolates agree on a species, and an ST '

@@ -24,7 +24,7 @@ Nothing is written outside `validation/data` and `validation/results`, which are
 genome for genome, so the answers in `genomes.tsv` and `reads.tsv` are their sketch IDs, and the negative
 control is *B. anthropi* ATCC 49188, which comes back `ND` only because the vSNP set does not carry it —
 the extended set has it as a reference and names it correctly, the 2020 taxonomy having moved
-*Ochrobactrum* into the genus. What the default 431-genome set does is measured at scale instead, on the
+*Ochrobactrum* into the genus. What the default 429-genome set does is measured at scale instead, on the
 [Validation at scale](https://github.com/duceppemo/BrucellaID/wiki/Validation-at-scale) page: simulated
 reads of 2,022 assemblies, and every usable public *Brucella* read set in ENA.
 

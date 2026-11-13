@@ -370,32 +370,30 @@ GCA_015832115.1_ASM1583211v1_genomic.fna.gz	sp	Brucella sp.		BO2	GCA_015832115.1
 GCA_017797885.1_ASM1779788v1_genomic.fna.gz	sp	Brucella sp.			GCA_017797885.1
 GCA_024970345.1_ASM2497034v1_genomic.fna.gz	sp	Brucella sp.		2716	GCA_024970345.1
 GCA_024970695.1_ASM2497069v1_genomic.fna.gz	sp	Brucella sp.		1315	GCA_024970695.1
-GCA_025908475.1_ASM2590847v1_genomic.fna.gz	sp	Brucella sp.		MAB-22	GCA_025908475.1
-GCA_026014005.1_ASM2601400v1_genomic.fna.gz	sp	Brucella sp.		JSBI001	GCA_026014005.1
+GCA_025908475.1_ASM2590847v1_genomic.fna.gz	anthropi	Brucella anthropi		MAB-22	GCA_025908475.1
+GCA_026014005.1_ASM2601400v1_genomic.fna.gz	anthropi	Brucella anthropi		JSBI001	GCA_026014005.1
 GCA_028621035.1_ASM2862103v1_genomic.fna.gz	sp	Brucella sp.		IPG27	GCA_028621035.1
 GCA_030063905.1_ASM3006390v1_genomic.fna.gz	teleogrylli	Ochrobactrum teleogrylli		NM4	GCA_030063905.1
 GCA_030157885.1_ASM3015788v1_genomic.fna.gz	sp	Brucella sp.		bbatCR03	GCA_030157885.1
 GCA_030268145.1_ASM3026814v1_genomic.fna.gz	sp	Brucella sp.		NBRC 12950	GCA_030268145.1
-GCA_031987745.1_ASM3198774v1_genomic.fna.gz	sp	Brucella sp.			GCA_031987745.1
-GCA_032007605.1_ASM3200760v1_genomic.fna.gz	sp	Brucella sp.			GCA_032007605.1
-GCA_032066345.1_ASM3206634v1_genomic.fna.gz	sp	Brucella sp.			GCA_032066345.1
-GCA_032085995.1_ASM3208599v1_genomic.fna.gz	sp	Brucella sp.			GCA_032085995.1
-GCA_032104425.1_ASM3210442v1_genomic.fna.gz	sp	Brucella sp.			GCA_032104425.1
-GCA_032114075.1_ASM3211407v1_genomic.fna.gz	sp	Brucella sp.			GCA_032114075.1
+GCA_031987745.1_ASM3198774v1_genomic.fna.gz	haematophila	Brucella haematophila			GCA_031987745.1
+GCA_032007605.1_ASM3200760v1_genomic.fna.gz	pseudogrignonensis	Brucella pseudogrignonensis			GCA_032007605.1
+GCA_032066345.1_ASM3206634v1_genomic.fna.gz	pseudogrignonensis	Brucella pseudogrignonensis			GCA_032066345.1
+GCA_032114075.1_ASM3211407v1_genomic.fna.gz	pseudogrignonensis	Brucella pseudogrignonensis			GCA_032114075.1
 GCA_039674265.1_ASM3967426v1_genomic.fna.gz	chromiisoli	Ochrobactrum chromiisoli		TWI559	GCA_039674265.1
 GCA_039674445.1_ASM3967444v1_genomic.fna.gz	chromiisoli	Ochrobactrum chromiisoli		TWI432	GCA_039674445.1
-GCA_040369775.1_ASM4036977v1_genomic.fna.gz	sp	Brucella sp.		NBRC 12953	GCA_040369775.1
-GCA_040370055.1_ASM4037005v1_genomic.fna.gz	sp	Brucella sp.		NBRC 13694	GCA_040370055.1
-GCA_040371715.1_ASM4037171v1_genomic.fna.gz	sp	Brucella sp.		NBRC 14130	GCA_040371715.1
+GCA_040369775.1_ASM4036977v1_genomic.fna.gz	pseudogrignonensis	Brucella pseudogrignonensis		NBRC 12953	GCA_040369775.1
+GCA_040370055.1_ASM4037005v1_genomic.fna.gz	anthropi	Brucella anthropi		NBRC 13694	GCA_040370055.1
+GCA_040371715.1_ASM4037171v1_genomic.fna.gz	intermedia	Brucella intermedia		NBRC 14130	GCA_040371715.1
 GCA_040372265.1_ASM4037226v1_genomic.fna.gz	teleogrylli	Ochrobactrum teleogrylli		NBRC 113783	GCA_040372265.1
 GCA_047308065.1_ASM4730806v1_genomic.fna.gz	sp	Brucella sp.		H1_1004	GCA_047308065.1
-GCA_048799565.1_ASM4879956v1_genomic.fna.gz	sp	Brucella sp.			GCA_048799565.1
+GCA_048799565.1_ASM4879956v1_genomic.fna.gz	tritici	Brucella tritici			GCA_048799565.1
 GCA_049065635.1_ASM4906563v1_genomic.fna.gz	sp	Brucella sp.		SA075A	GCA_049065635.1
 GCA_050353195.1_ASM5035319v1_genomic.fna.gz	sp	Brucella sp.		NF 2653	GCA_050353195.1
 GCA_050410765.1_ASM5041076v1_genomic.fna.gz	sp	Brucella sp.		NF 2810	GCA_050410765.1
 GCA_050600715.1_ASM5060071v1_genomic.fna.gz	sp	Brucella sp.			GCA_050600715.1
 GCA_052045675.1_ASM5204567v1_genomic.fna.gz	sp	Brucella sp.		22210	GCA_052045675.1
-GCA_052246815.1_ASM5224681v1_genomic.fna.gz	sp	Brucella sp.		RRSP16	GCA_052246815.1
+GCA_052246815.1_ASM5224681v1_genomic.fna.gz	intermedia	Brucella intermedia		RRSP16	GCA_052246815.1
 GCA_054871705.1_ASM5487170v1_genomic.fna.gz	sp	Brucella sp.		LJL56	GCA_054871705.1
 GCA_061339055.1_ASM6133905v1_genomic.fna.gz	sp	Brucella sp.		RCAD1684	GCA_061339055.1
 GCA_062042698.1_ASM62042698v1_genomic.fna.gz	sp	Brucella sp.		OP-FW9-E3	GCA_062042698.1

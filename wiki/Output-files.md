@@ -36,7 +36,7 @@ ERR2136546  Brucella canis  MASH+ST (arbitrated)  GCA_000530495.1_Oliveri_genomi
             ST 20 is Brucella canis in 70 of 70 isolate(s), which agrees with the closest reference
 ```
 
-Both rows are from the [Tutorial](Tutorial) run, against the 431-genome default set, which is why the
+Both rows are from the [Tutorial](Tutorial) run, against the 429-genome default set, which is why the
 references are GCA accessions. With `--reference-set vsnp` the same samples name vSNP's own sketch IDs
 instead (`NC_006932-NC_006933.fasta`, `NC_010103-NC_010104.fasta`).
 
@@ -60,7 +60,7 @@ agrees — but 160 of 1000 hashes at 0.061 is nothing like the 989-to-996 a clea
 sketch returns, and sixty times `--loose-distance`, so the note is what says so. The three causes it lists are the three there are; see
 [The k-mer copy threshold](K-mer-threshold) for the third.
 
-**`Status`, not `Notes`, is the field to alert on.** Against the 431-genome default set the `Notes` column
+**`Status`, not `Notes`, is the field to alert on.** Against the 429-genome default set the `Notes` column
 is populated on nearly every sample, because a sample's nearest neighbours are mostly other genomes of its
 own species and "nearly as close" is therefore the normal case. In 1.x the column was usually empty, so a
 rule of "a non-empty `Notes` means look at this one" fired rarely; it now fires on almost everything and
@@ -197,10 +197,10 @@ The report the first version of BrucellaID wrote, for whatever still reads it: t
 reference table's **code** rather than the species name, exactly as before. It needs the `xlsxwriter`
 package.
 
-**Which code depends on the reference set**, and that changed in 2.0. The default 431-genome set codes the
+**Which code depends on the reference set**, and that changed in 2.0. The default 429-genome set codes the
 species epithet and the biovar where NCBI records one (`abortus`, `abortus5`, `anthropi`); vSNP's own codes
 (`ab1`, `mel3`, `suis2`, ...) exist only in the 16-genome table. A pipeline that matches on `ab1` needs
 `--reference-set vsnp`, and `--xlsx` logs a warning when it is writing epithets rather than those codes.
 The same applies to `species_code` in `brucellaid.json`. Note that the two kinds of code identify different
 things: a vSNP code names one reference genome and is unique across the 16, while an epithet names a species,
-so the 431 genomes of the default set carry 39 distinct codes between them.
+so the 429 genomes of the default set carry 39 distinct codes between them.

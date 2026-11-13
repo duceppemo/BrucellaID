@@ -107,7 +107,7 @@ references:
     url: "https://github.com/USDA-VS/vsnp"
   - type: data
     title: "Brucella database for mashID"
-    notes: "The 431 reference genomes of the extended set, the default from 2.0, are curated representatives of the 2,022 NCBI taxon-234 assemblies of this collection (version 4)."
+    notes: "The 429 reference genomes of the extended set, the default from 2.0, are curated representatives of the 2,022 NCBI taxon-234 assemblies of this collection (version 4)."
     authors:
       - family-names: Duceppe
         given-names: Marc-Olivier
