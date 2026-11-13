@@ -33,6 +33,9 @@ identifiers:
   - type: doi
     value: 10.5281/zenodo.24060641
     description: "Version DOI: 2.1.1"
+  - type: doi
+    value: 10.5281/zenodo.24184142
+    description: "Version DOI: 2.2.0"
 license: MIT
 repository-code: "https://github.com/duceppemo/BrucellaID"
 url: "https://github.com/duceppemo/BrucellaID"

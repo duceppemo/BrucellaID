@@ -3,7 +3,7 @@
 # bioconda-recipes/recipes/brucellaid and open a pull request. For a new release: tag it,
 # bump `version`, recompute the sha256 and reset `number` to 0.
 {% set name = "brucellaid" %}
-{% set version = "2.1.1" %}
+{% set version = "2.2.0" %}
 
 package:
   name: {{ name }}
@@ -11,7 +11,7 @@ package:
 
 source:
   url: https://github.com/duceppemo/BrucellaID/archive/refs/tags/v{{ version }}.tar.gz
-  sha256: 0957cccb66fbb00f1339aa999079149edc59e78418a5fbf80a9cc964f772ac65
+  sha256: 1232b5d865b4313a291fb411a5c846f339389a2c1428700c531b3bfa97d95490
 
 build:
   number: 0
