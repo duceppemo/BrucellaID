@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 2.2.0 (2026-11-12)
 
 **One genome of the extended set changes label: `GCA_900095155.1` is now *Brucella* sp., not
 *B. inopinata*.** Strain 141012304 is 97.87% ANI and 0.0212 from the *B. inopinata* type strain BO1, which
